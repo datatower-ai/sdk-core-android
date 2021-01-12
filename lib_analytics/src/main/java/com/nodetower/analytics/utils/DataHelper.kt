@@ -64,7 +64,7 @@ object DataHelper {
 
     @Throws(InvalidDataException::class)
     fun assertKey(key: String?) {
-        if (null == key || key.length < 1) {
+        if (null == key || key.isEmpty()) {
             throw InvalidDataException("The key is empty.")
         }
         if (!(KEY_PATTERN.matcher(key).matches())) {

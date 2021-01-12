@@ -1,6 +1,6 @@
 package com.nodetower.analytics.config
 
-import com.nodetower.analytics.utils.NetworkType
+import com.nodetower.base.utils.NetworkType
 import javax.net.ssl.SSLSocketFactory
 
 abstract class AbstractAnalyticsConfigOptions {

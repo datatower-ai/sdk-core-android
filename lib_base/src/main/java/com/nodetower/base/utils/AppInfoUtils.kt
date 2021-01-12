@@ -1,4 +1,4 @@
-package com.nodetower.analytics.utils
+package com.nodetower.base.utils
 
 import android.app.ActivityManager
 import android.content.Context
@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Process
 import android.text.TextUtils
-import com.nodetower.base.utils.LogUtils
 
 
 object AppInfoUtils {

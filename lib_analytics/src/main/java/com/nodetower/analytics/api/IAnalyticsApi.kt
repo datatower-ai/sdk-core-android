@@ -114,21 +114,6 @@ interface IAnalyticsApi {
      */
     var sessionIntervalTime: Int
 
-    /**
-     * 获取当前用户的 distinctId
-     *
-     * @return 优先返回登录 ID，登录 ID 为空时，返回匿名 ID
-     */
-    val distinctId: String?
-
-    /**
-     * 获取当前用户的匿名 ID
-     * 若调用前未调用 [.identify] 设置用户的匿名 ID，SDK 会优先调用 获取 Android ID，
-     * 如获取的 Android ID 非法，则调用 [java.util.UUID] 随机生成 UUID，作为用户的匿名 ID
-     *
-     * @return 当前用户的匿名 ID
-     */
-    val anonymousId: String?
 
     /**
      * 获取当前用户的 loginId
@@ -136,16 +121,16 @@ interface IAnalyticsApi {
      *
      * @return 当前用户的 loginId
      */
-    val loginId: String?
+    fun getAccountId(): String?
+
 
     /**
-     * 设置当前用户的 distinctId。一般情况下，如果是一个注册用户，则应该使用注册系统内
-     * 的 user_id，如果是个未注册用户，则可以选择一个不会重复的匿名 ID，如设备 ID 等，如果
-     * 客户没有调用 identify，则使用SDK自动生成的匿名 ID
+     * 获取当前用户的 appid
+     * 后台分配，本地保存
      *
-     * @param distinctId 当前用户的 distinctId，仅接受数字、下划线和大小写字母
+     * @return 当前用户的 loginId
      */
-    fun identify(distinctId: String?)
+    fun getAppId(): String?
 
 
     /**
@@ -329,6 +314,15 @@ interface IAnalyticsApi {
      * 开启数据采集
      */
     fun enableDataCollect()
+
+
+    /**
+     * 获取当前屏幕方向
+     *
+     * @return portrait:竖屏 landscape:横屏
+     */
+    fun getScreenOrientation(): String?
+
 }
 
 

@@ -1,4 +1,4 @@
-package com.nodetower.analytics.utils
+package com.nodetower.base.utils
 
 object NetworkType {
     // NULL
