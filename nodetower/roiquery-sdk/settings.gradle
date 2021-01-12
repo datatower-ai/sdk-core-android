@@ -1,5 +1,0 @@
-include ':lib_base'
-include ':lib_common'
-include ':lib_analytics'
-include ':app'
-rootProject.name = "ROIQuery-SDK"
