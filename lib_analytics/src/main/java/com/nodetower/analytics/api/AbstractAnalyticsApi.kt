@@ -1,10 +1,15 @@
 package com.nodetower.analytics.api
 
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Bundle
 import android.text.TextUtils
+import com.nodetower.analytics.config.AnalyticsConfigOptions
+import com.nodetower.analytics.data.DbAdapter
 import com.nodetower.analytics.utils.DataHelper.assertKey
 import com.nodetower.analytics.utils.DataHelper.assertPropertyTypes
 import com.nodetower.analytics.utils.DataUtils
+import com.nodetower.base.utils.AppInfoUtils
 import com.nodetower.base.utils.DeviceUtils
 import com.nodetower.base.utils.LogUtils
 import org.json.JSONException
@@ -15,7 +20,22 @@ import java.util.*
 
 abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
-    private var mContext: Context? = null
+    private var mContext: Context?
+
+    /* SensorsAnalytics 地址 */
+    protected var mServerUrl: String? = null
+
+    /* 配置 */
+    protected var mConfigOptions: AnalyticsConfigOptions? = null
+
+    /* SDK 配置是否初始化 */
+    protected var mSDKConfigInit = false
+
+    /* 是否为主进程 */
+    var mIsMainProcess = false
+
+    /* 主进程名称 */
+    protected var mMainProcessName: String? = null
 
     /* Debug 模式选项 */
     protected var mDebugMode: DebugMode = DebugMode.DEBUG_OFF
@@ -31,20 +51,24 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     // SDK版本
 //    val VERSION: String = BuildConfig.SDK_VERSION
 
+    protected var mDisableTrackDeviceId = false
+
     constructor(
-        context: Context,
-        serverUrl: String?,
+        context: Context?,
+        serverUrl: String = "",
         debugMode: DebugMode
     ) {
         mContext = context
+        mServerUrl = serverUrl
         setDebugMode(debugMode)
 
         mAndroidId = DeviceUtils.getAndroidID(mContext!!)
         mEventInfo = setupEventInfo()
         mCommonProperties = setupCommonProperties()
+        initConfig(serverUrl, mContext!!.packageName)
     }
 
-    private constructor() {
+    constructor() {
         mContext = null
     }
 
@@ -100,12 +124,12 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
      */
     protected open fun setupEventInfo(): Map<String, Any>? =
         Collections.unmodifiableMap(HashMap<String, Any>().apply {
-            put("#did",DeviceUtils.getAndroidID(mContext!!)!!)//设备 ID。即唯一ID，区分设备的最小ID
-            put("#acid",getAccountId()!!)//登录账号id
-            put("#gaid","")//谷歌广告标识id,不同app在同一个设备上gdid一样
-            put("#oaid","")//华为广告标识id,不同app在同一个设备上oaid一样
-            put("#app_id",getAppId()!!)//应用唯一标识,后台分配
-            put("#pkg",mContext?.packageName!!)//包名
+            put("#did", DeviceUtils.getAndroidID(mContext!!)!!)//设备 ID。即唯一ID，区分设备的最小ID
+            put("#acid", getAccountId()!!)//登录账号id
+            put("#gaid", "")//谷歌广告标识id,不同app在同一个设备上gdid一样
+            put("#oaid", "")//华为广告标识id,不同app在同一个设备上oaid一样
+            put("#app_id", getAppId()!!)//应用唯一标识,后台分配
+            put("#pkg", mContext?.packageName!!)//包名
         })
 
     /**
@@ -143,4 +167,98 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             LogUtils.setDebug(true)
         }
     }
+
+    protected open fun initConfig(serverURL: String, packageName: String) {
+
+        var configBundle: Bundle? = null
+        try {
+            mContext?.let {
+                val appInfo = it.applicationContext.packageManager
+                    .getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+                configBundle = appInfo.metaData
+            }
+
+        } catch (e: PackageManager.NameNotFoundException) {
+            LogUtils.printStackTrace(e)
+        }
+        if (null == configBundle) {
+            configBundle = Bundle()
+        }
+
+        if (mConfigOptions == null) {
+            this.mSDKConfigInit = false
+            mConfigOptions = AnalyticsConfigOptions(serverURL)
+        } else {
+            this.mSDKConfigInit = true
+        }
+
+        mConfigOptions?.let { configOptions ->
+
+            DbAdapter.getInstance(mContext!!, packageName)
+
+            if (configOptions.mInvokeLog) {
+                enableLog(configOptions.mLogEnabled)
+            } else {
+                enableLog(
+                    configBundle!!.getBoolean(
+                        "com.nodetower.analytics.android.EnableLogging",
+                        mDebugMode !== DebugMode.DEBUG_OFF
+                    )
+                )
+            }
+
+            setServerUrl(serverURL)
+
+            if (configOptions.mFlushInterval == 0) {
+                configOptions.setFlushInterval(
+                    configBundle!!.getInt(
+                        "com.nodetower.analytics.android.FlushInterval",
+                        15000
+                    )
+                )
+            }
+            if (configOptions.mFlushBulkSize == 0) {
+                configOptions.setFlushBulkSize(
+                    configBundle!!.getInt(
+                        "com.nodetower.analytics.android.FlushBulkSize",
+                        100
+                    )
+                )
+            }
+            if (configOptions.mMaxCacheSize == 0L) {
+                configOptions.setMaxCacheSize(
+                    32 * 1024 * 1024L
+                )
+            }
+            if (configOptions.isSubProcessFlushData) {
+                DbAdapter.getInstance()?.let {
+                    if (it.isFirstProcess) {
+                        //如果是首个进程
+                        it.commitFirstProcessState(false)
+                        it.commitSubProcessFlushState(false)
+                    }
+                }
+            }
+
+        }
+
+
+        this.mMainProcessName = AppInfoUtils.getMainProcessName(mContext)
+        if (TextUtils.isEmpty(this.mMainProcessName)) {
+            this.mMainProcessName =
+                configBundle!!.getString("com.nodetower.analytics.android.MainProcessName")
+        }
+        mMainProcessName?.let {
+            mIsMainProcess = AppInfoUtils.isMainProcess(mContext, it)
+        }
+
+
+        this.mDisableTrackDeviceId = configBundle!!.getBoolean(
+            "com.nodetower.analytics.android.DisableTrackDeviceId",
+            false
+        )
+
+    }
+
+
 }

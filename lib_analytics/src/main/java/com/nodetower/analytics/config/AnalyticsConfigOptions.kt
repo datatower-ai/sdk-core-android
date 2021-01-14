@@ -3,7 +3,7 @@ package com.nodetower.analytics.config
 import javax.net.ssl.SSLSocketFactory
 
 
-class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions() {
+class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions {
 
     /**
      * 是否设置打印日志
@@ -13,14 +13,14 @@ class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions() {
     /**
      * 私有构造函数
      */
-    private fun AnalyticsConfigOptions() {}
+    private constructor()
 
     /**
      * 获取 SAOptionsConfig 实例
      *
      * @param serverUrl，数据上报服务器地址
      */
-    fun AnalyticsConfigOptions(serverUrl: String?) {
+     constructor(serverUrl: String?) {
         mServerUrl = serverUrl
     }
 

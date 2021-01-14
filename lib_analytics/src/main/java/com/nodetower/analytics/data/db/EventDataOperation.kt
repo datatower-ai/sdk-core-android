@@ -77,7 +77,8 @@ internal class EventDataOperation(context: Context) :
                         keyData = cursor.getString(cursor.getColumnIndex(DbParams.KEY_DATA))
                         keyData = parseData(keyData)
                         if (!TextUtils.isEmpty(keyData)) {
-                            dataBuilder.append(keyData, 0, keyData.length - 1)
+                            dataBuilder
+                                .append(keyData, 0, keyData.length - 1)
                                 .append(flush_time)
                                 .append(System.currentTimeMillis())
                                 .append("}").append(suffix)
@@ -91,7 +92,7 @@ internal class EventDataOperation(context: Context) :
         } catch (e: SQLiteException) {
             LogUtils.i(
                 TAG,
-                "Could not pull records for SensorsData out of database events. Waiting to send.",
+                "Could not pull records for analytics out of database events. Waiting to send.",
                 e
             )
             last_id = null
