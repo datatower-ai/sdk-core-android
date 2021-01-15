@@ -5,6 +5,9 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
 import com.nodetower.analytics.config.AnalyticsConfigOptions
+import com.nodetower.analytics.core.AnalyticsManager
+import com.nodetower.analytics.core.TrackTaskManager
+import com.nodetower.analytics.core.TrackTaskManagerThread
 import com.nodetower.analytics.data.DbAdapter
 import com.nodetower.analytics.utils.DataHelper.assertKey
 import com.nodetower.analytics.utils.DataHelper.assertPropertyTypes
@@ -20,38 +23,51 @@ import java.util.*
 
 abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
-    private var mContext: Context?
+    private val mContext: Context?
 
-    /* SensorsAnalytics 地址 */
+    // 数据上报 地址
     protected var mServerUrl: String? = null
 
-    /* 配置 */
-    protected var mConfigOptions: AnalyticsConfigOptions? = null
-
-    /* SDK 配置是否初始化 */
+    // SDK 配置是否初始化
     protected var mSDKConfigInit = false
 
-    /* 是否为主进程 */
+    // 是否为主进程
     var mIsMainProcess = false
 
-    /* 主进程名称 */
+    // 主进程名称
     protected var mMainProcessName: String? = null
 
-    /* Debug 模式选项 */
+    // Debug 模式选项
     protected var mDebugMode: DebugMode = DebugMode.DEBUG_OFF
 
-    /* AndroidID */
+    // AndroidID
     protected var mAndroidId: String? = null
 
-    /* 事件信息，包含事件的基本数据 */
+    // 事件信息，包含事件的基本数据
     protected var mEventInfo: Map<String, Any>? = null
 
-    /* 事件通用属性 */
+    // 事件通用属性
     protected var mCommonProperties: Map<String, Any>? = null
     // SDK版本
 //    val VERSION: String = BuildConfig.SDK_VERSION
 
     protected var mDisableTrackDeviceId = false
+
+    protected var mTrackTaskManager: TrackTaskManager? = null
+
+    protected var mTrackTaskManagerThread: TrackTaskManagerThread? = null
+
+     protected var mAnalyticsManager: AnalyticsManager? = null
+
+    companion object{
+         const val TAG = "NT.AnalyticsApi"
+        // Maps each token to a singleton SensorsDataAPI instance
+         val sInstanceMap: MutableMap<Context, NTAnalyticsAPI> = HashMap<Context, NTAnalyticsAPI>()
+        /* 配置 */
+         var mConfigOptions: AnalyticsConfigOptions? = null
+    }
+
+
 
     constructor(
         context: Context?,
@@ -65,7 +81,16 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         mAndroidId = DeviceUtils.getAndroidID(mContext!!)
         mEventInfo = setupEventInfo()
         mCommonProperties = setupCommonProperties()
-        initConfig(serverUrl, mContext!!.packageName)
+        initConfig(serverUrl, mContext.packageName)
+        mTrackTaskManager = TrackTaskManager.instance
+        mTrackTaskManager?.let {
+            mConfigOptions?.isDataCollectEnable?.let { it1 -> it.setDataCollectEnable(it1) }
+        }
+        mTrackTaskManagerThread = TrackTaskManagerThread()
+        Thread(mTrackTaskManagerThread, "TaskQueueThread").start()
+
+        mAnalyticsManager = AnalyticsManager.getInstance(mContext, this as NTAnalyticsAPI)
+
     }
 
     constructor() {
@@ -260,5 +285,14 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
     }
 
+
+    protected open fun applySAConfigOptions() {
+        mConfigOptions?.let {
+            if (it.mInvokeLog) {
+                enableLog(it.mLogEnabled)
+            }
+        }
+
+    }
 
 }

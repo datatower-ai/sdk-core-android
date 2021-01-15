@@ -30,14 +30,14 @@ class ConnectErrorException : java.lang.Exception {
     }
 
     constructor(message: String?, strRetryAfter: String) : super(message) {
-        try {
-            retryAfter = strRetryAfter.toInt()
+        retryAfter = try {
+            strRetryAfter.toInt()
         } catch (e: NumberFormatException) {
-            retryAfter = 0
+            0
         }
     }
 
-    constructor(throwable: Throwable?) : super(throwable) {}
+    constructor(throwable: Throwable?) : super(throwable)
 }
 
 /**

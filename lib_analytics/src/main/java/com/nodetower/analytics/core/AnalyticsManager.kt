@@ -3,8 +3,7 @@ package com.nodetower.analytics.core
 import android.content.Context
 import android.os.*
 import android.text.TextUtils
-import android.widget.Toast
-import com.nodetower.analytics.api.AnalyticsAPI
+import com.nodetower.analytics.api.NTAnalyticsAPI
 import com.nodetower.analytics.data.DbAdapter
 import com.nodetower.analytics.data.DbParams
 import com.nodetower.analytics.utils.ConnectErrorException
@@ -12,10 +11,8 @@ import com.nodetower.analytics.utils.DebugModeException
 import com.nodetower.analytics.utils.InvalidDataException
 import com.nodetower.analytics.utils.ResponseErrorException
 import com.nodetower.base.utils.LogUtils
-import com.nodetower.base.utils.NetworkUtils.getLocation
 import com.nodetower.base.utils.NetworkUtils.isNetworkAvailable
 import com.nodetower.base.utils.NetworkUtils.isShouldFlush
-import com.nodetower.base.utils.NetworkUtils.needRedirects
 import com.nodetower.base.utils.NetworkUtils.networkType
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -28,17 +25,18 @@ import kotlin.collections.HashMap
 /**
  * 管理内部事件采集、上报
  */
-internal class AnalyticsManager private constructor(
+class AnalyticsManager private constructor(
     var mContext: Context,
-    var mAnalyticsDataAPI: AnalyticsAPI
+    var mAnalyticsDataAPI: NTAnalyticsAPI
 ) {
     private val mWorker: Worker = Worker()
     private val mDbAdapter: DbAdapter? = DbAdapter.getInstance()
 
 
-    fun enqueueEventMessage(type: String, eventJson: JSONObject) {
+    fun enqueueEventMessage(name: String, eventJson: JSONObject) {
         try {
             synchronized(mDbAdapter!!) {
+                //插入数据库
                 val ret = mDbAdapter.addJSON(eventJson)
                 if (ret < 0) {
                     val error = "Failed to enqueue the event: $eventJson"
@@ -54,7 +52,7 @@ internal class AnalyticsManager private constructor(
                     mWorker.runMessage(m)
                 } else {
                     // track_signup 立即发送
-                    if (type == "track_signup" || ret > mAnalyticsDataAPI.flushBulkSize) {
+                    if (name == "track_signup" || ret > mAnalyticsDataAPI.flushBulkSize) {
                         mWorker.runMessage(m)
                     } else {
                         val interval: Int = mAnalyticsDataAPI.flushInterval
@@ -116,7 +114,6 @@ internal class AnalyticsManager private constructor(
             return
         }
         var count = 100
-        var toast: Toast? = null
         while (count > 0) {
             var deleteEvents = true
             var eventsData: Array<String>?
@@ -440,7 +437,7 @@ internal class AnalyticsManager private constructor(
          */
         fun getInstance(
             messageContext: Context,
-            analyticsAPI:  AnalyticsAPI
+            analyticsAPI:  NTAnalyticsAPI
         ): AnalyticsManager? {
             synchronized(S_INSTANCES) {
                 val appContext: Context = messageContext.applicationContext
