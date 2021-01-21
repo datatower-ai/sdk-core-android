@@ -162,52 +162,6 @@ interface IAnalyticsApi {
      */
     fun track(eventName: String?)
 
-    /**
-     * 删除事件的计时器
-     *
-     * @param eventName 事件名称
-     */
-    fun removeTimer(eventName: String?)
-
-    /**
-     * 初始化事件的计时器，默认计时单位为毫秒。
-     * 详细用法请参考 trackTimerBegin(String, TimeUnit)
-     *
-     * @param eventName 事件的名称
-     */
-    fun trackTimerBegin(eventName: String?)
-
-    /**
-     * 初始化事件的计时器。
-     * 若需要统计某个事件的持续时间，先在事件开始时调用 trackTimerBegin("Event") 记录事件开始时间，该方法并不会真正发
-     * 送事件；随后在事件结束时，调用 track("Event", properties)，SDK 会追踪 "Event" 事件，并自动将事件持续时
-     * 间记录在事件属性 "event_duration" 中。
-     * 多次调用 trackTimerBegin("Event") 时，事件 "Event" 的开始时间以最后一次调用时为准。
-     *
-     * @param eventName 事件的名称
-     * @param timeUnit 计时结果的时间单位
-     */
-    fun trackTimerBegin(eventName: String?, timeUnit: TimeUnit?)
-
-    /**
-     * 停止事件计时器
-     *
-     * @param eventName 事件的名称，或者交叉计算场景时 trackTimerStart 的返回值
-     * @param properties 事件的属性
-     */
-    fun trackTimerEnd(eventName: String?, properties: JSONObject?)
-
-    /**
-     * 停止事件计时器
-     *
-     * @param eventName 事件的名称，或者交叉计算场景时 trackTimerStart 的返回值
-     */
-    fun trackTimerEnd(eventName: String?)
-
-    /**
-     * 清除所有事件计时器
-     */
-    fun clearTrackTimer()
 
     /**
      * App 退出或进到后台时清空 referrer，默认情况下不清空
@@ -234,47 +188,6 @@ interface IAnalyticsApi {
      * @return 当前所有 Super 属性
      */
     val superProperties: JSONObject?
-
-    /**
-     * 注册所有事件都有的公共属性
-     *
-     * @param superProperties 事件公共属性
-     */
-    fun registerSuperProperties(superProperties: JSONObject?)
-
-    /**
-     * 删除事件公共属性
-     *
-     * @param superPropertyName 事件属性名称
-     */
-    fun unregisterSuperProperty(superPropertyName: String?)
-
-    /**
-     * 删除所有事件公共属性
-     */
-    fun clearSuperProperties()
-
-    /**
-     * 初始化事件的计时器，计时单位为秒。
-     *
-     * @param eventName 事件的名称
-     * @return 交叉计时的事件名称
-     */
-    fun trackTimerStart(eventName: String?): String?
-
-    /**
-     * 暂停事件计时器，计时单位为秒。
-     *
-     * @param eventName 事件的名称
-     */
-    fun trackTimerPause(eventName: String?)
-
-    /**
-     * 恢复事件计时器，计时单位为秒。
-     *
-     * @param eventName 事件的名称
-     */
-    fun trackTimerResume(eventName: String?)
 
     /**
      * 设置 Cookie，flush 的时候会设置 HTTP 的 cookie

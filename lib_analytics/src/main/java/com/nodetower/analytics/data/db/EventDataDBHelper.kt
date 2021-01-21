@@ -13,7 +13,7 @@ internal class EventDataDBHelper(context: Context?) :
         LogUtils.i(TAG, "Creating a new Analytics DB")
         db.execSQL(CREATE_EVENTS_TABLE)
         db.execSQL(EVENTS_TIME_INDEX)
-        db.execSQL(CHANNEL_EVENT_PERSISTENT_TABLE)
+//        db.execSQL(CHANNEL_EVENT_PERSISTENT_TABLE)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -21,7 +21,7 @@ internal class EventDataDBHelper(context: Context?) :
         db.execSQL(String.format("DROP TABLE IF EXISTS %s", DbParams.TABLE_EVENTS))
         db.execSQL(CREATE_EVENTS_TABLE)
         db.execSQL(EVENTS_TIME_INDEX)
-        db.execSQL(CHANNEL_EVENT_PERSISTENT_TABLE)
+//        db.execSQL(CHANNEL_EVENT_PERSISTENT_TABLE)
     }
 
     companion object {

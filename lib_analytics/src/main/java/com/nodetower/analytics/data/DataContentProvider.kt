@@ -18,7 +18,7 @@ class DataContentProvider : ContentProvider() {
 //    private var persistentAppStartTime: PersistentAppStartTime? = null
 //    private var persistentAppEndData: PersistentAppEndData? = null
 //    private var persistentAppPaused: PersistentAppPaused? = null
-//    private var persistentLoginId: PersistentLoginId? = null
+    private var persistentLoginId: PersistentLoginId? = null
 //    private var persistentFlushDataState: PersistentFlushDataState? = null
     private var isDbWritable = true
     private var isFirstProcessStarted = true

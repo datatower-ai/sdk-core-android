@@ -17,7 +17,7 @@ internal class EventDataOperation(context: Context) :
 
     override fun insertData(uri: Uri?, jsonObject: JSONObject?): Int {
         try {
-            if (0 !== deleteDataLowMemory(uri))
+            if (deleteDataLowMemory(uri) != 0)
                 return DbParams.DB_OUT_OF_MEMORY_ERROR
 
             val cv = ContentValues().apply {
@@ -40,7 +40,7 @@ internal class EventDataOperation(context: Context) :
 
     override fun insertData(uri: Uri?, contentValues: ContentValues?): Int {
         try {
-            if (deleteDataLowMemory(uri) !== 0) {
+            if (deleteDataLowMemory(uri) != 0) {
                 return DbParams.DB_OUT_OF_MEMORY_ERROR
             }
             contentResolver.insert(uri!!, contentValues)

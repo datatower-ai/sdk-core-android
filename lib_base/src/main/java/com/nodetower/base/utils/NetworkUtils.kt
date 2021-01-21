@@ -237,7 +237,7 @@ object NetworkUtils {
                 networkType = telephonyManager.dataNetworkType
             } else {
                 try {
-                    networkType = telephonyManager.networkType
+                    networkType = telephonyManager.dataNetworkType
                 } catch (ex: Exception) {
                     LogUtils.printStackTrace(ex)
                 }

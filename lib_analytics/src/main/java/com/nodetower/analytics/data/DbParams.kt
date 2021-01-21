@@ -89,10 +89,10 @@ class DbParams private constructor(packageName: String) {
         const val KEY_CHANNEL_RESULT = "result"
 
         /* 数据库名称 */
-        const val DATABASE_NAME = "sensorsdata"
+        const val DATABASE_NAME = "roiquerydata"
 
         /* 数据库版本号 */
-        const val DATABASE_VERSION = 5
+        const val DATABASE_VERSION = 1
         const val TABLE_ACTIVITY_START_COUNT = "activity_started_count"
         const val TABLE_APP_START_TIME = "app_start_time"
         const val TABLE_APP_END_TIME = "app_end_time"
@@ -131,26 +131,26 @@ class DbParams private constructor(packageName: String) {
 
     init {
         eventUri =
-            Uri.parse("content://$packageName.SensorsDataContentProvider/$TABLE_EVENTS")
+            Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_EVENTS")
         activityStartCountUri =
-            Uri.parse("content://$packageName.SensorsDataContentProvider/$TABLE_ACTIVITY_START_COUNT")
+            Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_ACTIVITY_START_COUNT")
         appStartTimeUri =
-            Uri.parse("content://$packageName.SensorsDataContentProvider/$TABLE_APP_START_TIME")
+            Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_APP_START_TIME")
         appEndDataUri =
-            Uri.parse("content://$packageName.SensorsDataContentProvider/$TABLE_APP_END_DATA")
+            Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_APP_END_DATA")
         appPausedUri =
-            Uri.parse("content://$packageName.SensorsDataContentProvider/$TABLE_APP_END_TIME")
+            Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_APP_END_TIME")
         sessionTimeUri =
-            Uri.parse("content://$packageName.SensorsDataContentProvider/$TABLE_SESSION_INTERVAL_TIME")
+            Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_SESSION_INTERVAL_TIME")
         loginIdUri =
-            Uri.parse("content://$packageName.SensorsDataContentProvider/$TABLE_LOGIN_ID")
+            Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_LOGIN_ID")
         channelPersistentUri =
-            Uri.parse("content://$packageName.SensorsDataContentProvider/$TABLE_CHANNEL_PERSISTENT")
+            Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_CHANNEL_PERSISTENT")
         subProcessUri =
-            Uri.parse("content://$packageName.SensorsDataContentProvider/$TABLE_SUB_PROCESS_FLUSH_DATA")
+            Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_SUB_PROCESS_FLUSH_DATA")
         firstProcessUri =
-            Uri.parse("content://$packageName.SensorsDataContentProvider/$TABLE_FIRST_PROCESS_START")
+            Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_FIRST_PROCESS_START")
         dataCollectUri =
-            Uri.parse("content://$packageName.SensorsDataContentProvider/$TABLE_DATA_COLLECT")
+            Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_DATA_COLLECT")
     }
 }

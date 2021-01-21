@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.text.TextUtils
+import com.nodetower.analytics.api.RoiqueryAnalyticsAPI
 import com.nodetower.base.utils.LogUtils
 import org.json.JSONObject
 import java.io.File
@@ -116,13 +117,12 @@ internal abstract class DataOperation(private val mContext: Context) {
     }
 
     private fun getMaxCacheSize(context: Context): Long {
-        return 32 * 1024 * 1024
-//        return try {
-//            SensorsDataAPI.sharedInstance(context).getMaxCacheSize()
-//        } catch (e: Exception) {
-//            LogUtils.printStackTrace(e)
-//            32 * 1024 * 1024
-//        }
+        return try {
+            RoiqueryAnalyticsAPI.sharedInstance(context).maxCacheSize
+        } catch (e: Exception) {
+            LogUtils.printStackTrace(e)
+            32 * 1024 * 1024
+        }
     }
 
     private fun belowMemThreshold(): Boolean {

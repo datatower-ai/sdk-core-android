@@ -3,7 +3,7 @@ package com.nodetower.analytics.core
 import android.content.Context
 import android.os.*
 import android.text.TextUtils
-import com.nodetower.analytics.api.NTAnalyticsAPI
+import com.nodetower.analytics.api.RoiqueryAnalyticsAPI
 import com.nodetower.analytics.data.DbAdapter
 import com.nodetower.analytics.data.DbParams
 import com.nodetower.analytics.utils.ConnectErrorException
@@ -27,7 +27,7 @@ import kotlin.collections.HashMap
  */
 class AnalyticsManager private constructor(
     var mContext: Context,
-    var mAnalyticsDataAPI: NTAnalyticsAPI
+    var mAnalyticsDataAPI: RoiqueryAnalyticsAPI
 ) {
     private val mWorker: Worker = Worker()
     private val mDbAdapter: DbAdapter? = DbAdapter.getInstance()
@@ -156,7 +156,7 @@ class AnalyticsManager private constructor(
                 val isDebugMode: Boolean = mAnalyticsDataAPI.isDebugMode
 
                 if (deleteEvents || isDebugMode) {
-                    count = mDbAdapter.cleanupEvents(lastId)
+//                    count = mDbAdapter.cleanupEvents(lastId)
                     LogUtils.i(
                         TAG,
                         java.lang.String.format(Locale.getDefault(), "Events flushed. [left = %d]", count)
@@ -437,7 +437,7 @@ class AnalyticsManager private constructor(
          */
         fun getInstance(
             messageContext: Context,
-            analyticsAPI:  NTAnalyticsAPI
+            analyticsAPI:  RoiqueryAnalyticsAPI
         ): AnalyticsManager? {
             synchronized(S_INSTANCES) {
                 val appContext: Context = messageContext.applicationContext

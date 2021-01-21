@@ -21,8 +21,6 @@
         <meta-data
             android:name="com.nodetower.analytics.android.MainProcessName"
             android:value="${applicationId}" />
-        <meta-data
-            android:name="com.nodetower.analytics.android.version"
-            android:value="${SENSORSDATA_SDK_VERSION}" />
+
     </application>
 </manifest>

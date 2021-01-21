@@ -102,9 +102,9 @@ abstract class AbstractAnalyticsConfigOptions {
         NetworkType.TYPE_3G or NetworkType.TYPE_4G or NetworkType.TYPE_WIFI or NetworkType.TYPE_5G
 
     /**
-     * AnonymousId，匿名 ID
+     * mAppId，匿名 ID
      */
-    var mAnonymousId: String? = null
+    var mAppId: String? = null
 
     /**
      * 是否使用上次启动时保存的 utm 属性.

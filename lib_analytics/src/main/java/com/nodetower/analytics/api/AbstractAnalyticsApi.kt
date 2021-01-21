@@ -34,14 +34,23 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     // 是否为主进程
     var mIsMainProcess = false
 
+    /* 是否请求网络 */
+    protected var mEnableNetworkRequest = true
+
     // 主进程名称
     protected var mMainProcessName: String? = null
+
+    // Session 时长
+    protected var mSessionTime = 30 * 1000
 
     // Debug 模式选项
     protected var mDebugMode: DebugMode = DebugMode.DEBUG_OFF
 
     // AndroidID
     protected var mAndroidId: String? = null
+
+    // app id
+    protected var mAppId: String? = null
 
     // 事件信息，包含事件的基本数据
     protected var mEventInfo: Map<String, Any>? = null
@@ -57,14 +66,14 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
     protected var mTrackTaskManagerThread: TrackTaskManagerThread? = null
 
-     protected var mAnalyticsManager: AnalyticsManager? = null
+    protected var mAnalyticsManager: AnalyticsManager? = null
 
     companion object{
          const val TAG = "NT.AnalyticsApi"
         // Maps each token to a singleton SensorsDataAPI instance
-         val sInstanceMap: MutableMap<Context, NTAnalyticsAPI> = HashMap<Context, NTAnalyticsAPI>()
+         val S_INSTANCE_MAP: MutableMap<Context, RoiqueryAnalyticsAPI> = HashMap<Context, RoiqueryAnalyticsAPI>()
         /* 配置 */
-         var mConfigOptions: AnalyticsConfigOptions? = null
+        lateinit var mConfigOptions: AnalyticsConfigOptions
     }
 
 
@@ -84,12 +93,12 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         initConfig(serverUrl, mContext.packageName)
         mTrackTaskManager = TrackTaskManager.instance
         mTrackTaskManager?.let {
-            mConfigOptions?.isDataCollectEnable?.let { it1 -> it.setDataCollectEnable(it1) }
+            mConfigOptions.isDataCollectEnable?.let { it1 -> it.setDataCollectEnable(it1) }
         }
         mTrackTaskManagerThread = TrackTaskManagerThread()
         Thread(mTrackTaskManagerThread, "TaskQueueThread").start()
 
-        mAnalyticsManager = AnalyticsManager.getInstance(mContext, this as NTAnalyticsAPI)
+        mAnalyticsManager = AnalyticsManager.getInstance(mContext, this as RoiqueryAnalyticsAPI)
 
     }
 
@@ -133,6 +142,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
                 //设置事件属性
                 eventInfo.put("properties", eventProperties)
 
+                mAnalyticsManager?.enqueueEventMessage(eventName, eventInfo)
 
             } catch (e: JSONException) {
                 LogUtils.printStackTrace(e)

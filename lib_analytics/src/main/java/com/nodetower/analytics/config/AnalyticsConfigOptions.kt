@@ -95,13 +95,13 @@ class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions {
     }
 
     /**
-     * 设置匿名 ID
+     * app ID
      *
-     * @param anonymousId 匿名 ID
+     * @param appId 匿名 ID
      * @return SAOptionsConfig
      */
-    fun setAnonymousId(anonymousId: String?): AnalyticsConfigOptions {
-        mAnonymousId = anonymousId
+    fun setAppId(appId: String?): AnalyticsConfigOptions {
+        mAppId = appId
         return this
     }
 

@@ -93,7 +93,7 @@ abstract class PersistentIdentity<T> internal constructor(
      *
      * @param <T> 数据类型
     </T> */
-    internal interface PersistentSerializer<T> {
+    interface PersistentSerializer<T> {
         /**
          * 读取数据
          *

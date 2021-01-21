@@ -2,6 +2,7 @@ package com.nodetower.analytics.data
 
 import android.content.ContentValues
 import android.content.Context
+import com.nodetower.analytics.data.db.EventDataOperation
 import com.nodetower.analytics.data.persistent.PersistentDataOperation
 import com.nodetower.base.utils.LogUtils
 import org.json.JSONException
@@ -14,7 +15,7 @@ class DbAdapter private constructor(
 ) {
     private val mDbParams: DbParams? = DbParams.getInstance(packageName)
     private var mTrackEventOperation: DataOperation? = null
-    private val mPersistentOperation: DataOperation
+    private var mPersistentOperation: DataOperation? = null
 
     /**
      * Adds a JSON string representing an event with properties or a person record
@@ -25,9 +26,9 @@ class DbAdapter private constructor(
      * on failure
      */
     fun addJSON(j: JSONObject?): Int {
-        val code = mTrackEventOperation!!.insertData(mDbParams!!.eventUri, j)!!
+        val code = mTrackEventOperation?.insertData(mDbParams?.eventUri, j)!!
         return if (code == 0) {
-            mTrackEventOperation!!.queryDataCount(mDbParams.eventUri)
+            mTrackEventOperation!!.queryDataCount(mDbParams?.eventUri)
         } else code
     }
 
@@ -35,7 +36,7 @@ class DbAdapter private constructor(
      * Removes all events from table
      */
     fun deleteAllEvents() {
-        mTrackEventOperation!!.deleteData(mDbParams!!.eventUri, DbParams.DB_DELETE_ALL)
+        mTrackEventOperation?.deleteData(mDbParams?.eventUri, DbParams.DB_DELETE_ALL)
     }
 
     /**
@@ -45,8 +46,8 @@ class DbAdapter private constructor(
      * @return the number of rows in the table
      */
     fun cleanupEvents(last_id: String?): Int {
-        mTrackEventOperation!!.deleteData(mDbParams!!.eventUri, last_id!!)
-        return mTrackEventOperation!!.queryDataCount(mDbParams.eventUri)
+        mTrackEventOperation?.deleteData(mDbParams!!.eventUri, last_id!!)
+        return mTrackEventOperation!!.queryDataCount(mDbParams?.eventUri)
     }
 
 
@@ -57,7 +58,7 @@ class DbAdapter private constructor(
      */
     fun commitAppStartTime(appStartTime: Long) {
         try {
-            mPersistentOperation.insertData(
+            mPersistentOperation?.insertData(
                 mDbParams!!.appStartTimeUri,
                 JSONObject().put(DbParams.VALUE, appStartTime)
             )
@@ -74,7 +75,7 @@ class DbAdapter private constructor(
     val appStartTime: Long
         get() {
             try {
-                val values = mPersistentOperation.queryData(
+                val values = mPersistentOperation?.queryData(
                     mDbParams!!.appStartTimeUri, 1
                 )
                 if (values != null && values.isNotEmpty()) {
@@ -93,7 +94,7 @@ class DbAdapter private constructor(
      */
     fun commitAppEndTime(appPausedTime: Long) {
         try {
-            mPersistentOperation.insertData(
+            mPersistentOperation?.insertData(
                 mDbParams!!.appPausedUri,
                 JSONObject().put(DbParams.VALUE, appPausedTime)
             )
@@ -110,7 +111,7 @@ class DbAdapter private constructor(
     val appEndTime: Long
         get() {
             try {
-                val values = mPersistentOperation.queryData(
+                val values = mPersistentOperation?.queryData(
                     mDbParams!!.appPausedUri, 1
                 )
                 if (values != null && values.isNotEmpty()) {
@@ -129,7 +130,7 @@ class DbAdapter private constructor(
      */
     fun commitAppEndData(appEndData: String?) {
         try {
-            mPersistentOperation.insertData(
+            mPersistentOperation?.insertData(
                 mDbParams!!.appEndDataUri,
                 JSONObject().put(DbParams.VALUE, appEndData)
             )
@@ -145,7 +146,7 @@ class DbAdapter private constructor(
      */
     val appEndData: String
         get() {
-            val values = mPersistentOperation.queryData(mDbParams!!.appEndDataUri, 1)
+            val values = mPersistentOperation?.queryData(mDbParams!!.appEndDataUri, 1)
             return if (values != null && values.isNotEmpty()) {
                 values[0]
             } else ""
@@ -158,7 +159,7 @@ class DbAdapter private constructor(
      */
     fun commitLoginId(loginId: String?) {
         try {
-            mPersistentOperation.insertData(
+            mPersistentOperation?.insertData(
                 mDbParams!!.loginIdUri,
                 JSONObject().put(DbParams.VALUE, loginId)
             )
@@ -174,7 +175,7 @@ class DbAdapter private constructor(
      */
     val loginId: String
         get() {
-            val values = mPersistentOperation.queryData(mDbParams!!.loginIdUri, 1)
+            val values = mPersistentOperation?.queryData(mDbParams?.loginIdUri, 1)
             return if (values != null && values.isNotEmpty()) {
                 values[0]
             } else ""
@@ -187,7 +188,7 @@ class DbAdapter private constructor(
      */
     fun commitSessionIntervalTime(sessionIntervalTime: Int) {
         try {
-            mPersistentOperation.insertData(
+            mPersistentOperation?.insertData(
                 mDbParams!!.sessionTimeUri,
                 JSONObject().put(DbParams.VALUE, sessionIntervalTime)
             )
@@ -204,8 +205,8 @@ class DbAdapter private constructor(
     val sessionIntervalTime: Int
         get() {
             try {
-                val values = mPersistentOperation.queryData(
-                    mDbParams!!.sessionTimeUri, 1
+                val values = mPersistentOperation?.queryData(
+                    mDbParams?.sessionTimeUri, 1
                 )
                 if (values != null && values.isNotEmpty()) {
                     return values[0].toInt()
@@ -224,7 +225,7 @@ class DbAdapter private constructor(
      */
     fun isFirstChannelEvent(eventName: String?): Boolean {
         return mTrackEventOperation!!.queryDataCount(
-            mDbParams!!.channelPersistentUri,
+            mDbParams?.channelPersistentUri,
             null,
             DbParams.KEY_CHANNEL_EVENT_NAME + " = ? ",
             arrayOf(eventName),
@@ -241,7 +242,7 @@ class DbAdapter private constructor(
         val values = ContentValues()
         values.put(DbParams.KEY_CHANNEL_EVENT_NAME, eventName)
         values.put(DbParams.KEY_CHANNEL_RESULT, true)
-        mTrackEventOperation!!.insertData(mDbParams!!.channelPersistentUri, values)
+        mTrackEventOperation!!.insertData(mDbParams?.channelPersistentUri, values)
     }
 
     /**
@@ -251,7 +252,7 @@ class DbAdapter private constructor(
      */
     fun commitSubProcessFlushState(flushState: Boolean) {
         try {
-            mPersistentOperation.insertData(
+            mPersistentOperation?.insertData(
                 mDbParams!!.subProcessUri,
                 JSONObject().put(DbParams.VALUE, flushState)
             )
@@ -268,7 +269,7 @@ class DbAdapter private constructor(
     val isSubProcessFlushing: Boolean
         get() {
             try {
-                val values = mPersistentOperation.queryData(
+                val values = mPersistentOperation?.queryData(
                     mDbParams!!.subProcessUri, 1
                 )
                 if (values != null && values.isNotEmpty()) {
@@ -287,7 +288,7 @@ class DbAdapter private constructor(
      */
     fun commitFirstProcessState(isFirst: Boolean) {
         try {
-            mPersistentOperation.insertData(
+            mPersistentOperation?.insertData(
                 mDbParams!!.firstProcessUri,
                 JSONObject().put(DbParams.VALUE, isFirst)
             )
@@ -304,7 +305,7 @@ class DbAdapter private constructor(
     val isFirstProcess: Boolean
         get() {
             try {
-                val values = mPersistentOperation.queryData(
+                val values = mPersistentOperation?.queryData(
                     mDbParams!!.firstProcessUri, 1
                 )
                 if (values != null && values.isNotEmpty()) {
@@ -324,7 +325,7 @@ class DbAdapter private constructor(
      * @return 数据
      */
     fun generateDataString(tableName: String?, limit: Int): Array<String>? {
-        return mTrackEventOperation!!.queryData(mDbParams!!.eventUri, limit)
+        return mTrackEventOperation?.queryData(mDbParams!!.eventUri, limit)
     }
 
     companion object {
@@ -346,6 +347,7 @@ class DbAdapter private constructor(
     }
 
     init {
+        mTrackEventOperation = EventDataOperation(context.applicationContext)
         mPersistentOperation = PersistentDataOperation(context.applicationContext)
     }
 }
