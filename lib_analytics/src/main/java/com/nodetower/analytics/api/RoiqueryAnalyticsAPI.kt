@@ -2,6 +2,7 @@ package com.nodetower.analytics.api
 
 import android.content.Context
 import com.nodetower.analytics.config.AnalyticsConfigOptions
+import com.nodetower.analytics.data.DbAdapter
 import com.nodetower.base.utils.LogUtils
 import com.nodetower.base.utils.NetworkType
 import org.json.JSONObject
@@ -61,7 +62,7 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
         }
 
     override fun getAccountId(): String? {
-        return ""
+        return DbAdapter.getInstance()?.loginId
     }
 
     override fun getAppId(): String? {

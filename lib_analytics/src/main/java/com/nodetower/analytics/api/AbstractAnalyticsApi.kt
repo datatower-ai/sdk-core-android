@@ -107,9 +107,34 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     }
 
     override fun setServerUrl(serverUrl: String?) {
-
+        mServerUrl = serverUrl
     }
 
+
+    protected open fun addTimeProperty(jsonObject: JSONObject) {
+        if (!jsonObject.has("#time")) {
+            try {
+                jsonObject.put("#time", Date(System.currentTimeMillis()))
+            } catch (e: JSONException) {
+                LogUtils.printStackTrace(e)
+            }
+        }
+    }
+
+
+    /**
+     * 处理渠道相关的事件
+     *
+     * @param runnable 任务
+     */
+    protected open fun transformInstallationTaskQueue(runnable: Runnable?) {
+        // 禁用采集事件时，先计算基本信息存储到缓存中
+        if (!mConfigOptions.isDataCollectEnable) {
+            mTrackTaskManager!!.addTrackEventTask { mTrackTaskManager!!.transformTaskQueue(runnable!!) }
+            return
+        }
+        mTrackTaskManager!!.addTrackEventTask(runnable!!)
+    }
 
     protected fun trackEvent(
         eventName: String,

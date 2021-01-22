@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.net.Uri
 import com.nodetower.analytics.data.db.EventDataDBHelper
+import com.nodetower.analytics.data.persistent.PersistentLoginId
 import com.nodetower.base.utils.LogUtils
 
 
@@ -30,8 +31,7 @@ class DataContentProvider : ContentProvider() {
         val context = context
         if (context != null) {
             //这里是为了使用 ProviderTestRule
-            val packageName: String
-            packageName = try {
+            val packageName: String = try {
                 context.applicationContext.packageName
             } catch (e: UnsupportedOperationException) {
                 "com.sensorsdata.analytics.android.sdk.test"
@@ -303,10 +303,10 @@ class DataContentProvider : ContentProvider() {
                 data = mSessionTime
                 column = DbParams.TABLE_SESSION_INTERVAL_TIME
             }
-//            LOGIN_ID -> {
-//                data = persistentLoginId.get()
-//                column = DbParams.TABLE_LOGIN_ID
-//            }
+            LOGIN_ID -> {
+                data = persistentLoginId?.get()
+                column = DbParams.TABLE_LOGIN_ID
+            }
 //            FLUSH_DATA -> synchronized(
 //                SensorsDataContentProvider::class.java
 //            ) {

@@ -8,7 +8,7 @@ import java.util.concurrent.Future
 
 
 @SuppressLint("CommitPrefEdits")
-abstract class PersistentIdentity<T> internal constructor(
+abstract class PersistentIdentity<T>  constructor(
     private val loadStoredPreferences: Future<SharedPreferences>,
     private val persistentKey: String,
     private val serializer: PersistentSerializer<T>
