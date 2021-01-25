@@ -27,6 +27,7 @@ object OaidHelper {
      * @param context Context
      * @return OAID
      */
+    @JvmStatic
     fun getOAID(context: Context): String {
         try {
             mCountDownLatch = CountDownLatch(1)

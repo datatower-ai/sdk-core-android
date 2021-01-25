@@ -245,14 +245,9 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             configBundle = Bundle()
         }
 
-        if (mConfigOptions == null) {
-            this.mSDKConfigInit = false
-            mConfigOptions = AnalyticsConfigOptions(serverURL)
-        } else {
-            this.mSDKConfigInit = true
-        }
+        this.mSDKConfigInit = true
 
-        mConfigOptions?.let { configOptions ->
+        mConfigOptions.let { configOptions ->
 
             DbAdapter.getInstance(mContext!!, packageName)
 
@@ -322,7 +317,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
 
     protected open fun applySAConfigOptions() {
-        mConfigOptions?.let {
+        mConfigOptions.let {
             if (it.mInvokeLog) {
                 enableLog(it.mLogEnabled)
             }

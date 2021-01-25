@@ -67,6 +67,7 @@ object TimeUtils {
      * @param patten 时间展示模板
      * @return 日期展示字符串
      */
+    @JvmStatic
     fun formatDate(date: Date?, patten: String?): String {
         return formatDate(date, patten, Locale.getDefault())
     }

@@ -36,7 +36,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import static com.nodetower.analytics.utils.SensorsDataUtils.getSharedPreferences;
+
 
 
 public class ChannelUtils {
@@ -105,7 +105,7 @@ public class ChannelUtils {
                 }
             }
         } catch (Exception ex) {
-            SALog.printStackTrace(ex);
+            LogUtils.printStackTrace(ex);
         }
     }
 
@@ -167,12 +167,12 @@ public class ChannelUtils {
     public static String getDeviceInfo(Context mContext, String androidId, String oaid) {
         return String.format("android_id=%s##imei=%s##imei_old=%s##imei_slot1=%s##imei_slot2=%s##imei_meid=%s##mac=%s##oaid=%s",
                 androidId,
-                SensorsDataUtils.getIMEI(mContext),
-                SensorsDataUtils.getIMEIOld(mContext),
-                SensorsDataUtils.getSlot(mContext, 0),
-                SensorsDataUtils.getSlot(mContext, 1),
-                SensorsDataUtils.getMEID(mContext),
-                SensorsDataUtils.getMacAddress(mContext),
+                DataUtils.getIMEI(mContext),
+                DataUtils.getIMEIOld(mContext),
+                DataUtils.getSlot(mContext, 0),
+                DataUtils.getSlot(mContext, 1),
+                DataUtils.getMEID(mContext),
+                DataUtils.getMacAddress(mContext),
                 oaid);
     }
 
@@ -214,7 +214,7 @@ public class ChannelUtils {
             for (String sourceKey : sChannelSourceKeySet) {
                 try {
                     //检测 key 的值,非正常 key 值直接跳过.
-                    assertKey(sourceKey);
+                    DataHelper.INSTANCE.assertKey(sourceKey);
                     String value = params.get(sourceKey);
                     if (!TextUtils.isEmpty(value)) {
                         sUtmProperties.put(sourceKey, value);
@@ -234,7 +234,7 @@ public class ChannelUtils {
      */
     public static void loadUtmByLocal(Context context) {
         try {
-            SharedPreferences utmPref = getSharedPreferences(context);
+            SharedPreferences utmPref = DataUtils.getSharedPreferences(context);
             sLatestUtmProperties.clear();
             String channelJson = utmPref.getString(SHARED_PREF_UTM_FILE, "");
             if (!TextUtils.isEmpty(channelJson)) {
@@ -265,7 +265,7 @@ public class ChannelUtils {
      */
     public static void clearLocalUtm(Context context) {
         try {
-            SharedPreferences utmPref = getSharedPreferences(context);
+            SharedPreferences utmPref = DataUtils.getSharedPreferences(context);
             utmPref.edit().putString(SHARED_PREF_UTM_FILE, "").apply();
         } catch (Exception e) {
             LogUtils.printStackTrace(e);
@@ -321,7 +321,7 @@ public class ChannelUtils {
     public static void saveDeepLinkInfo(Context context) {
         try {
             if (sLatestUtmProperties.size() > 0) {
-                SharedPreferences utmPref = getSharedPreferences(context);
+                SharedPreferences utmPref = DataUtils.getSharedPreferences(context);
                 utmPref.edit().putString(SHARED_PREF_UTM_FILE, sLatestUtmProperties.toString()).apply();
             } else {
                 clearLocalUtm(context);
@@ -425,11 +425,11 @@ public class ChannelUtils {
         try {
             return !TextUtils.isEmpty(androidId) ||
                     !TextUtils.isEmpty(oaid) ||
-                    !TextUtils.isEmpty(SensorsDataUtils.getIMEI(context)) ||
-                    !TextUtils.isEmpty(SensorsDataUtils.getIMEIOld(context)) ||
-                    !TextUtils.isEmpty(SensorsDataUtils.getSlot(context, 0)) ||
-                    !TextUtils.isEmpty(SensorsDataUtils.getSlot(context, 1)) ||
-                    !TextUtils.isEmpty(SensorsDataUtils.getMEID(context));
+                    !TextUtils.isEmpty(DataUtils.getIMEI(context)) ||
+                    !TextUtils.isEmpty(DataUtils.getIMEIOld(context)) ||
+                    !TextUtils.isEmpty(DataUtils.getSlot(context, 0)) ||
+                    !TextUtils.isEmpty(DataUtils.getSlot(context, 1)) ||
+                    !TextUtils.isEmpty(DataUtils.getMEID(context));
         } catch (Exception e) {
             LogUtils.printStackTrace(e);
         }
@@ -445,7 +445,7 @@ public class ChannelUtils {
      */
     public static boolean isTrackInstallation(Context context) {
         try {
-            SharedPreferences sp = getSharedPreferences(context);
+            SharedPreferences sp = DataUtils.getSharedPreferences(context);
             return sp.contains(SHARED_PREF_CORRECT_TRACK_INSTALLATION);
         } catch (Exception e) {
             LogUtils.printStackTrace(e);
@@ -461,7 +461,7 @@ public class ChannelUtils {
      */
     public static boolean isCorrectTrackInstallation(Context context) {
         try {
-            SharedPreferences sp = getSharedPreferences(context);
+            SharedPreferences sp = DataUtils.getSharedPreferences(context);
             return sp.getBoolean(SHARED_PREF_CORRECT_TRACK_INSTALLATION, false);
         } catch (Exception e) {
             LogUtils.printStackTrace(e);
@@ -477,7 +477,7 @@ public class ChannelUtils {
      */
     public static void saveCorrectTrackInstallation(Context context, boolean isCorrectTrackInstallation) {
         try {
-            SharedPreferences sp = getSharedPreferences(context);
+            SharedPreferences sp = DataUtils.getSharedPreferences(context);
             sp.edit().putBoolean(SHARED_PREF_CORRECT_TRACK_INSTALLATION, isCorrectTrackInstallation).apply();
         } catch (Exception e) {
             LogUtils.printStackTrace(e);
@@ -513,18 +513,18 @@ public class ChannelUtils {
         return (deviceMaps.containsKey("oaid")//防止都为 null 返回 true
                         && TextUtils.equals(deviceMaps.get("oaid"), OaidHelper.getOAID(context))) ||
                        (deviceMaps.containsKey("imei") &&
-                                TextUtils.equals(deviceMaps.get("imei"), SensorsDataUtils.getIMEI(context))) ||
+                                TextUtils.equals(deviceMaps.get("imei"), DataUtils.getIMEI(context))) ||
                        (deviceMaps.containsKey("imei_old") &&
-                                TextUtils.equals(deviceMaps.get("imei_old"), SensorsDataUtils.getIMEIOld(context))) ||
+                                TextUtils.equals(deviceMaps.get("imei_old"), DataUtils.getIMEIOld(context))) ||
                        (deviceMaps.containsKey("imei_slot1") &&
-                                TextUtils.equals(deviceMaps.get("imei_slot1"), SensorsDataUtils.getSlot(context, 0))) ||
+                                TextUtils.equals(deviceMaps.get("imei_slot1"), DataUtils.getSlot(context, 0))) ||
                        (deviceMaps.containsKey("imei_slot2") &&
-                                TextUtils.equals(deviceMaps.get("imei_slot2"), SensorsDataUtils.getSlot(context, 1))) ||
+                                TextUtils.equals(deviceMaps.get("imei_slot2"), DataUtils.getSlot(context, 1))) ||
                        (deviceMaps.containsKey("imei_meid") &&
-                                TextUtils.equals(deviceMaps.get("imei_meid"), SensorsDataUtils.getMEID(context))) ||
+                                TextUtils.equals(deviceMaps.get("imei_meid"), DataUtils.getMEID(context))) ||
                        (deviceMaps.containsKey("android_id") &&
-                                TextUtils.equals(deviceMaps.get("android_id"), SensorsDataUtils.getAndroidID(context))) ||
+                                TextUtils.equals(deviceMaps.get("android_id"), DataUtils.getAndroidID(context))) ||
                        (deviceMaps.containsKey("mac") &&
-                                TextUtils.equals(deviceMaps.get("mac"), SensorsDataUtils.getMacAddress(context)));
+                                TextUtils.equals(deviceMaps.get("mac"), DataUtils.getMacAddress(context)));
     }
 }

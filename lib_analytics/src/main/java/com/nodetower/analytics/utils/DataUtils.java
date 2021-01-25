@@ -23,7 +23,6 @@ import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -34,13 +33,9 @@ import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.view.View;
 import android.webkit.WebSettings;
 
-import com.sensorsdata.analytics.android.sdk.R;
-import com.sensorsdata.analytics.android.sdk.SALog;
-import com.sensorsdata.analytics.android.sdk.ScreenAutoTracker;
-import com.sensorsdata.analytics.android.sdk.SensorsDataAutoTrackAppViewScreenUrl;
+import com.nodetower.base.utils.LogUtils;
 
 import org.json.JSONObject;
 
@@ -58,7 +53,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public final class SensorsDataUtils {
+public final class DataUtils {
 
     private static final String marshmallowMacAddress = "02:00:00:00:00:00";
     private static final String SHARED_PREF_EDITS_FILE = "sensorsdata";
@@ -115,13 +110,13 @@ public final class SensorsDataUtils {
                 stringBuilder.append(line);
             }
         } catch (IOException e) {
-            SALog.printStackTrace(e);
+            LogUtils.printStackTrace(e);
         } finally {
             if (bf != null) {
                 try {
                     bf.close();
                 } catch (IOException e) {
-                    SALog.printStackTrace(e);
+                    LogUtils.printStackTrace(e);
                 }
             }
         }
@@ -138,7 +133,7 @@ public final class SensorsDataUtils {
      */
     public static String getCarrier(Context context) {
         try {
-            if (com.sensorsdata.analytics.android.sdk.util.SensorsDataUtils.checkHasPermission(context, Manifest.permission.READ_PHONE_STATE)) {
+            if (checkHasPermission(context, Manifest.permission.READ_PHONE_STATE)) {
                 try {
                     TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context
                             .TELEPHONY_SERVICE);
@@ -163,14 +158,14 @@ public final class SensorsDataUtils {
                         }
                     }
                 } catch (Exception e) {
-                    SALog.printStackTrace(e);
+                    LogUtils.printStackTrace(e);
                 }
             }
         } catch (Exception e) {
-            SALog.printStackTrace(e);
+            LogUtils.printStackTrace(e);
         } catch (Error error) {
             //针对酷派 B770 机型抛出的 IncompatibleClassChangeError 错误进行捕获
-            SALog.i(TAG, error.toString());
+            LogUtils.i(TAG, error.toString());
         }
         return null;
     }
@@ -188,7 +183,7 @@ public final class SensorsDataUtils {
                     String activityTitle = null;
 
                     if (Build.VERSION.SDK_INT >= 11) {
-                        String toolbarTitle = com.sensorsdata.analytics.android.sdk.util.SensorsDataUtils.getToolbarTitle(activity);
+                        String toolbarTitle = getToolbarTitle(activity);
                         if (!TextUtils.isEmpty(toolbarTitle)) {
                             activityTitle = toolbarTitle;
                         }
@@ -215,7 +210,7 @@ public final class SensorsDataUtils {
             }
             return null;
         } catch (Exception e) {
-            SALog.printStackTrace(e);
+            LogUtils.printStackTrace(e);
             return null;
         }
     }
@@ -248,7 +243,7 @@ public final class SensorsDataUtils {
                 return carrier;
             }
         } catch (Exception e) {
-            SALog.printStackTrace(e);
+            LogUtils.printStackTrace(e);
         }
         return alternativeName;
     }
@@ -298,7 +293,7 @@ public final class SensorsDataUtils {
                 }
             }
         } catch (Exception e) {
-            SALog.printStackTrace(e);
+            LogUtils.printStackTrace(e);
         }
         return null;
     }
@@ -339,11 +334,9 @@ public final class SensorsDataUtils {
                 activityTitle = activity.getTitle().toString();
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                String toolbarTitle = getToolbarTitle(activity);
-                if (!TextUtils.isEmpty(toolbarTitle)) {
-                    activityTitle = toolbarTitle;
-                }
+            String toolbarTitle = getToolbarTitle(activity);
+            if (!TextUtils.isEmpty(toolbarTitle)) {
+                activityTitle = toolbarTitle;
             }
 
             if (TextUtils.isEmpty(activityTitle)) {
@@ -357,7 +350,7 @@ public final class SensorsDataUtils {
                 properties.put("$title", activityTitle);
             }
         } catch (Exception e) {
-            SALog.printStackTrace(e);
+            LogUtils.printStackTrace(e);
         }
     }
 
@@ -369,13 +362,13 @@ public final class SensorsDataUtils {
                 String key = superPropertiesIterator.next();
                 Object value = source.get(key);
                 if (value instanceof Date && !"$time".equals(key)) {
-                    dest.put(key, TimeUtils.formatDate((Date) value, Locale.CHINA));
+                    dest.put(key, TimeUtils.formatDate((Date) value, String.valueOf(Locale.CHINA)));
                 } else {
                     dest.put(key, value);
                 }
             }
         } catch (Exception ex) {
-            SALog.printStackTrace(ex);
+            LogUtils.printStackTrace(ex);
         }
     }
 
@@ -409,7 +402,7 @@ public final class SensorsDataUtils {
             //重新遍历赋值，如果在同一次遍历中赋值会导致同一个 json 中大小写不一样的 key 被删除
             mergeJSONObject(source, dest);
         } catch (Exception ex) {
-            SALog.printStackTrace(ex);
+            LogUtils.printStackTrace(ex);
         }
         return dest;
     }
@@ -434,7 +427,7 @@ public final class SensorsDataUtils {
                             userAgent = WebSettings.getDefaultUserAgent(context);
                         }
                     } catch (Exception e) {
-                        SALog.i(TAG, "WebSettings NoSuchMethod: getDefaultUserAgent");
+                        LogUtils.i(TAG, "WebSettings NoSuchMethod: getDefaultUserAgent");
                     }
                 }
 
@@ -451,7 +444,7 @@ public final class SensorsDataUtils {
 
             return userAgent;
         } catch (Exception e) {
-            SALog.printStackTrace(e);
+            LogUtils.printStackTrace(e);
             return null;
         }
     }
@@ -487,14 +480,14 @@ public final class SensorsDataUtils {
             Method checkSelfPermissionMethod = contextCompat.getMethod("checkSelfPermission", Context.class, String.class);
             int result = (int) checkSelfPermissionMethod.invoke(null, new Object[]{context, permission});
             if (result != PackageManager.PERMISSION_GRANTED) {
-                SALog.i(TAG, "You can fix this by adding the following to your AndroidManifest.xml file:\n"
+                LogUtils.i(TAG, "You can fix this by adding the following to your AndroidManifest.xml file:\n"
                         + "<uses-permission android:name=\"" + permission + "\" />");
                 return false;
             }
 
             return true;
         } catch (Exception e) {
-            SALog.i(TAG, e.toString());
+            LogUtils.i(TAG, e.toString());
             return true;
         }
     }
@@ -521,7 +514,7 @@ public final class SensorsDataUtils {
                     if (tm.hasCarrierPrivileges()) {
                         imei = tm.getImei();
                     } else {
-                        SALog.d(TAG, "Can not get IMEI info.");
+                        LogUtils.d(TAG, "Can not get IMEI info.");
                     }
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     imei = tm.getImei();
@@ -530,7 +523,7 @@ public final class SensorsDataUtils {
                 }
             }
         } catch (Exception e) {
-            SALog.printStackTrace(e);
+            LogUtils.printStackTrace(e);
         }
         return imei;
     }
@@ -592,19 +585,19 @@ public final class SensorsDataUtils {
                 }
             }
         } catch (Exception e) {
-            SALog.printStackTrace(e);
+            LogUtils.printStackTrace(e);
         }
         return deviceId;
     }
 
     private static boolean hasReadPhoneStatePermission(Context context) {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-            if (!com.sensorsdata.analytics.android.sdk.util.SensorsDataUtils.checkHasPermission(context, Manifest.permission.READ_PRECISE_PHONE_STATE)) {
-                SALog.i(TAG, "Don't have permission android.permission.READ_PRECISE_PHONE_STATE,getDeviceID failed");
+            if (!checkHasPermission(context, Manifest.permission.READ_PRECISE_PHONE_STATE)) {
+                LogUtils.i(TAG, "Don't have permission android.permission.READ_PRECISE_PHONE_STATE,getDeviceID failed");
                 return false;
             }
-        } else if (!com.sensorsdata.analytics.android.sdk.util.SensorsDataUtils.checkHasPermission(context, Manifest.permission.READ_PHONE_STATE)) {
-            SALog.i(TAG, "Don't have permission android.permission.READ_PHONE_STATE,getDeviceID failed");
+        } else if (!checkHasPermission(context, Manifest.permission.READ_PHONE_STATE)) {
+            LogUtils.i(TAG, "Don't have permission android.permission.READ_PHONE_STATE,getDeviceID failed");
             return false;
         }
         return true;
@@ -624,7 +617,7 @@ public final class SensorsDataUtils {
         try {
             androidID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         } catch (Exception e) {
-            SALog.printStackTrace(e);
+            LogUtils.printStackTrace(e);
         }
         return androidID;
     }
@@ -728,78 +721,11 @@ public final class SensorsDataUtils {
                 return true;
             }
         } catch (Exception ex) {
-            SALog.printStackTrace(ex);
+            LogUtils.printStackTrace(ex);
             return true;
         }
         return false;
     }
 
-    /**
-     * 是否是连续点击
-     *
-     * @param view view
-     * @return Boolean
-     */
-    public static boolean isDoubleClick(View view) {
-        if (view == null) {
-            return false;
-        }
-        try {
-            long currentOnClickTimestamp = System.currentTimeMillis();
-            String tag = (String) view.getTag(R.id.sensors_analytics_tag_view_onclick_timestamp);
-            if (!TextUtils.isEmpty(tag)) {
 
-                long lastOnClickTimestamp = Long.parseLong(tag);
-                if ((currentOnClickTimestamp - lastOnClickTimestamp) < 500) {
-                    return true;
-                }
-            }
-            view.setTag(R.id.sensors_analytics_tag_view_onclick_timestamp, String.valueOf(currentOnClickTimestamp));
-        } catch (Exception e) {
-            SALog.printStackTrace(e);
-        }
-        return false;
-    }
-
-    /**
-     * 获取 ScreenUrl
-     *
-     * @param object activity/fragment
-     * @return screenUrl
-     */
-    public static String getScreenUrl(Object object) {
-        if (object == null) {
-            return null;
-        }
-        String screenUrl = null;
-        try {
-            if (object instanceof ScreenAutoTracker) {
-                ScreenAutoTracker screenAutoTracker = (ScreenAutoTracker) object;
-                screenUrl = screenAutoTracker.getScreenUrl();
-            } else {
-                SensorsDataAutoTrackAppViewScreenUrl autoTrackAppViewScreenUrl = object.getClass().getAnnotation(SensorsDataAutoTrackAppViewScreenUrl.class);
-                if (autoTrackAppViewScreenUrl != null) {
-                    screenUrl = autoTrackAppViewScreenUrl.url();
-                }
-            }
-        } catch (Exception e) {
-            SALog.printStackTrace(e);
-        }
-        if (screenUrl == null) {
-            screenUrl = object.getClass().getCanonicalName();
-        }
-        return screenUrl;
-    }
-
-    /**
-     * 解析 Activity 的 Intent 中是否包含 DebugMode、点击图、可视化全埋点的 uri 信息并显示 Dialog。
-     * 此方法用来辅助完善 Dialog 的展示，通常用在配置了神策 scheme 的 Activity 页面中的 onNewIntent 方法中，
-     * 并且此 Activity 的 launchMode 为 singleTop 或者 singleTask 或者为 singleInstance。
-     *
-     * @param activity activity
-     * @param intent intent
-     */
-    public static void handleSchemeUrl(Activity activity, Intent intent) {
-        SASchemeHelper.handleSchemeUrl(activity, intent);
-    }
 }

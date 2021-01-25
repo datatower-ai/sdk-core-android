@@ -144,10 +144,10 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
     fun getServerUrl() = mServerUrl
 
     fun getFlushNetworkPolicy() =
-        if (mConfigOptions != null) mConfigOptions!!.mNetworkTypePolicy else NetworkType.TYPE_NONE
+        mConfigOptions.mNetworkTypePolicy
 
     fun isMultiProcessFlushData() =
-        if (mConfigOptions != null) mConfigOptions!!.isSubProcessFlushData else false
+        mConfigOptions.isSubProcessFlushData
 
 
     companion object {

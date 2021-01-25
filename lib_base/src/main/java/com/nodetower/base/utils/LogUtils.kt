@@ -7,30 +7,35 @@ object LogUtils {
     private var enableLog = false
     private val CHUNK_SIZE = 4000
 
+    @JvmStatic
     fun d(tag: String?, msg: String?) {
         if (debug) {
             info(tag, msg, null)
         }
     }
 
+    @JvmStatic
     fun d(tag: String?, msg: String?, tr: Throwable?) {
         if (debug) {
             info(tag, msg, tr)
         }
     }
 
+    @JvmStatic
     fun i(tag: String?, msg: String?) {
         if (enableLog) {
             info(tag, msg, null)
         }
     }
 
+    @JvmStatic
     fun i(tag: String?, tr: Throwable?) {
         if (enableLog) {
             info(tag, "", tr)
         }
     }
 
+    @JvmStatic
     fun i(tag: String?, msg: String?, tr: Throwable?) {
         if (enableLog) {
             info(tag, msg, tr)

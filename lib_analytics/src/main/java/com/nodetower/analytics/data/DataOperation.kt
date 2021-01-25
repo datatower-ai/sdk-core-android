@@ -118,7 +118,7 @@ internal abstract class DataOperation(private val mContext: Context) {
 
     private fun getMaxCacheSize(context: Context): Long {
         return try {
-            RoiqueryAnalyticsAPI.sharedInstance(context).maxCacheSize
+            RoiqueryAnalyticsAPI.getInstance(context).maxCacheSize
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
             32 * 1024 * 1024
