@@ -62,7 +62,10 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
         }
 
     override fun getAccountId(): String? {
-        return DbAdapter.getInstance()?.loginId
+        if (mContext != null) {
+            return DbAdapter.getInstance(mContext,mContext.packageName)?.loginId
+        }
+        return ""
     }
 
     override fun getAppId(): String? {

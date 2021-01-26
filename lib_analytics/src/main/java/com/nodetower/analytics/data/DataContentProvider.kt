@@ -8,7 +8,10 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.net.Uri
 import com.nodetower.analytics.data.db.EventDataDBHelper
+import com.nodetower.analytics.data.persistent.PersistentGaid
+import com.nodetower.analytics.data.persistent.PersistentLoader
 import com.nodetower.analytics.data.persistent.PersistentLoginId
+import com.nodetower.analytics.data.persistent.PersistentOaid
 import com.nodetower.base.utils.LogUtils
 
 
@@ -20,6 +23,8 @@ class DataContentProvider : ContentProvider() {
 //    private var persistentAppEndData: PersistentAppEndData? = null
 //    private var persistentAppPaused: PersistentAppPaused? = null
     private var persistentLoginId: PersistentLoginId? = null
+    private var persistentGaid: PersistentGaid? = null
+    private var persistentOaid: PersistentOaid? = null
 //    private var persistentFlushDataState: PersistentFlushDataState? = null
     private var isDbWritable = true
     private var isFirstProcessStarted = true
@@ -49,20 +54,24 @@ class DataContentProvider : ContentProvider() {
                 SESSION_INTERVAL_TIME
             )
             uriMatcher.addURI(authority, DbParams.TABLE_LOGIN_ID, LOGIN_ID)
-            uriMatcher.addURI(authority, DbParams.TABLE_CHANNEL_PERSISTENT, CHANNEL_PERSISTENT)
-            uriMatcher.addURI(authority, DbParams.TABLE_SUB_PROCESS_FLUSH_DATA, FLUSH_DATA)
-            uriMatcher.addURI(authority, DbParams.TABLE_FIRST_PROCESS_START, FIRST_PROCESS_START)
+            uriMatcher.addURI(authority, DbParams.TABLE_GAID, GAID)
+            uriMatcher.addURI(authority, DbParams.TABLE_OAID, OAID)
+//            uriMatcher.addURI(authority, DbParams.TABLE_FIRST_PROCESS_START, FIRST_PROCESS_START)
             dbHelper = EventDataDBHelper(context)
 
-//            PersistentLoader.initLoader(context)
+            PersistentLoader.initLoader(context)
 //            persistentAppEndData =
 //                PersistentLoader.loadPersistent(DbParams.TABLE_APP_END_DATA) as PersistentAppEndData
 //            persistentAppStartTime =
 //                PersistentLoader.loadPersistent(DbParams.TABLE_APP_START_TIME) as PersistentAppStartTime
 //            persistentAppPaused =
 //                PersistentLoader.loadPersistent(DbParams.TABLE_APP_END_TIME) as PersistentAppPaused
-//            persistentLoginId =
-//                PersistentLoader.loadPersistent(DbParams.TABLE_LOGIN_ID) as PersistentLoginId
+            persistentLoginId =
+                PersistentLoader.loadPersistent(DbParams.TABLE_LOGIN_ID) as PersistentLoginId
+            persistentGaid =
+                PersistentLoader.loadPersistent(DbParams.TABLE_GAID) as PersistentGaid
+            persistentOaid =
+                PersistentLoader.loadPersistent(DbParams.TABLE_OAID) as PersistentOaid
 //            persistentFlushDataState =
 //                PersistentLoader.loadPersistent(DbParams.TABLE_SUB_PROCESS_FLUSH_DATA) as PersistentFlushDataState
         }
@@ -261,7 +270,11 @@ class DataContentProvider : ContentProvider() {
                 contentResolver!!.notifyChange(uri, null)
             }
 
-//            LOGIN_ID -> persistentLoginId.commit(values.getAsString(DbParams.TABLE_LOGIN_ID))
+            LOGIN_ID -> persistentLoginId?.commit(values.getAsString(DbParams.TABLE_LOGIN_ID))
+
+            GAID -> persistentLoginId?.commit(values.getAsString(DbParams.TABLE_GAID))
+
+            OAID -> persistentLoginId?.commit(values.getAsString(DbParams.TABLE_OAID))
 //
 //            FLUSH_DATA -> persistentFlushDataState.commit(values.getAsBoolean(DbParams.TABLE_SUB_PROCESS_FLUSH_DATA))
 
@@ -341,6 +354,8 @@ class DataContentProvider : ContentProvider() {
         private const val CHANNEL_PERSISTENT = 8
         private const val FLUSH_DATA = 9
         private const val FIRST_PROCESS_START = 10
+        private const val GAID = 11
+        private const val OAID = 12
         private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
     }
 }

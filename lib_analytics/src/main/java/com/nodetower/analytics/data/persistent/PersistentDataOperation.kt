@@ -57,6 +57,14 @@ internal class PersistentDataOperation(context: Context?) :
                     DbParams.TABLE_LOGIN_ID,
                     jsonObject.optString(DbParams.VALUE)
                 )
+                DbParams.TABLE_GAID -> contentValues.put(
+                    DbParams.TABLE_GAID,
+                    jsonObject.optString(DbParams.VALUE)
+                )
+                DbParams.TABLE_OAID -> contentValues.put(
+                    DbParams.TABLE_OAID,
+                    jsonObject.optString(DbParams.VALUE)
+                )
                 DbParams.TABLE_SUB_PROCESS_FLUSH_DATA -> contentValues.put(
                     DbParams.TABLE_SUB_PROCESS_FLUSH_DATA,
                     jsonObject.optBoolean(DbParams.VALUE)
@@ -86,7 +94,7 @@ internal class PersistentDataOperation(context: Context?) :
                     DbParams.TABLE_ACTIVITY_START_COUNT, DbParams.TABLE_SUB_PROCESS_FLUSH_DATA, DbParams.TABLE_FIRST_PROCESS_START -> arrayOf(
                         cursor.getInt(0).toString()
                     )
-                    DbParams.TABLE_APP_END_DATA, DbParams.TABLE_LOGIN_ID -> arrayOf(
+                    DbParams.TABLE_APP_END_DATA, DbParams.TABLE_LOGIN_ID, DbParams.TABLE_OAID, DbParams.TABLE_GAID -> arrayOf(
                         cursor.getString(
                             0
                         )

@@ -180,6 +180,63 @@ class DbAdapter private constructor(
                 values[0]
             } else ""
         }
+    /**
+     * 存储 oaid
+     *
+     * @param oaid 登录 oaid
+     */
+    fun commitOaid(oaid: String?) {
+        try {
+            mPersistentOperation?.insertData(
+                mDbParams!!.oaidUri,
+                JSONObject().put(DbParams.VALUE, oaid)
+            )
+        } catch (e: JSONException) {
+            LogUtils.printStackTrace(e)
+        }
+    }
+
+    /**
+     * 获取 oaid
+     *
+     * @return oaid
+     */
+    val oaid: String
+        get() {
+            val values = mPersistentOperation?.queryData(mDbParams?.oaidUri, 1)
+            return if (values != null && values.isNotEmpty()) {
+                values[0]
+            } else ""
+        }
+
+    /**
+     * 存储 gaid
+     *
+     * @param gaid
+     */
+    fun commitGaid(gaid: String?) {
+        try {
+            mPersistentOperation?.insertData(
+                mDbParams!!.gaidUri,
+                JSONObject().put(DbParams.VALUE, gaid)
+            )
+        } catch (e: JSONException) {
+            LogUtils.printStackTrace(e)
+        }
+    }
+
+    /**
+     * 获取 gaid
+     *
+     * @return gaid
+     */
+    val gaid: String
+        get() {
+            val values = mPersistentOperation?.queryData(mDbParams?.gaidUri, 1)
+            return if (values != null && values.isNotEmpty()) {
+                values[0]
+            } else ""
+        }
 
     /**
      * 设置 Session 的时长

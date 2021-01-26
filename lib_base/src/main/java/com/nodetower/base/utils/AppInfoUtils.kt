@@ -47,10 +47,10 @@ object AppInfoUtils {
     }
 
     /**
-     * 获取 App 版本号
+     * 获取 App 版本名
      *
      * @param context Context
-     * @return App 的版本号
+     * @return App 的版本名
      */
     fun getAppVersionName(context: Context?): String {
         if (context == null) return ""
@@ -64,6 +64,26 @@ object AppInfoUtils {
         }
         return ""
     }
+
+    /**
+     * 获取 App 版本号
+     *
+     * @param context Context
+     * @return App 的版本号
+     */
+    fun getAppVersionCode(context: Context?): Int {
+        if (context == null) return -1
+        try {
+            val packageManager: PackageManager = context.packageManager
+            val packageInfo: PackageInfo =
+                packageManager.getPackageInfo(context.packageName, 0)
+            return packageInfo.versionCode
+        } catch (e: Exception) {
+            LogUtils.printStackTrace(e)
+        }
+        return -1
+    }
+
 
     /**
      * 获取主进程的名称
@@ -127,4 +147,6 @@ object AppInfoUtils {
         }
         return null
     }
+
+
 }

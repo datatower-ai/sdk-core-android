@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
+import com.nodetower.analytics.BuildConfig
 import com.nodetower.analytics.config.AnalyticsConfigOptions
 import com.nodetower.analytics.core.AnalyticsManager
 import com.nodetower.analytics.core.TrackTaskManager
@@ -12,6 +13,8 @@ import com.nodetower.analytics.data.DbAdapter
 import com.nodetower.analytics.utils.DataHelper.assertKey
 import com.nodetower.analytics.utils.DataHelper.assertPropertyTypes
 import com.nodetower.analytics.utils.DataUtils
+import com.nodetower.analytics.utils.GaidHelper
+import com.nodetower.analytics.utils.OaidHelper
 import com.nodetower.base.utils.AppInfoUtils
 import com.nodetower.base.utils.DeviceUtils
 import com.nodetower.base.utils.LogUtils
@@ -23,7 +26,7 @@ import java.util.*
 
 abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
-    private val mContext: Context?
+    protected val mContext: Context?
 
     // 数据上报 地址
     protected var mServerUrl: String? = null
@@ -53,12 +56,10 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     protected var mAppId: String? = null
 
     // 事件信息，包含事件的基本数据
-    protected var mEventInfo: Map<String, Any>? = null
+    protected var mEventInfo: Map<String, Any?>? = null
 
     // 事件通用属性
-    protected var mCommonProperties: Map<String, Any>? = null
-    // SDK版本
-//    val VERSION: String = BuildConfig.SDK_VERSION
+    protected var mCommonProperties: Map<String, Any?>? = null
 
     protected var mDisableTrackDeviceId = false
 
@@ -68,14 +69,16 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
     protected var mAnalyticsManager: AnalyticsManager? = null
 
-    companion object{
-         const val TAG = "NT.AnalyticsApi"
+    companion object {
+        const val TAG = "NT.AnalyticsApi"
+
         // Maps each token to a singleton SensorsDataAPI instance
-         val S_INSTANCE_MAP: MutableMap<Context, RoiqueryAnalyticsAPI> = HashMap<Context, RoiqueryAnalyticsAPI>()
-        /* 配置 */
+        val S_INSTANCE_MAP: MutableMap<Context, RoiqueryAnalyticsAPI> =
+            HashMap<Context, RoiqueryAnalyticsAPI>()
+
+        // 配置
         lateinit var mConfigOptions: AnalyticsConfigOptions
     }
-
 
 
     constructor(
@@ -86,14 +89,15 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         mContext = context
         mServerUrl = serverUrl
         setDebugMode(debugMode)
+        DbAdapter.getInstance(mContext!!, mContext.packageName)
 
-        mAndroidId = DeviceUtils.getAndroidID(mContext!!)
+        mAndroidId = DeviceUtils.getAndroidID(mContext)
         mEventInfo = setupEventInfo()
         mCommonProperties = setupCommonProperties()
         initConfig(serverUrl, mContext.packageName)
         mTrackTaskManager = TrackTaskManager.instance
         mTrackTaskManager?.let {
-            mConfigOptions.isDataCollectEnable?.let { it1 -> it.setDataCollectEnable(it1) }
+            mConfigOptions.isDataCollectEnable.let { it1 -> it.setDataCollectEnable(it1) }
         }
         mTrackTaskManagerThread = TrackTaskManagerThread()
         Thread(mTrackTaskManagerThread, "TaskQueueThread").start()
@@ -182,14 +186,14 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
      *
      * @return
      */
-    protected open fun setupEventInfo(): Map<String, Any>? =
-        Collections.unmodifiableMap(HashMap<String, Any>().apply {
-            put("#did", DeviceUtils.getAndroidID(mContext!!)!!)//设备 ID。即唯一ID，区分设备的最小ID
-            put("#acid", getAccountId()!!)//登录账号id
-            put("#gaid", "")//谷歌广告标识id,不同app在同一个设备上gdid一样
-            put("#oaid", "")//华为广告标识id,不同app在同一个设备上oaid一样
-            put("#app_id", getAppId()!!)//应用唯一标识,后台分配
-            put("#pkg", mContext?.packageName!!)//包名
+    protected open fun setupEventInfo(): Map<String, Any?>? =
+        Collections.unmodifiableMap(HashMap<String, Any?>().apply {
+            put("#did", DeviceUtils.getAndroidID(mContext!!))//设备 ID。即唯一ID，区分设备的最小ID
+            put("#acid", getAccountId())//登录账号id
+            put("#gaid", DbAdapter.getInstance()?.gaid)//谷歌广告标识id,不同app在同一个设备上gdid一样
+            put("#oaid", DbAdapter.getInstance()?.oaid)//华为广告标识id,不同app在同一个设备上oaid一样
+            put("#app_id", getAppId())//应用唯一标识,后台分配
+            put("#pkg", mContext.packageName)//包名
         })
 
     /**
@@ -203,17 +207,18 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             put("#mnc", "")//移动信号网络码
             put("#os_country", "")//系统国家
             put("#os_lang", "")//系统语言
-            put("#app_version_code", "")//应用版本号
-            put("#sdk_type", "")//接入 SDK 的类型，如 Android，iOS,Unity ,Flutter
-            put("#sdk_version", "")//SDK 版本,如 1.1.2
-            put("#os", "")//如 Android、iOS 等
-            put("#os_version", "")//操作系统版本,iOS 11.2.2、Android 8.0.0 等
+            put("#app_version_code", AppInfoUtils.getAppVersionCode(mContext))//应用版本号
+            put("#sdk_type", "Android")//接入 SDK 的类型，如 Android，iOS,Unity ,Flutter
+            put("#sdk_version", BuildConfig.BUILD_TYPE)//SDK 版本,如 1.1.2
+            put("#os", "Android")//如 Android、iOS 等
+            put("#os_version", DeviceUtils.oS)//操作系统版本,iOS 11.2.2、Android 8.0.0 等
             put("#browser_version", "")//浏览器版本,用户使用的浏览器的版本，如 Chrome 61.0，Firefox 57.0 等
-            put("#device_manufacturer", "")//用户设备的制造商，如 Apple，vivo 等
-            put("#device_brand", "")//设备品牌,如 Galaxy、Pixel
-            put("#device_model", "")//设备型号,用户设备的型号，如 iPhone 8 等
-            put("#screen_height", "")//屏幕高度
-            put("#screen_width", "")//屏幕宽度
+            put("#device_manufacturer", DeviceUtils.manufacturer)//用户设备的制造商，如 Apple，vivo 等
+            put("#device_brand", DeviceUtils)//设备品牌,如 Galaxy、Pixel
+            put("#device_model", DeviceUtils.model)//设备型号,用户设备的型号，如 iPhone 8 等
+            val size = DeviceUtils.getDeviceSize(mContext!!)
+            put("#screen_height", size[0])//屏幕高度
+            put("#screen_width", size[1])//屏幕宽度
         })
 
 
@@ -248,8 +253,6 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         this.mSDKConfigInit = true
 
         mConfigOptions.let { configOptions ->
-
-            DbAdapter.getInstance(mContext!!, packageName)
 
             if (configOptions.mInvokeLog) {
                 enableLog(configOptions.mLogEnabled)
@@ -324,5 +327,28 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         }
 
     }
+
+
+    fun getOaid() {
+        Thread {
+            DbAdapter.getInstance()?.commitOaid(
+                mContext?.let { OaidHelper.getOAID(it) }
+            )
+        }.start()
+
+    }
+
+    fun getGaid() {
+        GaidHelper.getAdInfo(mContext?.applicationContext, object : GaidHelper.GaidListener {
+            override fun onSuccess(info: GaidHelper.AdIdInfo) {
+                DbAdapter.getInstance()?.commitGaid(info.adId)
+            }
+
+            override fun onException(exception: java.lang.Exception) {
+                LogUtils.printStackTrace(exception)
+            }
+        })
+    }
+
 
 }

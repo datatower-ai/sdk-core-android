@@ -60,6 +60,20 @@ class DbParams private constructor(packageName: String) {
     val loginIdUri: Uri
 
     /**
+     * 获取 oaid 的 Uri
+     *
+     * @return Uri
+     */
+    val oaidUri: Uri
+
+    /**
+     * 获取 gaid 的 Uri
+     *
+     * @return Uri
+     */
+    val gaidUri: Uri
+
+    /**
      * 获取 Channel 持久化 Uri
      *
      * @return Uri
@@ -93,6 +107,7 @@ class DbParams private constructor(packageName: String) {
 
         /* 数据库版本号 */
         const val DATABASE_VERSION = 1
+
         const val TABLE_ACTIVITY_START_COUNT = "activity_started_count"
         const val TABLE_APP_START_TIME = "app_start_time"
         const val TABLE_APP_END_TIME = "app_end_time"
@@ -102,6 +117,8 @@ class DbParams private constructor(packageName: String) {
         const val TABLE_SESSION_INTERVAL_TIME = "session_interval_time"
         const val TABLE_DATA_COLLECT = "data_collect"
         const val TABLE_LOGIN_ID = "events_login_id"
+        const val TABLE_GAID = "events_gaid"
+        const val TABLE_OAID = "events_oaid"
 
         /* Event 表字段 */
         const val KEY_DATA = "data"
@@ -144,6 +161,10 @@ class DbParams private constructor(packageName: String) {
             Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_SESSION_INTERVAL_TIME")
         loginIdUri =
             Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_LOGIN_ID")
+        gaidUri =
+            Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_GAID")
+        oaidUri =
+            Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_OAID")
         channelPersistentUri =
             Uri.parse("content://$packageName.AnalyticsDataContentProvider/$TABLE_CHANNEL_PERSISTENT")
         subProcessUri =

@@ -22,6 +22,8 @@ class PersistentLoader private constructor(context: Context) {
             const val FIRST_INSTALL = "first_track_installation"
             const val FIRST_INSTALL_CALLBACK = "first_track_installation_with_callback"
             const val LOGIN_ID = "events_login_id"
+            const val GAID = "events_gaid"
+            const val OAID = "events_oaid"
             const val REMOTE_CONFIG = "sensorsdata_sdk_configuration"
             const val SUPER_PROPERTIES = "super_properties"
         }
@@ -60,20 +62,21 @@ class PersistentLoader private constructor(context: Context) {
 //                )
 //                PersistentName.FIRST_START -> PersistentFirstStart(storedPreferences)
                 PersistentName.LOGIN_ID -> storedPreferences?.let { PersistentLoginId(it) }
+                PersistentName.OAID -> storedPreferences?.let { PersistentOaid(it) }
+                PersistentName.GAID -> storedPreferences?.let { PersistentGaid(it) }
 //                PersistentName.REMOTE_CONFIG -> PersistentRemoteSDKConfig(storedPreferences)
 //                PersistentName.SUPER_PROPERTIES -> PersistentSuperProperties(storedPreferences)
 //                PersistentName.SUB_PROCESS_FLUSH_DATA -> PersistentFlushDataState(
 //                    storedPreferences
 //                )
                 else -> null
-            }
         }
     }
 
     init {
-        Companion.context = context.getApplicationContext()
+        Companion.context = context?.applicationContext
         val sPrefsLoader = SharedPreferencesLoader()
-        val prefsName = "com.sensorsdata.analytics.android.sdk.SensorsDataAPI"
-        storedPreferences = sPrefsLoader.loadPreferences(context, prefsName)
+        val prefsName = "com.nodetower.analytics.android.sdk.RoiqueryAnalyticsAPI"
+        storedPreferences = context?.let { sPrefsLoader.loadPreferences(it, prefsName) }
     }
-}
+}}
