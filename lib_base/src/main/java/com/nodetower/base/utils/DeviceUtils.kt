@@ -12,6 +12,7 @@ import android.telephony.TelephonyManager
 import android.text.TextUtils
 import android.view.Surface
 import android.view.WindowManager
+import com.nodetower.base.c
 import java.util.*
 
 
@@ -46,6 +47,8 @@ object DeviceUtils {
         }
     val model: String
         get() = if (TextUtils.isEmpty(Build.MODEL)) "UNKNOWN" else Build.MODEL.trim { it <= ' ' }
+    val brand: String
+        get() = if (TextUtils.isEmpty(Build.BRAND)) "UNKNOWN" else Build.BRAND.trim { it <= ' ' }
 
     /**
      * 获取屏幕的宽高信息
@@ -189,6 +192,33 @@ object DeviceUtils {
         return true
     }
 
+    fun getMcc(context: Context):Int {
+        val tel = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        val networkOperator = tel.networkOperator
+        if (!TextUtils.isEmpty(networkOperator)) {
+            return networkOperator.substring(0, 3).toInt()
+        }
+        return -1
+
+    }
+
+    fun getMnc(context: Context):Int {
+        val tel = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        val networkOperator = tel.networkOperator
+        if (!TextUtils.isEmpty(networkOperator)) {
+            return networkOperator.substring(3).toInt()
+        }
+        return -1
+    }
+
+    fun getLocalCountry(context: Context):String {
+        return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) context.resources.configuration.locales[0].country
+            else context.resources.configuration.locale.country
+     }
+
+    fun getLocaleLanguage():String{
+        return Locale.getDefault().language
+    }
 
     /**
      * 检测权限F

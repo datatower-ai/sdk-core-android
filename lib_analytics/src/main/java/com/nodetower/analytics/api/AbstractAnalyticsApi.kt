@@ -43,14 +43,11 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     // 主进程名称
     protected var mMainProcessName: String? = null
 
-    // Session 时长
+    // Session 时长,设定app进入后台超过30s为应用退出
     protected var mSessionTime = 30 * 1000
 
     // Debug 模式选项
     protected var mDebugMode: DebugMode = DebugMode.DEBUG_OFF
-
-    // AndroidID
-    protected var mAndroidId: String? = null
 
     // app id
     protected var mAppId: String? = null
@@ -69,13 +66,13 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
     protected var mAnalyticsManager: AnalyticsManager? = null
 
+    protected var mDbAdapter: DbAdapter? = null
+
     companion object {
         const val TAG = "NT.AnalyticsApi"
-
-        // Maps each token to a singleton SensorsDataAPI instance
+        // 适配多进程场景
         val S_INSTANCE_MAP: MutableMap<Context, RoiqueryAnalyticsAPI> =
             HashMap<Context, RoiqueryAnalyticsAPI>()
-
         // 配置
         lateinit var mConfigOptions: AnalyticsConfigOptions
     }
@@ -89,9 +86,8 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         mContext = context
         mServerUrl = serverUrl
         setDebugMode(debugMode)
-        DbAdapter.getInstance(mContext!!, mContext.packageName)
+        mDbAdapter = DbAdapter.getInstance(mContext!!, mContext.packageName)
 
-        mAndroidId = DeviceUtils.getAndroidID(mContext)
         mEventInfo = setupEventInfo()
         mCommonProperties = setupCommonProperties()
         initConfig(serverUrl, mContext.packageName)
@@ -190,8 +186,8 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         Collections.unmodifiableMap(HashMap<String, Any?>().apply {
             put("#did", DeviceUtils.getAndroidID(mContext!!))//设备 ID。即唯一ID，区分设备的最小ID
             put("#acid", getAccountId())//登录账号id
-            put("#gaid", DbAdapter.getInstance()?.gaid)//谷歌广告标识id,不同app在同一个设备上gdid一样
-            put("#oaid", DbAdapter.getInstance()?.oaid)//华为广告标识id,不同app在同一个设备上oaid一样
+            put("#gaid", mDbAdapter?.gaid)//谷歌广告标识id,不同app在同一个设备上gdid一样
+            put("#oaid", mDbAdapter?.oaid)//华为广告标识id,不同app在同一个设备上oaid一样
             put("#app_id", getAppId())//应用唯一标识,后台分配
             put("#pkg", mContext.packageName)//包名
         })
@@ -203,25 +199,28 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
      */
     protected open fun setupCommonProperties(): Map<String, Any>? =
         Collections.unmodifiableMap(HashMap<String, Any>().apply {
-            put("#mcc", "")//移动信号国家码
-            put("#mnc", "")//移动信号网络码
-            put("#os_country", "")//系统国家
-            put("#os_lang", "")//系统语言
+            put("#mcc", DeviceUtils.getMcc(mContext!!))//移动信号国家码
+            put("#mnc", DeviceUtils.getMnc(mContext))//移动信号网络码
+            put("#os_country", DeviceUtils.getLocalCountry(mContext))//系统国家
+            put("#os_lang", DeviceUtils.getLocaleLanguage())//系统语言
             put("#app_version_code", AppInfoUtils.getAppVersionCode(mContext))//应用版本号
             put("#sdk_type", "Android")//接入 SDK 的类型，如 Android，iOS,Unity ,Flutter
-            put("#sdk_version", BuildConfig.BUILD_TYPE)//SDK 版本,如 1.1.2
+            put("#sdk_version", BuildConfig.VERSION_NAME)//SDK 版本,如 1.1.2
             put("#os", "Android")//如 Android、iOS 等
             put("#os_version", DeviceUtils.oS)//操作系统版本,iOS 11.2.2、Android 8.0.0 等
             put("#browser_version", "")//浏览器版本,用户使用的浏览器的版本，如 Chrome 61.0，Firefox 57.0 等
             put("#device_manufacturer", DeviceUtils.manufacturer)//用户设备的制造商，如 Apple，vivo 等
-            put("#device_brand", DeviceUtils)//设备品牌,如 Galaxy、Pixel
+            put("#device_brand", DeviceUtils.brand)//设备品牌,如 Galaxy、Pixel
             put("#device_model", DeviceUtils.model)//设备型号,用户设备的型号，如 iPhone 8 等
-            val size = DeviceUtils.getDeviceSize(mContext!!)
+            val size = DeviceUtils.getDeviceSize(mContext)
             put("#screen_height", size[0])//屏幕高度
             put("#screen_width", size[1])//屏幕宽度
         })
 
 
+    /**
+     * 设置debug模式
+     */
     open fun setDebugMode(debugMode: DebugMode) {
         mDebugMode = debugMode
         if (debugMode === DebugMode.DEBUG_OFF) {
@@ -233,8 +232,10 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         }
     }
 
+    /**
+     * 初始化配置
+     */
     protected open fun initConfig(serverURL: String, packageName: String) {
-
         var configBundle: Bundle? = null
         try {
             mContext?.let {
@@ -289,7 +290,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
                 )
             }
             if (configOptions.isSubProcessFlushData) {
-                DbAdapter.getInstance()?.let {
+                mDbAdapter?.let {
                     if (it.isFirstProcess) {
                         //如果是首个进程
                         it.commitFirstProcessState(false)
@@ -297,9 +298,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
                     }
                 }
             }
-
         }
-
 
         this.mMainProcessName = AppInfoUtils.getMainProcessName(mContext)
         if (TextUtils.isEmpty(this.mMainProcessName)) {
@@ -325,9 +324,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
                 enableLog(it.mLogEnabled)
             }
         }
-
     }
-
 
     fun getOaid() {
         Thread {
@@ -335,7 +332,6 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
                 mContext?.let { OaidHelper.getOAID(it) }
             )
         }.start()
-
     }
 
     fun getGaid() {
@@ -343,7 +339,6 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             override fun onSuccess(info: GaidHelper.AdIdInfo) {
                 DbAdapter.getInstance()?.commitGaid(info.adId)
             }
-
             override fun onException(exception: java.lang.Exception) {
                 LogUtils.printStackTrace(exception)
             }

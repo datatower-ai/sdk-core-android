@@ -19,6 +19,6 @@ class PersistentLoginId(loadStoredPreferences: Future<SharedPreferences>) :
             }
 
             override fun create(): String? {
-                return null
+                return ""
             }
         })

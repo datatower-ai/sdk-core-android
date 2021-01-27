@@ -1,13 +1,18 @@
 package com.nodetower.roiquery_sdk
 
+import android.content.Context
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
+import android.telephony.TelephonyManager
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
-import com.nodetower.analytics.api.RoiqueryAnalyticsAPI
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.nodetower.analytics.api.PropertyBuilder
+import com.nodetower.analytics.api.RoiqueryAnalyticsAPI
+import com.nodetower.base.utils.LogUtils
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +33,7 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
+
 
     }
 

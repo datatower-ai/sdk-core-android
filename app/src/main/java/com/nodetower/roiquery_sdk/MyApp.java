@@ -2,6 +2,8 @@ package com.nodetower.roiquery_sdk;
 
 import android.app.Application;
 
+import androidx.lifecycle.ProcessLifecycleOwner;
+
 import com.nodetower.analytics.api.RoiqueryAnalyticsAPI;
 import com.nodetower.analytics.config.AnalyticsConfigOptions;
 
@@ -11,6 +13,7 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         initAnalytics();
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(new CheckObserver());
     }
 
     private void initAnalytics() {
@@ -18,4 +21,6 @@ public class MyApp extends Application {
         analyticsConfigOptions.enableLog(true);
         RoiqueryAnalyticsAPI.init(this,analyticsConfigOptions);
     }
+
+
 }
