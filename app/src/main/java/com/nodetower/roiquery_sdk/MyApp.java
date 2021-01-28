@@ -13,12 +13,12 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         initAnalytics();
-        ProcessLifecycleOwner.get().getLifecycle().addObserver(new CheckObserver());
     }
 
     private void initAnalytics() {
-        AnalyticsConfigOptions analyticsConfigOptions = new AnalyticsConfigOptions("www.baidu.com");
-        analyticsConfigOptions.enableLog(true);
+        AnalyticsConfigOptions analyticsConfigOptions = new AnalyticsConfigOptions("12345","https://api.roiquery.com")
+                .enableLog(true);
+
         RoiqueryAnalyticsAPI.init(this,analyticsConfigOptions);
     }
 

@@ -3,20 +3,19 @@ package com.nodetower.base.utils
 import android.util.Log
 
 object LogUtils {
-    private var debug = false
     private var enableLog = false
     private val CHUNK_SIZE = 4000
 
     @JvmStatic
     fun d(tag: String?, msg: String?) {
-        if (debug) {
+        if (enableLog) {
             info(tag, msg, null)
         }
     }
 
     @JvmStatic
     fun d(tag: String?, msg: String?, tr: Throwable?) {
-        if (debug) {
+        if (enableLog) {
             info(tag, msg, tr)
         }
     }
@@ -119,7 +118,7 @@ object LogUtils {
      * @param isDebug Debug 状态
      */
     fun setDebug(isDebug: Boolean) {
-        debug = isDebug
+        enableLog = isDebug
     }
 
     /**

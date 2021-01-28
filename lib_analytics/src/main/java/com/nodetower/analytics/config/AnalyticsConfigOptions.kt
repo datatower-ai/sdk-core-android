@@ -6,11 +6,6 @@ import javax.net.ssl.SSLSocketFactory
 class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions {
 
     /**
-     * 是否设置打印日志
-     */
-    var mInvokeLog = false
-
-    /**
      * 私有构造函数
      */
     private constructor()
@@ -20,7 +15,8 @@ class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions {
      *
      * @param serverUrl，数据上报服务器地址
      */
-     constructor(serverUrl: String?) {
+     constructor(appId: String?,serverUrl: String?) {
+        mAppId = appId
         mServerUrl = serverUrl
     }
 
@@ -79,7 +75,6 @@ class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions {
      */
     fun enableLog(enableLog: Boolean): AnalyticsConfigOptions {
         mLogEnabled = enableLog
-        mInvokeLog = true
         return this
     }
 

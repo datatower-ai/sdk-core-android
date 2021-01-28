@@ -102,7 +102,7 @@ abstract class AbstractAnalyticsConfigOptions {
         NetworkType.TYPE_3G or NetworkType.TYPE_4G or NetworkType.TYPE_WIFI or NetworkType.TYPE_5G
 
     /**
-     * mAppId，匿名 ID
+     * mAppId
      */
     var mAppId: String? = null
 

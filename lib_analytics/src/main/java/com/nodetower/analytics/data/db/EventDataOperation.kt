@@ -64,13 +64,20 @@ internal class EventDataOperation(context: Context) :
             )
             if (cursor != null) {
                 val dataBuilder = StringBuilder()
-                val flush_time = ",\"_flush_time\":"
+//                val flush_time = ",\"_flush_time\":"
                 var suffix = ","
-                dataBuilder.append("[")
+                if (limit != 1) {
+                    dataBuilder.append("[")
+                }
+
                 var keyData: String
                 while (cursor.moveToNext()) {
                     if (cursor.isLast) {
-                        suffix = "]"
+                        if (limit != 1) {
+                            suffix = "]"
+                        }else{
+                            suffix = ""
+                        }
                         last_id = cursor.getString(cursor.getColumnIndex("_id"))
                     }
                     try {
@@ -79,8 +86,8 @@ internal class EventDataOperation(context: Context) :
                         if (!TextUtils.isEmpty(keyData)) {
                             dataBuilder
                                 .append(keyData, 0, keyData.length - 1)
-                                .append(flush_time)
-                                .append(System.currentTimeMillis())
+//                                .append(flush_time)
+//                                .append(System.currentTimeMillis())
                                 .append("}").append(suffix)
                         }
                     } catch (e: Exception) {

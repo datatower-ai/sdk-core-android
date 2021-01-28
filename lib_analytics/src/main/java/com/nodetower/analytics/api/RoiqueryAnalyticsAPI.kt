@@ -4,7 +4,6 @@ import android.content.Context
 import com.nodetower.analytics.config.AnalyticsConfigOptions
 import com.nodetower.analytics.data.DbAdapter
 import com.nodetower.base.utils.LogUtils
-import com.nodetower.base.utils.NetworkType
 import org.json.JSONObject
 
 open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
@@ -14,8 +13,7 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
     internal constructor(
         context: Context?,
         serverURL: String,
-        debugMode: DebugMode
-    ) : super(context, serverURL, debugMode)
+    ) : super(context, serverURL)
 
 
     override fun enableLog(enable: Boolean) {
@@ -28,9 +26,6 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
         set(value) {
             mConfigOptions.setMaxCacheSize(value)
         }
-
-    override val isDebugMode: Boolean
-        get() = mDebugMode.isDebugMode
 
     override val isNetworkRequestEnable: Boolean
         get() = mEnableNetworkRequest
@@ -69,7 +64,7 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
     }
 
     override fun getAppId(): String? {
-        return mAppId
+        return mConfigOptions.mAppId
     }
 
     override fun trackAppInstall(properties: JSONObject?) {
@@ -106,7 +101,7 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
         get() =  ""
 
     override fun flush() {
-
+        mAnalyticsManager?.flush()
     }
 
     override fun flushSync() {
@@ -166,21 +161,19 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
                 throw NullPointerException("Context、AnalyticsConfigOptions 不可以为 null")
             }
             mConfigOptions = configOptions
-            val sensorsDataAPI = configOptions.mServerUrl?.let {
-                getInstance(context, it, DebugMode.DEBUG_OFF)
+            val api = configOptions.mServerUrl?.let {
+                getInstance(context, it)
             }
-            sensorsDataAPI?.let {
+            api?.let {
                 if (!it.mSDKConfigInit) {
                     it.applySAConfigOptions()
                 }
             }
-
         }
 
         private fun getInstance(
             context: Context?,
             serverURL: String,
-            debugMode: DebugMode
         ): RoiqueryAnalyticsAPI {
             if (null == context) {
                 return RoiqueryAnalyticsEmptyImplementation()
@@ -189,7 +182,7 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
                 val appContext = context.applicationContext
                 var instance = S_INSTANCE_MAP[appContext]
                 if (null == instance) {
-                    instance = RoiqueryAnalyticsAPI(appContext, serverURL, debugMode)
+                    instance = RoiqueryAnalyticsAPI(appContext, serverURL)
                     S_INSTANCE_MAP[appContext] = instance
                 }
                 return instance

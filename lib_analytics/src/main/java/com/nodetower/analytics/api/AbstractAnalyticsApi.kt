@@ -37,7 +37,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     // 是否为主进程
     var mIsMainProcess = false
 
-    /* 是否请求网络 */
+    // 是否请求网络
     protected var mEnableNetworkRequest = true
 
     // 主进程名称
@@ -45,12 +45,6 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
     // Session 时长,设定app进入后台超过30s为应用退出
     protected var mSessionTime = 30 * 1000
-
-    // Debug 模式选项
-    protected var mDebugMode: DebugMode = DebugMode.DEBUG_OFF
-
-    // app id
-    protected var mAppId: String? = null
 
     // 事件信息，包含事件的基本数据
     protected var mEventInfo: Map<String, Any?>? = null
@@ -80,13 +74,14 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
     constructor(
         context: Context?,
-        serverUrl: String = "",
-        debugMode: DebugMode
+        serverUrl: String = ""
+
     ) {
         mContext = context
         mServerUrl = serverUrl
-        setDebugMode(debugMode)
         mDbAdapter = DbAdapter.getInstance(mContext!!, mContext.packageName)
+        getGaid()
+        getOaid()
 
         mEventInfo = setupEventInfo()
         mCommonProperties = setupCommonProperties()
@@ -109,7 +104,6 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     override fun setServerUrl(serverUrl: String?) {
         mServerUrl = serverUrl
     }
-
 
     protected open fun addTimeProperty(jsonObject: JSONObject) {
         if (!jsonObject.has("#time")) {
@@ -149,11 +143,10 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             try {
                 //设置事件的基本信息
                 val eventInfo = JSONObject(mEventInfo).apply {
-                    put("#event_time", System.currentTimeMillis())
+                    put("#event_time", System.currentTimeMillis().toString())
                     put("#event_name", eventName)
-                    put("#event_syn", SecureRandom().nextInt())
+                    put("#event_syn", SecureRandom().nextInt().toString())
                 }
-
                 //设置事件属性
                 val eventProperties = JSONObject(mCommonProperties).apply {
                     // 屏幕方向
@@ -183,11 +176,11 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
      * @return
      */
     protected open fun setupEventInfo(): Map<String, Any?>? =
-        Collections.unmodifiableMap(HashMap<String, Any?>().apply {
+        Collections.unmodifiableMap(HashMap<String, String?>().apply {
             put("#did", DeviceUtils.getAndroidID(mContext!!))//设备 ID。即唯一ID，区分设备的最小ID
             put("#acid", getAccountId())//登录账号id
-            put("#gaid", mDbAdapter?.gaid)//谷歌广告标识id,不同app在同一个设备上gdid一样
-            put("#oaid", mDbAdapter?.oaid)//华为广告标识id,不同app在同一个设备上oaid一样
+            put("#gaid", mDbAdapter?.gaid.toString())//谷歌广告标识id,不同app在同一个设备上gdid一样
+            put("#oaid", mDbAdapter?.oaid.toString())//华为广告标识id,不同app在同一个设备上oaid一样
             put("#app_id", getAppId())//应用唯一标识,后台分配
             put("#pkg", mContext.packageName)//包名
         })
@@ -198,12 +191,12 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
      * @return
      */
     protected open fun setupCommonProperties(): Map<String, Any>? =
-        Collections.unmodifiableMap(HashMap<String, Any>().apply {
-            put("#mcc", DeviceUtils.getMcc(mContext!!))//移动信号国家码
-            put("#mnc", DeviceUtils.getMnc(mContext))//移动信号网络码
+        Collections.unmodifiableMap(HashMap<String, String>().apply {
+            put("#mcc", DeviceUtils.getMcc(mContext!!).toString())//移动信号国家码
+            put("#mnc", DeviceUtils.getMnc(mContext).toString())//移动信号网络码
             put("#os_country", DeviceUtils.getLocalCountry(mContext))//系统国家
             put("#os_lang", DeviceUtils.getLocaleLanguage())//系统语言
-            put("#app_version_code", AppInfoUtils.getAppVersionCode(mContext))//应用版本号
+            put("#app_version_code", AppInfoUtils.getAppVersionCode(mContext).toString())//应用版本号
             put("#sdk_type", "Android")//接入 SDK 的类型，如 Android，iOS,Unity ,Flutter
             put("#sdk_version", BuildConfig.VERSION_NAME)//SDK 版本,如 1.1.2
             put("#os", "Android")//如 Android、iOS 等
@@ -213,24 +206,11 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             put("#device_brand", DeviceUtils.brand)//设备品牌,如 Galaxy、Pixel
             put("#device_model", DeviceUtils.model)//设备型号,用户设备的型号，如 iPhone 8 等
             val size = DeviceUtils.getDeviceSize(mContext)
-            put("#screen_height", size[0])//屏幕高度
-            put("#screen_width", size[1])//屏幕宽度
+            put("#screen_height", size[0].toString())//屏幕高度
+            put("#screen_width", size[1].toString())//屏幕宽度
         })
 
 
-    /**
-     * 设置debug模式
-     */
-    open fun setDebugMode(debugMode: DebugMode) {
-        mDebugMode = debugMode
-        if (debugMode === DebugMode.DEBUG_OFF) {
-            enableLog(false)
-            LogUtils.setDebug(false)
-        } else {
-            enableLog(true)
-            LogUtils.setDebug(true)
-        }
-    }
 
     /**
      * 初始化配置
@@ -255,17 +235,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
         mConfigOptions.let { configOptions ->
 
-            if (configOptions.mInvokeLog) {
-                enableLog(configOptions.mLogEnabled)
-            } else {
-                enableLog(
-                    configBundle!!.getBoolean(
-                        "com.nodetower.analytics.android.EnableLogging",
-                        mDebugMode !== DebugMode.DEBUG_OFF
-                    )
-                )
-            }
-
+            enableLog(configOptions.mLogEnabled)
             setServerUrl(serverURL)
 
             if (configOptions.mFlushInterval == 0) {
@@ -320,7 +290,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
     protected open fun applySAConfigOptions() {
         mConfigOptions.let {
-            if (it.mInvokeLog) {
+            if (it.mLogEnabled) {
                 enableLog(it.mLogEnabled)
             }
         }
@@ -329,7 +299,8 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     fun getOaid() {
         Thread {
             DbAdapter.getInstance()?.commitOaid(
-                mContext?.let { OaidHelper.getOAID(it) }
+                mContext?.let {
+                    OaidHelper.getOAID(it) }
             )
         }.start()
     }
