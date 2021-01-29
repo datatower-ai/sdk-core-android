@@ -15,7 +15,6 @@ import com.nodetower.analytics.data.persistent.PersistentOaid
 import com.nodetower.base.utils.LogUtils
 
 
-
 class DataContentProvider : ContentProvider() {
     private var dbHelper: EventDataDBHelper? = null
     private var contentResolver: ContentResolver? = null

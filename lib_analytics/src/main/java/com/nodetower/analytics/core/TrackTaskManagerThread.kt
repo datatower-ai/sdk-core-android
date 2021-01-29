@@ -22,10 +22,12 @@ class TrackTaskManagerThread internal constructor() : Runnable {
 
     override fun run() {
         try {
+            //如果未停止，则执行此while
             while (!isStopped) {
                 val downloadTask = mTrackTaskManager!!.takeTrackEventTask()
                 mPool!!.execute(downloadTask)
             }
+            //如果停止，则执行此while，先取出队列内所有task 并执行，取到为空时结束
             while (true) {
                 val downloadTask = mTrackTaskManager!!.pollTrackEventTask() ?: break
                 mPool!!.execute(downloadTask)
@@ -35,6 +37,7 @@ class TrackTaskManagerThread internal constructor() : Runnable {
             LogUtils.printStackTrace(e)
         }
     }
+
 
     fun stop() {
         isStopped = true

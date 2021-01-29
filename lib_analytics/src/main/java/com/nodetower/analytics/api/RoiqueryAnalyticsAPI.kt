@@ -16,9 +16,6 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
     ) : super(context, serverURL)
 
 
-    override fun enableLog(enable: Boolean) {
-        LogUtils.setEnableLog(enable)
-    }
 
     override var maxCacheSize: Long
         get() = mConfigOptions.mMaxCacheSize

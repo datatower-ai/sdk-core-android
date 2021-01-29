@@ -16,6 +16,7 @@ class TrackTaskManager private constructor() {
 
     fun addTrackEventTask(trackEvenTask: Runnable) {
         try {
+            //用户暂未同意相关条款时，先存入缓存
             if (mDataCollectEnable)
                 mTrackEventTasks.put(trackEvenTask)
             else
@@ -38,6 +39,9 @@ class TrackTaskManager private constructor() {
         }
     }
 
+    /**
+     * 取出任务，如果队列为空，会阻塞
+     */
     fun takeTrackEventTask(): Runnable? {
         try {
             return if (mDataCollectEnable) mTrackEventTasks.take() else mTrackEventTasksCache.take()
@@ -47,6 +51,9 @@ class TrackTaskManager private constructor() {
         return null
     }
 
+    /**
+     * 取出任务，如果队列为空，返回null
+     */
     fun pollTrackEventTask(): Runnable? {
         try {
             return if (mDataCollectEnable) mTrackEventTasks.poll() else mTrackEventTasksCache.poll()

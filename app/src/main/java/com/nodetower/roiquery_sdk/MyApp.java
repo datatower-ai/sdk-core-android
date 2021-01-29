@@ -6,6 +6,7 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.nodetower.analytics.api.RoiqueryAnalyticsAPI;
 import com.nodetower.analytics.config.AnalyticsConfigOptions;
+import com.nodetower.base.utils.LogUtils;
 
 public class MyApp extends Application {
 
@@ -17,7 +18,7 @@ public class MyApp extends Application {
 
     private void initAnalytics() {
         AnalyticsConfigOptions analyticsConfigOptions = new AnalyticsConfigOptions("12345","https://api.roiquery.com")
-                .enableLog(true);
+                .setDebug(true);
 
         RoiqueryAnalyticsAPI.init(this,analyticsConfigOptions);
     }

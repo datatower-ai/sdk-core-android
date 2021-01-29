@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
 import com.nodetower.analytics.BuildConfig
+import com.nodetower.analytics.Constant
 import com.nodetower.analytics.config.AnalyticsConfigOptions
 import com.nodetower.analytics.core.AnalyticsManager
 import com.nodetower.analytics.core.TrackTaskManager
@@ -41,26 +42,26 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     protected var mEnableNetworkRequest = true
 
     // 主进程名称
-    protected var mMainProcessName: String? = null
+    private var mMainProcessName: String? = null
 
     // Session 时长,设定app进入后台超过30s为应用退出
     protected var mSessionTime = 30 * 1000
 
     // 事件信息，包含事件的基本数据
-    protected var mEventInfo: Map<String, Any?>? = null
+    private var mEventInfo: Map<String, Any?>? = null
 
     // 事件通用属性
-    protected var mCommonProperties: Map<String, Any?>? = null
+    private var mCommonProperties: Map<String, Any?>? = null
 
-    protected var mDisableTrackDeviceId = false
+    private var mDisableTrackDeviceId = false
 
     protected var mTrackTaskManager: TrackTaskManager? = null
 
-    protected var mTrackTaskManagerThread: TrackTaskManagerThread? = null
+    private var mTrackTaskManagerThread: TrackTaskManagerThread? = null
 
     protected var mAnalyticsManager: AnalyticsManager? = null
 
-    protected var mDbAdapter: DbAdapter? = null
+    private var mDbAdapter: DbAdapter? = null
 
     companion object {
         const val TAG = "NT.AnalyticsApi"
@@ -211,7 +212,6 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         })
 
 
-
     /**
      * 初始化配置
      */
@@ -231,27 +231,19 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             configBundle = Bundle()
         }
 
-        this.mSDKConfigInit = true
-
         mConfigOptions.let { configOptions ->
 
-            enableLog(configOptions.mLogEnabled)
+            initLog(configOptions.mEnabledDebug,configOptions.mLogLevel)
             setServerUrl(serverURL)
 
             if (configOptions.mFlushInterval == 0) {
                 configOptions.setFlushInterval(
-                    configBundle!!.getInt(
-                        "com.nodetower.analytics.android.FlushInterval",
-                        15000
-                    )
+                    15000
                 )
             }
             if (configOptions.mFlushBulkSize == 0) {
                 configOptions.setFlushBulkSize(
-                    configBundle!!.getInt(
-                        "com.nodetower.analytics.android.FlushBulkSize",
-                        100
-                    )
+                    100
                 )
             }
             if (configOptions.mMaxCacheSize == 0L) {
@@ -273,28 +265,33 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         this.mMainProcessName = AppInfoUtils.getMainProcessName(mContext)
         if (TextUtils.isEmpty(this.mMainProcessName)) {
             this.mMainProcessName =
-                configBundle!!.getString("com.nodetower.analytics.android.MainProcessName")
+                configBundle!!.getString(Constant.CONFIG_BUNDLE_KEY_MAIN_PROCESS_NAME)
         }
         mMainProcessName?.let {
             mIsMainProcess = AppInfoUtils.isMainProcess(mContext, it)
         }
 
-
-        this.mDisableTrackDeviceId = configBundle!!.getBoolean(
-            "com.nodetower.analytics.android.DisableTrackDeviceId",
-            false
-        )
-
+        this.mSDKConfigInit = true
     }
 
 
     protected open fun applySAConfigOptions() {
         mConfigOptions.let {
-            if (it.mLogEnabled) {
-                enableLog(it.mLogEnabled)
+            if (it.mEnabledDebug) {
+                initLog(it.mEnabledDebug,it.mLogLevel)
             }
         }
     }
+
+    private fun initLog(enable :Boolean, logLevel:Int){
+        LogUtils.getConfig().apply {
+            isLogSwitch = enable
+            globalTag = Constant.LOG_TAG
+            setConsoleSwitch(enable)
+            setConsoleFilter(logLevel)
+        }
+    }
+
 
     fun getOaid() {
         Thread {

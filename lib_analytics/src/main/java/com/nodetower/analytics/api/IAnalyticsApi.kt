@@ -14,12 +14,6 @@ interface IAnalyticsApi {
 
 
     /**
-     * 设置是否开启 log
-     *
-     * @param enable boolean
-     */
-    fun enableLog(enable: Boolean)
-    /**
      * 获取本地缓存上限制
      *
      * @return 字节

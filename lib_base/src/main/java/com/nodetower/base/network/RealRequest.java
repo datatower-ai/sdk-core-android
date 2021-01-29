@@ -32,7 +32,7 @@ import java.util.Map;
 
 class RealRequest {
 
-    private static final String TAG = "SA.HttpRequest";
+    private static final String TAG = "HttpRequest";
     private static final int CONNECT_TIMEOUT = 30000;
     private static final int READ_TIMEOUT = 30000;
     private static String sRequestURL;

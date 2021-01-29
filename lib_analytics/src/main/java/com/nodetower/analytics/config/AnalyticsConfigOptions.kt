@@ -1,6 +1,7 @@
 package com.nodetower.analytics.config
 
-import javax.net.ssl.SSLSocketFactory
+import com.nodetower.base.utils.LogUtils
+import com.nodetower.base.utils.LogUtils.TYPE
 
 
 class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions {
@@ -11,11 +12,11 @@ class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions {
     private constructor()
 
     /**
-     * 获取 SAOptionsConfig 实例
+     * 获取 OptionsConfig 实例
      *
      * @param serverUrl，数据上报服务器地址
      */
-     constructor(appId: String?,serverUrl: String?) {
+     constructor(appId: String?, serverUrl: String?) {
         mAppId = appId
         mServerUrl = serverUrl
     }
@@ -25,20 +26,33 @@ class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions {
      * 设置数据上报地址
      *
      * @param serverUrl，数据上报地址
-     * @return SAOptionsConfig
+     * @return OptionsConfig
      */
     fun setServerUrl(serverUrl: String?): AnalyticsConfigOptions {
         mServerUrl = serverUrl
         return this
     }
 
+    /**
+     * 设置调试模式
+     *
+     * @param isDebug，是否开启debug
+     * @param logLevel，log打印级别
+     * @return OptionsConfig
+     */
+    @JvmOverloads
+    fun setDebug(isDebug: Boolean, @TYPE logLevel : Int = LogUtils.V): AnalyticsConfigOptions {
+        mEnabledDebug = isDebug
+        mLogLevel = logLevel
+        return this
+    }
 
 
     /**
      * 设置两次数据发送的最小时间间隔，最小值 5 秒
      *
      * @param flushInterval 时间间隔，单位毫秒
-     * @return SAOptionsConfig
+     * @return OptionsConfig
      */
     fun setFlushInterval(flushInterval: Int): AnalyticsConfigOptions {
         mFlushInterval = Math.max(5 * 1000, flushInterval)
@@ -67,22 +81,13 @@ class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions {
         return this
     }
 
-    /**
-     * 是否打印日志
-     *
-     * @param enableLog 是否开启打印日志
-     * @return SAOptionsConfig
-     */
-    fun enableLog(enableLog: Boolean): AnalyticsConfigOptions {
-        mLogEnabled = enableLog
-        return this
-    }
+
 
     /**
      * 设置数据的网络上传策略
      *
      * @param networkTypePolicy 数据的网络上传策略
-     * @return SAOptionsConfig
+     * @return OptionsConfig
      */
     fun setNetworkTypePolicy(networkTypePolicy: Int): AnalyticsConfigOptions {
         mNetworkTypePolicy = networkTypePolicy
@@ -92,8 +97,8 @@ class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions {
     /**
      * app ID
      *
-     * @param appId 匿名 ID
-     * @return SAOptionsConfig
+     * @param appId  ID
+     * @return OptionsConfig
      */
     fun setAppId(appId: String?): AnalyticsConfigOptions {
         mAppId = appId
@@ -110,15 +115,8 @@ class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions {
         return this
     }
 
-    /**
-     * 设置 SSLSocketFactory，HTTPS 请求连接时需要使用
-     *
-     * @param SSLSocketFactory 证书
-     * @return NTConfigOptions
-     */
-    fun setSSLSocketFactory(SSLSocketFactory: SSLSocketFactory?): AnalyticsConfigOptions {
-        mSSLSocketFactory = SSLSocketFactory
-        return this
-    }
+
+
+
 
 }
