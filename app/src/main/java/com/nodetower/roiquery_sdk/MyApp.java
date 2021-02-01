@@ -17,10 +17,8 @@ public class MyApp extends Application {
     }
 
     private void initAnalytics() {
-        AnalyticsConfigOptions analyticsConfigOptions = new AnalyticsConfigOptions("12345","https://api.roiquery.com")
-                .setDebug(true);
-
-        RoiqueryAnalyticsAPI.init(this,analyticsConfigOptions);
+        RoiqueryAnalyticsAPI.init(this,new AnalyticsConfigOptions("12345","https://api.roiquery.com")
+                .setDebug(true));
     }
 
 

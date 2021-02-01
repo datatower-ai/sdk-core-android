@@ -9,11 +9,11 @@ import org.json.JSONException
 import org.json.JSONObject
 
 
-class DbAdapter private constructor(
+class DateAdapter private constructor(
     context: Context,
     packageName: String,
 ) {
-    private val mDbParams: DbParams? = DbParams.getInstance(packageName)
+    private val mDbParams: DataParams? = DataParams.getInstance(packageName)
     private var mTrackEventOperation: DataOperation? = null
     private var mPersistentOperation: DataOperation? = null
 
@@ -36,7 +36,7 @@ class DbAdapter private constructor(
      * Removes all events from table
      */
     fun deleteAllEvents() {
-        mTrackEventOperation?.deleteData(mDbParams?.eventUri, DbParams.DB_DELETE_ALL)
+        mTrackEventOperation?.deleteData(mDbParams?.eventUri, DataParams.DB_DELETE_ALL)
     }
 
     /**
@@ -60,7 +60,7 @@ class DbAdapter private constructor(
         try {
             mPersistentOperation?.insertData(
                 mDbParams!!.appStartTimeUri,
-                JSONObject().put(DbParams.VALUE, appStartTime)
+                JSONObject().put(DataParams.VALUE, appStartTime)
             )
         } catch (e: JSONException) {
             LogUtils.printStackTrace(e)
@@ -96,7 +96,7 @@ class DbAdapter private constructor(
         try {
             mPersistentOperation?.insertData(
                 mDbParams!!.appPausedUri,
-                JSONObject().put(DbParams.VALUE, appPausedTime)
+                JSONObject().put(DataParams.VALUE, appPausedTime)
             )
         } catch (e: JSONException) {
             LogUtils.printStackTrace(e)
@@ -132,7 +132,7 @@ class DbAdapter private constructor(
         try {
             mPersistentOperation?.insertData(
                 mDbParams!!.appEndDataUri,
-                JSONObject().put(DbParams.VALUE, appEndData)
+                JSONObject().put(DataParams.VALUE, appEndData)
             )
         } catch (e: JSONException) {
             LogUtils.printStackTrace(e)
@@ -161,7 +161,7 @@ class DbAdapter private constructor(
         try {
             mPersistentOperation?.insertData(
                 mDbParams!!.loginIdUri,
-                JSONObject().put(DbParams.VALUE, loginId)
+                JSONObject().put(DataParams.VALUE, loginId)
             )
         } catch (e: JSONException) {
             LogUtils.printStackTrace(e)
@@ -189,7 +189,7 @@ class DbAdapter private constructor(
         try {
             mPersistentOperation?.insertData(
                 mDbParams!!.oaidUri,
-                JSONObject().put(DbParams.VALUE, oaid)
+                JSONObject().put(DataParams.VALUE, oaid)
             )
         } catch (e: JSONException) {
             LogUtils.printStackTrace(e)
@@ -217,8 +217,8 @@ class DbAdapter private constructor(
     fun commitGaid(gaid: String?) {
         try {
             mPersistentOperation?.insertData(
-                mDbParams!!.gaidUri,
-                JSONObject().put(DbParams.VALUE, gaid)
+                mDbParams?.gaidUri,
+                JSONObject().put(DataParams.VALUE, gaid)
             )
         } catch (e: JSONException) {
             LogUtils.printStackTrace(e)
@@ -247,7 +247,7 @@ class DbAdapter private constructor(
         try {
             mPersistentOperation?.insertData(
                 mDbParams!!.sessionTimeUri,
-                JSONObject().put(DbParams.VALUE, sessionIntervalTime)
+                JSONObject().put(DataParams.VALUE, sessionIntervalTime)
             )
         } catch (e: JSONException) {
             LogUtils.printStackTrace(e)
@@ -284,7 +284,7 @@ class DbAdapter private constructor(
         return mTrackEventOperation!!.queryDataCount(
             mDbParams?.channelPersistentUri,
             null,
-            DbParams.KEY_CHANNEL_EVENT_NAME + " = ? ",
+            DataParams.KEY_CHANNEL_EVENT_NAME + " = ? ",
             arrayOf(eventName),
             null
         ) <= 0
@@ -297,8 +297,8 @@ class DbAdapter private constructor(
      */
     fun addChannelEvent(eventName: String?) {
         val values = ContentValues()
-        values.put(DbParams.KEY_CHANNEL_EVENT_NAME, eventName)
-        values.put(DbParams.KEY_CHANNEL_RESULT, true)
+        values.put(DataParams.KEY_CHANNEL_EVENT_NAME, eventName)
+        values.put(DataParams.KEY_CHANNEL_RESULT, true)
         mTrackEventOperation!!.insertData(mDbParams?.channelPersistentUri, values)
     }
 
@@ -311,7 +311,7 @@ class DbAdapter private constructor(
         try {
             mPersistentOperation?.insertData(
                 mDbParams!!.subProcessUri,
-                JSONObject().put(DbParams.VALUE, flushState)
+                JSONObject().put(DataParams.VALUE, flushState)
             )
         } catch (e: JSONException) {
             LogUtils.printStackTrace(e)
@@ -347,7 +347,7 @@ class DbAdapter private constructor(
         try {
             mPersistentOperation?.insertData(
                 mDbParams!!.firstProcessUri,
-                JSONObject().put(DbParams.VALUE, isFirst)
+                JSONObject().put(DataParams.VALUE, isFirst)
             )
         } catch (e: JSONException) {
             LogUtils.printStackTrace(e)
@@ -386,18 +386,18 @@ class DbAdapter private constructor(
     }
 
     companion object {
-        private var instance: DbAdapter? = null
+        private var instance: DateAdapter? = null
         fun getInstance(
             context: Context, packageName: String,
 
-        ): DbAdapter? {
+        ): DateAdapter? {
             if (instance == null) {
-                instance = DbAdapter(context, packageName)
+                instance = DateAdapter(context, packageName)
             }
             return instance
         }
 
-        fun getInstance(): DbAdapter? {
+        fun getInstance(): DateAdapter? {
             checkNotNull(instance) { "The static method getInstance(Context context, String packageName) should be called before calling getInstance()" }
             return instance
         }

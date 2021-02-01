@@ -15,7 +15,7 @@ import java.io.File
 internal abstract class DataOperation(private val mContext: Context) {
     var TAG = "EventDataOperation"
     var contentResolver: ContentResolver = mContext.contentResolver
-    private val mDatabaseFile: File = mContext.getDatabasePath(DbParams.DATABASE_NAME)
+    private val mDatabaseFile: File = mContext.getDatabasePath(DataParams.DATABASE_NAME)
 
     /**
      * 保存数据
@@ -64,7 +64,7 @@ internal abstract class DataOperation(private val mContext: Context) {
      */
    open fun deleteData(uri: Uri?, id: String) {
         try {
-            if (DbParams.DB_DELETE_ALL == id) {
+            if (DataParams.DB_DELETE_ALL == id) {
                 contentResolver.delete(uri!!, null, null)
             } else {
                 contentResolver.delete(uri!!, "_id <= ?", arrayOf(id))
@@ -106,11 +106,11 @@ internal abstract class DataOperation(private val mContext: Context) {
                 TAG,
                 "There is not enough space left on the device to store events, so will delete 100 oldest events"
             )
-            val eventsData = queryData(uri, 100) ?: return DbParams.DB_OUT_OF_MEMORY_ERROR
+            val eventsData = queryData(uri, 100) ?: return DataParams.DB_OUT_OF_MEMORY_ERROR
             val lastId = eventsData[0]
             deleteData(uri, lastId)
             if (queryDataCount(uri) <= 0) {
-                return DbParams.DB_OUT_OF_MEMORY_ERROR
+                return DataParams.DB_OUT_OF_MEMORY_ERROR
             }
         }
         return 0

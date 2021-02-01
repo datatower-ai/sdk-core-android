@@ -1,8 +1,9 @@
 package com.nodetower.analytics.api
 
 import android.content.Context
+import com.nodetower.analytics.Constant
 import com.nodetower.analytics.config.AnalyticsConfigOptions
-import com.nodetower.analytics.data.DbAdapter
+import com.nodetower.analytics.data.DateAdapter
 import com.nodetower.base.utils.LogUtils
 import org.json.JSONObject
 
@@ -55,7 +56,7 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
 
     override fun getAccountId(): String? {
         if (mContext != null) {
-            return DbAdapter.getInstance(mContext,mContext.packageName)?.loginId
+            return DateAdapter.getInstance(mContext,mContext.packageName)?.loginId
         }
         return ""
     }
@@ -64,13 +65,6 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
         return mConfigOptions.mAppId
     }
 
-    override fun trackAppInstall(properties: JSONObject?) {
-
-    }
-
-    override fun trackAppInstall() {
-
-    }
 
     override fun track(eventName: String?, properties: JSONObject?) {
         mTrackTaskManager?.let {
@@ -86,7 +80,25 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
         }
     }
 
-    override fun track(eventName: String?) {
+    override fun trackAppClose(properties: JSONObject?) {
+        track(Constant.PRESET_EVENT_APP_CLOSE,properties)
+    }
+
+    override fun trackPageOpen(properties: JSONObject?) {
+        track(Constant.PRESET_EVENT_PAGE_OPEN,properties)
+    }
+
+    override fun trackPageClose(properties: JSONObject?) {
+        track(Constant.PRESET_EVENT_PAGE_CLOSE,properties)
+    }
+
+    override fun trackAdClick( properties: JSONObject?) {
+        track(Constant.PRESET_EVENT_AD_CLICK,properties)
+
+    }
+
+    override fun trackAdShow(properties: JSONObject?) {
+        track(Constant.PRESET_EVENT_AD_SHOW,properties)
 
     }
 
@@ -95,7 +107,7 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
     }
 
     override val mainProcessName: String?
-        get() =  ""
+        get() =  mainProcessName
 
     override fun flush() {
         mAnalyticsManager?.flush()
@@ -143,6 +155,8 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
 
     fun isMultiProcessFlushData() =
         mConfigOptions.isSubProcessFlushData
+
+
 
 
     companion object {

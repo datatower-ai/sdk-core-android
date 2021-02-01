@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteException
 import android.net.Uri
 import android.text.TextUtils
 import com.nodetower.analytics.data.DataOperation
-import com.nodetower.analytics.data.DbParams
+import com.nodetower.analytics.data.DataParams
 import com.nodetower.base.utils.LogUtils
 import org.json.JSONObject
 
@@ -18,15 +18,15 @@ internal class EventDataOperation(context: Context) :
     override fun insertData(uri: Uri?, jsonObject: JSONObject?): Int {
         try {
             if (deleteDataLowMemory(uri) != 0)
-                return DbParams.DB_OUT_OF_MEMORY_ERROR
+                return DataParams.DB_OUT_OF_MEMORY_ERROR
 
             val cv = ContentValues().apply {
                 put(
-                    DbParams.KEY_DATA,
+                    DataParams.KEY_DATA,
                     jsonObject.toString() + "\t" + jsonObject.toString().hashCode()
                 )
                 put(
-                    DbParams.KEY_CREATED_AT,
+                    DataParams.KEY_CREATED_AT,
                     System.currentTimeMillis()
                 )
             }
@@ -41,7 +41,7 @@ internal class EventDataOperation(context: Context) :
     override fun insertData(uri: Uri?, contentValues: ContentValues?): Int {
         try {
             if (deleteDataLowMemory(uri) != 0) {
-                return DbParams.DB_OUT_OF_MEMORY_ERROR
+                return DataParams.DB_OUT_OF_MEMORY_ERROR
             }
             contentResolver.insert(uri!!, contentValues)
         } catch (e: Exception) {
@@ -60,7 +60,7 @@ internal class EventDataOperation(context: Context) :
                 null,
                 null,
                 null,
-                DbParams.KEY_CREATED_AT.toString() + " ASC LIMIT " + limit
+                DataParams.KEY_CREATED_AT.toString() + " ASC LIMIT " + limit
             )
             if (cursor != null) {
                 val dataBuilder = StringBuilder()
@@ -81,7 +81,7 @@ internal class EventDataOperation(context: Context) :
                         last_id = cursor.getString(cursor.getColumnIndex("_id"))
                     }
                     try {
-                        keyData = cursor.getString(cursor.getColumnIndex(DbParams.KEY_DATA))
+                        keyData = cursor.getString(cursor.getColumnIndex(DataParams.KEY_DATA))
                         keyData = parseData(keyData)
                         if (!TextUtils.isEmpty(keyData)) {
                             dataBuilder
@@ -108,7 +108,7 @@ internal class EventDataOperation(context: Context) :
             cursor?.close()
         }
         return if (last_id != null) {
-            arrayOf(last_id, data!!, DbParams.GZIP_DATA_EVENT)
+            arrayOf(last_id, data!!, DataParams.GZIP_DATA_EVENT)
         } else null
     }
 

@@ -4,14 +4,19 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
+import com.android.installreferrer.api.InstallReferrerClient
+import com.android.installreferrer.api.InstallReferrerStateListener
+import com.android.installreferrer.api.ReferrerDetails
 import com.nodetower.analytics.BuildConfig
 import com.nodetower.analytics.Constant
 import com.nodetower.analytics.config.AnalyticsConfigOptions
 import com.nodetower.analytics.core.AnalyticsManager
 import com.nodetower.analytics.core.TrackTaskManager
 import com.nodetower.analytics.core.TrackTaskManagerThread
-import com.nodetower.analytics.data.DbAdapter
-import com.nodetower.analytics.utils.DataHelper.assertKey
+import com.nodetower.analytics.data.DateAdapter
+import com.nodetower.analytics.data.DataParams
+import com.nodetower.analytics.data.persistent.PersistentAppFirstOpen
+import com.nodetower.analytics.data.persistent.PersistentLoader
 import com.nodetower.analytics.utils.DataHelper.assertPropertyTypes
 import com.nodetower.analytics.utils.DataUtils
 import com.nodetower.analytics.utils.GaidHelper
@@ -23,6 +28,11 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.security.SecureRandom
 import java.util.*
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.ScheduledThreadPoolExecutor
+import java.util.concurrent.TimeUnit
+import kotlin.collections.HashMap
 
 
 abstract class AbstractAnalyticsApi : IAnalyticsApi {
@@ -48,23 +58,36 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     protected var mSessionTime = 30 * 1000
 
     // 事件信息，包含事件的基本数据
-    private var mEventInfo: Map<String, Any?>? = null
+    private var mEventInfo: MutableMap<String, Any?>? = null
 
     // 事件通用属性
-    private var mCommonProperties: Map<String, Any?>? = null
+    private var mCommonProperties: MutableMap<String, Any?>? = null
 
+    //是否允许采集did
     private var mDisableTrackDeviceId = false
 
+    //事件采集管理
     protected var mTrackTaskManager: TrackTaskManager? = null
 
+    //事件采集线程
     private var mTrackTaskManagerThread: TrackTaskManagerThread? = null
 
+    //采集 app 活跃事件线程池
+    private var mTrackEngagementEventExecutors: ScheduledThreadPoolExecutor? = null
+
+
+    //采集 、上报管理
     protected var mAnalyticsManager: AnalyticsManager? = null
 
-    private var mDbAdapter: DbAdapter? = null
+    //本地数据适配器，包括sp、db的操作
+    private var mDataAdapter: DateAdapter? = null
+
+    //是否为第一打开app标记
+    var mAppFirstOpen: PersistentAppFirstOpen? = null
 
     companion object {
         const val TAG = "NT.AnalyticsApi"
+
         // 适配多进程场景
         val S_INSTANCE_MAP: MutableMap<Context, RoiqueryAnalyticsAPI> =
             HashMap<Context, RoiqueryAnalyticsAPI>()
@@ -76,26 +99,52 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     constructor(
         context: Context?,
         serverUrl: String = ""
-
     ) {
         mContext = context
         mServerUrl = serverUrl
-        mDbAdapter = DbAdapter.getInstance(mContext!!, mContext.packageName)
+        initConfig(serverUrl, context!!.packageName)
+        initLocalData(context)
+        initProperties()
+        initTrack(context)
+    }
+
+    /**
+     * 初始化本地数据
+     */
+    private fun initLocalData(context: Context) {
+        PersistentLoader.initLoader(context)
+        mAppFirstOpen =
+            PersistentLoader.loadPersistent(DataParams.TABLE_APP_FIRST_OPEN) as PersistentAppFirstOpen?
+
+        mDataAdapter = DateAdapter.getInstance(mContext!!, mContext.packageName)
+    }
+
+    /**
+     * 初始化预置、通用属性
+     */
+    private fun initProperties() {
         getGaid()
         getOaid()
+        initEventInfo()
+        initCommonProperties()
+    }
 
-        mEventInfo = setupEventInfo()
-        mCommonProperties = setupCommonProperties()
-        initConfig(serverUrl, mContext.packageName)
+    /**
+     * 初始化数据采集
+     */
+    private fun initTrack(context: Context) {
         mTrackTaskManager = TrackTaskManager.instance
         mTrackTaskManager?.let {
             mConfigOptions.isDataCollectEnable.let { it1 -> it.setDataCollectEnable(it1) }
         }
         mTrackTaskManagerThread = TrackTaskManagerThread()
+        //开启事件收集线程
         Thread(mTrackTaskManagerThread, "TaskQueueThread").start()
 
-        mAnalyticsManager = AnalyticsManager.getInstance(mContext, this as RoiqueryAnalyticsAPI)
+        mAnalyticsManager = AnalyticsManager.getInstance(context, this as RoiqueryAnalyticsAPI)
 
+        trackAppOpenEvent()
+        tackAppEngagementEvent()
     }
 
     constructor() {
@@ -137,7 +186,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     ) {
         try {
             //检查事件名
-            assertKey(eventName)
+//            assertKey(eventName)
             //检查事件属性
             assertPropertyTypes(properties)
 
@@ -176,23 +225,25 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
      *
      * @return
      */
-    protected open fun setupEventInfo(): Map<String, Any?>? =
-        Collections.unmodifiableMap(HashMap<String, String?>().apply {
+    protected open fun initEventInfo() {
+        mEventInfo = mutableMapOf<String, Any?>().apply {
             put("#did", DeviceUtils.getAndroidID(mContext!!))//设备 ID。即唯一ID，区分设备的最小ID
             put("#acid", getAccountId())//登录账号id
-            put("#gaid", mDbAdapter?.gaid.toString())//谷歌广告标识id,不同app在同一个设备上gdid一样
-            put("#oaid", mDbAdapter?.oaid.toString())//华为广告标识id,不同app在同一个设备上oaid一样
+            put("#gaid", mDataAdapter?.gaid.toString())//谷歌广告标识id,不同app在同一个设备上gdid一样
+            put("#oaid", mDataAdapter?.oaid.toString())//华为广告标识id,不同app在同一个设备上oaid一样
             put("#app_id", getAppId())//应用唯一标识,后台分配
             put("#pkg", mContext.packageName)//包名
-        })
+        }
+
+    }
 
     /**
      * 获取并配置 事件通用属性
      *
      * @return
      */
-    protected open fun setupCommonProperties(): Map<String, Any>? =
-        Collections.unmodifiableMap(HashMap<String, String>().apply {
+    protected open fun initCommonProperties() {
+        mCommonProperties = mutableMapOf<String, Any?>().apply {
             put("#mcc", DeviceUtils.getMcc(mContext!!).toString())//移动信号国家码
             put("#mnc", DeviceUtils.getMnc(mContext).toString())//移动信号网络码
             put("#os_country", DeviceUtils.getLocalCountry(mContext))//系统国家
@@ -202,14 +253,20 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             put("#sdk_version", BuildConfig.VERSION_NAME)//SDK 版本,如 1.1.2
             put("#os", "Android")//如 Android、iOS 等
             put("#os_version", DeviceUtils.oS)//操作系统版本,iOS 11.2.2、Android 8.0.0 等
-            put("#browser_version", "")//浏览器版本,用户使用的浏览器的版本，如 Chrome 61.0，Firefox 57.0 等
+            put(
+                "#browser_version",
+                DeviceUtils.getBrowserOS(mContext)
+            )//浏览器版本,用户使用的浏览器的版本，如 Chrome 61.0，Firefox 57.0 等
             put("#device_manufacturer", DeviceUtils.manufacturer)//用户设备的制造商，如 Apple，vivo 等
             put("#device_brand", DeviceUtils.brand)//设备品牌,如 Galaxy、Pixel
             put("#device_model", DeviceUtils.model)//设备型号,用户设备的型号，如 iPhone 8 等
             val size = DeviceUtils.getDeviceSize(mContext)
             put("#screen_height", size[0].toString())//屏幕高度
             put("#screen_width", size[1].toString())//屏幕宽度
-        })
+        }
+    }
+
+
 
 
     /**
@@ -233,7 +290,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
         mConfigOptions.let { configOptions ->
 
-            initLog(configOptions.mEnabledDebug,configOptions.mLogLevel)
+            initLog(configOptions.mEnabledDebug, configOptions.mLogLevel)
             setServerUrl(serverURL)
 
             if (configOptions.mFlushInterval == 0) {
@@ -252,7 +309,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
                 )
             }
             if (configOptions.isSubProcessFlushData) {
-                mDbAdapter?.let {
+                mDataAdapter?.let {
                     if (it.isFirstProcess) {
                         //如果是首个进程
                         it.commitFirstProcessState(false)
@@ -278,12 +335,12 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     protected open fun applySAConfigOptions() {
         mConfigOptions.let {
             if (it.mEnabledDebug) {
-                initLog(it.mEnabledDebug,it.mLogLevel)
+                initLog(it.mEnabledDebug, it.mLogLevel)
             }
         }
     }
 
-    private fun initLog(enable :Boolean, logLevel:Int){
+    private fun initLog(enable: Boolean, logLevel: Int) {
         LogUtils.getConfig().apply {
             isLogSwitch = enable
             globalTag = Constant.LOG_TAG
@@ -292,21 +349,25 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         }
     }
 
-
     fun getOaid() {
         Thread {
-            DbAdapter.getInstance()?.commitOaid(
-                mContext?.let {
-                    OaidHelper.getOAID(it) }
+            val oaid = OaidHelper.getOAID(mContext!!)
+            mDataAdapter?.commitOaid(
+                oaid
             )
+            mEventInfo?.remove("#oaid")
+            mEventInfo?.set("#oaid",oaid)
         }.start()
     }
 
     fun getGaid() {
         GaidHelper.getAdInfo(mContext?.applicationContext, object : GaidHelper.GaidListener {
             override fun onSuccess(info: GaidHelper.AdIdInfo) {
-                DbAdapter.getInstance()?.commitGaid(info.adId)
+                mDataAdapter?.commitGaid(info.adId)
+                mEventInfo?.remove("#gaid")
+                mEventInfo?.set("#gaid",info.adId)
             }
+
             override fun onException(exception: java.lang.Exception) {
                 LogUtils.printStackTrace(exception)
             }
@@ -314,4 +375,97 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     }
 
 
+    /**
+     * 采集app 启动事件
+     */
+    private fun trackAppOpenEvent() {
+        if (mAppFirstOpen?.get() != null) {
+            if (mAppFirstOpen?.get()!!) {
+                track(Constant.PRESET_EVENT_APP_FIRST_OPEN)
+                mAppFirstOpen?.commit(false)
+                getAppAttribute()
+            } else {
+                track(Constant.PRESET_EVENT_APP_OPEN)
+            }
+        } else {
+            track(Constant.PRESET_EVENT_APP_FIRST_OPEN)
+            mAppFirstOpen?.commit(false)
+            getAppAttribute()
+        }
+    }
+
+    /**
+     * 获取 app 归因属性
+     */
+    private fun getAppAttribute() {
+        var referrerClient: InstallReferrerClient =
+            InstallReferrerClient.newBuilder(mContext).build()
+        referrerClient.startConnection(object : InstallReferrerStateListener {
+
+            override fun onInstallReferrerSetupFinished(responseCode: Int) {
+                when (responseCode) {
+                    InstallReferrerClient.InstallReferrerResponse.OK -> {
+                        // Connection established.
+                        trackAppAttributeEvent(referrerClient.installReferrer, "")
+                    }
+                    else -> trackAppAttributeEvent(
+                        referrerClient.installReferrer,
+                        responseCode.toString()
+                    )
+                }
+                referrerClient.endConnection()
+            }
+
+            override fun onInstallReferrerServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+                trackAppAttributeEvent(
+                    referrerClient.installReferrer,
+                    "onInstallReferrerServiceDisconnected"
+                )
+                referrerClient.endConnection()
+            }
+        })
+    }
+
+    /**
+     * 采集 app 归因属性事件
+     */
+    private fun trackAppAttributeEvent(response: ReferrerDetails, failedReason: String) {
+        val property = if (failedReason.isBlank()) {
+            PropertyBuilder.newInstance()
+                .append(
+                    HashMap<String?, Any>().apply {
+                        put("referrerUrl", response.installReferrer)
+                        put("referrerClickTime", response.referrerClickTimestampSeconds)
+                        put("appInstallTime", response.installBeginTimestampSeconds)
+                        put("instantExperienceLaunched", response.googlePlayInstantParam)
+                    }
+                ).toJSONObject()
+
+        } else {
+            PropertyBuilder.newInstance().append("failed_reason", failedReason).toJSONObject()
+        }
+
+        track(Constant.PRESET_EVENT_APP_ATTRIBUTE, property)
+    }
+
+    /**
+     * 采集 app 活跃事件
+     */
+    private fun tackAppEngagementEvent(){
+        if (mTrackEngagementEventExecutors != null && !mTrackEngagementEventExecutors?.isShutdown!!) {
+            mTrackEngagementEventExecutors?.shutdown()
+        }
+        mTrackEngagementEventExecutors = ScheduledThreadPoolExecutor(1)
+        mTrackEngagementEventExecutors?.scheduleAtFixedRate(
+            {
+                track(Constant.PRESET_EVENT_APP_ENGAGEMENT)
+            },
+            0,
+            Constant.APP_ENGAGEMENT_INTERVAL_TIME,
+            TimeUnit.MILLISECONDS
+        )
+
+    }
 }

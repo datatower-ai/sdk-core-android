@@ -42,19 +42,19 @@ class DataContentProvider : ContentProvider() {
             }
             val authority = "$packageName.AnalyticsDataContentProvider"
             contentResolver = context.contentResolver
-            uriMatcher.addURI(authority, DbParams.TABLE_EVENTS, EVENTS)
-            uriMatcher.addURI(authority, DbParams.TABLE_ACTIVITY_START_COUNT, ACTIVITY_START_COUNT)
-            uriMatcher.addURI(authority, DbParams.TABLE_APP_START_TIME, APP_START_TIME)
-            uriMatcher.addURI(authority, DbParams.TABLE_APP_END_DATA, APP_END_DATA)
-            uriMatcher.addURI(authority, DbParams.TABLE_APP_END_TIME, APP_PAUSED_TIME)
+            uriMatcher.addURI(authority, DataParams.TABLE_EVENTS, EVENTS)
+            uriMatcher.addURI(authority, DataParams.TABLE_ACTIVITY_START_COUNT, ACTIVITY_START_COUNT)
+            uriMatcher.addURI(authority, DataParams.TABLE_APP_START_TIME, APP_START_TIME)
+            uriMatcher.addURI(authority, DataParams.TABLE_APP_END_DATA, APP_END_DATA)
+            uriMatcher.addURI(authority, DataParams.TABLE_APP_END_TIME, APP_PAUSED_TIME)
             uriMatcher.addURI(
                 authority,
-                DbParams.TABLE_SESSION_INTERVAL_TIME,
+                DataParams.TABLE_SESSION_INTERVAL_TIME,
                 SESSION_INTERVAL_TIME
             )
-            uriMatcher.addURI(authority, DbParams.TABLE_LOGIN_ID, LOGIN_ID)
-            uriMatcher.addURI(authority, DbParams.TABLE_GAID, GAID)
-            uriMatcher.addURI(authority, DbParams.TABLE_OAID, OAID)
+            uriMatcher.addURI(authority, DataParams.TABLE_LOGIN_ID, LOGIN_ID)
+            uriMatcher.addURI(authority, DataParams.TABLE_GAID, GAID)
+            uriMatcher.addURI(authority, DataParams.TABLE_OAID, OAID)
 //            uriMatcher.addURI(authority, DbParams.TABLE_FIRST_PROCESS_START, FIRST_PROCESS_START)
             dbHelper = EventDataDBHelper(context)
 
@@ -66,11 +66,11 @@ class DataContentProvider : ContentProvider() {
 //            persistentAppPaused =
 //                PersistentLoader.loadPersistent(DbParams.TABLE_APP_END_TIME) as PersistentAppPaused
             persistentLoginId =
-                PersistentLoader.loadPersistent(DbParams.TABLE_LOGIN_ID) as PersistentLoginId
+                PersistentLoader.loadPersistent(DataParams.TABLE_LOGIN_ID) as PersistentLoginId
             persistentGaid =
-                PersistentLoader.loadPersistent(DbParams.TABLE_GAID) as PersistentGaid
+                PersistentLoader.loadPersistent(DataParams.TABLE_GAID) as PersistentGaid
             persistentOaid =
-                PersistentLoader.loadPersistent(DbParams.TABLE_OAID) as PersistentOaid
+                PersistentLoader.loadPersistent(DataParams.TABLE_OAID) as PersistentOaid
 //            persistentFlushDataState =
 //                PersistentLoader.loadPersistent(DbParams.TABLE_SUB_PROCESS_FLUSH_DATA) as PersistentFlushDataState
         }
@@ -87,7 +87,7 @@ class DataContentProvider : ContentProvider() {
             if (EVENTS == code) {
                 try {
                     val database: SQLiteDatabase = dbHelper!!.writableDatabase
-                    deletedCounts = database.delete(DbParams.TABLE_EVENTS, selection, selectionArgs)
+                    deletedCounts = database.delete(DataParams.TABLE_EVENTS, selection, selectionArgs)
                 } catch (e: SQLiteException) {
                     isDbWritable = false
                     LogUtils.printStackTrace(e)
@@ -134,10 +134,10 @@ class DataContentProvider : ContentProvider() {
             LogUtils.printStackTrace(e)
             return uri
         }
-        if (!values.containsKey(DbParams.KEY_DATA) || !values.containsKey(DbParams.KEY_CREATED_AT)) {
+        if (!values.containsKey(DataParams.KEY_DATA) || !values.containsKey(DataParams.KEY_CREATED_AT)) {
             return uri
         }
-        val d = database.insert(DbParams.TABLE_EVENTS, "_id", values)
+        val d = database.insert(DataParams.TABLE_EVENTS, "_id", values)
         return ContentUris.withAppendedId(uri, d)
     }
 
@@ -150,11 +150,11 @@ class DataContentProvider : ContentProvider() {
             LogUtils.printStackTrace(e)
             return uri
         }
-        if (!values.containsKey(DbParams.KEY_CHANNEL_EVENT_NAME) || !values.containsKey(DbParams.KEY_CHANNEL_RESULT)) {
+        if (!values.containsKey(DataParams.KEY_CHANNEL_EVENT_NAME) || !values.containsKey(DataParams.KEY_CHANNEL_RESULT)) {
             return uri
         }
         val d = database.insertWithOnConflict(
-            DbParams.TABLE_CHANNEL_PERSISTENT,
+            DataParams.TABLE_CHANNEL_PERSISTENT,
             null,
             values,
             SQLiteDatabase.CONFLICT_REPLACE
@@ -202,10 +202,10 @@ class DataContentProvider : ContentProvider() {
         try {
             val code = uriMatcher.match(uri)
             cursor = if (code == EVENTS) {
-                queryByTable(DbParams.TABLE_EVENTS, projection, selection, selectionArgs, sortOrder)
+                queryByTable(DataParams.TABLE_EVENTS, projection, selection, selectionArgs, sortOrder)
             } else if (code == CHANNEL_PERSISTENT) {
                 queryByTable(
-                    DbParams.TABLE_CHANNEL_PERSISTENT,
+                    DataParams.TABLE_CHANNEL_PERSISTENT,
                     projection,
                     selection,
                     selectionArgs,
@@ -256,7 +256,7 @@ class DataContentProvider : ContentProvider() {
      */
     private fun insert(code: Int, uri: Uri, values: ContentValues) {
         when (code) {
-            ACTIVITY_START_COUNT -> startActivityCount = values.getAsInteger(DbParams.TABLE_ACTIVITY_START_COUNT)
+            ACTIVITY_START_COUNT -> startActivityCount = values.getAsInteger(DataParams.TABLE_ACTIVITY_START_COUNT)
 
 //            APP_START_TIME -> persistentAppStartTime.commit(values.getAsLong(DbParams.TABLE_APP_START_TIME))
 //
@@ -265,20 +265,20 @@ class DataContentProvider : ContentProvider() {
 //            APP_END_DATA -> persistentAppEndData.commit(values.getAsString(DbParams.TABLE_APP_END_DATA))
 
             SESSION_INTERVAL_TIME -> {
-                mSessionTime = values.getAsInteger(DbParams.TABLE_SESSION_INTERVAL_TIME)
+                mSessionTime = values.getAsInteger(DataParams.TABLE_SESSION_INTERVAL_TIME)
                 contentResolver!!.notifyChange(uri, null)
             }
 
-            LOGIN_ID -> persistentLoginId?.commit(values.getAsString(DbParams.TABLE_LOGIN_ID))
+            LOGIN_ID -> persistentLoginId?.commit(values.getAsString(DataParams.TABLE_LOGIN_ID))
 
-            GAID -> persistentLoginId?.commit(values.getAsString(DbParams.TABLE_GAID))
+            GAID -> persistentGaid?.commit(values.getAsString(DataParams.TABLE_GAID))
 
-            OAID -> persistentLoginId?.commit(values.getAsString(DbParams.TABLE_OAID))
+            OAID -> persistentOaid?.commit(values.getAsString(DataParams.TABLE_OAID))
 //
 //            FLUSH_DATA -> persistentFlushDataState.commit(values.getAsBoolean(DbParams.TABLE_SUB_PROCESS_FLUSH_DATA))
 
             FIRST_PROCESS_START -> isFirstProcessStarted =
-                values.getAsBoolean(DbParams.TABLE_FIRST_PROCESS_START)
+                values.getAsBoolean(DataParams.TABLE_FIRST_PROCESS_START)
             else -> {
 
             }
@@ -297,7 +297,7 @@ class DataContentProvider : ContentProvider() {
         when (code) {
             ACTIVITY_START_COUNT -> {
                 data = startActivityCount
-                column = DbParams.TABLE_ACTIVITY_START_COUNT
+                column = DataParams.TABLE_ACTIVITY_START_COUNT
             }
 //            APP_START_TIME -> {
 //                data = persistentAppStartTime.get()
@@ -313,11 +313,19 @@ class DataContentProvider : ContentProvider() {
 //            }
             SESSION_INTERVAL_TIME -> {
                 data = mSessionTime
-                column = DbParams.TABLE_SESSION_INTERVAL_TIME
+                column = DataParams.TABLE_SESSION_INTERVAL_TIME
             }
             LOGIN_ID -> {
                 data = persistentLoginId?.get()
-                column = DbParams.TABLE_LOGIN_ID
+                column = DataParams.TABLE_LOGIN_ID
+            }
+            GAID -> {
+                data = persistentGaid?.get()
+                column = DataParams.TABLE_GAID
+            }
+            OAID -> {
+                data = persistentOaid?.get()
+                column = DataParams.TABLE_OAID
             }
 //            FLUSH_DATA -> synchronized(
 //                SensorsDataContentProvider::class.java
@@ -332,7 +340,7 @@ class DataContentProvider : ContentProvider() {
 //            }
             FIRST_PROCESS_START -> {
                 data = if (isFirstProcessStarted) 1 else 0
-                column = DbParams.TABLE_FIRST_PROCESS_START
+                column = DataParams.TABLE_FIRST_PROCESS_START
             }
             else -> {
             }

@@ -5,8 +5,8 @@ import android.os.*
 import android.text.TextUtils
 import com.nodetower.analytics.Constant
 import com.nodetower.analytics.api.RoiqueryAnalyticsAPI
-import com.nodetower.analytics.data.DbAdapter
-import com.nodetower.analytics.data.DbParams
+import com.nodetower.analytics.data.DateAdapter
+import com.nodetower.analytics.data.DataParams
 import com.nodetower.base.network.HttpCallback
 import com.nodetower.base.network.HttpMethod
 import com.nodetower.base.network.RequestHelper
@@ -26,7 +26,7 @@ class AnalyticsManager private constructor(
     var mAnalyticsDataAPI: RoiqueryAnalyticsAPI
 ) {
     private val mWorker: Worker = Worker()
-    private val mDbAdapter: DbAdapter? = DbAdapter.getInstance()
+    private val mDbAdapter: DateAdapter? = DateAdapter.getInstance()
 
 
     fun enqueueEventMessage(name: String, eventJson: JSONObject) {
@@ -34,18 +34,19 @@ class AnalyticsManager private constructor(
             synchronized(mDbAdapter!!) {
                 //插入数据库
                 val ret = mDbAdapter.addJSON(eventJson)
-                val msg = if (ret < 0) "Failed to enqueue the event: " else "insert event to db : "
-                LogUtils.json(TAG + msg,eventJson.toString())
+                val msg =
+                    if (ret < 0) " Failed to insert the event " else " the event: $name  has been inserted to db  "
+                LogUtils.json(TAG + msg, eventJson.toString())
                 //发送上报的message
                 Message.obtain().apply {
                     //上报标志
                     this.what = FLUSH_QUEUE
                     //库存已满
-                    if (ret == DbParams.DB_OUT_OF_MEMORY_ERROR) {
+                    if (ret == DataParams.DB_OUT_OF_MEMORY_ERROR) {
                         mWorker.runMessage(this)
                     } else {
                         // 超过本地缓存 立即发送（或者有特殊事件需要立即上报）
-                        if ( ret > mAnalyticsDataAPI.flushBulkSize) {
+                        if (ret > mAnalyticsDataAPI.flushBulkSize) {
                             mWorker.runMessage(this)
                         } else {
                             //不立即上报，有时间间隔
@@ -104,7 +105,7 @@ class AnalyticsManager private constructor(
                 if (mDbAdapter!!.isSubProcessFlushing) {
                     return false
                 }
-                DbAdapter.getInstance()!!.commitSubProcessFlushState(true)
+                DateAdapter.getInstance()!!.commitSubProcessFlushState(true)
             } else if (!mAnalyticsDataAPI.mIsMainProcess) { //不是主进程
                 return false
             }
@@ -123,7 +124,7 @@ class AnalyticsManager private constructor(
         if (!enableUploadData()) return
         //这里每次只发送一条,后续可以考虑一次上报多条数据
         var eventsData: Array<String>? =
-            mDbAdapter?.generateDataString(DbParams.TABLE_EVENTS, 1)
+            mDbAdapter?.generateDataString(DataParams.TABLE_EVENTS, 1)
 
         if (eventsData == null) {
             mDbAdapter?.commitSubProcessFlushState(false)
@@ -147,11 +148,17 @@ class AnalyticsManager private constructor(
                 }
 
                 override fun onResponse(response: String?) {
-                    LogUtils.json(TAG, response)
-                    if (!response.isNullOrBlank() && JSONObject(response).get("code") == 0)
+                    LogUtils.json("$TAG upload event result  ", response)
+                    if (!response.isNullOrBlank() && JSONObject(response).get("code") == 0) {
+                        LogUtils.json("$TAG  the event has been uploaded to server  ", event)
                         //上报成功后删除本地数据
                         mDbAdapter?.cleanupEvents(lastId)
+                        //避免事件积压
+                        flush(mAnalyticsDataAPI.flushInterval.toLong())
+                    }
+
                 }
+
                 override fun onAfter() {
 
                 }

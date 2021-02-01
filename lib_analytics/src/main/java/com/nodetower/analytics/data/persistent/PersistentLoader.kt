@@ -3,20 +3,16 @@ package com.nodetower.analytics.data.persistent
 import android.content.Context
 import android.content.SharedPreferences
 import android.text.TextUtils
-import com.nodetower.analytics.data.DbParams
+import com.nodetower.analytics.data.DataParams.Companion.TABLE_APP_FIRST_OPEN
+import com.nodetower.analytics.data.DataParams.Companion.TABLE_GAID
+import com.nodetower.analytics.data.DataParams.Companion.TABLE_LOGIN_ID
+import com.nodetower.analytics.data.DataParams.Companion.TABLE_OAID
 import com.nodetower.base.data.PersistentIdentity
 import java.util.concurrent.Future
 
 
 class PersistentLoader private constructor() {
 
-    interface PersistentName {
-        companion object {
-            const val LOGIN_ID = "events_login_id"
-            const val GAID = "events_gaid"
-            const val OAID = "events_oaid"
-        }
-    }
 
    private constructor(context: Context) : this() {
         mContext = context.applicationContext
@@ -45,9 +41,10 @@ class PersistentLoader private constructor() {
             return if (TextUtils.isEmpty(persistentKey)) {
                 null
             } else when (persistentKey) {
-                PersistentName.LOGIN_ID -> storedPreferences?.let { PersistentLoginId(it) }
-                PersistentName.OAID -> storedPreferences?.let { PersistentOaid(it) }
-                PersistentName.GAID -> storedPreferences?.let { PersistentGaid(it) }
+                TABLE_LOGIN_ID -> storedPreferences?.let { PersistentLoginId(it) }
+                TABLE_OAID -> storedPreferences?.let { PersistentOaid(it) }
+                TABLE_GAID -> storedPreferences?.let { PersistentGaid(it) }
+                TABLE_APP_FIRST_OPEN -> storedPreferences?.let { PersistentAppFirstOpen(it) }
                 else -> null
         }
     }

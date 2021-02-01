@@ -3,7 +3,7 @@ package com.nodetower.analytics.data
 import android.net.Uri
 
 
-class DbParams private constructor(packageName: String) {
+class DataParams private constructor(packageName: String) {
     /**
      * 获取 Event Uri
      *
@@ -103,7 +103,7 @@ class DbParams private constructor(packageName: String) {
         const val KEY_CHANNEL_RESULT = "result"
 
         /* 数据库名称 */
-        const val DATABASE_NAME = "roiquerydata"
+        const val DATABASE_NAME = "roiquery_analytics_db"
 
         /* 数据库版本号 */
         const val DATABASE_VERSION = 1
@@ -119,6 +119,7 @@ class DbParams private constructor(packageName: String) {
         const val TABLE_LOGIN_ID = "events_login_id"
         const val TABLE_GAID = "events_gaid"
         const val TABLE_OAID = "events_oaid"
+        const val TABLE_APP_FIRST_OPEN = "events_app_first_open"
 
         /* Event 表字段 */
         const val KEY_DATA = "data"
@@ -132,15 +133,15 @@ class DbParams private constructor(packageName: String) {
 
         /* 删除所有数据 */
         const val DB_DELETE_ALL = "DB_DELETE_ALL"
-        private var instance: DbParams? = null
-        fun getInstance(packageName: String): DbParams? {
+        private var instance: DataParams? = null
+        fun getInstance(packageName: String): DataParams? {
             if (instance == null) {
-                instance = DbParams(packageName)
+                instance = DataParams(packageName)
             }
             return instance
         }
 
-        fun getInstance(): DbParams? {
+        fun getInstance(): DataParams? {
             checkNotNull(instance) { "The static method getInstance(String packageName) should be called before calling getInstance()" }
             return instance
         }

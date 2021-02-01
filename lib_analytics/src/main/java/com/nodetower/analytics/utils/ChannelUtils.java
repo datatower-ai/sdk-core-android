@@ -24,7 +24,7 @@ import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 
-import com.nodetower.analytics.data.DbAdapter;
+import com.nodetower.analytics.data.DateAdapter;
 import com.nodetower.base.utils.LogUtils;
 
 import org.json.JSONException;
@@ -385,9 +385,9 @@ public class ChannelUtils {
      * @return 是否是首次触发
      */
     public static boolean isFirstChannelEvent(String eventName) {
-        boolean isFirst = DbAdapter.Companion.getInstance().isFirstChannelEvent(eventName);
+        boolean isFirst = DateAdapter.Companion.getInstance().isFirstChannelEvent(eventName);
         if (isFirst) {
-            DbAdapter.Companion.getInstance().addChannelEvent(eventName);
+            DateAdapter.Companion.getInstance().addChannelEvent(eventName);
         }
         return isFirst;
     }

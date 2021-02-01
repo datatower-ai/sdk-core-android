@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 
@@ -74,7 +75,7 @@ class RealRequest {
         try {
             HttpURLConnection conn;
             sRequestURL = requestURL;
-            LogUtils.i(TAG, String.format("url:%s\nparams:%s\nmethod:POST", requestURL, body));
+//            LogUtils.i(TAG, String.format("url:%s\nparams:%s\nmethod:POST", requestURL, body));
             conn = getHttpURLConnection(requestURL, "POST");
             conn.setDoOutput(true);
             conn.setUseCaches(false);
@@ -176,7 +177,7 @@ class RealRequest {
                 conn.disconnect();
             }
         }
-        LogUtils.i(TAG, response.toString());
+//        LogUtils.i(TAG, response.toString());
         return response;
     }
 

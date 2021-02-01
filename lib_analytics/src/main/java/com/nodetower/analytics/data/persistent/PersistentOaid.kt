@@ -1,6 +1,7 @@
 package com.nodetower.analytics.data.persistent
 
 import android.content.SharedPreferences
+import com.nodetower.analytics.data.DataParams
 import com.nodetower.base.data.PersistentIdentity
 import java.util.concurrent.Future
 
@@ -8,7 +9,7 @@ import java.util.concurrent.Future
 class PersistentOaid(loadStoredPreferences: Future<SharedPreferences>) :
     PersistentIdentity<String?>(
         loadStoredPreferences,
-        PersistentLoader.PersistentName.LOGIN_ID,
+        DataParams.TABLE_OAID,
         object : PersistentSerializer<String?> {
             override fun load(value: String?): String {
                 return value!!

@@ -12,6 +12,7 @@ import android.telephony.TelephonyManager
 import android.text.TextUtils
 import android.view.Surface
 import android.view.WindowManager
+import android.webkit.WebView
 import com.nodetower.base.c
 import java.util.*
 
@@ -114,6 +115,11 @@ object DeviceUtils {
         return if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) height else width
     }
 
+
+    fun getBrowserOS(context: Context):String{
+       var s = WebView(context).settings.userAgentString
+        return s.subSequence(1,3).toString()
+    }
 
     /**
      * 获取 Android ID

@@ -121,19 +121,6 @@ interface IAnalyticsApi {
     fun getAppId(): String?
 
 
-    /**
-     * 记录 $AppInstall 事件，用于在 App 首次启动时追踪渠道来源，并设置追踪渠道事件的属性。
-     * 这是 Sensors Analytics 进阶功能，请参考文档 https://sensorsdata.cn/manual/track_installation.html
-     *
-     * @param properties 渠道追踪事件的属性
-     */
-    fun trackAppInstall(properties: JSONObject?)
-
-    /**
-     * 记录 $AppInstall 事件，用于在 App 首次启动时追踪渠道来源，并设置追踪渠道事件的属性。
-     * 这是 Sensors Analytics 进阶功能，请参考文档 https://sensorsdata.cn/manual/track_installation.html
-     */
-    fun trackAppInstall()
 
     /**
      * 调用 track 接口，追踪一个带有属性的事件
@@ -141,14 +128,59 @@ interface IAnalyticsApi {
      * @param eventName 事件的名称
      * @param properties 事件的属性
      */
-    fun track(eventName: String?, properties: JSONObject?)
+    fun track(eventName: String?, properties: JSONObject? = JSONObject())
+
+
 
     /**
-     * 与 [.track] 类似，无事件属性
+     * 采集 app 退出
      *
      * @param eventName 事件的名称
+     * @param properties 事件的属性
      */
-    fun track(eventName: String?)
+    fun trackAppClose(properties: JSONObject? = JSONObject())
+
+
+
+    /**
+     * 采集页面打开事件
+     *
+     * @param eventName 事件的名称
+     * @param properties 事件的属性
+     */
+    fun trackPageOpen( properties: JSONObject? = JSONObject())
+
+
+
+    /**
+     * 采集页面关闭事件
+     *
+     * @param eventName 事件的名称
+     * @param properties 事件的属性
+     */
+    fun trackPageClose(properties: JSONObject? = JSONObject())
+
+
+
+    /**
+     * 采集广告点击事件
+     *
+     * @param eventName 事件的名称
+     * @param properties 事件的属性
+     */
+    fun trackAdClick(properties: JSONObject? = JSONObject())
+
+
+
+    /**
+     * 采集广告展示事件
+     *
+     * @param eventName 事件的名称
+     * @param properties 事件的属性
+     */
+    fun trackAdShow(properties: JSONObject? = JSONObject())
+
+
 
 
     /**

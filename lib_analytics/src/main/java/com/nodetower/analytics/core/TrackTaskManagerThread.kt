@@ -12,7 +12,7 @@ class TrackTaskManagerThread internal constructor() : Runnable {
     /**
      * 创建一个可重用固定线程数的线程池
      */
-    private var mPool: ExecutorService? = null
+    private var mTrackExecutor: ExecutorService? = null
 
     /**
      * 是否停止
@@ -25,14 +25,14 @@ class TrackTaskManagerThread internal constructor() : Runnable {
             //如果未停止，则执行此while
             while (!isStopped) {
                 val downloadTask = mTrackTaskManager!!.takeTrackEventTask()
-                mPool!!.execute(downloadTask)
+                mTrackExecutor!!.execute(downloadTask)
             }
             //如果停止，则执行此while，先取出队列内所有task 并执行，取到为空时结束
             while (true) {
                 val downloadTask = mTrackTaskManager!!.pollTrackEventTask() ?: break
-                mPool!!.execute(downloadTask)
+                mTrackExecutor!!.execute(downloadTask)
             }
-            mPool!!.shutdown()
+            mTrackExecutor!!.shutdown()
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
@@ -59,7 +59,7 @@ class TrackTaskManagerThread internal constructor() : Runnable {
     init {
         try {
             mTrackTaskManager = TrackTaskManager.instance
-            mPool = Executors.newFixedThreadPool(POOL_SIZE)
+            mTrackExecutor = Executors.newFixedThreadPool(POOL_SIZE)
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
