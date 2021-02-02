@@ -26,14 +26,15 @@ class AnalyticsManager private constructor(
     var mAnalyticsDataAPI: RoiqueryAnalyticsAPI
 ) {
     private val mWorker: Worker = Worker()
-    private val mDbAdapter: DateAdapter? = DateAdapter.getInstance()
+    private val mDateAdapter: DateAdapter? = DateAdapter.getInstance()
 
 
     fun enqueueEventMessage(name: String, eventJson: JSONObject) {
         try {
-            synchronized(mDbAdapter!!) {
+            if (mDateAdapter == null) return
+            synchronized(mDateAdapter) {
                 //插入数据库
-                val ret = mDbAdapter.addJSON(eventJson)
+                val ret = mDateAdapter.addJSON(eventJson)
                 val msg =
                     if (ret < 0) " Failed to insert the event " else " the event: $name  has been inserted to db  "
                 LogUtils.json(TAG + msg, eventJson.toString())
@@ -41,17 +42,15 @@ class AnalyticsManager private constructor(
                 Message.obtain().apply {
                     //上报标志
                     this.what = FLUSH_QUEUE
-                    //库存已满
-                    if (ret == DataParams.DB_OUT_OF_MEMORY_ERROR) {
+                    // 立即发送：有特殊事件需要立即上报、库存已满（无法插入）、超过本地缓存
+                    if (isNeedFlushImmediately(name)
+                        || ret == DataParams.DB_OUT_OF_MEMORY_ERROR
+                        || ret > mAnalyticsDataAPI.flushBulkSize
+                    ) {
                         mWorker.runMessage(this)
                     } else {
-                        // 超过本地缓存 立即发送（或者有特殊事件需要立即上报）
-                        if (ret > mAnalyticsDataAPI.flushBulkSize) {
-                            mWorker.runMessage(this)
-                        } else {
-                            //不立即上报，有时间间隔
-                            mWorker.runMessageOnce(this, mAnalyticsDataAPI.flushInterval.toLong())
-                        }
+                        //不立即上报，有时间间隔
+                        mWorker.runMessageOnce(this, mAnalyticsDataAPI.flushInterval.toLong())
                     }
                 }
             }
@@ -69,6 +68,15 @@ class AnalyticsManager private constructor(
             if (timeDelayMills == 0L) mWorker.runMessage(this)
             else mWorker.runMessageOnce(this, timeDelayMills)
         }
+    }
+
+    /**
+     * 是否需要立即上报
+     */
+    private fun isNeedFlushImmediately(eventName: String): Boolean {
+        return eventName == Constant.PRESET_EVENT_APP_OPEN
+                || eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE
+                || eventName == Constant.PRESET_EVENT_APP_CLOSE
     }
 
     /**
@@ -102,7 +110,7 @@ class AnalyticsManager private constructor(
             // 如果开启多进程上报
             if (mAnalyticsDataAPI.isMultiProcessFlushData()) {
                 // 已经有进程在上报
-                if (mDbAdapter!!.isSubProcessFlushing) {
+                if (mDateAdapter?.isSubProcessFlushing == true) {
                     return false
                 }
                 DateAdapter.getInstance()!!.commitSubProcessFlushState(true)
@@ -124,10 +132,10 @@ class AnalyticsManager private constructor(
         if (!enableUploadData()) return
         //这里每次只发送一条,后续可以考虑一次上报多条数据
         var eventsData: Array<String>? =
-            mDbAdapter?.generateDataString(DataParams.TABLE_EVENTS, 1)
+            mDateAdapter?.generateDataString(DataParams.TABLE_EVENTS, 1)
 
         if (eventsData == null) {
-            mDbAdapter?.commitSubProcessFlushState(false)
+            mDateAdapter?.commitSubProcessFlushState(false)
             return
         }
         //列表最后一条数据的id，删除时根据此id <= 进行删除
@@ -152,7 +160,7 @@ class AnalyticsManager private constructor(
                     if (!response.isNullOrBlank() && JSONObject(response).get("code") == 0) {
                         LogUtils.json("$TAG  the event has been uploaded to server  ", event)
                         //上报成功后删除本地数据
-                        mDbAdapter?.cleanupEvents(lastId)
+                        mDateAdapter?.cleanupEvents(lastId)
                         //避免事件积压
                         flush(mAnalyticsDataAPI.flushInterval.toLong())
                     }
@@ -203,7 +211,7 @@ class AnalyticsManager private constructor(
                         }
                         DELETE_ALL -> {
                             try {
-                                mDbAdapter!!.deleteAllEvents()
+                                mDateAdapter?.deleteAllEvents()
                             } catch (e: Exception) {
                                 LogUtils.printStackTrace(e)
                             }

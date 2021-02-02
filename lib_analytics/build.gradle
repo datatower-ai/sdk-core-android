@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -45,6 +45,16 @@ dependencies {
     implementation 'com.android.installreferrer:installreferrer:2.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
+
+    //oaid
+    implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_ASUS:2.1.0' //华硕
+    implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_BUN:2.1.0' //中兴、卓易
+    implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_HEYTAP:2.1.0' //欧珀、一加
+    implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_SAMSUNG:2.1.0' //三星
+    implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_UODIS:2.1.0' //华为
+    implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_ZUI:2.1.0' //联想、摩托罗拉
+    implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_IMPL:2.1.0' //具体实现
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

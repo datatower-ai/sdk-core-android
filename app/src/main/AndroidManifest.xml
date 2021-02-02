@@ -29,6 +29,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AnalyticsTestActivity"
+            android:theme="@style/Theme.ROIQuerySDK.NoActionBar"/>
     </application>
 
 </manifest>

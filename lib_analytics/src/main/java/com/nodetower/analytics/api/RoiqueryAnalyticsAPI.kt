@@ -3,6 +3,7 @@ package com.nodetower.analytics.api
 import android.content.Context
 import com.nodetower.analytics.Constant
 import com.nodetower.analytics.config.AnalyticsConfigOptions
+import com.nodetower.analytics.core.TrackTaskManagerThread
 import com.nodetower.analytics.data.DateAdapter
 import com.nodetower.base.utils.LogUtils
 import org.json.JSONObject
@@ -17,10 +18,8 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
     ) : super(context, serverURL)
 
 
-
     override var maxCacheSize: Long
         get() = mConfigOptions.mMaxCacheSize
-
         set(value) {
             mConfigOptions.setMaxCacheSize(value)
         }
@@ -54,17 +53,18 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
             mSessionTime = value
         }
 
-    override fun getAccountId(): String? {
-        if (mContext != null) {
-            return DateAdapter.getInstance(mContext,mContext.packageName)?.loginId
+    override var accountId: String?
+        get() = mContext?.let { DateAdapter.getInstance(it, mContext.packageName)?.loginId }
+        set(value) {
+            if (value != null) {
+                mContext?.let { DateAdapter.getInstance(it, mContext.packageName)?.commitLoginId(value) }
+                updateEventInfo("#acid",value)
+            }
         }
-        return ""
-    }
 
     override fun getAppId(): String? {
         return mConfigOptions.mAppId
     }
-
 
     override fun track(eventName: String?, properties: JSONObject?) {
         mTrackTaskManager?.let {
@@ -81,62 +81,57 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
     }
 
     override fun trackAppClose(properties: JSONObject?) {
-        track(Constant.PRESET_EVENT_APP_CLOSE,properties)
+        track(Constant.PRESET_EVENT_APP_CLOSE, properties)
     }
 
     override fun trackPageOpen(properties: JSONObject?) {
-        track(Constant.PRESET_EVENT_PAGE_OPEN,properties)
+        track(Constant.PRESET_EVENT_PAGE_OPEN, properties)
     }
 
     override fun trackPageClose(properties: JSONObject?) {
-        track(Constant.PRESET_EVENT_PAGE_CLOSE,properties)
+        track(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
     }
 
-    override fun trackAdClick( properties: JSONObject?) {
-        track(Constant.PRESET_EVENT_AD_CLICK,properties)
+    override fun trackAdClick(properties: JSONObject?) {
+        track(Constant.PRESET_EVENT_AD_CLICK, properties)
 
     }
 
     override fun trackAdShow(properties: JSONObject?) {
-        track(Constant.PRESET_EVENT_AD_SHOW,properties)
+        track(Constant.PRESET_EVENT_AD_SHOW, properties)
 
     }
 
-    override fun clearReferrerWhenAppEnd() {
-
-    }
 
     override val mainProcessName: String?
-        get() =  mainProcessName
+        get() = mainProcessName
 
     override fun flush() {
         mAnalyticsManager?.flush()
     }
 
-    override fun flushSync() {
-
-    }
 
     override val superProperties: JSONObject?
         get() = JSONObject()
 
-    override fun setCookie(cookie: String?, encode: Boolean) {
-    }
-
-    override fun getCookie(decode: Boolean): String? {
-        return ""
-    }
 
     override fun deleteAll() {
-
+        mAnalyticsManager?.deleteAll()
     }
 
     override fun stopTrackThread() {
-
+        if (mTrackTaskManagerThread != null && !mTrackTaskManagerThread!!.isStopped) {
+            mTrackTaskManagerThread!!.stop()
+            LogUtils.i(TAG, "Data collection thread has been stopped")
+        }
     }
 
     override fun startTrackThread() {
-
+        if (mTrackTaskManagerThread == null || mTrackTaskManagerThread!!.isStopped) {
+            mTrackTaskManagerThread = TrackTaskManagerThread()
+            Thread(mTrackTaskManagerThread).start()
+            LogUtils.i(TAG, "Data collection thread has been started")
+        }
     }
 
     override fun enableDataCollect() {
@@ -155,8 +150,6 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
 
     fun isMultiProcessFlushData() =
         mConfigOptions.isSubProcessFlushData
-
-
 
 
     companion object {

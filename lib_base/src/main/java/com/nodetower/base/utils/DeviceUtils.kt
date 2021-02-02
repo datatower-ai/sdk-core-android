@@ -198,23 +198,23 @@ object DeviceUtils {
         return true
     }
 
-    fun getMcc(context: Context):Int {
+    fun getMcc(context: Context):String {
         val tel = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val networkOperator = tel.networkOperator
         if (!TextUtils.isEmpty(networkOperator)) {
-            return networkOperator.substring(0, 3).toInt()
+            return networkOperator.substring(0, 3)
         }
-        return -1
+        return ""
 
     }
 
-    fun getMnc(context: Context):Int {
+    fun getMnc(context: Context):String {
         val tel = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val networkOperator = tel.networkOperator
         if (!TextUtils.isEmpty(networkOperator)) {
-            return networkOperator.substring(3).toInt()
+            return networkOperator.substring(3)
         }
-        return -1
+        return ""
     }
 
     fun getLocalCountry(context: Context):String {

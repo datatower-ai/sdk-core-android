@@ -206,8 +206,12 @@ public final class LogUtils {
         final int type_low = type & 0x0f, type_high = type & 0xf0;
         if (CONFIG.isLog2ConsoleSwitch() || type_high == FILE) {
             if (type_low < CONFIG.mConsoleFilter ) return;
+
             final TagHead tagHead = processTagAndHead(tag);
             final String body = processBody(type_high, contents);
+            if (CONFIG.mOnConsoleOutputListener != null) {
+                CONFIG.mOnConsoleOutputListener.onConsoleOutput(type, tag, body);
+            }
             if (CONFIG.isLog2ConsoleSwitch() && type_high != FILE && type_low >= CONFIG.mConsoleFilter) {
                 print2Console(type_low, tagHead.tag, tagHead.consoleHead, body);
             }
@@ -461,9 +465,7 @@ public final class LogUtils {
 
     private static void print2Console(int type, String tag, String msg) {
         Log.println(type, tag, msg);
-        if (CONFIG.mOnConsoleOutputListener != null) {
-            CONFIG.mOnConsoleOutputListener.onConsoleOutput(type, tag, msg);
-        }
+
     }
 
 

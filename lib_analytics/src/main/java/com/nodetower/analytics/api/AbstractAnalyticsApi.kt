@@ -7,20 +7,21 @@ import android.text.TextUtils
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
+import com.github.gzuliyujiang.oaid.DeviceID
+import com.github.gzuliyujiang.oaid.IOAIDGetter
 import com.nodetower.analytics.BuildConfig
 import com.nodetower.analytics.Constant
 import com.nodetower.analytics.config.AnalyticsConfigOptions
 import com.nodetower.analytics.core.AnalyticsManager
 import com.nodetower.analytics.core.TrackTaskManager
 import com.nodetower.analytics.core.TrackTaskManagerThread
-import com.nodetower.analytics.data.DateAdapter
 import com.nodetower.analytics.data.DataParams
+import com.nodetower.analytics.data.DateAdapter
 import com.nodetower.analytics.data.persistent.PersistentAppFirstOpen
 import com.nodetower.analytics.data.persistent.PersistentLoader
 import com.nodetower.analytics.utils.DataHelper.assertPropertyTypes
 import com.nodetower.analytics.utils.DataUtils
 import com.nodetower.analytics.utils.GaidHelper
-import com.nodetower.analytics.utils.OaidHelper
 import com.nodetower.base.utils.AppInfoUtils
 import com.nodetower.base.utils.DeviceUtils
 import com.nodetower.base.utils.LogUtils
@@ -28,8 +29,6 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.security.SecureRandom
 import java.util.*
-import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import kotlin.collections.HashMap
@@ -70,7 +69,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     protected var mTrackTaskManager: TrackTaskManager? = null
 
     //事件采集线程
-    private var mTrackTaskManagerThread: TrackTaskManagerThread? = null
+    var mTrackTaskManagerThread: TrackTaskManagerThread? = null
 
     //采集 app 活跃事件线程池
     private var mTrackEngagementEventExecutors: ScheduledThreadPoolExecutor? = null
@@ -85,12 +84,14 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     //是否为第一打开app标记
     var mAppFirstOpen: PersistentAppFirstOpen? = null
 
+
     companion object {
         const val TAG = "NT.AnalyticsApi"
 
         // 适配多进程场景
         val S_INSTANCE_MAP: MutableMap<Context, RoiqueryAnalyticsAPI> =
             HashMap<Context, RoiqueryAnalyticsAPI>()
+
         // 配置
         lateinit var mConfigOptions: AnalyticsConfigOptions
     }
@@ -123,8 +124,8 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
      * 初始化预置、通用属性
      */
     private fun initProperties() {
-        getGaid()
-        getOaid()
+        getGAID()
+        getOAID()
         initEventInfo()
         initCommonProperties()
     }
@@ -143,8 +144,6 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
         mAnalyticsManager = AnalyticsManager.getInstance(context, this as RoiqueryAnalyticsAPI)
 
-        trackAppOpenEvent()
-        tackAppEngagementEvent()
     }
 
     constructor() {
@@ -195,7 +194,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
                 val eventInfo = JSONObject(mEventInfo).apply {
                     put("#event_time", System.currentTimeMillis().toString())
                     put("#event_name", eventName)
-                    put("#event_syn", SecureRandom().nextInt().toString())
+                    put("#event_syn", DataUtils.getUUID())
                 }
                 //设置事件属性
                 val eventProperties = JSONObject(mCommonProperties).apply {
@@ -228,13 +227,18 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     protected open fun initEventInfo() {
         mEventInfo = mutableMapOf<String, Any?>().apply {
             put("#did", DeviceUtils.getAndroidID(mContext!!))//设备 ID。即唯一ID，区分设备的最小ID
-            put("#acid", getAccountId())//登录账号id
+            put("#acid", accountId)//登录账号id
             put("#gaid", mDataAdapter?.gaid.toString())//谷歌广告标识id,不同app在同一个设备上gdid一样
             put("#oaid", mDataAdapter?.oaid.toString())//华为广告标识id,不同app在同一个设备上oaid一样
             put("#app_id", getAppId())//应用唯一标识,后台分配
             put("#pkg", mContext.packageName)//包名
         }
 
+    }
+
+    fun updateEventInfo(key: String, value: String) {
+        mEventInfo?.remove(key)
+        mEventInfo?.put(key, value)
     }
 
     /**
@@ -244,8 +248,8 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
      */
     protected open fun initCommonProperties() {
         mCommonProperties = mutableMapOf<String, Any?>().apply {
-            put("#mcc", DeviceUtils.getMcc(mContext!!).toString())//移动信号国家码
-            put("#mnc", DeviceUtils.getMnc(mContext).toString())//移动信号网络码
+            put("#mcc", DeviceUtils.getMcc(mContext!!))//移动信号国家码
+            put("#mnc", DeviceUtils.getMnc(mContext))//移动信号网络码
             put("#os_country", DeviceUtils.getLocalCountry(mContext))//系统国家
             put("#os_lang", DeviceUtils.getLocaleLanguage())//系统语言
             put("#app_version_code", AppInfoUtils.getAppVersionCode(mContext).toString())//应用版本号
@@ -265,8 +269,6 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             put("#screen_width", size[1].toString())//屏幕宽度
         }
     }
-
-
 
 
     /**
@@ -295,7 +297,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
             if (configOptions.mFlushInterval == 0) {
                 configOptions.setFlushInterval(
-                    15000
+                    2000
                 )
             }
             if (configOptions.mFlushBulkSize == 0) {
@@ -349,31 +351,59 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         }
     }
 
-    fun getOaid() {
-        Thread {
-            val oaid = OaidHelper.getOAID(mContext!!)
-            mDataAdapter?.commitOaid(
-                oaid
-            )
-            mEventInfo?.remove("#oaid")
-            mEventInfo?.set("#oaid",oaid)
-        }.start()
-    }
-
-    fun getGaid() {
-        GaidHelper.getAdInfo(mContext?.applicationContext, object : GaidHelper.GaidListener {
-            override fun onSuccess(info: GaidHelper.AdIdInfo) {
-                mDataAdapter?.commitGaid(info.adId)
-                mEventInfo?.remove("#gaid")
-                mEventInfo?.set("#gaid",info.adId)
+    /**
+     * oaid 获取，异步
+     */
+    private fun getOAID() {
+        val deviceId = DeviceID.with(mContext)
+        if (!deviceId.supportOAID()) {
+            // 不支持OAID，须自行生成GUID，然后存到`SharedPreferences`及`ExternalStorage`甚至`CloudStorage`。
+            return
+        }
+        deviceId.doGet(object : IOAIDGetter {
+            override fun onOAIDGetComplete(oaid: String) {
+                // 不同厂商的OAID格式是不一样的，可进行MD5、SHA1之类的哈希运算统一
+                //存入sp
+                mDataAdapter?.commitOaid(oaid)
+                updateEventInfo("#oaid", oaid)
             }
 
-            override fun onException(exception: java.lang.Exception) {
-                LogUtils.printStackTrace(exception)
+            override fun onOAIDGetError(exception: java.lang.Exception) {
+                // 获取OAID失败
+
             }
         })
     }
 
+    /**
+     * gaid 获取，异步
+     */
+    private fun getGAID() {
+        GaidHelper.getAdInfo(
+            mContext?.applicationContext,
+            object : GaidHelper.GaidListener {
+                override fun onSuccess(info: GaidHelper.AdIdInfo) {
+                    //存入sp
+                    mDataAdapter?.commitGaid(info.adId)
+                    updateEventInfo("#gaid", info.adId)
+                    //由于id 比较重要，所以在id回调之后再进行事件采集
+                    trackPresetEvent()
+                }
+
+                override fun onException(exception: java.lang.Exception) {
+                    trackPresetEvent()
+                    LogUtils.printStackTrace(exception)
+                }
+            })
+    }
+
+    /**
+     * 采集app 预置事件
+     */
+    private fun trackPresetEvent() {
+        trackAppOpenEvent()
+        tackAppEngagementEvent()
+    }
 
     /**
      * 采集app 启动事件
@@ -453,7 +483,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     /**
      * 采集 app 活跃事件
      */
-    private fun tackAppEngagementEvent(){
+    private fun tackAppEngagementEvent() {
         if (mTrackEngagementEventExecutors != null && !mTrackEngagementEventExecutors?.isShutdown!!) {
             mTrackEngagementEventExecutors?.shutdown()
         }

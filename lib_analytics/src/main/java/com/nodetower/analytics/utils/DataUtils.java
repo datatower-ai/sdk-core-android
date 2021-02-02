@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.NetworkInterface;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -121,6 +122,12 @@ public final class DataUtils {
             }
         }
         return stringBuilder.toString();
+    }
+
+    public static String getUUID(){
+        SecureRandom random = new SecureRandom();
+        String uuid = String.valueOf(random.nextLong());
+        return uuid.replace("-","");
     }
 
     /**

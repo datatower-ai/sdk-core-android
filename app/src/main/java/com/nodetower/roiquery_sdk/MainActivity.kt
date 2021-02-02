@@ -1,41 +1,31 @@
 package com.nodetower.roiquery_sdk
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.blankj.utilcode.util.LogUtils
+import com.jraska.console.Console
 import com.nodetower.analytics.api.IAnalyticsApi
 import com.nodetower.analytics.api.PropertyBuilder
 import com.nodetower.analytics.api.RoiqueryAnalyticsAPI
-import com.nodetower.analytics.config.AnalyticsConfigOptions
+import com.nodetower.base.utils.LogUtils
 
 
 class MainActivity : AppCompatActivity() {
 
-    var mApi:IAnalyticsApi? = null
+    var mApi: IAnalyticsApi? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_first)
+        setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
-
-        mApi = RoiqueryAnalyticsAPI.getInstance(this)
-
-        findViewById<View>(R.id.button_track).setOnClickListener {
-
-            mApi?.track(
-                "test",
-                PropertyBuilder.newInstance().append("test", "test pro").toJSONObject()
-            )
-
-        }
-        findViewById<View>(R.id.button_flush).setOnClickListener {
-
-            RoiqueryAnalyticsAPI.getInstance(this)
-                .flush()
-
-
+        
+        findViewById<View>(R.id.button_analytics_test).setOnClickListener {
+            startActivity(Intent(this,AnalyticsTestActivity::class.java))
         }
 
+        findViewById<View>(R.id.button_clear_log).setOnClickListener {
+            Console.clear()
+        }
     }
 
     override fun onStart() {

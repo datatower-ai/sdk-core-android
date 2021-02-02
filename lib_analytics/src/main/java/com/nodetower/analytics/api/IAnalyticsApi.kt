@@ -102,14 +102,11 @@ interface IAnalyticsApi {
      */
     var sessionIntervalTime: Int
 
-
     /**
-     * 获取当前用户的 loginId
-     * 若调用前未调用 [.login] 设置用户的 loginId，会返回 null
-     *
-     * @return 当前用户的 loginId
+     * 设置当前用户的 acid
      */
-    fun getAccountId(): String?
+    var accountId: String?
+
 
 
     /**
@@ -182,25 +179,25 @@ interface IAnalyticsApi {
 
 
 
-
-    /**
-     * App 退出或进到后台时清空 referrer，默认情况下不清空
-     */
-    fun clearReferrerWhenAppEnd()
+//
+//    /**
+//     * App 退出或进到后台时清空 referrer，默认情况下不清空
+//     */
+//    fun clearReferrerWhenAppEnd()
 
 
     val mainProcessName: String?
 
 
     /**
-     * 将所有本地缓存的日志发送到 Sensors Analytics.
+     * 将所有本地缓存的日志发送到  Analytics.
      */
     fun flush()
-
-    /**
-     * 以阻塞形式将所有本地缓存的日志发送到 Sensors Analytics
-     */
-    fun flushSync()
+//
+//    /**
+//     * 以阻塞形式将所有本地缓存的日志发送到 Analytics
+//     */
+//    fun flushSync()
 
     /**
      * 获取事件公共属性
@@ -208,24 +205,24 @@ interface IAnalyticsApi {
      * @return 当前所有 Super 属性
      */
     val superProperties: JSONObject?
-
-    /**
-     * 设置 Cookie，flush 的时候会设置 HTTP 的 cookie
-     * 内部会 URLEncoder.encode(cookie, "UTF-8")
-     *
-     * @param cookie String cookie
-     * @param encode boolean 是否 encode
-     */
-    fun setCookie(cookie: String?, encode: Boolean)
-
-    /**
-     * 获取已设置的 Cookie
-     * URLDecoder.decode(Cookie, "UTF-8")
-     *
-     * @param decode String
-     * @return String cookie
-     */
-    fun getCookie(decode: Boolean): String?
+//
+//    /**
+//     * 设置 Cookie，flush 的时候会设置 HTTP 的 cookie
+//     * 内部会 URLEncoder.encode(cookie, "UTF-8")
+//     *
+//     * @param cookie String cookie
+//     * @param encode boolean 是否 encode
+//     */
+//    fun setCookie(cookie: String?, encode: Boolean)
+//
+//    /**
+//     * 获取已设置的 Cookie
+//     * URLDecoder.decode(Cookie, "UTF-8")
+//     *
+//     * @param decode String
+//     * @return String cookie
+//     */
+//    fun getCookie(decode: Boolean): String?
 
     /**
      * 删除本地缓存的全部事件
