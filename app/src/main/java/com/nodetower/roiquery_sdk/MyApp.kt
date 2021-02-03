@@ -14,7 +14,8 @@ class MyApp : Application() {
         //just for test
         LogUtils.getConfig().setOnConsoleOutputListener { type, tag, content ->
             run {
-                if (tag.contains("AnalyticsMessages")) {
+                if (tag.contains("AnalyticsManager")
+                    || tag.contains("AnalyticsApi")) {
                     Console.writeLine(tag)
                     Console.writeLine(content)
                 }

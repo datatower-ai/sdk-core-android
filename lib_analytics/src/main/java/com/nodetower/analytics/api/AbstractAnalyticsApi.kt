@@ -86,7 +86,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
 
     companion object {
-        const val TAG = "NT.AnalyticsApi"
+        const val TAG = "AnalyticsApi"
 
         // 适配多进程场景
         val S_INSTANCE_MAP: MutableMap<Context, RoiqueryAnalyticsAPI> =
@@ -199,10 +199,10 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
                 //设置事件属性
                 val eventProperties = JSONObject(mCommonProperties).apply {
                     // 屏幕方向
-                    val screenOrientation: String? = getScreenOrientation()
-                    if (!screenOrientation.isNullOrEmpty()) {
-                        put("#screen_orientation", screenOrientation)
-                    }
+//                    val screenOrientation: String? = getScreenOrientation()
+//                    if (!screenOrientation.isNullOrEmpty()) {
+//                        put("#screen_orientation", screenOrientation)
+//                    }
                     //合并用户自定义属性和通用属性
                     DataUtils.mergeJSONObject(properties, this)
                 }

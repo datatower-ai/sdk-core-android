@@ -243,7 +243,7 @@ interface IAnalyticsApi {
     /**
      * 开启数据采集
      */
-    fun enableDataCollect()
+    fun enableDataCollect(enable:Boolean)
 
 
     /**
@@ -251,7 +251,7 @@ interface IAnalyticsApi {
      *
      * @return portrait:竖屏 landscape:横屏
      */
-    fun getScreenOrientation(): String?
+//    fun getScreenOrientation(): String?
 
 }
 

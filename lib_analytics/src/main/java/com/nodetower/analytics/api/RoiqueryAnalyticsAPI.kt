@@ -4,6 +4,7 @@ import android.content.Context
 import com.nodetower.analytics.Constant
 import com.nodetower.analytics.config.AnalyticsConfigOptions
 import com.nodetower.analytics.core.TrackTaskManagerThread
+import com.nodetower.analytics.data.DataParams
 import com.nodetower.analytics.data.DateAdapter
 import com.nodetower.base.utils.LogUtils
 import org.json.JSONObject
@@ -28,7 +29,7 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
         get() = mEnableNetworkRequest
 
     override fun enableNetworkRequest(isRequest: Boolean) {
-        mEnableNetworkRequest = isNetworkRequestEnable
+        mEnableNetworkRequest = isRequest
     }
 
     override fun setFlushNetworkPolicy(networkType: Int) {
@@ -57,8 +58,10 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
         get() = mContext?.let { DateAdapter.getInstance(it, mContext.packageName)?.loginId }
         set(value) {
             if (value != null) {
-                mContext?.let { DateAdapter.getInstance(it, mContext.packageName)?.commitLoginId(value) }
-                updateEventInfo("#acid",value)
+                mContext?.let { DateAdapter.getInstance(it, mContext.packageName)?.commitLoginId(
+                    value
+                ) }
+                updateEventInfo("#acid", value)
             }
         }
 
@@ -67,6 +70,10 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
     }
 
     override fun track(eventName: String?, properties: JSONObject?) {
+        if (!isEnableDataCollect()) {
+            LogUtils.i(TAG, "event track disable")
+            return
+        }
         mTrackTaskManager?.let {
             it.addTrackEventTask(Runnable {
                 try {
@@ -134,14 +141,20 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
         }
     }
 
-    override fun enableDataCollect() {
-
+    override fun enableDataCollect(enable:Boolean) {
+        if (!mConfigOptions.isDataCollectEnable) {
+            DataParams.getInstance()?.let {
+                mContext!!.contentResolver.notifyChange(
+                    it.dataCollectUri,
+                    null
+                )
+            }
+        }
+        mConfigOptions.isDataCollectEnable = enable
+        mTrackTaskManager!!.setDataCollectEnable(enable)
     }
 
-    override fun getScreenOrientation(): String? {
-        return ""
-    }
-
+    fun isEnableDataCollect() = mConfigOptions.isDataCollectEnable
 
     fun getServerUrl() = mServerUrl
 

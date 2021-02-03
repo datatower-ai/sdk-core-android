@@ -5,6 +5,7 @@ package com.nodetower.roiquery_sdk
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.jraska.console.Console
 import com.nodetower.analytics.api.IAnalyticsApi
@@ -14,7 +15,7 @@ import com.nodetower.analytics.api.RoiqueryAnalyticsAPI
 
 class AnalyticsTestActivity : AppCompatActivity() {
 
-    var mApi: IAnalyticsApi? = null
+    var mApi: RoiqueryAnalyticsAPI? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_analytics)
@@ -75,6 +76,22 @@ class AnalyticsTestActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.button_clear_log).setOnClickListener {
             Console.clear()
+        }
+
+
+        findViewById<View>(R.id.button_enable_upload).setOnClickListener {
+            mApi?.apply {
+                enableNetworkRequest(!isNetworkRequestEnable)
+            }
+            (it as TextView).text = if (mApi?.isNetworkRequestEnable == true) "disable upload" else "enable upload"
+        }
+
+
+        findViewById<View>(R.id.button_enable_track).setOnClickListener {
+            mApi?.apply {
+                enableDataCollect(!isEnableDataCollect())
+            }
+            (it as TextView).text = if (mApi?.isEnableDataCollect() == true) "disable track" else "enable track"
         }
 
 

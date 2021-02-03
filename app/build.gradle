@@ -11,8 +11,8 @@ android {
         applicationId "com.nodetower.roiquery_sdk"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 5
-        versionName "1.1.5"
+        versionCode 7
+        versionName "1.1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

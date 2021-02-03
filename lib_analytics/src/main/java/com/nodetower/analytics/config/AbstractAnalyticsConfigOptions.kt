@@ -17,7 +17,7 @@ abstract class AbstractAnalyticsConfigOptions {
     var mFlushInterval = 0
 
     /**
-     * 本地缓存日志的最大条目数
+     * 允许本地缓存日志的最大条目数，即超过后立即上报
      */
     var mFlushBulkSize = 0
 
