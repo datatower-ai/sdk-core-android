@@ -117,8 +117,8 @@ object DeviceUtils {
 
 
     fun getBrowserOS(context: Context):String{
-       var s = WebView(context).settings.userAgentString
-        return s.subSequence(1,3).toString()
+//       var s = WebView(context).settings.userAgentString
+        return "chrome"
     }
 
     /**

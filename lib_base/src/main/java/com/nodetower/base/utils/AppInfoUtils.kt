@@ -46,6 +46,7 @@ object AppInfoUtils {
         return ""
     }
 
+
     /**
      * 获取 App 版本名
      *
@@ -127,7 +128,7 @@ object AppInfoUtils {
      * @param context Context
      * @return 进程名称
      */
-    private fun getCurrentProcessName(context: Context): String? {
+    fun getCurrentProcessName(context: Context): String? {
         try {
             val pid = Process.myPid()
             val activityManager =

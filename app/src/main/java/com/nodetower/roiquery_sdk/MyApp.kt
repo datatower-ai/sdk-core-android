@@ -12,7 +12,7 @@ class MyApp : Application() {
     override fun onCreate() {
         super.onCreate()
         //just for test
-        LogUtils.getConfig().setOnConsoleOutputListener { type, tag, content ->
+        LogUtils.getConfig().setOnConsoleOutputListener { _, tag, content ->
             run {
                 if (tag.contains("AnalyticsManager")
                     || tag.contains("AnalyticsApi")) {
@@ -22,6 +22,7 @@ class MyApp : Application() {
             }
         }
         initAnalytics()
+        LogUtils.d("roiquery_app","app init ${this.applicationContext}")
     }
 
     private fun initAnalytics() {

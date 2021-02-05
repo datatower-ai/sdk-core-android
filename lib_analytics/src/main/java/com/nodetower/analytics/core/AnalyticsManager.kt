@@ -10,6 +10,7 @@ import com.nodetower.analytics.data.DataParams
 import com.nodetower.base.network.HttpCallback
 import com.nodetower.base.network.HttpMethod
 import com.nodetower.base.network.RequestHelper
+import com.nodetower.base.utils.AppInfoUtils
 import com.nodetower.base.utils.LogUtils
 import com.nodetower.base.utils.NetworkUtils.isNetworkAvailable
 import com.nodetower.base.utils.NetworkUtils.isShouldFlush
@@ -116,8 +117,9 @@ class AnalyticsManager private constructor(
                     return false
                 }
                 DateAdapter.getInstance()!!.commitSubProcessFlushState(true)
-            } else if (!mAnalyticsDataAPI.mIsMainProcess) { //不是主进程
-                return false
+            }
+            else if (!mAnalyticsDataAPI.mIsMainProcess) { //不是主进程
+//                return false
             }
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
@@ -147,7 +149,7 @@ class AnalyticsManager private constructor(
             LogUtils.d(TAG,"db count = 0，disable upload")
             return
         }
-        LogUtils.json(TAG , "event uploading")
+        LogUtils.json(TAG , "event uploading,process:${AppInfoUtils.getCurrentProcessName(mContext.applicationContext)}")
         //列表最后一条数据的id，删除时根据此id <= 进行删除
         val lastId = eventsData!![0]
         //事件主体，json格式
@@ -171,7 +173,7 @@ class AnalyticsManager private constructor(
                         //上报成功后删除本地数据
                         var leftCount = mDateAdapter.cleanupEvents(lastId)
                         LogUtils.d(TAG,"db left count = $leftCount")
-                        //避免事件积压
+                        //避免事件积压，成功后再次上报
                         flush(mAnalyticsDataAPI.flushInterval.toLong())
                     }
 

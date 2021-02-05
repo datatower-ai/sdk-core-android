@@ -21,9 +21,7 @@ internal class SharedPreferencesLoader {
         override fun call(): SharedPreferences {
             return mContext.getSharedPreferences(mPrefsName, Context.MODE_PRIVATE)
         }
-
     }
-
     init {
         mExecutor = Executors.newSingleThreadExecutor()
     }

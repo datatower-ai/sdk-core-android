@@ -24,6 +24,9 @@ internal class EventDataDBHelper(context: Context?) :
 //        db.execSQL(CHANNEL_EVENT_PERSISTENT_TABLE)
     }
 
+
+
+
     companion object {
         private const val TAG = "SA.SQLiteOpenHelper"
         private val CREATE_EVENTS_TABLE = String.format(
@@ -37,11 +40,6 @@ internal class EventDataDBHelper(context: Context?) :
             DataParams.TABLE_EVENTS,
             DataParams.KEY_CREATED_AT
         )
-        private val CHANNEL_EVENT_PERSISTENT_TABLE = String.format(
-            "CREATE TABLE %s (%s TEXT PRIMARY KEY, %s INTEGER)",
-            DataParams.TABLE_CHANNEL_PERSISTENT,
-            DataParams.KEY_CHANNEL_EVENT_NAME,
-            DataParams.KEY_CHANNEL_RESULT
-        )
+
     }
 }

@@ -25,6 +25,7 @@ import com.nodetower.analytics.utils.GaidHelper
 import com.nodetower.base.utils.AppInfoUtils
 import com.nodetower.base.utils.DeviceUtils
 import com.nodetower.base.utils.LogUtils
+import com.nodetower.base.utils.NetUtil
 import org.json.JSONException
 import org.json.JSONObject
 import java.security.SecureRandom
@@ -203,6 +204,8 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 //                    if (!screenOrientation.isNullOrEmpty()) {
 //                        put("#screen_orientation", screenOrientation)
 //                    }
+                    put("process_name",
+                        mContext?.applicationContext?.let { AppInfoUtils.getCurrentProcessName(it) })
                     //合并用户自定义属性和通用属性
                     DataUtils.mergeJSONObject(properties, this)
                 }
@@ -339,6 +342,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             if (it.mEnabledDebug) {
                 initLog(it.mEnabledDebug, it.mLogLevel)
             }
+            initNetStateListener()
         }
     }
 
@@ -349,6 +353,17 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             setConsoleSwitch(enable)
             setConsoleFilter(logLevel)
         }
+    }
+
+    fun initNetStateListener(){
+        NetUtil.registerNetConnChangedReceiver(mContext!!)
+        NetUtil.addNetConnChangedListener(object : NetUtil.Companion.NetConnChangedListener {
+            override fun onNetConnChanged(connectStatus: NetUtil.Companion.ConnectStatus) {
+                if(connectStatus == NetUtil.Companion.ConnectStatus.NO_NETWORK || connectStatus == NetUtil.Companion.ConnectStatus.NO_CONNECTED ) return
+                mAnalyticsManager?.flush()
+            }
+
+        })
     }
 
     /**
@@ -401,6 +416,8 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
      * 采集app 预置事件
      */
     private fun trackPresetEvent() {
+        //子进程不采集
+        if (!mIsMainProcess) return
         trackAppOpenEvent()
         tackAppEngagementEvent()
     }
