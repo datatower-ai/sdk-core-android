@@ -37,6 +37,15 @@
         android:layout_height="wrap_content"
         android:text="AnalyticsTest_Process"
         />
+    <Button
+        android:id="@+id/button_db_view"
+        android:layout_width="match_parent"
+        android:textAllCaps="false"
+        android:layout_margin="5dp"
+        android:textSize="18sp"
+        android:layout_height="wrap_content"
+        android:text="db_view"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"

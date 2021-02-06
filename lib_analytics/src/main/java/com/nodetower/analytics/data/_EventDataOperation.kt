@@ -40,14 +40,14 @@ internal  class _EventDataOperation(private val mContext: Context) {
                     System.currentTimeMillis()
                 )
             }
-
+            mDbHelper?.insert(uri!!,cv)
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
         return 0
      }
 
-    /**
+    /**1234
      * 保存数据
      */
      fun insertData(uri: Uri?, contentValues: ContentValues?): Int{

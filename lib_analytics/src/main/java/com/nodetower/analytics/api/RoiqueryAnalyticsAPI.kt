@@ -48,12 +48,6 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
             mConfigOptions.setFlushBulkSize(value)
         }
 
-    override var sessionIntervalTime: Int
-        get() = mSessionTime
-        set(value) {
-            mSessionTime = value
-        }
-
     override var accountId: String?
         get() = mContext?.let { DateAdapter.getInstance(it, mContext.packageName)?.loginId }
         set(value) {

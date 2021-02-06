@@ -45,6 +45,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
-
+    debugImplementation 'com.infinum.dbinspector:dbinspector:5.2.3'
+    releaseImplementation 'com.infinum.dbinspector:dbinspector-no-op:5.2.3'
     implementation project(':lib_analytics')
 }

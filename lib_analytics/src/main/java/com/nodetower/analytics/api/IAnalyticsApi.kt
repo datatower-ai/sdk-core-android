@@ -86,21 +86,6 @@ interface IAnalyticsApi {
      * @param flushBulkSize 缓存数目
      */
     var flushBulkSize: Int
-    /**
-     * 设置 App 切换到后台与下次事件的事件间隔
-     * 默认值为 30*1000 毫秒
-     * 若 App 在后台超过设定事件，则认为当前 Session 结束，发送 $AppEnd 事件
-     *
-     * @return 返回设置的 SessionIntervalTime ，默认是 30s
-     */
-    /**
-     * 设置 App 切换到后台与下次事件的事件间隔
-     * 默认值为 30*1000 毫秒
-     * 若 App 在后台超过设定事件，则认为当前 Session 结束，发送 $AppEnd 事件
-     *
-     * @param sessionIntervalTime int
-     */
-    var sessionIntervalTime: Int
 
     /**
      * 设置当前用户的 acid

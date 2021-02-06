@@ -44,12 +44,27 @@ class DbHelper(context: Context?) :
             DataParams.KEY_DATA,
             DataParams.KEY_CREATED_AT
         )
+        private val CREATE_CONFIGS_TABLE = String.format(
+            "CREATE TABLE %s (_id INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s INTEGER NOT NULL);",
+            DataParams.TABLE_EVENTS,
+            DataParams.KEY_DATA,
+            DataParams.KEY_CREATED_AT
+        )
         private val EVENTS_TIME_INDEX = String.format(
             "CREATE INDEX IF NOT EXISTS time_idx ON %s (%s);",
             DataParams.TABLE_EVENTS,
             DataParams.KEY_CREATED_AT
         )
 
+        /* 数据库中的表名 */
+        /* 事件 */
+        const val TABLE_EVENTS = "events"
+        const val KEY_EVENTS_DATA = "date"
+        const val KEY_CREATED_AT= "created_at"
+        /* 配置 */
+        const val TABLE_CONFIGS = "configs"
+        const val KEY_CONFIGS_NAME = "name"
+        const val KEY_CONFIGS_VALUE = "value"
     }
 
      fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
@@ -156,7 +171,7 @@ class DbHelper(context: Context?) :
         }
         var cursor: Cursor? = null
         try {
-            cursor =queryByTable(DataParams.TABLE_EVENTS, projection, selection, selectionArgs, sortOrder)
+            cursor = queryByTable(DataParams.TABLE_EVENTS, projection, selection, selectionArgs, sortOrder)
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
@@ -172,7 +187,7 @@ class DbHelper(context: Context?) :
     ): Cursor? {
         var cursor: Cursor? = null
         try {
-            cursor =writableDatabase
+            cursor = writableDatabase
                 .query(tableName, projection, selection, selectionArgs, null, null, sortOrder)
         } catch (e: SQLiteException) {
             isDbWritable = false
@@ -180,8 +195,5 @@ class DbHelper(context: Context?) :
         }
         return cursor
     }
-
-
-
 
 }

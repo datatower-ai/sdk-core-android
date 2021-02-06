@@ -17,15 +17,13 @@ import com.nodetower.analytics.core.TrackTaskManager
 import com.nodetower.analytics.core.TrackTaskManagerThread
 import com.nodetower.analytics.data.DataParams
 import com.nodetower.analytics.data.DateAdapter
+import com.nodetower.analytics.data.EventDateAdapter
 import com.nodetower.analytics.data.persistent.PersistentAppFirstOpen
 import com.nodetower.analytics.data.persistent.PersistentLoader
 import com.nodetower.analytics.utils.DataHelper.assertPropertyTypes
 import com.nodetower.analytics.utils.DataUtils
 import com.nodetower.analytics.utils.GaidHelper
-import com.nodetower.base.utils.AppInfoUtils
-import com.nodetower.base.utils.DeviceUtils
-import com.nodetower.base.utils.LogUtils
-import com.nodetower.base.utils.NetUtil
+import com.nodetower.base.utils.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.security.SecureRandom
@@ -54,8 +52,6 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     // 主进程名称
     private var mMainProcessName: String? = null
 
-    // Session 时长,设定app进入后台超过30s为应用退出
-    protected var mSessionTime = 30 * 1000
 
     // 事件信息，包含事件的基本数据
     private var mEventInfo: MutableMap<String, Any?>? = null
@@ -75,12 +71,11 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     //采集 app 活跃事件线程池
     private var mTrackEngagementEventExecutors: ScheduledThreadPoolExecutor? = null
 
-
     //采集 、上报管理
     protected var mAnalyticsManager: AnalyticsManager? = null
 
     //本地数据适配器，包括sp、db的操作
-    private var mDataAdapter: DateAdapter? = null
+    private var mDataAdapter: EventDateAdapter? = null
 
     //是否为第一打开app标记
     var mAppFirstOpen: PersistentAppFirstOpen? = null
@@ -118,7 +113,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         mAppFirstOpen =
             PersistentLoader.loadPersistent(DataParams.TABLE_APP_FIRST_OPEN) as PersistentAppFirstOpen?
 
-        mDataAdapter = DateAdapter.getInstance(mContext!!, mContext.packageName)
+        mDataAdapter = EventDateAdapter.getInstance(mContext!!, mContext.packageName)
     }
 
     /**
@@ -204,8 +199,8 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 //                    if (!screenOrientation.isNullOrEmpty()) {
 //                        put("#screen_orientation", screenOrientation)
 //                    }
-                    put("process_name",
-                        mContext?.applicationContext?.let { AppInfoUtils.getCurrentProcessName(it) })
+//                    put("process_name",
+//                        mContext?.applicationContext?.let { AppInfoUtils.getCurrentProcessName(it) })
                     //合并用户自定义属性和通用属性
                     DataUtils.mergeJSONObject(properties, this)
                 }
@@ -260,10 +255,10 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             put("#sdk_version", BuildConfig.VERSION_NAME)//SDK 版本,如 1.1.2
             put("#os", "Android")//如 Android、iOS 等
             put("#os_version", DeviceUtils.oS)//操作系统版本,iOS 11.2.2、Android 8.0.0 等
-            put(
-                "#browser_version",
-                DeviceUtils.getBrowserOS(mContext)
-            )//浏览器版本,用户使用的浏览器的版本，如 Chrome 61.0，Firefox 57.0 等
+//            put(
+//                "#browser_version",
+//                DeviceUtils.getBrowserOS(mContext)
+//            )//浏览器版本,用户使用的浏览器的版本，如 Chrome 61.0，Firefox 57.0 等
             put("#device_manufacturer", DeviceUtils.manufacturer)//用户设备的制造商，如 Apple，vivo 等
             put("#device_brand", DeviceUtils.brand)//设备品牌,如 Galaxy、Pixel
             put("#device_model", DeviceUtils.model)//设备型号,用户设备的型号，如 iPhone 8 等
@@ -297,6 +292,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
             initLog(configOptions.mEnabledDebug, configOptions.mLogLevel)
             setServerUrl(serverURL)
+            registerNetworkStatusChangedListener()
 
             if (configOptions.mFlushInterval == 0) {
                 configOptions.setFlushInterval(
@@ -313,15 +309,15 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
                     32 * 1024 * 1024L
                 )
             }
-            if (configOptions.isSubProcessFlushData) {
-                mDataAdapter?.let {
-                    if (it.isFirstProcess) {
-                        //如果是首个进程
-                        it.commitFirstProcessState(false)
-                        it.commitSubProcessFlushState(false)
-                    }
-                }
-            }
+//            if (configOptions.isSubProcessFlushData) {
+//                mDataAdapter?.let {
+//                    if (it.isFirstProcess) {
+//                        //如果是首个进程
+//                        it.commitFirstProcessState(false)
+//                        it.commitSubProcessFlushState(false)
+//                    }
+//                }
+//            }
         }
 
         this.mMainProcessName = AppInfoUtils.getMainProcessName(mContext)
@@ -342,7 +338,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             if (it.mEnabledDebug) {
                 initLog(it.mEnabledDebug, it.mLogLevel)
             }
-            initNetStateListener()
+
         }
     }
 
@@ -355,15 +351,17 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         }
     }
 
-    fun initNetStateListener(){
-        NetUtil.registerNetConnChangedReceiver(mContext!!)
-        NetUtil.addNetConnChangedListener(object : NetUtil.Companion.NetConnChangedListener {
-            override fun onNetConnChanged(connectStatus: NetUtil.Companion.ConnectStatus) {
-                if(connectStatus == NetUtil.Companion.ConnectStatus.NO_NETWORK || connectStatus == NetUtil.Companion.ConnectStatus.NO_CONNECTED ) return
-                mAnalyticsManager?.flush()
-            }
+    fun registerNetworkStatusChangedListener(){
+        NetworkUtil.registerNetworkStatusChangedListener(
+            mContext,
+            object : NetworkUtil.OnNetworkStatusChangedListener {
+                override fun onDisconnected() {}
+                override fun onConnected(networkType: NetworkUtil.NetworkType?) {
+                    LogUtils.i("onNetConnChanged",networkType)
+                    mAnalyticsManager?.flush()
+                }
 
-        })
+            })
     }
 
     /**

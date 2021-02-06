@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.infinum.dbinspector.DbInspector
 import com.jraska.console.Console
 import com.nodetower.analytics.api.IAnalyticsApi
 import com.nodetower.analytics.api.PropertyBuilder
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
-        
+
         findViewById<View>(R.id.button_analytics_test).setOnClickListener {
             startActivity(Intent(this,AnalyticsTestActivity::class.java))
         }
@@ -28,6 +29,9 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.button_clear_log).setOnClickListener {
             Console.clear()
+        }
+        findViewById<View>(R.id.button_db_view).setOnClickListener {
+            DbInspector.show()
         }
     }
 

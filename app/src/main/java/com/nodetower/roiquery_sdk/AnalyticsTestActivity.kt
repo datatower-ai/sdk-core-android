@@ -11,6 +11,8 @@ import com.jraska.console.Console
 import com.nodetower.analytics.api.IAnalyticsApi
 import com.nodetower.analytics.api.PropertyBuilder
 import com.nodetower.analytics.api.RoiqueryAnalyticsAPI
+import com.nodetower.base.utils.LogUtils
+import com.nodetower.base.utils.NetUtil
 
 
 class AnalyticsTestActivity : AppCompatActivity() {
@@ -94,7 +96,20 @@ class AnalyticsTestActivity : AppCompatActivity() {
             (it as TextView).text = if (mApi?.isEnableDataCollect() == true) "disable track" else "enable track"
         }
 
+//    initNetStateListener()
 
+    }
+
+    fun initNetStateListener(){
+        NetUtil.registerNetConnChangedReceiver(this)
+        NetUtil.addNetConnChangedListener(object : NetUtil.Companion.NetConnChangedListener {
+            override fun onNetConnChanged(connectStatus: NetUtil.Companion.ConnectStatus) {
+                LogUtils.i("onNetConnChanged",connectStatus)
+                if(connectStatus == NetUtil.Companion.ConnectStatus.NO_NETWORK || connectStatus == NetUtil.Companion.ConnectStatus.NO_CONNECTED ) return
+//                mAnalyticsManager?.flush()
+            }
+
+        })
     }
 
     override fun onStart() {

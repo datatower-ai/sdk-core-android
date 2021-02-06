@@ -7,6 +7,7 @@ import com.nodetower.analytics.Constant
 import com.nodetower.analytics.api.RoiqueryAnalyticsAPI
 import com.nodetower.analytics.data.DateAdapter
 import com.nodetower.analytics.data.DataParams
+import com.nodetower.analytics.data.EventDateAdapter
 import com.nodetower.base.network.HttpCallback
 import com.nodetower.base.network.HttpMethod
 import com.nodetower.base.network.RequestHelper
@@ -27,7 +28,7 @@ class AnalyticsManager private constructor(
     var mAnalyticsDataAPI: RoiqueryAnalyticsAPI
 ) {
     private val mWorker: Worker = Worker()
-    private val mDateAdapter: DateAdapter? = DateAdapter.getInstance()
+    private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
 
 
     fun enqueueEventMessage(name: String, eventJson: JSONObject) {
@@ -110,17 +111,7 @@ class AnalyticsManager private constructor(
                 LogUtils.i(TAG, String.format("您当前网络为 %s，无法发送数据，请确认您的网络发送策略！", networkType))
                 return false
             }
-            // 如果开启多进程上报
-            if (mAnalyticsDataAPI.isMultiProcessFlushData()) {
-                // 已经有进程在上报
-                if (mDateAdapter?.isSubProcessFlushing == true) {
-                    return false
-                }
-                DateAdapter.getInstance()!!.commitSubProcessFlushState(true)
-            }
-            else if (!mAnalyticsDataAPI.mIsMainProcess) { //不是主进程
-//                return false
-            }
+
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
             return false
@@ -136,6 +127,7 @@ class AnalyticsManager private constructor(
         if (!enableUploadData()) return
         //这里每次只发送一条,后续可以考虑一次上报多条数据
         if (mDateAdapter == null) return
+        //读取数据库数据
         var eventsData: Array<String>?
         synchronized(mDateAdapter){
            eventsData = mDateAdapter.generateDataString(
@@ -145,7 +137,6 @@ class AnalyticsManager private constructor(
         }
 
         if (eventsData == null) {
-            mDateAdapter.commitSubProcessFlushState(false)
             LogUtils.d(TAG,"db count = 0，disable upload")
             return
         }
