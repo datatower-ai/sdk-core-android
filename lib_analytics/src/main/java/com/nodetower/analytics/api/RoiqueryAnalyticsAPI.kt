@@ -5,7 +5,7 @@ import com.nodetower.analytics.Constant
 import com.nodetower.analytics.config.AnalyticsConfigOptions
 import com.nodetower.analytics.core.TrackTaskManagerThread
 import com.nodetower.analytics.data.DataParams
-import com.nodetower.analytics.data.DateAdapter
+import com.nodetower.analytics.data.EventDateAdapter
 import com.nodetower.base.utils.LogUtils
 import org.json.JSONObject
 
@@ -49,10 +49,10 @@ open class RoiqueryAnalyticsAPI : AbstractAnalyticsApi {
         }
 
     override var accountId: String?
-        get() = mContext?.let { DateAdapter.getInstance(it, mContext.packageName)?.loginId }
+        get() = mContext?.let { EventDateAdapter.getInstance(it, mContext.packageName)?.accountId }
         set(value) {
             if (value != null) {
-                mContext?.let { DateAdapter.getInstance(it, mContext.packageName)?.commitLoginId(
+                mContext?.let { EventDateAdapter.getInstance(it, mContext.packageName)?.commitAccountId(
                     value
                 ) }
                 updateEventInfo("#acid", value)

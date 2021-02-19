@@ -12,11 +12,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application>
-        <provider
-            android:name="com.nodetower.analytics.data.DataContentProvider"
-            android:authorities="${applicationId}.AnalyticsDataContentProvider"
-            android:enabled="true"
-            android:exported="false" />
 
         <meta-data
             android:name="com.nodetower.analytics.android.MainProcessName"

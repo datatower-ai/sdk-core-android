@@ -15,18 +15,14 @@ import com.nodetower.analytics.config.AnalyticsConfigOptions
 import com.nodetower.analytics.core.AnalyticsManager
 import com.nodetower.analytics.core.TrackTaskManager
 import com.nodetower.analytics.core.TrackTaskManagerThread
-import com.nodetower.analytics.data.DataParams
-import com.nodetower.analytics.data.DateAdapter
 import com.nodetower.analytics.data.EventDateAdapter
-import com.nodetower.analytics.data.persistent.PersistentAppFirstOpen
-import com.nodetower.analytics.data.persistent.PersistentLoader
+
 import com.nodetower.analytics.utils.DataHelper.assertPropertyTypes
 import com.nodetower.analytics.utils.DataUtils
 import com.nodetower.analytics.utils.GaidHelper
 import com.nodetower.base.utils.*
 import org.json.JSONException
 import org.json.JSONObject
-import java.security.SecureRandom
 import java.util.*
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -77,8 +73,6 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
     //本地数据适配器，包括sp、db的操作
     private var mDataAdapter: EventDateAdapter? = null
 
-    //是否为第一打开app标记
-    var mAppFirstOpen: PersistentAppFirstOpen? = null
 
 
     companion object {
@@ -109,10 +103,6 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
      * 初始化本地数据
      */
     private fun initLocalData(context: Context) {
-        PersistentLoader.initLoader(context)
-        mAppFirstOpen =
-            PersistentLoader.loadPersistent(DataParams.TABLE_APP_FIRST_OPEN) as PersistentAppFirstOpen?
-
         mDataAdapter = EventDateAdapter.getInstance(mContext!!, mContext.packageName)
     }
 
@@ -194,13 +184,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
                 }
                 //设置事件属性
                 val eventProperties = JSONObject(mCommonProperties).apply {
-                    // 屏幕方向
-//                    val screenOrientation: String? = getScreenOrientation()
-//                    if (!screenOrientation.isNullOrEmpty()) {
-//                        put("#screen_orientation", screenOrientation)
-//                    }
-//                    put("process_name",
-//                        mContext?.applicationContext?.let { AppInfoUtils.getCurrentProcessName(it) })
+
                     //合并用户自定义属性和通用属性
                     DataUtils.mergeJSONObject(properties, this)
                 }
@@ -309,15 +293,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
                     32 * 1024 * 1024L
                 )
             }
-//            if (configOptions.isSubProcessFlushData) {
-//                mDataAdapter?.let {
-//                    if (it.isFirstProcess) {
-//                        //如果是首个进程
-//                        it.commitFirstProcessState(false)
-//                        it.commitSubProcessFlushState(false)
-//                    }
-//                }
-//            }
+
         }
 
         this.mMainProcessName = AppInfoUtils.getMainProcessName(mContext)
@@ -351,7 +327,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         }
     }
 
-    fun registerNetworkStatusChangedListener(){
+    private fun registerNetworkStatusChangedListener(){
         NetworkUtil.registerNetworkStatusChangedListener(
             mContext,
             object : NetworkUtil.OnNetworkStatusChangedListener {
@@ -424,18 +400,12 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
      * 采集app 启动事件
      */
     private fun trackAppOpenEvent() {
-        if (mAppFirstOpen?.get() != null) {
-            if (mAppFirstOpen?.get()!!) {
-                track(Constant.PRESET_EVENT_APP_FIRST_OPEN)
-                mAppFirstOpen?.commit(false)
-                getAppAttribute()
-            } else {
-                track(Constant.PRESET_EVENT_APP_OPEN)
-            }
-        } else {
+        if (mDataAdapter?.isFirstOpen() == true) {
             track(Constant.PRESET_EVENT_APP_FIRST_OPEN)
-            mAppFirstOpen?.commit(false)
+            mDataAdapter?.commitFirstOpen(false)
             getAppAttribute()
+        } else {
+            track(Constant.PRESET_EVENT_APP_OPEN)
         }
     }
 

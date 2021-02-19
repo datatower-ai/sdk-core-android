@@ -97,8 +97,9 @@ class DataParams private constructor(packageName: String) {
     companion object {
         /* 数据库中的表名 */
         const val TABLE_EVENTS = "events"
+        const val TABLE_CONFIGS = "configs"
         const val TABLE_CHANNEL_PERSISTENT = "t_channel"
-        const val DB_OUT_OF_MEMORY_ERROR = -2
+
         const val KEY_CHANNEL_EVENT_NAME = "event_name"
         const val KEY_CHANNEL_RESULT = "result"
 
@@ -124,9 +125,23 @@ class DataParams private constructor(packageName: String) {
         /* Event 表字段 */
         const val KEY_DATA = "data"
         const val KEY_CREATED_AT = "created_at"
+        /* Config 表字段 */
+        const val KEY_CONFIG_NAME = "name"
+        const val KEY_CONFIG_VALUE = "value"
+
+        const val CONFIG_GAID = "gaid"
+        const val CONFIG_OAID = "oaid"
+        const val CONFIG_ACCOUNT_ID = "account_id"
+        const val CONFIG_ENABLE_UPLOADS = "enable_upload"
+        const val CONFIG_FIRST_OPEN = "first_open"
+
+
 
         /* 数据库状态 */
         const val DB_UPDATE_ERROR = -1
+        const val DB_OUT_OF_MEMORY_ERROR = -2
+        const val DB_INSERT_ERROR = -3L
+        const val DB_UPDATE_CONFIG_ERROR = -4
         const val VALUE = "value"
         const val GZIP_DATA_EVENT = "1"
         const val GZIP_DATA_ENCRYPT = "9"

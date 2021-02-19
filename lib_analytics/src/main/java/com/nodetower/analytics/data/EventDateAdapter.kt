@@ -1,6 +1,7 @@
 package com.nodetower.analytics.data
 
 import android.content.Context
+import com.nodetower.analytics.data.db.EventDataOperation
 import com.nodetower.base.utils.LogUtils
 import org.json.JSONException
 import org.json.JSONObject
@@ -11,7 +12,7 @@ class EventDateAdapter private constructor(
     packageName: String,
 ) {
     private val mDbParams: DataParams? = DataParams.getInstance(packageName)
-    private var mOperation: _EventDataOperation? = _EventDataOperation(context.applicationContext)
+    private var mOperation: EventDataOperation? = EventDataOperation(context.applicationContext)
 
     /**
      * Adds a JSON string representing an event with properties or a person record
@@ -53,11 +54,11 @@ class EventDateAdapter private constructor(
      *
      * @param loginId 登录 Id
      */
-    fun commitLoginId(loginId: String?) {
+    fun commitAccountId(loginId: String?) {
         try {
-            mOperation?.insertData(
-                mDbParams!!.loginIdUri,
-                JSONObject().put(DataParams.VALUE, loginId)
+            mOperation?.insertConfig(
+                DataParams.CONFIG_ACCOUNT_ID,
+                loginId
             )
         } catch (e: JSONException) {
             LogUtils.printStackTrace(e)
@@ -69,23 +70,24 @@ class EventDateAdapter private constructor(
      *
      * @return LoginId
      */
-    val loginId: String
+    val accountId: String
         get() {
-            val values = mOperation?.queryData(mDbParams?.loginIdUri, 1)
+            val values = mOperation?.queryConfig(DataParams.CONFIG_ACCOUNT_ID)
             return if (values != null && values.isNotEmpty()) {
-                values[0]
+                values
             } else ""
         }
+
     /**
      * 存储 oaid
      *
      * @param oaid 登录 oaid
      */
     fun commitOaid(oaid: String?) {
-        try {
-            mOperation?.insertData(
-                mDbParams!!.oaidUri,
-                JSONObject().put(DataParams.VALUE, oaid)
+         try {
+            mOperation?.insertConfig(
+                DataParams.CONFIG_OAID,
+                oaid
             )
         } catch (e: JSONException) {
             LogUtils.printStackTrace(e)
@@ -99,9 +101,9 @@ class EventDateAdapter private constructor(
      */
     val oaid: String
         get() {
-            val values = mOperation?.queryData(mDbParams?.oaidUri, 1)
+            val values = mOperation?.queryConfig(DataParams.CONFIG_OAID)
             return if (values != null && values.isNotEmpty()) {
-                values[0]
+                values
             } else ""
         }
 
@@ -112,9 +114,9 @@ class EventDateAdapter private constructor(
      */
     fun commitGaid(gaid: String?) {
         try {
-            mOperation?.insertData(
-                mDbParams?.gaidUri,
-                JSONObject().put(DataParams.VALUE, gaid)
+            mOperation?.insertConfig(
+                DataParams.CONFIG_GAID,
+                gaid
             )
         } catch (e: JSONException) {
             LogUtils.printStackTrace(e)
@@ -128,10 +130,60 @@ class EventDateAdapter private constructor(
      */
     val gaid: String
         get() {
-            val values = mOperation?.queryData(mDbParams?.gaidUri, 1)
+            val values = mOperation?.queryConfig(DataParams.CONFIG_GAID)
             return if (values != null && values.isNotEmpty()) {
-                values[0]
+                values
             } else ""
+        }
+
+    /**
+     * 存储 上报数据进程名
+     *
+     * @param name
+     */
+    fun commitEnableUpload(enable: Boolean?) {
+        try {
+            mOperation?.insertConfig(
+                DataParams.CONFIG_ENABLE_UPLOADS,
+                enable.toString()
+            )
+        } catch (e: JSONException) {
+            LogUtils.printStackTrace(e)
+        }
+    }
+
+    /**
+     * 可否上报
+     *
+     * @return 上报数据进程名
+     */
+    fun enableUpload(): Boolean
+        {
+            val values = mOperation?.queryConfig(DataParams.CONFIG_ENABLE_UPLOADS)
+            return if (values != null && values.isNotEmpty()) {
+                values == "true" || values == "null"
+            } else true
+        }
+
+
+    fun commitFirstOpen(enable: Boolean?) {
+        try {
+            mOperation?.insertConfig(
+                DataParams.CONFIG_FIRST_OPEN,
+                enable.toString()
+            )
+        } catch (e: JSONException) {
+            LogUtils.printStackTrace(e)
+        }
+    }
+
+
+    fun isFirstOpen(): Boolean
+        {
+            val values = mOperation?.queryConfig(DataParams.CONFIG_FIRST_OPEN)
+            return if (values != null && values.isNotEmpty()) {
+                values == "true" || values == "null"
+            } else true
         }
 
     /**
@@ -141,7 +193,7 @@ class EventDateAdapter private constructor(
      * @param limit 条数限制
      * @return 数据
      */
-    fun generateDataString(tableName: String?, limit: Int): Array<String>? {
+    fun generateDataString(limit: Int): Array<String>? {
         return mOperation?.queryData(mDbParams!!.eventUri, limit)
     }
 

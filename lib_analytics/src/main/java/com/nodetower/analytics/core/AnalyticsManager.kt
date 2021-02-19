@@ -5,7 +5,6 @@ import android.os.*
 import android.text.TextUtils
 import com.nodetower.analytics.Constant
 import com.nodetower.analytics.api.RoiqueryAnalyticsAPI
-import com.nodetower.analytics.data.DateAdapter
 import com.nodetower.analytics.data.DataParams
 import com.nodetower.analytics.data.EventDateAdapter
 import com.nodetower.base.network.HttpCallback
@@ -108,12 +107,22 @@ class AnalyticsManager private constructor(
             //不符合同步数据的网络策略
             val networkType = networkType(mContext)
             if (!isShouldFlush(networkType, mAnalyticsDataAPI.getFlushNetworkPolicy())) {
-                LogUtils.i(TAG, String.format("您当前网络为 %s，无法发送数据，请确认您的网络发送策略！", networkType))
+                LogUtils.i(TAG, String.format("networkType is %s，disable upload，please confirm FlushNetworkPolicy！", networkType))
                 return false
             }
 
+            if(mDateAdapter?.enableUpload() == false){
+                LogUtils.i(TAG, "A process is currently uploading，disable upload")
+                return false
+            }else{
+                mDateAdapter?.commitEnableUpload(false)
+            }
+
+
+
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
+            mDateAdapter?.commitEnableUpload(true)
             return false
         }
         return true
@@ -125,19 +134,22 @@ class AnalyticsManager private constructor(
     private fun uploadData() {
         //不上报数据
         if (!enableUploadData()) return
-        //这里每次只发送一条,后续可以考虑一次上报多条数据
-        if (mDateAdapter == null) return
+
+        if (mDateAdapter == null){
+            mDateAdapter?.commitEnableUpload(true)
+            return
+        }
         //读取数据库数据
         var eventsData: Array<String>?
         synchronized(mDateAdapter){
            eventsData = mDateAdapter.generateDataString(
-               DataParams.TABLE_EVENTS,
                Constant.EVENT_REPORT_SIZE
            )
         }
 
         if (eventsData == null) {
             LogUtils.d(TAG,"db count = 0，disable upload")
+            mDateAdapter.commitEnableUpload(true)
             return
         }
         LogUtils.json(TAG , "event uploading,process:${AppInfoUtils.getCurrentProcessName(mContext.applicationContext)}")
@@ -171,7 +183,7 @@ class AnalyticsManager private constructor(
                 }
 
                 override fun onAfter() {
-
+                    mDateAdapter.commitEnableUpload(true)
                 }
             }).execute()
     }

@@ -1,30 +1,25 @@
-package com.nodetower.analytics.data
+package com.nodetower.analytics.data.db
 
 
 import android.content.*
 import android.database.Cursor
-import android.database.MatrixCursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
-import com.nodetower.analytics.data.db.EventDataDBHelper
-import com.nodetower.analytics.data.persistent.PersistentGaid
-import com.nodetower.analytics.data.persistent.PersistentLoader
-import com.nodetower.analytics.data.persistent.PersistentLoginId
-import com.nodetower.analytics.data.persistent.PersistentOaid
+import com.nodetower.analytics.data.DataParams
 import com.nodetower.base.utils.LogUtils
 
 
 class DbHelper(context: Context?) :
     SQLiteOpenHelper(context, DataParams.DATABASE_NAME, null, DataParams.DATABASE_VERSION) {
 
-
     private var isDbWritable = true
 
     override fun onCreate(db: SQLiteDatabase) {
         LogUtils.i(TAG, "Creating a new Analytics DB")
         db.execSQL(CREATE_EVENTS_TABLE)
+        db.execSQL(CREATE_CONFIGS_TABLE)
         db.execSQL(EVENTS_TIME_INDEX)
     }
 
@@ -32,42 +27,38 @@ class DbHelper(context: Context?) :
         LogUtils.i(TAG, "Upgrading app, replacing Analytics DB")
         db.execSQL(String.format("DROP TABLE IF EXISTS %s", DataParams.TABLE_EVENTS))
         db.execSQL(CREATE_EVENTS_TABLE)
+        db.execSQL(CREATE_CONFIGS_TABLE)
         db.execSQL(EVENTS_TIME_INDEX)
     }
 
 
     companion object {
-        private const val TAG = "SA.SQLiteOpenHelper"
+        private const val TAG = "SQLiteOpenHelper"
         private val CREATE_EVENTS_TABLE = String.format(
             "CREATE TABLE %s (_id INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s INTEGER NOT NULL);",
             DataParams.TABLE_EVENTS,
             DataParams.KEY_DATA,
             DataParams.KEY_CREATED_AT
         )
-        private val CREATE_CONFIGS_TABLE = String.format(
-            "CREATE TABLE %s (_id INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s INTEGER NOT NULL);",
-            DataParams.TABLE_EVENTS,
-            DataParams.KEY_DATA,
-            DataParams.KEY_CREATED_AT
-        )
+
         private val EVENTS_TIME_INDEX = String.format(
             "CREATE INDEX IF NOT EXISTS time_idx ON %s (%s);",
             DataParams.TABLE_EVENTS,
             DataParams.KEY_CREATED_AT
         )
 
-        /* 数据库中的表名 */
-        /* 事件 */
-        const val TABLE_EVENTS = "events"
-        const val KEY_EVENTS_DATA = "date"
-        const val KEY_CREATED_AT= "created_at"
-        /* 配置 */
-        const val TABLE_CONFIGS = "configs"
-        const val KEY_CONFIGS_NAME = "name"
-        const val KEY_CONFIGS_VALUE = "value"
+        private val CREATE_CONFIGS_TABLE = String.format(
+            "CREATE TABLE %s (_id INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT NOT NULL);",
+            DataParams.TABLE_CONFIGS,
+            DataParams.KEY_CONFIG_NAME,
+            DataParams.KEY_CONFIG_VALUE
+        )
+
     }
 
-     fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
+    /* event */
+
+     fun delete(selection: String?, selectionArgs: Array<String>?): Int {
         if (!isDbWritable) {
             return 0
         }
@@ -112,52 +103,36 @@ class DbHelper(context: Context?) :
         return ContentUris.withAppendedId(uri, d)
     }
 
-    private fun insertChannelPersistent(uri: Uri, values: ContentValues): Uri {
+     fun insertConfig(values: ContentValues): Long {
         val database: SQLiteDatabase
         try {
             database = writableDatabase
         } catch (e: SQLiteException) {
             isDbWritable = false
             LogUtils.printStackTrace(e)
-            return uri
+            return DataParams.DB_INSERT_ERROR
         }
-        if (!values.containsKey(DataParams.KEY_CHANNEL_EVENT_NAME) || !values.containsKey(DataParams.KEY_CHANNEL_RESULT)) {
-            return uri
-        }
-        val d = database.insertWithOnConflict(
-            DataParams.TABLE_CHANNEL_PERSISTENT,
-            null,
-            values,
-            SQLiteDatabase.CONFLICT_REPLACE
-        )
-        return ContentUris.withAppendedId(uri, d)
+         return if (!values.containsKey(DataParams.KEY_CONFIG_NAME) || !values.containsKey(
+                 DataParams.KEY_CONFIG_VALUE
+             )) {
+             DataParams.DB_INSERT_ERROR
+        }else database.insert(DataParams.TABLE_CONFIGS, DataParams.KEY_CONFIG_NAME, values)
     }
 
-     fun bulkInsert(uri: Uri, values: Array<ContentValues>): Int {
-        if (!isDbWritable) {
-            return 0
-        }
-        val numValues: Int
-        var database: SQLiteDatabase? = null
+     fun updateConfig(name:String,values: ContentValues): Int {
+        val database: SQLiteDatabase
         try {
-            try {
-                database = writableDatabase
-            } catch (e: SQLiteException) {
-                isDbWritable = false
-                LogUtils.printStackTrace(e)
-                return 0
-            }
-            database.beginTransaction()
-            numValues = values.size
-            for (i in 0 until numValues) {
-                insert(uri, values[i])
-            }
-            database.setTransactionSuccessful()
-        } finally {
-            database?.endTransaction()
+            database = writableDatabase
+        } catch (e: SQLiteException) {
+            isDbWritable = false
+            LogUtils.printStackTrace(e)
+            return DataParams.DB_UPDATE_CONFIG_ERROR
         }
-        return numValues
+         return if (!values.containsKey(DataParams.KEY_CONFIG_VALUE)) {
+             DataParams.DB_UPDATE_CONFIG_ERROR
+        }else database.update(DataParams.TABLE_CONFIGS, values, DataParams.KEY_CONFIG_NAME + "=?",arrayOf(name))
     }
+
 
      fun query(
         uri: Uri,
@@ -178,7 +153,7 @@ class DbHelper(context: Context?) :
         return cursor
     }
 
-    private fun queryByTable(
+     fun queryByTable(
         tableName: String,
         projection: Array<String>?,
         selection: String?,
