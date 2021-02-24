@@ -3,6 +3,7 @@ package com.nodetower.analytics.api
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.RemoteException
 import android.text.TextUtils
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
@@ -138,31 +139,6 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
 
     override fun setServerUrl(serverUrl: String?) {
         mServerUrl = serverUrl
-    }
-
-    protected open fun addTimeProperty(jsonObject: JSONObject) {
-        if (!jsonObject.has("#time")) {
-            try {
-                jsonObject.put("#time", Date(System.currentTimeMillis()))
-            } catch (e: JSONException) {
-                LogUtils.printStackTrace(e)
-            }
-        }
-    }
-
-
-    /**
-     * 处理渠道相关的事件
-     *
-     * @param runnable 任务
-     */
-    protected open fun transformInstallationTaskQueue(runnable: Runnable?) {
-        // 禁用采集事件时，先计算基本信息存储到缓存中
-        if (!mConfigOptions.isDataCollectEnable) {
-            mTrackTaskManager!!.addTrackEventTask { mTrackTaskManager!!.transformTaskQueue(runnable!!) }
-            return
-        }
-        mTrackTaskManager!!.addTrackEventTask(runnable!!)
     }
 
     protected fun trackEvent(
@@ -419,7 +395,11 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
         if (mDataAdapter?.isFirstOpen() == true) {
             track(Constant.PRESET_EVENT_APP_FIRST_OPEN)
             mDataAdapter?.commitFirstOpen(false)
-            getAppAttribute()
+            try {
+                getAppAttribute()
+            }catch (e: RemoteException){
+                LogUtils.printStackTrace(e)
+            }
         } else {
             track(Constant.PRESET_EVENT_APP_OPEN)
         }
@@ -429,9 +409,9 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
      * 获取 app 归因属性
      */
     private fun getAppAttribute() {
-        var referrerClient: InstallReferrerClient =
+        var referrerClient: InstallReferrerClient? =
             InstallReferrerClient.newBuilder(mContext).build()
-        referrerClient.startConnection(object : InstallReferrerStateListener {
+        referrerClient?.startConnection(object : InstallReferrerStateListener {
 
             override fun onInstallReferrerSetupFinished(responseCode: Int) {
                 when (responseCode) {
