@@ -30,6 +30,7 @@ class MyApp : Application() {
             this,
             AnalyticsConfigOptions("demo_test", "https://api.roiquery.com")
                 .setDebug(true)
+
         )
     }
 }

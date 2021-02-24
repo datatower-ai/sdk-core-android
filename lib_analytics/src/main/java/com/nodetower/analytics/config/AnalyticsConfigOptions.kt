@@ -2,6 +2,7 @@ package com.nodetower.analytics.config
 
 import com.nodetower.base.utils.LogUtils
 import com.nodetower.base.utils.LogUtils.TYPE
+import org.json.JSONObject
 
 
 class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions {
@@ -115,5 +116,9 @@ class AnalyticsConfigOptions : AbstractAnalyticsConfigOptions {
         return this
     }
 
+    fun addCommonProperties(commonProperties: JSONObject): AnalyticsConfigOptions  {
+        mCommonProperties = commonProperties
+        return this
+    }
 
 }

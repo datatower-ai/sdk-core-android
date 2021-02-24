@@ -110,10 +110,10 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
      * 初始化预置、通用属性
      */
     private fun initProperties() {
-        getGAID()
-        getOAID()
         initEventInfo()
         initCommonProperties()
+        getGAID()
+        getOAID()
     }
 
     /**
@@ -239,10 +239,7 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             put("#sdk_version", BuildConfig.VERSION_NAME)//SDK 版本,如 1.1.2
             put("#os", "Android")//如 Android、iOS 等
             put("#os_version", DeviceUtils.oS)//操作系统版本,iOS 11.2.2、Android 8.0.0 等
-//            put(
-//                "#browser_version",
-//                DeviceUtils.getBrowserOS(mContext)
-//            )//浏览器版本,用户使用的浏览器的版本，如 Chrome 61.0，Firefox 57.0 等
+
             put("#device_manufacturer", DeviceUtils.manufacturer)//用户设备的制造商，如 Apple，vivo 等
             put("#device_brand", DeviceUtils.brand)//设备品牌,如 Galaxy、Pixel
             put("#device_model", DeviceUtils.model)//设备型号,用户设备的型号，如 iPhone 8 等
@@ -250,8 +247,27 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
             put("#screen_height", size[0].toString())//屏幕高度
             put("#screen_width", size[1].toString())//屏幕宽度
         }
+        mConfigOptions.let {
+            if (it.mCommonProperties != null) {
+                val iterator = it.mCommonProperties!!.keys()
+                while (iterator.hasNext()) {
+                    val key = iterator.next()
+                    try {
+                        val value = it.mCommonProperties!![key]
+                        updateCommonProperties(key,value.toString())
+                    }catch (e:Exception){
+
+                    }
+                }
+            }
+        }
     }
 
+
+    private fun updateCommonProperties(key: String, value: String) {
+        mCommonProperties?.remove(key)
+        mCommonProperties?.put(key, value)
+    }
 
     /**
      * 初始化配置

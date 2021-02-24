@@ -7,9 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.infinum.dbinspector.DbInspector
 import com.jraska.console.Console
 import com.nodetower.analytics.api.IAnalyticsApi
-import com.nodetower.analytics.api.PropertyBuilder
-import com.nodetower.analytics.api.RoiqueryAnalyticsAPI
-import com.nodetower.base.utils.LogUtils
 
 
 class MainActivity : AppCompatActivity() {

@@ -13,14 +13,13 @@ import android.util.Log;
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
 import androidx.annotation.RequiresApi;
-import androidx.collection.SimpleArrayMap;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FilenameFilter;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.annotation.Retention;
@@ -28,16 +27,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
+
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
@@ -91,7 +88,7 @@ public final class LogUtils {
 
     private static SimpleDateFormat simpleDateFormat;
 
-    private static final SimpleArrayMap<Class, IFormatter> I_FORMATTER_MAP = new SimpleArrayMap<>();
+    private static final HashMap<Class, IFormatter> I_FORMATTER_MAP = new HashMap<>();
 
     private LogUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");

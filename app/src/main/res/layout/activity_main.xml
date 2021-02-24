@@ -35,7 +35,7 @@
         android:layout_margin="5dp"
         android:textSize="18sp"
         android:layout_height="wrap_content"
-        android:text="AnalyticsTest_Process"
+        android:text="AnalyticsTest_Sub_Process"
         />
     <Button
         android:id="@+id/button_db_view"

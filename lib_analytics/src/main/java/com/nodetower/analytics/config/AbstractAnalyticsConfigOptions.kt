@@ -2,9 +2,11 @@ package com.nodetower.analytics.config
 
 import com.nodetower.base.utils.LogUtils
 import com.nodetower.base.utils.NetworkType
+import org.json.JSONObject
 import javax.net.ssl.SSLSocketFactory
 
 abstract class AbstractAnalyticsConfigOptions {
+
 
     /**
      * 数据上报服务器地址
@@ -57,4 +59,8 @@ abstract class AbstractAnalyticsConfigOptions {
      */
     var isDataCollectEnable = true
 
+    /**
+     * 设置公共属性
+     */
+    var mCommonProperties: JSONObject? = null
 }

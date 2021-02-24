@@ -71,7 +71,7 @@ class AnalyticsTestActivity : AppCompatActivity() {
             )
         }
         findViewById<View>(R.id.button_track_app_close).setOnClickListener {
-            mApi?.trackPageClose(
+            mApi?.trackAppClose(
                 PropertyBuilder.newInstance().append("app_close_property", "关闭了app").toJSONObject()
             )
         }
@@ -107,6 +107,7 @@ class AnalyticsTestActivity : AppCompatActivity() {
                 LogUtils.i("onNetConnChanged",connectStatus)
                 if(connectStatus == NetUtil.Companion.ConnectStatus.NO_NETWORK || connectStatus == NetUtil.Companion.ConnectStatus.NO_CONNECTED ) return
 //                mAnalyticsManager?.flush()
+
             }
 
         })

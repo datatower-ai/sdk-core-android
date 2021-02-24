@@ -48,7 +48,6 @@ class EventDateAdapter private constructor(
     }
 
 
-
     /**
      * 存储 LoginId
      *
@@ -73,7 +72,7 @@ class EventDateAdapter private constructor(
     val accountId: String
         get() {
             val values = mOperation?.queryConfig(DataParams.CONFIG_ACCOUNT_ID)
-            return if (values != null && values.isNotEmpty()) {
+            return if (values != null && values.isNotEmpty() && values != "null") {
                 values
             } else ""
         }
@@ -84,7 +83,7 @@ class EventDateAdapter private constructor(
      * @param oaid 登录 oaid
      */
     fun commitOaid(oaid: String?) {
-         try {
+        try {
             mOperation?.insertConfig(
                 DataParams.CONFIG_OAID,
                 oaid
@@ -102,7 +101,7 @@ class EventDateAdapter private constructor(
     val oaid: String
         get() {
             val values = mOperation?.queryConfig(DataParams.CONFIG_OAID)
-            return if (values != null && values.isNotEmpty()) {
+            return if (values != null && values.isNotEmpty() && values != "null") {
                 values
             } else ""
         }
@@ -131,7 +130,7 @@ class EventDateAdapter private constructor(
     val gaid: String
         get() {
             val values = mOperation?.queryConfig(DataParams.CONFIG_GAID)
-            return if (values != null && values.isNotEmpty()) {
+            return if (values != null && values.isNotEmpty() && values != "null") {
                 values
             } else ""
         }
@@ -157,13 +156,12 @@ class EventDateAdapter private constructor(
      *
      * @return 上报数据进程名
      */
-    fun enableUpload(): Boolean
-        {
-            val values = mOperation?.queryConfig(DataParams.CONFIG_ENABLE_UPLOADS)
-            return if (values != null && values.isNotEmpty()) {
-                values == "true" || values == "null"
-            } else true
-        }
+    fun enableUpload(): Boolean {
+        val values = mOperation?.queryConfig(DataParams.CONFIG_ENABLE_UPLOADS)
+        return if (values != null && values.isNotEmpty()) {
+            values == "true" || values == "null"
+        } else true
+    }
 
 
     fun commitFirstOpen(enable: Boolean?) {
@@ -178,13 +176,12 @@ class EventDateAdapter private constructor(
     }
 
 
-    fun isFirstOpen(): Boolean
-        {
-            val values = mOperation?.queryConfig(DataParams.CONFIG_FIRST_OPEN)
-            return if (values != null && values.isNotEmpty()) {
-                values == "true" || values == "null"
-            } else true
-        }
+    fun isFirstOpen(): Boolean {
+        val values = mOperation?.queryConfig(DataParams.CONFIG_FIRST_OPEN)
+        return if (values != null && values.isNotEmpty()) {
+            values == "true" || values == "null"
+        } else true
+    }
 
     /**
      * 从 Event 表中读取上报数据
@@ -202,7 +199,7 @@ class EventDateAdapter private constructor(
         fun getInstance(
             context: Context, packageName: String,
 
-        ): EventDateAdapter? {
+            ): EventDateAdapter? {
             if (instance == null) {
                 instance = EventDateAdapter(context, packageName)
             }
