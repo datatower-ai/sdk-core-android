@@ -174,7 +174,7 @@ class AnalyticsManager private constructor(
                     LogUtils.json("$TAG upload event result  ", response)
                     if (!response.isNullOrBlank() && JSONObject(response).get("code") == 0) {
                         //上报成功后删除本地数据
-                        var leftCount = mDateAdapter.cleanupEvents(lastId)
+                        val leftCount = mDateAdapter.cleanupEvents(lastId)
                         LogUtils.d(TAG,"db left count = $leftCount")
                         //避免事件积压，成功后再次上报
                         flush(mAnalyticsDataAPI.flushInterval.toLong())

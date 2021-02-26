@@ -25,6 +25,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.telephony.TelephonyManager
 import android.text.TextUtils
+import androidx.annotation.RequiresApi
 
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
@@ -43,6 +44,7 @@ object NetworkUtils {
      * @param context Context
      * @return 网络类型
      */
+    @RequiresApi(Build.VERSION_CODES.N)
     fun networkType(context: Context): String {
         return try {
             // 检测权限
@@ -219,6 +221,7 @@ object NetworkUtils {
      * @param connectivityManager ConnectivityManager
      * @return 移动网络类型
      */
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("MissingPermission")
     private fun mobileNetworkType(
         context: Context,
@@ -239,7 +242,7 @@ object NetworkUtils {
                 try {
                     networkType = telephonyManager.dataNetworkType
                 } catch (ex: Exception) {
-                    LogUtils.printStackTrace(ex)
+//                    LogUtils.printStackTrace(ex)
                 }
             }
         }

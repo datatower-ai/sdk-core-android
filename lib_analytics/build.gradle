@@ -48,12 +48,12 @@ dependencies {
     embed 'com.android.installreferrer:installreferrer:2.2'
 
     //oaid
-    implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_ASUS:2.1.0' //华硕
-    implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_BUN:2.1.0' //中兴、卓易
-    implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_HEYTAP:2.1.0' //欧珀、一加
-    implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_SAMSUNG:2.1.0' //三星
-    implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_UODIS:2.1.0' //华为
-    implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_ZUI:2.1.0' //联想、摩托罗拉
+    embed 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_ASUS:2.1.0' //华硕
+    embed 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_BUN:2.1.0' //中兴、卓易
+    embed 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_HEYTAP:2.1.0' //欧珀、一加
+    embed 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_SAMSUNG:2.1.0' //三星
+    embed 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_UODIS:2.1.0' //华为
+    embed 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_ZUI:2.1.0' //联想、摩托罗拉
     embed 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_IMPL:2.1.0' //具体实现
     embed 'com.github.gzu-liyujiang:Logger:1.2.2' //具体实现
 

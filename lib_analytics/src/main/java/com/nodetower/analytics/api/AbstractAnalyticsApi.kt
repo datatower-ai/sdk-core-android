@@ -336,24 +336,29 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
      * oaid 获取，异步
      */
     private fun getOAID() {
-        val deviceId = DeviceID.with(mContext)
-        if (!deviceId.supportOAID()) {
-            // 不支持OAID，须自行生成GUID，然后存到`SharedPreferences`及`ExternalStorage`甚至`CloudStorage`。
-            return
+        try {
+            val deviceId = DeviceID.with(mContext)
+            if (!deviceId.supportOAID()) {
+                // 不支持OAID，须自行生成GUID，然后存到`SharedPreferences`及`ExternalStorage`甚至`CloudStorage`。
+                return
+            }
+            deviceId.doGet(object : IOAIDGetter {
+                override fun onOAIDGetComplete(oaid: String) {
+                    // 不同厂商的OAID格式是不一样的，可进行MD5、SHA1之类的哈希运算统一
+                    //存入sp
+                    mDataAdapter?.commitOaid(oaid)
+                    updateEventInfo("#oaid", oaid)
+                }
+
+                override fun onOAIDGetError(exception: java.lang.Exception) {
+                    // 获取OAID失败
+                    LogUtils.printStackTrace(exception)
+                }
+            })
+        }catch (e:Exception){
+            LogUtils.printStackTrace(e)
         }
-        deviceId.doGet(object : IOAIDGetter {
-            override fun onOAIDGetComplete(oaid: String) {
-                // 不同厂商的OAID格式是不一样的，可进行MD5、SHA1之类的哈希运算统一
-                //存入sp
-                mDataAdapter?.commitOaid(oaid)
-                updateEventInfo("#oaid", oaid)
-            }
 
-            override fun onOAIDGetError(exception: java.lang.Exception) {
-                // 获取OAID失败
-
-            }
-        })
     }
 
     /**
@@ -399,6 +404,10 @@ abstract class AbstractAnalyticsApi : IAnalyticsApi {
                 getAppAttribute()
             }catch (e: RemoteException){
                 LogUtils.printStackTrace(e)
+                trackAppAttributeEvent(
+                    ReferrerDetails(null),
+                    e.message.toString()
+                )
             }
         } else {
             track(Constant.PRESET_EVENT_APP_OPEN)
