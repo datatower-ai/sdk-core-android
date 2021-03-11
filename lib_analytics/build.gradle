@@ -40,11 +40,16 @@ android {
 }
 
 
+repositories  {
+    flatDir{ dirs 'libs'  }
+}
+
 
 dependencies {
 
     //noinspection GradleDependency
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.annotation:annotation:1.1.0'
     embed 'com.android.installreferrer:installreferrer:2.2'
 
     //oaid
@@ -57,9 +62,10 @@ dependencies {
     embed 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_IMPL:2.1.0' //具体实现
     embed 'com.github.gzu-liyujiang:Logger:1.2.2' //具体实现
 
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    embed project(':lib_base')
+//    embed project(':lib_base')
 }

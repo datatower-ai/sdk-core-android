@@ -1,4 +1,6 @@
-include ':lib_base'
+include ':demo_ad_report'
+include ':lib_ad_report'
+//include ':lib_base'
 include ':lib_analytics'
-include ':app'
+include ':demo_analytics'
 rootProject.name = "ROIQuery-SDK"

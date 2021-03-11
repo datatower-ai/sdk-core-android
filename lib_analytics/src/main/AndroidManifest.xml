@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nodetower.analytics">
+    package="com.roiquery.analytics">
 
     <!-- 同步数据需要网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,7 +14,7 @@
     <application>
 
         <meta-data
-            android:name="com.nodetower.analytics.android.MainProcessName"
+            android:name="com.roiquery.analytics.android.MainProcessName"
             android:value="${applicationId}" />
 
     </application>

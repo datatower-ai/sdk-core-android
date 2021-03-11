@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/button_track_entrance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:layout_margin="2dp"
+            android:text="entrance"
+            />
+
+        <Button
+            android:id="@+id/button_track_to_show"
+            android:layout_width="wrap_content"
+            android:textAllCaps="false"
+            android:layout_margin="2dp"
+            android:layout_height="wrap_content"
+            android:text="to_show"
+            />
+
+        <Button
+            android:id="@+id/button_track_show"
+            android:layout_width="wrap_content"
+            android:textAllCaps="false"
+            android:layout_margin="2dp"
+            android:layout_height="wrap_content"
+            android:text="show"
+            />
+        <Button
+            android:id="@+id/button_track_close"
+            android:layout_width="wrap_content"
+            android:textAllCaps="false"
+            android:layout_margin="2dp"
+            android:layout_height="wrap_content"
+            android:text="close"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/button_track_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:layout_margin="2dp"
+            android:text="click"
+            />
+
+        <Button
+            android:id="@+id/button_track_rewarded"
+            android:layout_width="wrap_content"
+            android:textAllCaps="false"
+            android:layout_margin="2dp"
+            android:layout_height="wrap_content"
+            android:text="rewarded"
+            />
+
+        <Button
+            android:id="@+id/button_track_sample"
+            android:layout_width="wrap_content"
+            android:textAllCaps="false"
+            android:layout_margin="2dp"
+            android:layout_height="wrap_content"
+            android:text="track_sample"
+            />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
