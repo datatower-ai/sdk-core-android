@@ -1,5 +1,6 @@
 package com.roiquery.analytics.utils;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -49,6 +50,7 @@ public final class NetworkUtil {
         NETWORK_UNKNOWN,
         NETWORK_NO
     }
+
 
 
     /**

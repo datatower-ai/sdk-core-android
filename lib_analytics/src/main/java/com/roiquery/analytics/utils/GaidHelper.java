@@ -23,12 +23,7 @@ public class GaidHelper {
     private static final String GMS_ACTION = "com.google.android.gms.ads.identifier.service.START";
     private static final String GMS_PACKAGE = "com.google.android.gms";
 
-    /**
-     *<p>
-     *     Defines a way to execute {@link com.github.akhiljames.gaid.GaidUtil} callback methods.
-     *     Provide it's implementation to {@link com.github.akhiljames.gaid.GaidUtil#getAdInfo(Context, IExecutor, com.github.akhiljames.gaid.GaidUtil.GaidListener)}
-     *</p>
-     */
+
     public interface IExecutor {
         void post(Runnable runnable);
     }

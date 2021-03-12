@@ -208,7 +208,6 @@ abstract class AbstractAnalytics : IAnalytics {
             put("#sdk_version", BuildConfig.VERSION_NAME)//SDK 版本,如 1.1.2
             put("#os", "Android")//如 Android、iOS 等
             put("#os_version", DeviceUtils.oS)//操作系统版本,iOS 11.2.2、Android 8.0.0 等
-
             put("#device_manufacturer", DeviceUtils.manufacturer)//用户设备的制造商，如 Apple，vivo 等
             put("#device_brand", DeviceUtils.brand)//设备品牌,如 Galaxy、Pixel
             put("#device_model", DeviceUtils.model)//设备型号,用户设备的型号，如 iPhone 8 等

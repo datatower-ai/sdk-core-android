@@ -13,8 +13,6 @@ import com.roiquery.analytics.network.RequestHelper
 import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
-import com.roiquery.analytics.utils.NetworkUtils.isShouldFlush
-import com.roiquery.analytics.utils.NetworkUtils.networkType
 
 import org.json.JSONObject
 import kotlin.collections.HashMap
@@ -98,21 +96,21 @@ class AnalyticsManager private constructor(
                 return false
             }
             //不符合同步数据的网络策略
-            val networkType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                networkType(mContext)
-            } else {
-                "NULL"
-            }
-            if (!isShouldFlush(networkType, mAnalyticsDataAPI.flushNetworkPolicy!!)) {
-                LogUtils.i(
-                    TAG,
-                    String.format(
-                        "networkType is %s，disable upload，please confirm FlushNetworkPolicy！",
-                        networkType
-                    )
-                )
-                return false
-            }
+//            val networkType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                networkType(mContext)
+//            } else {
+//                "NULL"
+//            }
+//            if (!isShouldFlush(networkType, mAnalyticsDataAPI.flushNetworkPolicy!!)) {
+//                LogUtils.i(
+//                    TAG,
+//                    String.format(
+//                        "networkType is %s，disable upload，please confirm FlushNetworkPolicy！",
+//                        networkType
+//                    )
+//                )
+//                return false
+//            }
 
             if (mDateAdapter?.enableUpload == false) {
                 LogUtils.i(TAG, "A process is currently uploading，or upload is disable")

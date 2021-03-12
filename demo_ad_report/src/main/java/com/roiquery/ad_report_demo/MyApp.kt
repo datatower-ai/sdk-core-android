@@ -14,7 +14,6 @@ class MyApp : Application() {
         var pro = PropertyBuilder.newInstance().append("#sdk_type","Unity").toJSONObject()
         if (pro != null) {
             ROIQuerySDK.init(this,"android_ad_report_demo",true, LogUtils.V,pro)
-
         }
     }
 

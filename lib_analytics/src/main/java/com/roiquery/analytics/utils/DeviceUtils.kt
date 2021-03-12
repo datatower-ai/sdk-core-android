@@ -115,11 +115,6 @@ object DeviceUtils {
     }
 
 
-    fun getBrowserOS(context: Context):String{
-//       var s = WebView(context).settings.userAgentString
-        return "chrome"
-    }
-
     /**
      * 获取 Android ID
      *
@@ -139,63 +134,6 @@ object DeviceUtils {
     }
 
 
-    /**
-     * 获取设备唯一标识
-     *
-     * @param context Context
-     * @param number 卡槽
-     * @return 设备唯一标识
-     */
-    @SuppressLint("MissingPermission", "HardwareIds")
-    private fun getDeviceID(context: Context, number: Int): String? {
-        var deviceId = ""
-        try {
-            if (!hasReadPhoneStatePermission(context)) {
-                return deviceId
-            }
-            val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-            if (tm != null) {
-                if (number == -1) {
-                    deviceId = tm.deviceId
-                } else if (number == -2 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    deviceId = tm.meid
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    deviceId = tm.getDeviceId(number)
-                }
-            }
-        } catch (e: java.lang.Exception) {
-            LogUtils.printStackTrace(e)
-        }
-        return deviceId
-    }
-
-
-    private fun hasReadPhoneStatePermission(context: Context): Boolean {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-            if (!checkHasPermission(
-                    context,
-                    Manifest.permission.READ_PRECISE_PHONE_STATE
-                )
-            ) {
-                LogUtils.i(
-                    TAG,
-                    "Don't have permission android.permission.READ_PRECISE_PHONE_STATE,getDeviceID failed"
-                )
-                return false
-            }
-        } else if (!checkHasPermission(
-                context,
-                Manifest.permission.READ_PHONE_STATE
-            )
-        ) {
-            LogUtils.i(
-                TAG,
-                "Don't have permission android.permission.READ_PHONE_STATE,getDeviceID failed"
-            )
-            return false
-        }
-        return true
-    }
 
     fun getMcc(context: Context):String {
         val tel = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
