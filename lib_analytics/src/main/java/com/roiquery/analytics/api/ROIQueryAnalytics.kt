@@ -169,7 +169,10 @@ open class ROIQueryAnalytics {
         }
 
         @JvmStatic
-        fun getContext() = mContext
+        fun getContext():Context  {
+            checkNotNull(mContext) { "Call ROIQuerySDK.init first" }
+            return mContext as Context
+        }
 
         @JvmStatic
         fun addAppStatusListener(listener: AppLifecycleHelper.OnAppStatusListener?) {

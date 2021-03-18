@@ -126,11 +126,7 @@ class RealRequest {
             //设置为 true 后才能写入参数
             conn.setDoOutput(true);
         }
-//        SAConfigOptions configOptions = SensorsDataAPI.getConfigOptions();
-//        if (configOptions != null && configOptions.mSSLSocketFactory != null
-//                && conn instanceof HttpsURLConnection) {
-//            ((HttpsURLConnection) conn).setSSLSocketFactory(configOptions.mSSLSocketFactory);
-//        }
+
         return conn;
     }
 
