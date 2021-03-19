@@ -14,7 +14,7 @@ open class ROIQueryAnalytics {
 
         internal var mContext: Context? = null
 
-        internal var mAppLifecycleListeners =
+        private var mAppLifecycleListeners =
             mutableListOf<AppLifecycleHelper.OnAppStatusListener?>()
 
         /**
