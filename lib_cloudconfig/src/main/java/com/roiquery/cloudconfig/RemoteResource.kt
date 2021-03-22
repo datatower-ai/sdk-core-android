@@ -93,6 +93,7 @@ class RemoteResource<T : Any> @PublishedApi internal constructor(
     private fun fetchAndSave(success: (() -> Unit)? = null, error: ((Throwable) -> Unit)? = null) {
         resourceRemoteRepository.fetch({
             resourceLocalRepository.storeFetched(ByteArrayInputStream(it.toByteArray()))
+            resourceLocalRepository.activate()
             success?.invoke()
         }, {
             logger?.invoke("Error fetching remote config: ${it.message}")

@@ -10,7 +10,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    private val remoteAppConfig by lazy { remoteConfig<String>() }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,14 +20,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun demo() {
-        initRemoteConfig {
-            remoteResource<String>(
-                storage(filesDir.absolutePath + "/configs"),
-                network("https://demo7865768.mockable.io/messages.json")
-            ) {
-                resourceName = "welcome-config"
-            }
-        }
         clear()
         printCurrentConfig()
         showDefault()
@@ -36,18 +27,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun clear() {
-        remoteAppConfig.clear()
+//        remoteAppConfig.clear()
     }
 
     private fun showDefault() {
-        remoteAppConfig.setDefaultConfig("This is the default welcome message.")
+//        remoteAppConfig.setDefaultConfig("This is the default welcome message.")
         printCurrentConfig()
     }
 
     private fun showFresh() {
-        remoteAppConfig.fetch({
+        ROIQueryCloudConfig.fetch({
             LogUtils.e("Fetch is successful")
-            remoteAppConfig.activateFetched()
+//            remoteAppConfig.activateFetched()
             printCurrentConfig()
         }, {
             LogUtils.e("Fetch is failed: ${it.message}")
@@ -55,10 +46,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun printCurrentConfig() {
-        LogUtils.e("Config: ${remoteAppConfig.get()}")
+        LogUtils.e("Config: ${ROIQueryCloudConfig.getInt("welcomeMessage")}")
     }
 
-    data class AppConfig(
-        val welcomeMessage: String?
-    )
+
 }
