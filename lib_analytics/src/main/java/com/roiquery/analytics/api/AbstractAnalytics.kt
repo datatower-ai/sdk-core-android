@@ -3,27 +3,37 @@ package com.roiquery.analytics.api
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.RemoteException
 import android.text.TextUtils
+import android.util.Log
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IOAIDGetter
+import com.instacart.library.truetime.TrueTime
 import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.Constant.PRESET_EVENT_TAG
+import com.roiquery.analytics.R
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.AnalyticsManager
 import com.roiquery.analytics.core.TrackTaskManager
 import com.roiquery.analytics.core.TrackTaskManagerThread
 import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.exception.InvalidDataException
 import com.roiquery.analytics.utils.*
+import org.json.JSONArray
 
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.IOException
+import java.util.*
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
+import kotlin.collections.HashMap
 
 
 abstract class AbstractAnalytics : IAnalytics {
@@ -66,11 +76,14 @@ abstract class AbstractAnalytics : IAnalytics {
     //本地数据适配器，包括sp、db的操作
     private var mDataAdapter: EventDateAdapter? = null
 
+    private var mPresetEvents = emptyArray<String>()
+    private var mPresetProperties = emptyArray<String>()
 
     companion object {
         const val TAG = "AnalyticsApi"
+
         // 配置
-        internal  var mConfigOptions: AnalyticsConfig? = null
+        internal var mConfigOptions: AnalyticsConfig? = null
     }
 
 
@@ -111,16 +124,16 @@ abstract class AbstractAnalytics : IAnalytics {
         }
         AppLifecycleHelper()
             .register(mContext as Application?, object :
-            AppLifecycleHelper.OnAppStatusListener {
-            override fun onAppForeground() {
-                ROIQueryAnalytics.onAppForeground()
-            }
+                AppLifecycleHelper.OnAppStatusListener {
+                override fun onAppForeground() {
+                    ROIQueryAnalytics.onAppForeground()
+                }
 
-            override fun onAppBackground() {
-                ROIQueryAnalytics.onAppBackground()
-            }
+                override fun onAppBackground() {
+                    ROIQueryAnalytics.onAppBackground()
+                }
 
-        })
+            })
     }
 
     /**
@@ -146,10 +159,11 @@ abstract class AbstractAnalytics : IAnalytics {
     ) {
         try {
             try {
+                val realEventName = assertEvent(eventName, properties)
                 //设置事件的基本信息
                 val eventInfo = JSONObject(mEventInfo).apply {
-                    put("#event_time", System.currentTimeMillis().toString())
-                    put("#event_name", eventName)
+                    put("#event_time", TimeUtils.getTrueTime())
+                    put("#event_name", realEventName)
                     put("#event_syn", DataUtils.getUUID())
                 }
                 //设置事件属性
@@ -160,7 +174,7 @@ abstract class AbstractAnalytics : IAnalytics {
                 //设置事件属性
                 eventInfo.put("properties", eventProperties)
 
-                mAnalyticsManager?.enqueueEventMessage(eventName, eventInfo)
+                mAnalyticsManager?.enqueueEventMessage(realEventName, eventInfo)
 
             } catch (e: JSONException) {
                 LogUtils.printStackTrace(e)
@@ -204,6 +218,7 @@ abstract class AbstractAnalytics : IAnalytics {
             put("#os_country", DeviceUtils.getLocalCountry(mContext))//系统国家
             put("#os_lang", DeviceUtils.getLocaleLanguage())//系统语言
             put("#app_version_code", AppInfoUtils.getAppVersionCode(mContext).toString())//应用版本号
+            put("#app_version_name", AppInfoUtils.getAppVersionName(mContext))//应用版本号
             put("#sdk_type", Constant.SDK_TYPE_ANDROID)//接入 SDK 的类型，如 Android，iOS,Unity ,Flutter
             put("#sdk_version", BuildConfig.VERSION_NAME)//SDK 版本,如 1.1.2
             put("#os", "Android")//如 Android、iOS 等
@@ -224,7 +239,7 @@ abstract class AbstractAnalytics : IAnalytics {
                         val value = config.mCommonProperties!![key]
                         updateCommonProperties(key, value.toString())
                     } catch (e: Exception) {
-
+                        LogUtils.printStackTrace(e)
                     }
                 }
             }
@@ -242,6 +257,64 @@ abstract class AbstractAnalytics : IAnalytics {
             return mCommonProperties?.get("#sdk_type").toString()
         }
         return ""
+    }
+
+
+    private fun assertEvent(
+        eventName: String,
+        properties: JSONObject? = null
+    ): String {
+        var realEventName = eventName
+        if (mPresetEvents.isEmpty()) {
+            mContext?.resources?.getStringArray(R.array.preset_events)?.let {
+                mPresetEvents = it
+            }
+        }
+        if (mPresetProperties.isEmpty()) {
+            mContext?.resources?.getStringArray(R.array.preset_properties)?.let {
+                mPresetProperties = it
+            }
+        }
+        //检验事件名
+        if (mPresetEvents.isNotEmpty() && eventName.isNotEmpty()) {
+            if (eventName.startsWith(PRESET_EVENT_TAG)) {//预置事件
+                realEventName = eventName.replace(PRESET_EVENT_TAG, "")
+            } else {
+                if (mPresetEvents.contains(eventName)) {
+                    throw InvalidDataException("The eventName: $eventName is invalid.")
+                }
+            }
+        }
+        //校验属性名
+        if (mPresetProperties.isNotEmpty() && properties != null) {
+            val iterator = properties.keys()
+            while (iterator.hasNext()) {
+                val key = iterator.next()
+                if (null == key || key.isEmpty()) {
+                    throw InvalidDataException("The key is empty.")
+                }
+                if (mPresetProperties.contains(key)) {
+                    throw InvalidDataException("The property key: $key is invalid.")
+                }
+                try {
+                    val value = properties[key]
+                    if (value === JSONObject.NULL) {
+                        iterator.remove()
+                        continue
+                    }
+                    if (!(value is CharSequence || value is Number || value is JSONArray || value is Boolean || value is Date)) {
+                        throw InvalidDataException(
+                            "The property value must be an instance of "
+                                    + "CharSequence/Number/Boolean/JSONArray. [key='" + key + "', value='" + value.toString()
+                                    + "']"
+                        )
+                    }
+                } catch (e: JSONException) {
+                    throw InvalidDataException("Unexpected property key. [key='$key']")
+                }
+            }
+        }
+        return realEventName
     }
 
     /**
@@ -298,7 +371,6 @@ abstract class AbstractAnalytics : IAnalytics {
     }
 
 
-
     private fun initLog(enable: Boolean, logLevel: Int) {
         LogUtils.getConfig().apply {
             isLogSwitch = enable
@@ -306,6 +378,7 @@ abstract class AbstractAnalytics : IAnalytics {
             setConsoleSwitch(enable)
             setConsoleFilter(logLevel)
         }
+        initNTP(enable)
     }
 
     private fun registerNetworkStatusChangedListener() {
@@ -319,6 +392,12 @@ abstract class AbstractAnalytics : IAnalytics {
                 }
 
             })
+    }
+
+    private fun initNTP(enableLog: Boolean,) {
+        if (mContext != null) {
+            InitTrueTimeAsyncTask(mContext,enableLog).execute()
+        }
     }
 
     /**
@@ -358,7 +437,6 @@ abstract class AbstractAnalytics : IAnalytics {
             mContext?.applicationContext,
             object : GaidHelper.GaidListener {
                 override fun onSuccess(info: GaidHelper.AdIdInfo) {
-                    //存入sp
                     mDataAdapter?.gaid = info.adId
                     updateEventInfo("#gaid", info.adId)
                     //由于id 比较重要，所以在id回调之后再进行事件采集
@@ -481,5 +559,28 @@ abstract class AbstractAnalytics : IAnalytics {
             TimeUnit.MILLISECONDS
         )
 
+    }
+
+
+    // a little part of me died, having to use this
+    private class InitTrueTimeAsyncTask(
+        var context: Context,
+        var isLog:Boolean
+    ) :
+        AsyncTask<Void?, Void?, Void?>() {
+        override fun doInBackground(vararg params: Void?): Void? {
+            try {
+                TrueTime.build()
+                    .withNtpHost(Constant.NTP_HOST)
+                    .withLoggingEnabled(isLog)
+                    .withSharedPreferencesCache(context.applicationContext)
+                    .withConnectionTimeout(Constant.NTP_TIME_OUT_M)
+                    .initialize()
+            } catch (e: IOException) {
+                e.printStackTrace()
+                LogUtils.e("something went wrong when trying to initialize TrueTime")
+            }
+            return null
+        }
     }
 }

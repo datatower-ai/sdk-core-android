@@ -4,14 +4,15 @@ internal object AdReportConstant {
 
 
     //预置事件名称
-    const val EVENT_AD_ENTRANCE = "ad_entrance"
-    const val EVENT_AD_TO_SHOW = "ad_to_show"
-    const val EVENT_AD_SHOW = "ad_show"
-    const val EVENT_AD_CLOSE = "ad_close"
-    const val EVENT_AD_CLICK = "ad_click"
-    const val EVENT_AD_LEFT_APP = "ad_left_app"
-    const val EVENT_AD_RETURN_APP = "ad_return_app"
-    const val EVENT_AD_REWARDED = "ad_rewarded"
+    const val PRESET_EVENT_TAG = "@.#"
+    const val EVENT_AD_ENTRANCE = PRESET_EVENT_TAG + "ad_entrance"
+    const val EVENT_AD_TO_SHOW = PRESET_EVENT_TAG + "ad_to_show"
+    const val EVENT_AD_SHOW = PRESET_EVENT_TAG + "ad_show"
+    const val EVENT_AD_CLOSE = PRESET_EVENT_TAG + "ad_close"
+    const val EVENT_AD_CLICK = PRESET_EVENT_TAG + "ad_click"
+    const val EVENT_AD_LEFT_APP = PRESET_EVENT_TAG + "ad_left_app"
+    const val EVENT_AD_RETURN_APP = PRESET_EVENT_TAG + "ad_return_app"
+    const val EVENT_AD_REWARDED = PRESET_EVENT_TAG + "ad_rewarded"
 
 
     const val PROPERTY_AD_ID = "ad_id"
@@ -24,7 +25,7 @@ internal object AdReportConstant {
     const val PROPERTY_AD_RETURN_GAP = "ad_return_gap"
 }
 
- interface AD_TYPE {
+interface AD_TYPE {
     companion object {
         const val IDLE = -1
         const val BANNER = 0
@@ -34,7 +35,7 @@ internal object AdReportConstant {
     }
 }
 
- interface AD_PLATFORM {
+interface AD_PLATFORM {
     companion object {
         const val IDLE = -1
         const val ADMOB = 0

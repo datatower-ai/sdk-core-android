@@ -93,7 +93,7 @@ public final class LogUtils {
 
 
     public static void printStackTrace(final Object... contents) {
-        log(V, CONFIG.getGlobalTag(), contents);
+        log(E, CONFIG.getGlobalTag(), contents);
     }
     public static void v(final Object... contents) {
         log(V, CONFIG.getGlobalTag(), contents);

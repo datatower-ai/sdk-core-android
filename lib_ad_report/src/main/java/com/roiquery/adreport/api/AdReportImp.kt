@@ -8,6 +8,7 @@ import android.text.TextUtils
 import com.roiquery.adreport.AD_PLATFORM
 import com.roiquery.adreport.AD_TYPE
 import com.roiquery.adreport.AdReportConstant
+import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.api.ROIQueryAnalytics
 import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.AppLifecycleHelper.OnAppStatusListener
@@ -280,11 +281,7 @@ class AdReportImp : IAdReport {
         internal fun getInstance(context: Context? = null): AdReportImp {
             var pContext = context
             if (pContext == null) {
-                if (ROIQueryAnalytics.getContext() == null) {
-                    throw IllegalStateException("call ROIQuerySDK.init() first")
-                } else {
-                    pContext = ROIQueryAnalytics.getContext()
-                }
+                pContext = ROIQueryAnalytics.getContext()
             }
             return instance ?: synchronized(this) {
                 instance ?: AdReportImp(pContext).also { instance = it }

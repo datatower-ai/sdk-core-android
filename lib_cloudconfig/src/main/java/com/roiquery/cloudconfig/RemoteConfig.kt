@@ -2,11 +2,7 @@ package com.roiquery.cloudconfig
 
 import com.roiquery.cloudconfig.core.RemoteConfigContext
 
-/**
- * RemoteConfig is a Kotlin library that lets you manage all your remote configuration
- * without requiring developers to manually download each configuration and integrate
- * them into the Kotlin application.
- */
+
 object RemoteConfig : RemoteConfigContext {
     var logger: ((String) -> Unit)? = null
     @PublishedApi internal val resourcesNames: MutableMap<Class<*>, String> = mutableMapOf()
@@ -14,9 +10,7 @@ object RemoteConfig : RemoteConfigContext {
     private val checkInitialization: RemoteConfig.() -> Unit = { }
 
     /**
-     * Register a new remote resource.
-     * @param resourceClass class that matches the remote resource
-     * @param init initialization block of RemoteResource. It needs at least remote and local repository
+     * 初始化 remote resource.
      */
     fun <T: Any> initRemoteResource(resourceClass: Class<T>, init: RemoteResource<T>.() -> Unit) {
         val remoteResource = RemoteResource(resourceClass.kotlin, logger).initialize(init)
