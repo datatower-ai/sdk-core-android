@@ -7,7 +7,6 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.os.RemoteException
 import android.text.TextUtils
-import android.util.Log
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
@@ -26,7 +25,6 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.exception.InvalidDataException
 import com.roiquery.analytics.utils.*
 import org.json.JSONArray
-
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -95,6 +93,7 @@ abstract class AbstractAnalytics : IAnalytics {
         initLocalData()
         initProperties()
         initAppLifecycleListener()
+//        initCloudConfig()
         initTrack(context)
     }
 
@@ -264,6 +263,7 @@ abstract class AbstractAnalytics : IAnalytics {
         eventName: String,
         properties: JSONObject? = null
     ): String {
+
         var realEventName = eventName
         if (mPresetEvents.isEmpty()) {
             mContext?.resources?.getStringArray(R.array.preset_events)?.let {
@@ -279,13 +279,11 @@ abstract class AbstractAnalytics : IAnalytics {
         if (mPresetEvents.isNotEmpty() && eventName.isNotEmpty()) {
             if (eventName.startsWith(PRESET_EVENT_TAG)) {//预置事件
                 realEventName = eventName.replace(PRESET_EVENT_TAG, "")
-            } else {
-                if (mPresetEvents.contains(eventName)) {
-                    throw InvalidDataException("The eventName: $eventName is invalid.")
-                }
+            } else if (mPresetEvents.contains(eventName)) {
+                throw InvalidDataException("The eventName: $eventName is invalid.")
             }
         }
-        //校验属性名
+        //校验属性名、属性值
         if (mPresetProperties.isNotEmpty() && properties != null) {
             val iterator = properties.keys()
             while (iterator.hasNext()) {
@@ -370,7 +368,25 @@ abstract class AbstractAnalytics : IAnalytics {
         this.mSDKConfigInit = true
     }
 
-
+    /**
+     * 初始化云控配置
+     */
+//    private fun initCloudConfig() {
+//        ROIQueryCloudConfig.init(
+//            mContext!!,
+//            HttpPOSTResourceRemoteRepository(
+//                Constant.CONFIG_FETCH_URL,//拉取配置地址
+//                mCommonProperties//拉取参数
+//            ),
+//        ) {
+//            LogUtils.d("CloudConfig", it)
+//        }
+//    }
+    /**
+     * 初始化log
+     * @param enable 是否开启
+     * @param logLevel log 级别
+     */
     private fun initLog(enable: Boolean, logLevel: Int) {
         LogUtils.getConfig().apply {
             isLogSwitch = enable
@@ -394,9 +410,9 @@ abstract class AbstractAnalytics : IAnalytics {
             })
     }
 
-    private fun initNTP(enableLog: Boolean,) {
+    private fun initNTP(enableLog: Boolean) {
         if (mContext != null) {
-            InitTrueTimeAsyncTask(mContext,enableLog).execute()
+            InitTrueTimeAsyncTask(mContext, enableLog).execute()
         }
     }
 
@@ -565,7 +581,7 @@ abstract class AbstractAnalytics : IAnalytics {
     // a little part of me died, having to use this
     private class InitTrueTimeAsyncTask(
         var context: Context,
-        var isLog:Boolean
+        var isLog: Boolean
     ) :
         AsyncTask<Void?, Void?, Void?>() {
         override fun doInBackground(vararg params: Void?): Void? {

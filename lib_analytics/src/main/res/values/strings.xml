@@ -19,6 +19,12 @@
         <item>ad_left_app</item>
         <item>ad_return_app</item>
         <item>ad_rewarded</item>
+
+
+        <item>iap_entrance</item>
+        <item>iap_to_purchase</item>
+        <item>iap_purchased</item>
+        <item>iap_not_purchased</item>
     </string-array>
 
  <string-array name="preset_properties">
@@ -28,6 +34,7 @@
         <item>#os_country</item>
         <item>#os_lang</item>
         <item>#app_version_code</item>
+        <item>#app_version_name</item>
         <item>#sdk_type</item>
         <item>#sdk_version</item>
         <item>#os</item>
@@ -37,7 +44,6 @@
         <item>#device_model</item>
         <item>#screen_height</item>
         <item>#screen_width</item>
-
 
     </string-array>
 

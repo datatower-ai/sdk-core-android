@@ -1,17 +1,22 @@
 package com.roiquery.cloudconfig.locals
 
+
 import android.content.Context
-import com.roiquery.analytics.utils.FileIOUtils
-import com.roiquery.analytics.utils.FileUtils
-import com.roiquery.analytics.utils.StringUtils
 import com.roiquery.cloudconfig.core.ResourceLocalRepository
+import com.roiquery.cloudconfig.utils.FileIOUtils
+import com.roiquery.cloudconfig.utils.FileUtils
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
 
 class StorageResourceLocalRepository(
+    context: Context,
     rootDir: String
 ) : ResourceLocalRepository {
+
+    init {
+        FileUtils.setContext(context.applicationContext)
+    }
     private val root: File = File(rootDir).also {
         if (!it.exists()) {
             it.mkdir()

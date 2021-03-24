@@ -5,10 +5,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.roiquery.adreport.AD_PLATFORM
-import com.roiquery.adreport.AD_TYPE
-import com.roiquery.adreport.api.ROIQueryAdReport
-import com.roiquery.adreport.utils.UUIDUtils
+import com.roiquery.ad.AD_PLATFORM
+import com.roiquery.ad.AD_TYPE
+import com.roiquery.ad.api.ROIQueryAdReport
+import com.roiquery.ad.utils.UUIDUtils
 import com.roiquery.analytics.api.ROIQueryAnalytics
 
 

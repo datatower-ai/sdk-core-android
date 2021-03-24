@@ -10,11 +10,13 @@ internal object Constant {
 
     //事件上报路径
     private const val ANALYTICS_BASE_URL = "https://api.roiquery.com"
-
+    //事件上报路径
     const val EVENT_REPORT_URL = "$ANALYTICS_BASE_URL/report"
-
+    const val CONFIG_FETCH_URL = "http://manage.roiquery.com/apitest/test"
+    //时间同步服务
     const val NTP_HOST = "time.google.com"
     const val NTP_TIME_OUT_M = 31428
+
 
     //事件上报条数
     const val EVENT_REPORT_SIZE = 10
@@ -42,14 +44,4 @@ internal object Constant {
     const val SDK_TYPE_FLUTTER = "Flutter"
 
 
-    object MemoryConstants {
-        const val BYTE = 1
-        const val KB = 1024
-        const val MB = 1048576
-        const val GB = 1073741824
-
-        @IntDef(*[BYTE, KB, MB, GB])
-        @Retention(RetentionPolicy.SOURCE)
-        annotation class Unit
-    }
 }

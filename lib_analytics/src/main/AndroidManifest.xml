@@ -11,7 +11,9 @@
     <!--Detect boot to invalidate TrueTime-->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
-    <application>
+    <application
+        android:usesCleartextTraffic="true"
+        >
         <meta-data
             android:name="com.roiquery.analytics.android.MainProcessName"
             android:value="${applicationId}" />

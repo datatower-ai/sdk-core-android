@@ -1,57 +1,62 @@
 package com.roiquery.cloudconfig
 
-import com.roiquery.analytics.api.ROIQueryAnalytics
+import android.content.Context
+import com.roiquery.cloudconfig.core.ResourceRemoteRepository
 import com.unity3d.player.UnityPlayer
 import org.json.JSONObject
 
 class ROIQueryCloudConfig {
 
     companion object {
-        private val remoteAppConfig by lazy { remoteConfig<String>() }
-        private var isInitialized = false
+        private val mRemoteAppConfig by lazy { remoteConfig<String>() }
+        private var mIsInitialized = false
+        private var mLogger: ((String) -> Unit)? = null
 
+        @JvmStatic
         @JvmOverloads
         fun fetch(
             success: (() -> Unit)? = null,
             error: ((Throwable) -> Unit)? = null
         ) {
-            assertInit()
-            remoteAppConfig.fetch(success, error)
+            mRemoteAppConfig.fetch(success, error)
         }
 
 
         fun fetchForUnity() {
-            assertInit()
-            remoteAppConfig.fetch(success = {
+            mRemoteAppConfig.fetch(success = {
                 UnityPlayer.UnitySendMessage("name", "", "")
             })
         }
 
-        private fun assertInit() {
-            if (!isInitialized) {
+        fun init(
+            context: Context,
+            remoteResource: ResourceRemoteRepository,
+            logger: ((String) -> Unit)?
+            ) {
+            if (!mIsInitialized) {
+                mLogger = logger
                 initRemoteConfig {
                     remoteResource<String>(
-                        storage(ROIQueryAnalytics.getContext().filesDir.absolutePath + "/configs"),
-                        network("https://demo7865768.mockable.io/messages.json")
+                        storage(context,context.filesDir.absolutePath + "/configs"),
+                        remoteResource
                     ) {
                         resourceName = "cloud_config"
                     }
                 }
-                remoteAppConfig.setDefaultConfig("")
-                isInitialized = true
+                mRemoteAppConfig.setDefaultConfig("")
+                fetch()
+                mIsInitialized = true
             }
         }
 
         private fun getConfigJsonObject(): JSONObject? {
-            assertInit()
-            return remoteAppConfig.get()?.let {
+            return mRemoteAppConfig.get()?.let {
                 JSONObject(it)
             }
         }
 
         fun getConfigString(): String? {
-            assertInit()
-            return remoteAppConfig.get()
+            return mRemoteAppConfig.get()
         }
 
         @JvmOverloads

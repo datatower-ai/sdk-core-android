@@ -45,8 +45,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation project(':lib_ad_report')
+    implementation project(':lib_ad')
     implementation project(':lib_analytics')
+    implementation project(':lib_cloudconfig')
 //        implementation(name: 'lib_ad_report-release', ext: 'aar')
 
 }

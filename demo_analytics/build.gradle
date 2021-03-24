@@ -50,6 +50,6 @@ dependencies {
     releaseImplementation 'com.infinum.dbinspector:dbinspector-no-op:5.2.3'
 //    implementation project(':lib_ad_report')
     implementation project(':lib_analytics')
-
+    implementation project(':lib_cloudconfig')
 //    implementation(name: 'lib_report-release', ext: 'aar')
 }

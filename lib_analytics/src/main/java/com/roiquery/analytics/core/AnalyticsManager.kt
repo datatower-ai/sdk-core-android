@@ -74,10 +74,11 @@ class AnalyticsManager private constructor(
      * 是否需要立即上报
      */
     private fun isNeedFlushImmediately(eventName: String): Boolean {
-        return eventName == Constant.PRESET_EVENT_APP_OPEN
-                || eventName == Constant.PRESET_EVENT_APP_FIRST_OPEN
-                || eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE
-                || eventName == Constant.PRESET_EVENT_APP_CLOSE
+        val tagName = Constant.PRESET_EVENT_TAG + eventName
+        return tagName == Constant.PRESET_EVENT_APP_OPEN
+                || tagName == Constant.PRESET_EVENT_APP_FIRST_OPEN
+                || tagName == Constant.PRESET_EVENT_APP_ATTRIBUTE
+                || tagName == Constant.PRESET_EVENT_APP_CLOSE
     }
 
     /**
@@ -95,31 +96,12 @@ class AnalyticsManager private constructor(
                 LogUtils.d(TAG, "NetworkAvailable，disable upload")
                 return false
             }
-            //不符合同步数据的网络策略
-//            val networkType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                networkType(mContext)
-//            } else {
-//                "NULL"
-//            }
-//            if (!isShouldFlush(networkType, mAnalyticsDataAPI.flushNetworkPolicy!!)) {
-//                LogUtils.i(
-//                    TAG,
-//                    String.format(
-//                        "networkType is %s，disable upload，please confirm FlushNetworkPolicy！",
-//                        networkType
-//                    )
-//                )
-//                return false
-//            }
-
             if (mDateAdapter?.enableUpload == false) {
                 LogUtils.i(TAG, "A process is currently uploading，or upload is disable")
                 return false
             } else {
                 mDateAdapter?.enableUpload = false
             }
-
-
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
             mDateAdapter?.enableUpload = true

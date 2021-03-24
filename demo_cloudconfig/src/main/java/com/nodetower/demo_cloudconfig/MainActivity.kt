@@ -2,7 +2,6 @@ package com.nodetower.demo_cloudconfig
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.roiquery.analytics.utils.FileUtils
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.cloudconfig.*
 
@@ -46,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun printCurrentConfig() {
-        LogUtils.e("Config: ${ROIQueryCloudConfig.getInt("welcomeMessage")}")
+        LogUtils.e("Config: ${ROIQueryCloudConfig.getConfigString()}")
     }
 
 

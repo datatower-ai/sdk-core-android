@@ -11,10 +11,7 @@ class MyApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        var pro = PropertyBuilder.newInstance().append("#sdk_type","Unity").toJSONObject()
-        if (pro != null) {
-            ROIQuerySDK.init(this,"android_ad_report_demo",true, LogUtils.V,pro)
-        }
+        ROIQuerySDK.init(this,"android_ad_report_demo",true, LogUtils.V)
     }
 
 }

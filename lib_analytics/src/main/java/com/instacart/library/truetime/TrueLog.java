@@ -2,49 +2,51 @@ package com.instacart.library.truetime;
 
 import android.util.Log;
 
+import com.roiquery.analytics.utils.LogUtils;
+
 class TrueLog {
 
     private static boolean LOGGING_ENABLED = false;
 
     static void v(String tag, String msg) {
         if (LOGGING_ENABLED) {
-            Log.v(tag, msg);
+            LogUtils.v(tag, msg);
         }
     }
 
     static void d(String tag, String msg) {
         if (LOGGING_ENABLED) {
-            Log.d(tag, msg);
+            LogUtils.d(tag, msg);
         }
     }
 
     static void i(String tag, String msg) {
         if (LOGGING_ENABLED) {
-            Log.i(tag, msg);
+            LogUtils.i(tag, msg);
         }
     }
 
     static void w(String tag, String msg) {
         if (LOGGING_ENABLED) {
-            Log.w(tag, msg);
+            LogUtils.w(tag, msg);
         }
     }
 
     static void w(String tag, String msg, Throwable t) {
         if (LOGGING_ENABLED) {
-            Log.w(tag, msg, t);
+            LogUtils.w(tag, msg, t);
         }
     }
 
     static void e(String tag, String msg) {
         if (LOGGING_ENABLED) {
-            Log.e(tag, msg);
+            LogUtils.e(tag, msg);
         }
     }
 
     static void e(String tag, String msg, Throwable t) {
         if (LOGGING_ENABLED) {
-            Log.e(tag, msg, t);
+            LogUtils.e(tag, msg, t);
         }
     }
 
