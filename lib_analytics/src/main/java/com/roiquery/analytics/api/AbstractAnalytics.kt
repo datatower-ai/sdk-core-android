@@ -15,6 +15,8 @@ import com.github.gzuliyujiang.oaid.IOAIDGetter
 import com.instacart.library.truetime.TrueTime
 import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.Constant.PRESET_EVENT_APP_ATTRIBUTE
+import com.roiquery.analytics.Constant.PRESET_EVENT_APP_FIRST_OPEN
 import com.roiquery.analytics.Constant.PRESET_EVENT_TAG
 import com.roiquery.analytics.R
 import com.roiquery.analytics.config.AnalyticsConfig
@@ -23,7 +25,9 @@ import com.roiquery.analytics.core.TrackTaskManager
 import com.roiquery.analytics.core.TrackTaskManagerThread
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.exception.InvalidDataException
+import com.roiquery.analytics.network.HttpPOSTResourceRemoteRepository
 import com.roiquery.analytics.utils.*
+import com.roiquery.cloudconfig.ROIQueryCloudConfig
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -63,7 +67,7 @@ abstract class AbstractAnalytics : IAnalytics {
     protected var mTrackTaskManager: TrackTaskManager? = null
 
     //事件采集线程
-    var mTrackTaskManagerThread: TrackTaskManagerThread? = null
+    private var mTrackTaskManagerThread: TrackTaskManagerThread? = null
 
     //采集 app 活跃事件线程池
     private var mTrackEngagementEventExecutors: ScheduledThreadPoolExecutor? = null
@@ -76,6 +80,11 @@ abstract class AbstractAnalytics : IAnalytics {
 
     private var mPresetEvents = emptyArray<String>()
     private var mPresetProperties = emptyArray<String>()
+
+
+    private var mFirstOpenTime = ""
+
+    private var mFirstOpenTimeLock = Any()
 
     companion object {
         const val TAG = "AnalyticsApi"
@@ -93,7 +102,7 @@ abstract class AbstractAnalytics : IAnalytics {
         initLocalData()
         initProperties()
         initAppLifecycleListener()
-//        initCloudConfig()
+        initCloudConfig()
         initTrack(context)
     }
 
@@ -164,6 +173,19 @@ abstract class AbstractAnalytics : IAnalytics {
                     put("#event_time", TimeUtils.getTrueTime())
                     put("#event_name", realEventName)
                     put("#event_syn", DataUtils.getUUID())
+                    if (PRESET_EVENT_APP_FIRST_OPEN == eventName) {
+                        synchronized(mFirstOpenTimeLock) {
+                            mFirstOpenTime = getString("#event_time")
+                            LogUtils.e("first_open_time")
+                        }
+                    }
+                    if (PRESET_EVENT_APP_ATTRIBUTE == eventName) {
+                        if (properties?.getString("first_open_time")?.isEmpty() == true) {
+                            properties.put("first_open_time", mFirstOpenTime)
+                        }
+
+                    }
+
                 }
                 //设置事件属性
                 val eventProperties = JSONObject(mCommonProperties).apply {
@@ -371,17 +393,22 @@ abstract class AbstractAnalytics : IAnalytics {
     /**
      * 初始化云控配置
      */
-//    private fun initCloudConfig() {
-//        ROIQueryCloudConfig.init(
-//            mContext!!,
-//            HttpPOSTResourceRemoteRepository(
-//                Constant.CONFIG_FETCH_URL,//拉取配置地址
-//                mCommonProperties//拉取参数
-//            ),
-//        ) {
-//            LogUtils.d("CloudConfig", it)
-//        }
-//    }
+    private fun initCloudConfig() {
+        ROIQueryCloudConfig.init(
+            mContext!!,
+            HttpPOSTResourceRemoteRepository.create(
+                Constant.CONFIG_FETCH_URL,//拉取配置地址
+                mCommonProperties//拉取参数
+            ),
+            mDataAdapter?.cloudConfigAesKey ?: "",
+            {
+                mDataAdapter?.cloudConfigAesKey = it
+            }
+        ) {
+            LogUtils.d("CloudConfig", it)
+        }
+    }
+
     /**
      * 初始化log
      * @param enable 是否开启
@@ -406,7 +433,6 @@ abstract class AbstractAnalytics : IAnalytics {
                     LogUtils.i("onNetConnChanged", networkType)
                     mAnalyticsManager?.flush()
                 }
-
             })
     }
 
@@ -536,16 +562,18 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun trackAppAttributeEvent(response: ReferrerDetails, failedReason: String) {
         val property = if (failedReason.isBlank()) {
-            PropertyBuilder.newInstance()
-                .append(
-                    HashMap<String?, Any>().apply {
-                        put("referrer_url", response.installReferrer)
-                        put("referrer_click_time", response.referrerClickTimestampSeconds)
-                        put("app_install_time", response.installBeginTimestampSeconds)
-                        put("instant_experience_launched", response.googlePlayInstantParam)
-                    }
-                ).toJSONObject()
-
+            synchronized(mFirstOpenTimeLock) {
+                PropertyBuilder.newInstance()
+                    .append(
+                        HashMap<String?, Any>().apply {
+                            put("referrer_url", response.installReferrer)
+                            put("referrer_click_time", response.referrerClickTimestampSeconds)
+                            put("app_install_time", response.installBeginTimestampSeconds)
+                            put("first_open_time", mFirstOpenTime)
+                            put("instant_experience_launched", response.googlePlayInstantParam)
+                        }
+                    ).toJSONObject()
+            }
         } else {
             PropertyBuilder.newInstance().append("failed_reason", failedReason).toJSONObject()
         }
@@ -594,7 +622,7 @@ abstract class AbstractAnalytics : IAnalytics {
                     .initialize()
             } catch (e: IOException) {
                 e.printStackTrace()
-                LogUtils.e("something went wrong when trying to initialize TrueTime")
+                LogUtils.e("something went wrong when trying to initialize TrueTime", e)
             }
             return null
         }

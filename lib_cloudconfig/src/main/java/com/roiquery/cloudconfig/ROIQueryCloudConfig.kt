@@ -31,6 +31,8 @@ class ROIQueryCloudConfig {
         fun init(
             context: Context,
             remoteResource: ResourceRemoteRepository,
+            aesKey: String,
+            setAesKey: (String) -> Unit,
             logger: ((String) -> Unit)?
             ) {
             if (!mIsInitialized) {
@@ -38,12 +40,15 @@ class ROIQueryCloudConfig {
                 initRemoteConfig {
                     remoteResource<String>(
                         storage(context,context.filesDir.absolutePath + "/configs"),
-                        remoteResource
+                        remoteResource,
+                        aesKey,
+                        setAesKey
                     ) {
                         resourceName = "cloud_config"
                     }
+                    this.logger = logger
                 }
-                mRemoteAppConfig.setDefaultConfig("")
+                mRemoteAppConfig.setDefaultConfig("{}")
                 fetch()
                 mIsInitialized = true
             }

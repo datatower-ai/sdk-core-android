@@ -42,6 +42,7 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    debugImplementation 'com.infinum.dbinspector:dbinspector:5.2.3'
 
     implementation project(':lib_cloudconfig')
     implementation project(':lib_analytics')

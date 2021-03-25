@@ -136,6 +136,7 @@ class DataParams private constructor(packageName: String) {
         const val CONFIG_ENABLE_TRACK = "enable_track"
         const val CONFIG_FIRST_OPEN = "first_open"
         const val CONFIG_IS_FOREGROUND = "is_foreground"
+        const val CLOUD_CONFIG_AES_KEY = "cloud_config_aes_key"
 
 
 

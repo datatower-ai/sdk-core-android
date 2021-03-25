@@ -76,6 +76,20 @@ class EventDateAdapter private constructor(
             )
         }
 
+    var cloudConfigAesKey: String
+        get() {
+            val values = mOperation?.queryConfig(DataParams.CLOUD_CONFIG_AES_KEY)
+            return if (values != null && values.isNotEmpty() && values != "null") {
+                values
+            } else ""
+        }
+        set(value) {
+            mOperation?.insertConfig(
+                DataParams.CLOUD_CONFIG_AES_KEY,
+                value
+            )
+        }
+
 
     /**
      *  oaid

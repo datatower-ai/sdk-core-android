@@ -1,10 +1,13 @@
 package com.roiquery.cloudconfig
 
-import com.roiquery.cloudconfig.core.*
-
+import android.util.Base64
+import com.roiquery.cloudconfig.core.RemoteResourceContext
+import com.roiquery.cloudconfig.core.ResourceLocalRepository
+import com.roiquery.cloudconfig.core.ResourceMapper
+import com.roiquery.cloudconfig.core.ResourceRemoteRepository
 import com.roiquery.cloudconfig.mappers.TextResourceMapper
+import com.roiquery.cloudconfig.utils.AESCoder
 import java.io.ByteArrayInputStream
-
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -17,18 +20,20 @@ import kotlin.reflect.KClass
  * @param <T> class of configuration
  */
 class RemoteResource<T : Any> @PublishedApi internal constructor(
-        private val resourceClass: KClass<T>,
-        private val logger: ((String) -> Unit)? = null
-): RemoteResourceContext {
+    private val resourceClass: KClass<T>,
+    private val logger: ((String) -> Unit)? = null
+) : RemoteResourceContext {
     var resourceName: String = resourceClass.java.simpleName.toLowerCase(Locale.getDefault())
     lateinit var resourceLocalRepository: ResourceLocalRepository
     lateinit var resourceRemoteRepository: ResourceRemoteRepository
+    lateinit var key: ByteArray
+    lateinit var setKey: (String) -> Unit
     var format: ResourceMapper = TextResourceMapper
 
     internal fun initialize(init: RemoteResource<T>.() -> Unit): RemoteResource<T> {
         return this
-                .apply(init)
-                .apply(checkInitialization)
+            .apply(init)
+            .apply(checkInitialization)
     }
 
     /**
@@ -38,7 +43,10 @@ class RemoteResource<T : Any> @PublishedApi internal constructor(
      * @param resource config that will be stored as default value
      */
     fun setDefaultConfig(resource: T) {
-        resourceLocalRepository.storeDefault(format.toRepository(resource))
+        if (key.isEmpty()) {
+            key = AESCoder.initkey()
+        }
+        resourceLocalRepository.storeDefault(format.toRepository(resource, key))
     }
 
     /**
@@ -59,7 +67,11 @@ class RemoteResource<T : Any> @PublishedApi internal constructor(
      * @param success callback for success. Invoked also if last fetched resource is not expired
      * @param error callback for errors
      */
-    fun fetch(maxAgeInMillis: Long, success: (() -> Unit)? = null, error: ((Throwable) -> Unit)? = null) {
+    fun fetch(
+        maxAgeInMillis: Long,
+        success: (() -> Unit)? = null,
+        error: ((Throwable) -> Unit)? = null
+    ) {
         if (!shouldFetchResource(maxAgeInMillis)) {
             success?.invoke()
         } else {
@@ -80,7 +92,9 @@ class RemoteResource<T : Any> @PublishedApi internal constructor(
      * @return last activated config or null
      */
     fun get(): T? {
-        return resourceLocalRepository.getActive()?.let { format.fromRepository(it, resourceClass.java) }
+        logger?.invoke(key.toString())
+        return resourceLocalRepository.getActive()
+            ?.let { format.fromRepository(it, resourceClass.java, key) }
     }
 
     /**
@@ -92,7 +106,16 @@ class RemoteResource<T : Any> @PublishedApi internal constructor(
 
     private fun fetchAndSave(success: (() -> Unit)? = null, error: ((Throwable) -> Unit)? = null) {
         resourceRemoteRepository.fetch({
-            resourceLocalRepository.storeFetched(ByteArrayInputStream(it.toByteArray()))
+            key = AESCoder.initkey()
+            setKey.invoke(Base64.encodeToString(key, Base64.NO_WRAP))
+            resourceLocalRepository.storeFetched(
+                ByteArrayInputStream(
+                    AESCoder.encrypt(
+                        it.toByteArray(),
+                        key
+                    )
+                )
+            )
             resourceLocalRepository.activate()
             success?.invoke()
         }, {
@@ -102,7 +125,7 @@ class RemoteResource<T : Any> @PublishedApi internal constructor(
     }
 
     private fun shouldFetchResource(maxAgeInMillis: Long): Boolean =
-            !resourceLocalRepository.isFetchedFresh(maxAgeInMillis)
+        !resourceLocalRepository.isFetchedFresh(maxAgeInMillis)
 
     private companion object {
         val checkInitialization: RemoteResource<*>.() -> Unit = {

@@ -21,7 +21,17 @@ object TimeUtils {
     private val formatMaps: MutableMap<String?, ThreadLocal<SimpleDateFormat?>> = HashMap()
 
 
-    fun getTrueTime() = if (TrueTime.isInitialized()) TrueTime.now().time.toString() else System.currentTimeMillis().toString()
+    fun getTrueTime(): String {
+        if (TrueTime.isInitialized()) {
+            return try {
+                TrueTime.now().time.toString()
+            } catch (e: Exception) {
+                LogUtils.printStackTrace(e)
+                System.currentTimeMillis().toString()
+            }
+        }
+        return System.currentTimeMillis().toString()
+    }
 
     /**
      * format Date 输出文本格式
