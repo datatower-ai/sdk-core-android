@@ -10,7 +10,7 @@ class ROIQueryCloudConfig {
     companion object {
         private val mRemoteAppConfig by lazy { remoteConfig<String>() }
         private var mIsInitialized = false
-        private var mLogger: ((String) -> Unit)? = null
+        internal var mLogger: ((String) -> Unit)? = null
 
 
         fun init(
@@ -40,9 +40,15 @@ class ROIQueryCloudConfig {
         }
 
         private fun getConfigJsonObject(): JSONObject? {
-            return if (mIsInitialized) mRemoteAppConfig.get()?.let {
-                JSONObject(it)
-            } else JSONObject()
+            return try {
+                if (mIsInitialized) mRemoteAppConfig.get()?.let {
+                    JSONObject(it)
+                } else JSONObject()
+            } catch (e: Exception) {
+                mLogger?.invoke(e.message ?: "")
+                JSONObject()
+            }
+
         }
 
         fun getConfigString(): String? {
@@ -55,14 +61,12 @@ class ROIQueryCloudConfig {
                 listener?.let {
                     listener.onSuccess()
                 }
-            }){error ->
+            }) { error ->
                 listener?.let {
                     error.message?.let { it1 -> listener.onError(it1) }
                 }
             }
         }
-
-
 
         @JvmOverloads
         fun getInt(
