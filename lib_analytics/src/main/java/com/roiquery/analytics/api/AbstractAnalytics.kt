@@ -180,9 +180,7 @@ abstract class AbstractAnalytics : IAnalytics {
                         }
                     }
                     if (PRESET_EVENT_APP_ATTRIBUTE == eventName) {
-                        if (properties?.has("first_open_time") == false
-                            ||properties?.getString("first_open_time")?.isEmpty() == true
-                            ) {
+                        if (properties?.getString("first_open_time")?.isEmpty() == true) {
                             properties.put("first_open_time", mFirstOpenTime)
                         }
 
@@ -447,19 +445,7 @@ abstract class AbstractAnalytics : IAnalytics {
 
     private fun initNTP(enableLog: Boolean) {
         if (mContext != null) {
-            Thread {
-                try {
-                    TrueTime.build()
-                        .withNtpHost(Constant.NTP_HOST)
-                        .withLoggingEnabled(enableLog)
-                        .withSharedPreferencesCache(mContext.applicationContext)
-                        .withConnectionTimeout(Constant.NTP_TIME_OUT_M)
-                        .initialize()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                    LogUtils.i("something went wrong when trying to initialize TrueTime", e.message)
-                }
-            }.start()
+            InitTrueTimeAsyncTask(mContext, enableLog).execute()
         }
     }
 
@@ -532,7 +518,7 @@ abstract class AbstractAnalytics : IAnalytics {
             mDataAdapter?.isFirstOpen = false
             try {
                 getAppAttribute()
-            } catch (e: Exception) {
+            } catch (e: RemoteException) {
                 LogUtils.printStackTrace(e)
                 trackAppAttributeEvent(
                     ReferrerDetails(null),
@@ -627,4 +613,25 @@ abstract class AbstractAnalytics : IAnalytics {
     }
 
 
+    // a little part of me died, having to use this
+    private class InitTrueTimeAsyncTask(
+        var context: Context,
+        var isLog: Boolean
+    ) :
+        AsyncTask<Void?, Void?, Void?>() {
+        override fun doInBackground(vararg params: Void?): Void? {
+            try {
+                TrueTime.build()
+                    .withNtpHost(Constant.NTP_HOST)
+                    .withLoggingEnabled(isLog)
+                    .withSharedPreferencesCache(context.applicationContext)
+                    .withConnectionTimeout(Constant.NTP_TIME_OUT_M)
+                    .initialize()
+            } catch (e: IOException) {
+                e.printStackTrace()
+                LogUtils.e("something went wrong when trying to initialize TrueTime", e)
+            }
+            return null
+        }
+    }
 }
