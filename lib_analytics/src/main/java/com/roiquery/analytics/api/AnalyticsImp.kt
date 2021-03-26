@@ -41,6 +41,22 @@ class AnalyticsImp : AbstractAnalytics {
                 updateEventInfo("#acid", value)
             }
         }
+    override var enableSDK: Boolean?
+        get() = enableTrack == true && enableUpload == true
+        set(value) {
+            if(value == false && enableSDK == true){
+                LogUtils.e("Analytics SDK is disable")
+                enableTrack = false
+                enableUpload = false
+                configLog(false)
+            }
+            if(value == true && enableSDK == false){
+                enableTrack = true
+                enableUpload = true
+                configLog()
+            }
+        }
+
 
     override var enableTrack: Boolean?
         get() = EventDateAdapter.getInstance()?.enableTrack == true
@@ -65,7 +81,7 @@ class AnalyticsImp : AbstractAnalytics {
         }
 
     override var flushNetworkPolicy: Int?
-        get() =  mConfigOptions?.mNetworkTypePolicy
+        get() = mConfigOptions?.mNetworkTypePolicy
         set(value) {
             value?.let {
                 mConfigOptions?.setNetworkTypePolicy(it)
@@ -73,19 +89,19 @@ class AnalyticsImp : AbstractAnalytics {
 
         }
 
-    fun track(eventName: String?, properties: Map<String,Any?>?) {
+    fun track(eventName: String?, properties: Map<String, Any?>?) {
         try {
-            track(eventName,JSONObject(properties))
+            if (!ROIQueryAnalytics.isSDKEnable()) return
+
+            track(eventName, JSONObject(properties))
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
     }
 
     override fun track(eventName: String?, properties: JSONObject?) {
-        if (enableTrack == false) {
-            LogUtils.i(TAG, "event track disable")
-            return
-        }
+        if (!ROIQueryAnalytics.isSDKEnable()) return
+
         mTrackTaskManager?.let {
             it.addTrackEventTask(Runnable {
                 try {
@@ -100,7 +116,7 @@ class AnalyticsImp : AbstractAnalytics {
     }
 
 
-    fun trackAppClose(properties: Map<String,Any?>?) {
+    fun trackAppClose(properties: Map<String, Any?>?) {
         track(Constant.PRESET_EVENT_APP_CLOSE, properties)
     }
 
@@ -108,21 +124,23 @@ class AnalyticsImp : AbstractAnalytics {
         track(Constant.PRESET_EVENT_APP_CLOSE, properties)
     }
 
-    fun trackPageOpen(properties: Map<String,Any?>?) {
+    fun trackPageOpen(properties: Map<String, Any?>?) {
         track(Constant.PRESET_EVENT_PAGE_OPEN, properties)
     }
+
     override fun trackPageOpen(properties: JSONObject?) {
         track(Constant.PRESET_EVENT_PAGE_OPEN, properties)
     }
 
-    fun trackPageClose(properties: Map<String,Any?>?) {
+    fun trackPageClose(properties: Map<String, Any?>?) {
         track(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
     }
+
     override fun trackPageClose(properties: JSONObject?) {
         track(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
     }
 
-    fun setUserProperties(properties: Map<String,Any?>?) {
+    fun setUserProperties(properties: Map<String, Any?>?) {
         track(Constant.PRESET_EVENT_USER_PROPERTIES, properties)
     }
 
@@ -145,27 +163,38 @@ class AnalyticsImp : AbstractAnalytics {
 
         @Volatile
         private var instance: AnalyticsImp? = null
-        internal fun getInstance(context: Context?): AnalyticsImp {
-            if (context == null || mConfigOptions == null) {
-                throw IllegalStateException("call ROIQuerySDK.init() first")
+        internal fun getInstance(context: Context?): AnalyticsImp? {
+            return try {
+                if (context == null || mConfigOptions == null) {
+                    throw IllegalStateException("call ROIQuerySDK.init() first")
+                }
+                instance ?: synchronized(this) {
+                    instance ?: AnalyticsImp(context).also { instance = it }
+                }
+            } catch (e: Exception) {
+                LogUtils.printStackTrace(e)
+                null
             }
-            return instance ?: synchronized(this) {
-                instance ?: AnalyticsImp(context).also { instance = it }
-            }
+
         }
 
         internal fun init(
             context: Context?,
             configOptions: AnalyticsConfig?
         ) {
-            if (context == null || configOptions == null) {
-                throw IllegalStateException("call ROIQuerySDK.init() first")
+            try {
+                if (context == null || configOptions == null) {
+                    throw IllegalStateException("call ROIQuerySDK.init() first")
+                }
+                if (instance == null) {
+                    mConfigOptions = configOptions
+                    ROIQueryAnalytics.mContext = context.applicationContext
+                    instance = getInstance(ROIQueryAnalytics.mContext)
+                }
+            }catch (e:Exception){
+                LogUtils.printStackTrace(e)
             }
-            if (instance == null) {
-                mConfigOptions = configOptions
-                ROIQueryAnalytics.mContext = context.applicationContext
-                instance = getInstance(ROIQueryAnalytics.mContext)
-            }
+
         }
 
     }

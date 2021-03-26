@@ -274,7 +274,7 @@ internal class EventDataOperation(private val mContext: Context) {
 
     private fun getMaxCacheSize(context: Context): Long {
         return try {
-            AnalyticsImp.getInstance(context).maxCacheSize!!
+            AnalyticsImp.getInstance(context)?.maxCacheSize!!
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
             32 * 1024 * 1024

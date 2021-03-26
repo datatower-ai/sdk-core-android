@@ -4,12 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.infinum.dbinspector.DbInspector
+import com.roiquery.analytics.api.PropertyBuilder
+import com.roiquery.analytics.api.ROIQueryAnalytics
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.cloudconfig.*
-import com.roiquery.cloudconfig.utils.AESCoder
+import com.roiquery.cloudconfig.core.ConfigFetchListener
 
 class MainActivity : AppCompatActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,15 +21,25 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.tv_fetch).setOnClickListener {
             showFresh()
         }
+        findViewById<View>(R.id.tv_logih).setOnClickListener {
+
+            ROIQueryAnalytics.setAccountId("7344506")
+            ROIQueryAnalytics.track(
+                "app_open_like",
+                PropertyBuilder.newInstance()
+                    .append("test_property_1", "自定义属性值1")
+                    .append("test_property_2", "自定义属性值2")
+                    .toJSONObject()
+            )
+        }
         demo()
-//        AESCoder.main()
     }
 
     private fun demo() {
         clear()
         printCurrentConfig()
         showDefault()
-        showFresh()
+//        showFresh()
     }
 
     private fun clear() {
@@ -41,12 +52,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showFresh() {
-        ROIQueryCloudConfig.fetch({
-            LogUtils.e("Fetch is successful")
-//            remoteAppConfig.activateFetched()
-            printCurrentConfig()
-        }, {
-            LogUtils.e("Fetch is failed: ${it.message}")
+        ROIQueryCloudConfig.fetch(object :ConfigFetchListener{
+            override fun onSuccess() {
+                printCurrentConfig()
+            }
+
+            override fun onError(errorMessage: String) {
+                LogUtils.e(errorMessage)
+            }
+
         })
     }
 

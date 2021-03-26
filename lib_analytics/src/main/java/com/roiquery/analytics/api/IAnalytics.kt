@@ -65,6 +65,11 @@ interface IAnalytics {
 
 
     /**
+     * 是否禁用SDK
+     */
+    var enableSDK: Boolean?
+
+    /**
      * 是否允许采集开启数据采集
      */
     var enableTrack: Boolean?

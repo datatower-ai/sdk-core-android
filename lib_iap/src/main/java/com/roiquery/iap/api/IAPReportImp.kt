@@ -3,7 +3,7 @@ package com.roiquery.iap.api
 
 import android.content.Context
 import com.roiquery.analytics.api.ROIQueryAnalytics
-import com.roiquery.iap.IAPReportConstant
+import com.roiquery.iap.Constant
 import org.json.JSONObject
 
 class IAPReportImp : IIapReport {
@@ -17,7 +17,7 @@ class IAPReportImp : IIapReport {
         entrance: String?
     ) {
         iapTrack(
-            eventName = IAPReportConstant.EVENT_IAP_ENTRANCE,
+            eventName = Constant.EVENT_IAP_ENTRANCE,
             sku = sku,
             price = price,
             currency = currency,
@@ -32,7 +32,7 @@ class IAPReportImp : IIapReport {
         entrance: String?
     ) {
         iapTrack(
-            eventName = IAPReportConstant.EVENT_IAP_TO_PURCHASE,
+            eventName = Constant.EVENT_IAP_TO_PURCHASE,
             sku = sku,
             price = price,
             currency = currency,
@@ -47,7 +47,7 @@ class IAPReportImp : IIapReport {
         entrance: String?
     ) {
         iapTrack(
-            eventName = IAPReportConstant.EVENT_IAP_PURCHASED,
+            eventName = Constant.EVENT_IAP_PURCHASED,
             sku = sku,
             price = price,
             currency = currency,
@@ -64,7 +64,7 @@ class IAPReportImp : IIapReport {
         msg: String?
     ) {
         iapTrack(
-            eventName = IAPReportConstant.EVENT_IAP_NOT_PURCHASED,
+            eventName = Constant.EVENT_IAP_NOT_PURCHASED,
             sku = sku,
             price = price,
             currency = currency,
@@ -81,7 +81,7 @@ class IAPReportImp : IIapReport {
         entrance: String? = null,
         msg: String? = null
     ) {
-
+        if (!ROIQueryIAPReport.isSDKEnable()) return
         ROIQueryAnalytics.track(
             eventName, generateAdReportJson(
                 sku, price, currency, code, entrance, msg
@@ -97,17 +97,17 @@ class IAPReportImp : IIapReport {
         entrance: String?,
         msg: String?
     ) = JSONObject().apply {
-        put(IAPReportConstant.PROPERTY_IAP_SKU, sku)
-        put(IAPReportConstant.PROPERTY_IAP_PRICE, price)
-        put(IAPReportConstant.PROPERTY_IAP_CURRENCY, currency)
+        put(Constant.PROPERTY_IAP_SKU, sku)
+        put(Constant.PROPERTY_IAP_PRICE, price)
+        put(Constant.PROPERTY_IAP_CURRENCY, currency)
         code?.let {
-            put(IAPReportConstant.PROPERTY_IAP_CODE, it)
+            put(Constant.PROPERTY_IAP_CODE, it)
         }
         entrance?.let {
-            put(IAPReportConstant.PROPERTY_IAP_ENTRANCE, it)
+            put(Constant.PROPERTY_IAP_ENTRANCE, it)
         }
         msg?.let {
-            put(IAPReportConstant.PROPERTY_IAP_MSG, it)
+            put(Constant.PROPERTY_IAP_MSG, it)
         }
 
     }

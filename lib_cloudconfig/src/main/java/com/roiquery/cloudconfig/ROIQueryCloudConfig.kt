@@ -1,8 +1,8 @@
 package com.roiquery.cloudconfig
 
 import android.content.Context
+import com.roiquery.cloudconfig.core.ConfigFetchListener
 import com.roiquery.cloudconfig.core.ResourceRemoteRepository
-import com.unity3d.player.UnityPlayer
 import org.json.JSONObject
 
 class ROIQueryCloudConfig {
@@ -12,21 +12,6 @@ class ROIQueryCloudConfig {
         private var mIsInitialized = false
         private var mLogger: ((String) -> Unit)? = null
 
-        @JvmStatic
-        @JvmOverloads
-        fun fetch(
-            success: (() -> Unit)? = null,
-            error: ((Throwable) -> Unit)? = null
-        ) {
-            mRemoteAppConfig.fetch(success, error)
-        }
-
-
-        fun fetchForUnity() {
-            mRemoteAppConfig.fetch(success = {
-                UnityPlayer.UnitySendMessage("name", "", "")
-            })
-        }
 
         fun init(
             context: Context,
@@ -34,12 +19,12 @@ class ROIQueryCloudConfig {
             aesKey: String,
             setAesKey: (String) -> Unit,
             logger: ((String) -> Unit)?
-            ) {
+        ) {
             if (!mIsInitialized) {
                 mLogger = logger
                 initRemoteConfig {
                     remoteResource<String>(
-                        storage(context,context.filesDir.absolutePath + "/configs"),
+                        storage(context, context.filesDir.absolutePath + "/configs"),
                         remoteResource,
                         aesKey,
                         setAesKey
@@ -55,14 +40,29 @@ class ROIQueryCloudConfig {
         }
 
         private fun getConfigJsonObject(): JSONObject? {
-            return mRemoteAppConfig.get()?.let {
+            return if (mIsInitialized) mRemoteAppConfig.get()?.let {
                 JSONObject(it)
-            }
+            } else JSONObject()
         }
 
         fun getConfigString(): String? {
-            return mRemoteAppConfig.get()
+            return if (mIsInitialized) mRemoteAppConfig.get() else ""
         }
+
+        @JvmStatic
+        fun fetch(listener: ConfigFetchListener? = null) {
+            mRemoteAppConfig.fetch({
+                listener?.let {
+                    listener.onSuccess()
+                }
+            }){error ->
+                listener?.let {
+                    error.message?.let { it1 -> listener.onError(it1) }
+                }
+            }
+        }
+
+
 
         @JvmOverloads
         fun getInt(

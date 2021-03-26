@@ -1,6 +1,6 @@
 package com.roiquery.iap
 
-internal object IAPReportConstant {
+internal object Constant {
 
 
     //预置事件名称
@@ -17,6 +17,7 @@ internal object IAPReportConstant {
     const val PROPERTY_IAP_CODE = "iap_code"
     const val PROPERTY_IAP_MSG = "iap_msg"
 
+    const val ENABLE_IAP_SDK_KEY = "enable_iap_sdk"
 }
 
 

@@ -358,7 +358,8 @@ abstract class AbstractAnalytics : IAnalytics {
 
         mConfigOptions?.let { configOptions ->
 
-            initLog(configOptions.mEnabledDebug, configOptions.mLogLevel)
+            configLog(configOptions.mEnabledDebug, configOptions.mLogLevel)
+            initNTP(configOptions.mEnabledDebug)
             registerNetworkStatusChangedListener()
 
             if (configOptions.mFlushInterval == 0) {
@@ -397,9 +398,13 @@ abstract class AbstractAnalytics : IAnalytics {
         ROIQueryCloudConfig.init(
             mContext!!,
             HttpPOSTResourceRemoteRepository.create(
-                Constant.CONFIG_FETCH_URL,//拉取配置地址
-                mCommonProperties//拉取参数
-            ),
+                Constant.CLOUD_CONFIG_URL//拉取配置地址
+                //拉取参数
+            ) {
+                JSONObject(mEventInfo).apply {
+                    DataUtils.mergeJSONObject(JSONObject(mCommonProperties), this)
+                }
+            },
             mDataAdapter?.cloudConfigAesKey ?: "",
             {
                 mDataAdapter?.cloudConfigAesKey = it
@@ -414,14 +419,16 @@ abstract class AbstractAnalytics : IAnalytics {
      * @param enable 是否开启
      * @param logLevel log 级别
      */
-    private fun initLog(enable: Boolean, logLevel: Int) {
+    fun configLog(
+        enable: Boolean = mConfigOptions?.mEnabledDebug ?: false,
+        logLevel: Int = mConfigOptions?.mLogLevel ?: LogUtils.V
+    ) {
         LogUtils.getConfig().apply {
             isLogSwitch = enable
             globalTag = Constant.LOG_TAG
             setConsoleSwitch(enable)
             setConsoleFilter(logLevel)
         }
-        initNTP(enable)
     }
 
     private fun registerNetworkStatusChangedListener() {

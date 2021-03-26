@@ -1,30 +1,29 @@
 package com.roiquery.analytics
 
-import androidx.annotation.IntDef
-import java.lang.annotation.Retention
-import java.lang.annotation.RetentionPolicy
-
 internal object Constant {
 
     const val LOG_TAG = "Roiquery_Analytics"
 
-    //事件上报路径
+    //ROIQuery base url
     private const val ANALYTICS_BASE_URL = "https://api.roiquery.com"
-    //事件上报路径
+    //upload url
     const val EVENT_REPORT_URL = "$ANALYTICS_BASE_URL/report"
-    const val CONFIG_FETCH_URL = "http://manage.roiquery.com/apitest/test"
-    //时间同步服务
+    // cloudConfig url
+    const val CLOUD_CONFIG_URL = "$ANALYTICS_BASE_URL/cfg"
+//    const val CLOUD_CONFIG_URL = "http://manage.roiquery.com/apitest/test"
+
+    //ntp server url
     const val NTP_HOST = "time.google.com"
     const val NTP_TIME_OUT_M = 31428
 
 
-    //事件上报条数
+    //event upload size
     const val EVENT_REPORT_SIZE = 10
 
     const val CONFIG_BUNDLE_KEY_MAIN_PROCESS_NAME =
         "com.roiquery.analytics.android.MainProcessName"
 
-    //预置事件名称
+    //preset event name about Analytics
     const val PRESET_EVENT_TAG = "@.#"
     const val PRESET_EVENT_APP_FIRST_OPEN = PRESET_EVENT_TAG + "app_first_open"
     const val PRESET_EVENT_APP_OPEN = PRESET_EVENT_TAG + "app_open"
@@ -36,12 +35,13 @@ internal object Constant {
     const val PRESET_EVENT_USER_PROPERTIES = PRESET_EVENT_TAG + "user_properties"
 
 
-    //活跃度事件采集间隔
-    const val APP_ENGAGEMENT_INTERVAL_TIME = 1 * 60 * 1000L //五分钟
+    //engagement interval time
+    const val APP_ENGAGEMENT_INTERVAL_TIME = 1 * 60 * 1000L // 5min
 
     const val SDK_TYPE_ANDROID = "Android"
     const val SDK_TYPE_UNITY = "Unity"
     const val SDK_TYPE_FLUTTER = "Flutter"
 
-
+    // sdk switch，cloudConfig to config
+    const val ENABLE_ANALYTICS_SDK_KEY = "enable_analytics_sdk"
 }
