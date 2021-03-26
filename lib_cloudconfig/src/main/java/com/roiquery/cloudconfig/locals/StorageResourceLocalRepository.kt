@@ -2,6 +2,7 @@ package com.roiquery.cloudconfig.locals
 
 
 import android.content.Context
+import com.roiquery.cloudconfig.ROIQueryCloudConfig
 import com.roiquery.cloudconfig.core.ResourceLocalRepository
 import com.roiquery.cloudconfig.utils.FileIOUtils
 import com.roiquery.cloudconfig.utils.FileUtils
@@ -17,11 +18,14 @@ class StorageResourceLocalRepository(
     init {
         FileUtils.setContext(context.applicationContext)
     }
+
     private val root: File = File(rootDir).also {
         if (!it.exists()) {
             it.mkdir()
         }
     }
+
+    private var cacheInputStream: InputStream? = null
 
     private lateinit var resourceName: String
 
@@ -38,7 +42,7 @@ class StorageResourceLocalRepository(
 
     override fun storeDefault(defaultValue: InputStream) {
         writeResourceFile(DEFAULT, defaultValue)
-        if (!FileUtils.isFileExists(getResourcePath(ACTIVE))){
+        if (!FileUtils.isFileExists(getResourcePath(ACTIVE))) {
             writeResourceFile(ACTIVE, getInputStream(DEFAULT))
         }
     }
@@ -72,9 +76,14 @@ class StorageResourceLocalRepository(
     }
 
     private fun getInputStream(variant: String): InputStream? {
+        cacheInputStream?.let {
+            ROIQueryCloudConfig.mLogger?.invoke("get config from cache")
+            return it
+        }
         val path = getResourcePath(variant)
         return if (FileUtils.isFileExists(path)) {
-            FileInputStream(path)
+            ROIQueryCloudConfig.mLogger?.invoke("get config from file")
+            FileInputStream(path).apply { cacheInputStream = this }
         } else {
             null
         }
@@ -82,7 +91,8 @@ class StorageResourceLocalRepository(
 
     private fun writeResourceFile(variant: String, stream: InputStream?) {
         stream?.use {
-            FileIOUtils.writeFileFromBytesByStream(getResourcePath(variant),it.readBytes())
+            FileIOUtils.writeFileFromBytesByStream(getResourcePath(variant), it.readBytes())
+            cacheInputStream = null
         }
     }
 
