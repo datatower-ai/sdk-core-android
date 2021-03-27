@@ -17,6 +17,8 @@ buildscript {
         jcenter()
         maven("https://www.jitpack.io")
         maven("https://dl.bintray.com/infinum/android")
+        maven("https://plugins.gradle.org/m2/")
+
     }
 
     dependencies {
@@ -26,6 +28,7 @@ buildscript {
         classpath(androidPlugin)
         classpath(kotlin("gradle-plugin", kotlinVersion))
         classpath("com.kezong:fat-aar:1.3.4")
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.4.30")
     }
 }
 
@@ -35,9 +38,18 @@ allprojects {
         jcenter()
         maven("https://www.jitpack.io")
         maven("https://dl.bintray.com/infinum/android")
+
+        maven(){
+            url = java.net.URI( "http://localhost:8081/repository/roiquery-sdk-snapshot/")
+            credentials {
+                username = "shijunxing"
+                password = "5201314sjx"
+            }
+        }
     }
 }
 
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
+
