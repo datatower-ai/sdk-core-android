@@ -9,6 +9,7 @@ plugins {
     id("com.android.library")
     id("com.kezong.fat-aar")
     kotlin("android")
+
 }
 
 android {
@@ -86,5 +87,10 @@ android {
 
         }
     }
-}
 
+}
+val GROUP_ID = "com.roiquery.sdk"
+val ARTIFACT_ID = "analytics"
+val VERSION = buildProps["analyticsVersionName"]!!.toString()
+
+apply("../pack-upload.gradle")
