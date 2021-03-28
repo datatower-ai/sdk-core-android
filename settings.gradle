@@ -1,0 +1,9 @@
+include ':demo_iap'
+include ':demo_cloudconfig'
+include ':lib_cloudconfig'
+include ':demo_ad_report'
+include ':lib_ad'
+include ':lib_iap'
+include ':lib_analytics'
+include ':demo_analytics'
+rootProject.name = "ROIQuery-SDK"
