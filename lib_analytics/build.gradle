@@ -65,10 +65,9 @@ dependencies {
 
 // 配置上传信息
 ext {
-    GROUP_ID = "com.roiquery.sdk"
-    ARTIFACT_ID = "analytics"
+    ARTIFACT_ID = rootProject.ext.analytics.artifactId
     VERSION = rootProject.ext.analytics.versionName
-    VERSION_SNAPSHOT = rootProject.ext.analytics.versionName + "-SNAPSHOT"
+    VERSION_SNAPSHOT = rootProject.ext.analytics.versionName
 }
 
 apply from: "../pack-upload.gradle"

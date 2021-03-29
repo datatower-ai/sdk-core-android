@@ -33,10 +33,12 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 apply plugin: 'maven'
 
 // 对应的仓库地址
-def URL_PUCBLIC = "http://lib.gcssloop.com:8081/repository/gcssloop-central/"
+def URL_PUCBLIC = "https://maven.en2joy.com/repository/maven-ironmeta-internal/"
 def URL_LOCAL = "http://localhost:8081/repository/maven-snapshots/"
 
-def USER_NAME = "shijunxing"
+def GROUP_ID = "com.roiquery.android"
+
+def USER_NAME = "JunxingShi"
 def USER_PWD = "5201314sjx"
 // 上传到公共仓库
 task uploadToPublic(type: Upload) {

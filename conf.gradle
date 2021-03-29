@@ -17,30 +17,33 @@ ext {
 
     maven = [
             url_snapshot = "http://localhost:8081/repository/maven-snapshots/",
-            url_releases = "http://localhost:8081/repository/maven-releases/",
-            userName = "shijunxing",
+            url_releases = "https://maven.en2joy.com/repository/maven-ironmeta-internal/",
+            userName = "JunxingShi",
             passWord = "5201314sjx"
     ]
 
     analytics = [
             versionCode      : 3,
             versionName      : '1.0.3',
-            lib_name         :  ':lib_analytics',
+            artifactId       : 'analytics'
     ]
     cloudconfig = [
             versionCode      : 1,
             versionName      : '1.0.1',
-            lib_name         :  ':lib_cloudconfig',
+            lib_name         : ':lib_cloudconfig',
+            artifactId       : 'cloudconfig'
     ]
     ad = [
             versionCode      : 1,
             versionName      : '1.0.1',
-            lib_name         :  ':lib_ad',
+            lib_name         : ':lib_ad',
+            artifactId       : 'ad'
     ]
     iap = [
             versionCode      : 1,
             versionName      : '1.0.1',
             lib_name         :  ':lib_iap',
+            artifactId       : 'iap'
     ]
 
 

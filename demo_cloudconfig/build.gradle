@@ -44,8 +44,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     debugImplementation 'com.infinum.dbinspector:dbinspector:5.2.3'
 
-    implementation project(':lib_cloudconfig')
-    implementation project(':lib_analytics')
+//    implementation project(':lib_cloudconfig')
+//    implementation project(':lib_analytics')
 
+
+    implementation 'com.roiquery.android:analytics:1.0.3'
+    implementation 'com.roiquery.android:cloudconfig:1.0.1'
 
 }

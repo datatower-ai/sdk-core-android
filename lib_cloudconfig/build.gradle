@@ -46,10 +46,10 @@ dependencies {
 
 // 配置上传信息
 ext {
-    GROUP_ID = "com.roiquery.sdk"
-    ARTIFACT_ID = "cloudconfig"
+
+    ARTIFACT_ID = rootProject.ext.cloudconfig.artifactId
     VERSION = rootProject.ext.cloudconfig.versionName
-    VERSION_SNAPSHOT = rootProject.ext.cloudconfig.versionName + "-SNAPSHOT"
+    VERSION_SNAPSHOT = rootProject.ext.cloudconfig.versionName
 }
 
 apply from: "../pack-upload.gradle"
