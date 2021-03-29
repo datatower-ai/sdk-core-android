@@ -47,8 +47,8 @@ dependencies {
 //    implementation project(':lib_cloudconfig')
 //    implementation project(':lib_analytics')
 
-
+//
     implementation 'com.roiquery.android:analytics:1.0.3'
-    implementation 'com.roiquery.android:cloudconfig:1.0.1'
+    implementation 'com.roiquery.android:cloudconfig:1.0.3'
 
 }

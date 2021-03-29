@@ -25,7 +25,6 @@ class StorageResourceLocalRepository(
         }
     }
 
-    private var cacheInputStream: InputStream? = null
 
     private lateinit var resourceName: String
 
@@ -76,14 +75,10 @@ class StorageResourceLocalRepository(
     }
 
     private fun getInputStream(variant: String): InputStream? {
-        cacheInputStream?.let {
-            ROIQueryCloudConfig.mLogger?.invoke("get config from cache")
-            return it
-        }
+
         val path = getResourcePath(variant)
         return if (FileUtils.isFileExists(path)) {
-            ROIQueryCloudConfig.mLogger?.invoke("get config from file")
-            FileInputStream(path).apply { cacheInputStream = this }
+            FileInputStream(path)
         } else {
             null
         }
@@ -92,7 +87,6 @@ class StorageResourceLocalRepository(
     private fun writeResourceFile(variant: String, stream: InputStream?) {
         stream?.use {
             FileIOUtils.writeFileFromBytesByStream(getResourcePath(variant), it.readBytes())
-            cacheInputStream = null
         }
     }
 

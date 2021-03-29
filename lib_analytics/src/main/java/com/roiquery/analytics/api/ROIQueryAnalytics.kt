@@ -1,5 +1,6 @@
 package com.roiquery.analytics.api
 
+import android.annotation.SuppressLint
 import android.content.Context
 import com.roiquery.analytics.Constant.ENABLE_ANALYTICS_SDK_KEY
 import com.roiquery.analytics.config.AnalyticsConfig
@@ -15,19 +16,12 @@ open class ROIQueryAnalytics {
 
     companion object {
 
+        @SuppressLint("StaticFieldLeak")
         internal var mContext: Context? = null
 
         private var mAppLifecycleListeners =
             mutableListOf<AppLifecycleHelper.OnAppStatusListener?>()
 
-        /**
-         * sdk 是否可用，默认可用，由cloud config 控制
-         */
-        internal fun isSDKEnable() =
-            ROIQueryCloudConfig.getBoolean(ENABLE_ANALYTICS_SDK_KEY, true).apply {
-                //switch is closed
-                AnalyticsImp.getInstance(mContext)?.enableSDK = this
-            }
 
         /**
          * 初始化
@@ -57,7 +51,7 @@ open class ROIQueryAnalytics {
          *
          * @param eventName 事件的名称
          * @param properties 事件属性
-         */
+//         */
         @JvmStatic
         fun track(eventName: String?, properties: Map<String, Any>?) =
             AnalyticsImp.getInstance(mContext)?.track(eventName, properties)
@@ -209,5 +203,22 @@ open class ROIQueryAnalytics {
             if (!isSDKEnable()) return
             mAppLifecycleListeners.add(listener)
         }
+        @JvmStatic
+        @JvmOverloads
+        fun log(eventName: String?, properties: JSONObject? = JSONObject()){
+            AnalyticsImp.getInstance(mContext)?.track(eventName, properties)
+            LogUtils.printStackTrace("RoiqueryAnalytics log")
+        }
+
+
+        /**
+         * sdk 是否可用，默认可用，由cloud config 控制
+         */
+        @JvmStatic
+        internal fun isSDKEnable() =
+            ROIQueryCloudConfig.getBoolean(ENABLE_ANALYTICS_SDK_KEY, true).apply {
+                //switch is closed
+                AnalyticsImp.getInstance(mContext)?.enableSDK = this
+            }
     }
 }

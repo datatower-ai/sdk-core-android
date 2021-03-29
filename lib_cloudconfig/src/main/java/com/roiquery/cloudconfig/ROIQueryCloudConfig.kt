@@ -55,6 +55,7 @@ class ROIQueryCloudConfig {
             return if (mIsInitialized) mRemoteAppConfig.get() else ""
         }
 
+        @JvmOverloads
         @JvmStatic
         fun fetch(listener: ConfigFetchListener? = null) {
             mRemoteAppConfig.fetch({
@@ -67,7 +68,7 @@ class ROIQueryCloudConfig {
                 }
             }
         }
-
+        @JvmStatic
         @JvmOverloads
         fun getInt(
             key: String,
@@ -78,7 +79,7 @@ class ROIQueryCloudConfig {
             defaultValue
         }
 
-
+        @JvmStatic
         @JvmOverloads
         fun getString(
             key: String,
@@ -86,10 +87,11 @@ class ROIQueryCloudConfig {
         ) = try {
             getConfigJsonObject()?.getString(key) ?: defaultValue
         } catch (e: Exception) {
+            mLogger?.invoke(e.message!!)
             defaultValue
         }
 
-
+        @JvmStatic
         @JvmOverloads
         fun getBoolean(
             key: String,
@@ -100,7 +102,7 @@ class ROIQueryCloudConfig {
             defaultValue
         }
 
-
+        @JvmStatic
         @JvmOverloads
         fun getDouble(
             key: String,
@@ -111,6 +113,7 @@ class ROIQueryCloudConfig {
             defaultValue
         }
 
+        @JvmStatic
         @JvmOverloads
         fun getLong(
             key: String,

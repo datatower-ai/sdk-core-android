@@ -22,15 +22,16 @@ class MainActivity : AppCompatActivity() {
             showFresh()
         }
         findViewById<View>(R.id.tv_logih).setOnClickListener {
-
-            ROIQueryAnalytics.setAccountId("7344506")
-            ROIQueryAnalytics.track(
-                "app_open_like",
-                PropertyBuilder.newInstance()
-                    .append("test_property_1", "自定义属性值1")
-                    .append("test_property_2", "自定义属性值2")
-                    .toJSONObject()
-            )
+//
+//            ROIQueryAnalytics.setAccountId("7344506")
+//            ROIQueryAnalytics.track(
+//                "app_open_like",
+//                PropertyBuilder.newInstance()
+//                    .append("test_property_1", "自定义属性值1")
+//                    .append("test_property_2", "自定义属性值2")
+//                    .toJSONObject()
+//            )
+            printCurrentConfig()
         }
         demo()
     }
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun printCurrentConfig() {
-        LogUtils.e("Config: ${ROIQueryCloudConfig.getConfigString()}")
+        LogUtils.e("Config3: ${ROIQueryCloudConfig.getConfigString()}")
     }
 
 
