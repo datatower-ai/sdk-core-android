@@ -1,5 +1,6 @@
-package com.roiquery.ad.api
+package com.roiquery.ad
 
+import com.roiquery.ad.api.AdReportImp
 import com.roiquery.ad.utils.UUIDUtils
 
 open class ROIQueryAdReport {

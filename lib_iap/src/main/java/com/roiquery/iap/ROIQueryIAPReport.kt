@@ -1,7 +1,7 @@
-package com.roiquery.iap.api
+package com.roiquery.iap
 
 import com.roiquery.cloudconfig.ROIQueryCloudConfig
-import com.roiquery.iap.Constant
+import com.roiquery.iap.api.IAPReportImp
 
 
 open class ROIQueryIAPReport {

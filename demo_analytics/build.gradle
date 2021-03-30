@@ -49,8 +49,8 @@ dependencies {
     debugImplementation 'com.infinum.dbinspector:dbinspector:5.2.3'
     releaseImplementation 'com.infinum.dbinspector:dbinspector-no-op:5.2.3'
 
-    implementation 'com.roiquery.android:analytics:1.0.3'
-    implementation 'com.roiquery.android:cloudconfig:1.0.1'
+    implementation 'com.roiquery.android:analytics:1.0.4'
+    implementation 'com.roiquery.android:cloudconfig:1.0.4'
 //    implementation project(':lib_ad_report')
 //    implementation project(':lib_analytics')
 //    implementation project(':lib_cloudconfig')

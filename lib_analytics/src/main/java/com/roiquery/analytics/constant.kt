@@ -19,6 +19,8 @@ internal object Constant {
 
     //event upload size
     const val EVENT_REPORT_SIZE = 10
+    //event upload try times when filed
+    const val EVENT_REPORT_TRY_COUNT = 3
 
     const val CONFIG_BUNDLE_KEY_MAIN_PROCESS_NAME =
         "com.roiquery.analytics.android.MainProcessName"

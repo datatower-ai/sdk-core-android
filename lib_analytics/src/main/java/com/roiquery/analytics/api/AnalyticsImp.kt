@@ -1,7 +1,9 @@
 package com.roiquery.analytics.api
 
+import android.annotation.SuppressLint
 import android.content.Context
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.LogUtils
@@ -161,19 +163,15 @@ class AnalyticsImp : AbstractAnalytics {
 
     companion object {
 
+        @SuppressLint("StaticFieldLeak")
         @Volatile
         private var instance: AnalyticsImp? = null
-        internal fun getInstance(context: Context?): AnalyticsImp? {
-            return try {
-                if (context == null || mConfigOptions == null) {
-                    throw IllegalStateException("call ROIQuerySDK.init() first")
-                }
-                instance ?: synchronized(this) {
-                    instance ?: AnalyticsImp(context).also { instance = it }
-                }
-            } catch (e: Exception) {
-                LogUtils.printStackTrace(e)
-                null
+        internal fun getInstance(context: Context?): AnalyticsImp {
+            if (context == null || mConfigOptions == null) {
+                throw IllegalStateException("call ROIQuerySDK.init() first")
+            }
+            return instance ?: synchronized(this) {
+                instance ?: AnalyticsImp(context).also { instance = it }
             }
 
         }
@@ -182,19 +180,14 @@ class AnalyticsImp : AbstractAnalytics {
             context: Context?,
             configOptions: AnalyticsConfig?
         ) {
-            try {
-                if (context == null || configOptions == null) {
-                    throw IllegalStateException("call ROIQuerySDK.init() first")
-                }
-                if (instance == null) {
-                    mConfigOptions = configOptions
-                    ROIQueryAnalytics.mContext = context.applicationContext
-                    instance = getInstance(ROIQueryAnalytics.mContext)
-                }
-            }catch (e:Exception){
-                LogUtils.printStackTrace(e)
+            if (context == null || configOptions == null) {
+                throw IllegalStateException("call ROIQuerySDK.init() first")
             }
-
+            if (instance == null) {
+                mConfigOptions = configOptions
+                ROIQueryAnalytics.mContext = context.applicationContext
+                instance = getInstance(ROIQueryAnalytics.mContext)
+            }
         }
 
     }

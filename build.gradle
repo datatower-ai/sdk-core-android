@@ -3,7 +3,7 @@ apply from: "conf.gradle"
 
 buildscript {
 
-    ext.kotlin_version = "1.4.30"
+    ext.kotlin_version = "1.4.31"
     repositories {
         google()
         jcenter()
@@ -27,13 +27,14 @@ allprojects {
         maven { url 'https://www.jitpack.io' }
         maven { url "https://dl.bintray.com/infinum/android" }
         maven(){
-//            url = uri( "http://localhost:8081/repository/maven-snapshots/")
+//            url = uri( "http://localhost:8081/repository/roiquery-sdk/")
             url = uri( "https://maven.en2joy.com/repository/maven-ironmeta-internal/")
             credentials {
                 username = "JunxingShi"
                 password = "5201314sjx"
             }
         }
+
     }
 }
 

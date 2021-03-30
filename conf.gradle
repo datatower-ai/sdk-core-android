@@ -8,28 +8,28 @@ ext {
             targetSdkVersion : 30,
 
 
-            kotlinVersion    : '1.4.30',
+            kotlinVersion    : '1.4.31',
             javaVersion      : JavaVersion.VERSION_1_8,
-            androidPlugin    : "com.android.tools.build:gradle:4.1.1",
+            androidPlugin    : "com.android.tools.build:gradle:4.1.3",
             jvmTarget        : '1.8'
 
     ]
 
     maven = [
-            url_snapshot = "http://localhost:8081/repository/maven-snapshots/",
+            url_snapshot = "http://localhost:8081/repository/roiquery-sdk/",
             url_releases = "https://maven.en2joy.com/repository/maven-ironmeta-internal/",
             userName = "JunxingShi",
             passWord = "5201314sjx"
     ]
 
     analytics = [
-            versionCode      : 3,
-            versionName      : '1.0.3',
+            versionCode      : 4,
+            versionName      : '1.0.4',
             artifactId       : 'analytics'
     ]
     cloudconfig = [
-            versionCode      : 3,
-            versionName      : '1.0.3',
+            versionCode      : 4,
+            versionName      : '1.0.4',
             lib_name         : ':lib_cloudconfig',
             artifactId       : 'cloudconfig'
     ]

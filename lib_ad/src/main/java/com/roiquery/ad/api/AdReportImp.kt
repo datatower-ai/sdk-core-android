@@ -7,7 +7,7 @@ import android.text.TextUtils
 import com.roiquery.ad.AD_PLATFORM
 import com.roiquery.ad.AD_TYPE
 import com.roiquery.ad.AdReportConstant
-import com.roiquery.analytics.api.ROIQueryAnalytics
+import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.AppLifecycleHelper.OnAppStatusListener
 import com.roiquery.analytics.utils.LogUtils

@@ -2,8 +2,9 @@ package com.roiquery.iap.api
 
 
 import android.content.Context
-import com.roiquery.analytics.api.ROIQueryAnalytics
+import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.iap.Constant
+import com.roiquery.iap.ROIQueryIAPReport
 import org.json.JSONObject
 
 class IAPReportImp : IIapReport {

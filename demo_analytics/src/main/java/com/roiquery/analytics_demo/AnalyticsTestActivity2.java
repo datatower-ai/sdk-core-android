@@ -44,6 +44,7 @@ public class AnalyticsTestActivity2 extends AppCompatActivity {
             ROIQueryAnalytics.setUserProperties(
                      pro
             );
+
         });
     }
 }

@@ -43,3 +43,13 @@ dependencies {
     implementation project(":lib_analytics")
     implementation project(":lib_cloudconfig")
 }
+
+// 配置上传信息
+ext {
+
+    ARTIFACT_ID = rootProject.ext.iap.artifactId
+    VERSION = rootProject.ext.iap.versionName
+    VERSION_SNAPSHOT = rootProject.ext.iap.versionName
+}
+
+apply from: "../pack-upload.gradle"

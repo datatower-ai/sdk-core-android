@@ -35,3 +35,4 @@ public enum ResponseStatus {
      */
     GET_PARAMS_FAILED
 }
+

@@ -114,4 +114,11 @@ public abstract class HttpCallback<T> {
 
         }
     }
+
+
+    public interface ResponseDataKey{
+        String KEY_CODE = "code";
+        String KEY_MSG = "msg";
+        String KEY_DATA = "data";
+    }
 }

@@ -1,8 +1,9 @@
-package com.roiquery.analytics.api
+package com.roiquery.analytics
 
 import android.annotation.SuppressLint
 import android.content.Context
 import com.roiquery.analytics.Constant.ENABLE_ANALYTICS_SDK_KEY
+import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.AppLifecycleHelper
@@ -42,8 +43,8 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         @JvmOverloads
-        fun track(eventName: String?, properties: JSONObject? = JSONObject()) =
-            AnalyticsImp.getInstance(mContext)?.track(eventName, properties)
+        fun track(eventName: String?, properties: JSONObject?  = JSONObject()) =
+            AnalyticsImp.getInstance(mContext).track(eventName, properties)
 
 
         /**
@@ -54,7 +55,7 @@ open class ROIQueryAnalytics {
 //         */
         @JvmStatic
         fun track(eventName: String?, properties: Map<String, Any>?) =
-            AnalyticsImp.getInstance(mContext)?.track(eventName, properties)
+            AnalyticsImp.getInstance(mContext).track(eventName, properties)
 
         /**
          * 采集 app 退出
@@ -64,7 +65,7 @@ open class ROIQueryAnalytics {
         @JvmStatic
         @JvmOverloads
         fun trackAppClose(properties: JSONObject? = JSONObject()) =
-            AnalyticsImp.getInstance(mContext)?.trackAppClose(properties)
+            AnalyticsImp.getInstance(mContext).trackAppClose(properties)
 
         /**
          * 采集 app 退出
@@ -73,7 +74,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun trackAppClose(properties: Map<String, Any>?) =
-            AnalyticsImp.getInstance(mContext)?.trackAppClose(properties)
+            AnalyticsImp.getInstance(mContext).trackAppClose(properties)
 
         /**
          * 采集 页面打开
@@ -83,7 +84,7 @@ open class ROIQueryAnalytics {
         @JvmStatic
         @JvmOverloads
         fun trackPageOpen(properties: JSONObject? = JSONObject()) =
-            AnalyticsImp.getInstance(mContext)?.trackPageOpen(properties)
+            AnalyticsImp.getInstance(mContext).trackPageOpen(properties)
 
         /**
          * 采集 页面打开
@@ -92,7 +93,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun trackPageOpen(properties: Map<String, Any>?) =
-            AnalyticsImp.getInstance(mContext)?.trackPageOpen(properties)
+            AnalyticsImp.getInstance(mContext).trackPageOpen(properties)
 
         /**
          * 采集 页面关闭
@@ -101,7 +102,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun trackPageClose(properties: Map<String, Any>?) =
-            AnalyticsImp.getInstance(mContext)?.trackPageClose(properties)
+            AnalyticsImp.getInstance(mContext).trackPageClose(properties)
 
         /**
          * 采集 页面关闭
@@ -111,7 +112,7 @@ open class ROIQueryAnalytics {
         @JvmStatic
         @JvmOverloads
         fun trackPageClose(properties: JSONObject? = JSONObject()) =
-            AnalyticsImp.getInstance(mContext)?.trackPageClose(properties)
+            AnalyticsImp.getInstance(mContext).trackPageClose(properties)
 
         /**
          * 设置用户属性
@@ -120,7 +121,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun setUserProperties(properties: Map<String, Any>?) =
-            AnalyticsImp.getInstance(mContext)?.setUserProperties(properties)
+            AnalyticsImp.getInstance(mContext).setUserProperties(properties)
 
         /**
          * 设置用户属性
@@ -129,14 +130,14 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun setUserProperties(properties: JSONObject?) =
-            AnalyticsImp.getInstance(mContext)?.setUserProperties(properties)
+            AnalyticsImp.getInstance(mContext).setUserProperties(properties)
 
         /**
          * 主动上报本地数据事件
          *
          */
         @JvmStatic
-        fun flush() = AnalyticsImp.getInstance(mContext)?.flush()
+        fun flush() = AnalyticsImp.getInstance(mContext).flush()
 
         /**
          * 设置自有用户系统的id
@@ -144,7 +145,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun setAccountId(id: String) {
-            AnalyticsImp.getInstance(mContext)?.accountId = id
+            AnalyticsImp.getInstance(mContext).accountId = id
         }
 
         /**
@@ -203,12 +204,7 @@ open class ROIQueryAnalytics {
             if (!isSDKEnable()) return
             mAppLifecycleListeners.add(listener)
         }
-        @JvmStatic
-        @JvmOverloads
-        fun log(eventName: String?, properties: JSONObject? = JSONObject()){
-            AnalyticsImp.getInstance(mContext)?.track(eventName, properties)
-            LogUtils.printStackTrace("RoiqueryAnalytics log")
-        }
+
 
 
         /**
@@ -217,8 +213,8 @@ open class ROIQueryAnalytics {
         @JvmStatic
         internal fun isSDKEnable() =
             ROIQueryCloudConfig.getBoolean(ENABLE_ANALYTICS_SDK_KEY, true).apply {
-                //switch is closed
-                AnalyticsImp.getInstance(mContext)?.enableSDK = this
+                //switch
+                AnalyticsImp.getInstance(mContext).enableSDK = this
             }
     }
 }

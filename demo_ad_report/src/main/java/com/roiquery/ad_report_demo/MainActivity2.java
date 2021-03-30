@@ -10,9 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.roiquery.ad.AD_PLATFORM;
 import com.roiquery.ad.AD_TYPE;
-import com.roiquery.ad.api.ROIQueryAdReport;
+import com.roiquery.ad.ROIQueryAdReport;
 import com.roiquery.ad.utils.UUIDUtils;
-import com.roiquery.analytics.api.ROIQueryAnalytics;
+import com.roiquery.analytics.ROIQueryAnalytics;
 
 public class MainActivity2 extends AppCompatActivity {
 

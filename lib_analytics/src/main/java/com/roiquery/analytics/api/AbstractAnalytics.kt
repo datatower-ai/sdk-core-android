@@ -3,9 +3,7 @@ package com.roiquery.analytics.api
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.AsyncTask
 import android.os.Bundle
-import android.os.RemoteException
 import android.text.TextUtils
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
@@ -19,6 +17,7 @@ import com.roiquery.analytics.Constant.PRESET_EVENT_APP_ATTRIBUTE
 import com.roiquery.analytics.Constant.PRESET_EVENT_APP_FIRST_OPEN
 import com.roiquery.analytics.Constant.PRESET_EVENT_TAG
 import com.roiquery.analytics.R
+import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.AnalyticsManager
 import com.roiquery.analytics.core.TrackTaskManager
@@ -26,10 +25,8 @@ import com.roiquery.analytics.core.TrackTaskManagerThread
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.exception.InvalidDataException
 import com.roiquery.analytics.network.HttpPOSTResourceRemoteRepository
-//import com.roiquery.analytics.network.HttpPOSTResourceRemoteRepository
 import com.roiquery.analytics.utils.*
 import com.roiquery.cloudconfig.ROIQueryCloudConfig
-//import com.roiquery.cloudconfig.ROIQueryCloudConfig
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -86,7 +83,6 @@ abstract class AbstractAnalytics : IAnalytics {
 
     private var mFirstOpenTime = ""
 
-    private var mFirstOpenTimeLock = Any()
 
     companion object {
         const val TAG = "AnalyticsApi"
@@ -103,8 +99,8 @@ abstract class AbstractAnalytics : IAnalytics {
         initConfig(context!!.packageName)
         initLocalData()
         initProperties()
-        initAppLifecycleListener()
         initCloudConfig()
+        initAppLifecycleListener()
         initTrack(context)
     }
 
@@ -176,10 +172,8 @@ abstract class AbstractAnalytics : IAnalytics {
                     put("#event_name", realEventName)
                     put("#event_syn", DataUtils.getUUID())
                     if (PRESET_EVENT_APP_FIRST_OPEN == eventName) {
-                        synchronized(mFirstOpenTimeLock) {
-                            mFirstOpenTime = getString("#event_time")
-                            LogUtils.e("first_open_time")
-                        }
+                        mFirstOpenTime = getString("#event_time")
+                        LogUtils.e("first_open_time")
                     }
                     if (PRESET_EVENT_APP_ATTRIBUTE == eventName) {
                         if (properties?.has("first_open_time") == false
@@ -187,7 +181,6 @@ abstract class AbstractAnalytics : IAnalytics {
                             ) {
                             properties.put("first_open_time", mFirstOpenTime)
                         }
-
                     }
 
                 }
@@ -585,18 +578,16 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun trackAppAttributeEvent(response: ReferrerDetails, failedReason: String) {
         val property = if (failedReason.isBlank()) {
-            synchronized(mFirstOpenTimeLock) {
-                PropertyBuilder.newInstance()
-                    .append(
-                        HashMap<String?, Any>().apply {
-                            put("referrer_url", response.installReferrer)
-                            put("referrer_click_time", response.referrerClickTimestampSeconds)
-                            put("app_install_time", response.installBeginTimestampSeconds)
-                            put("first_open_time", mFirstOpenTime)
-                            put("instant_experience_launched", response.googlePlayInstantParam)
-                        }
-                    ).toJSONObject()
-            }
+            PropertyBuilder.newInstance()
+                .append(
+                    HashMap<String?, Any>().apply {
+                        put("referrer_url", response.installReferrer)
+                        put("referrer_click_time", response.referrerClickTimestampSeconds)
+                        put("app_install_time", response.installBeginTimestampSeconds)
+                        put("first_open_time", mFirstOpenTime)
+                        put("instant_experience_launched", response.googlePlayInstantParam)
+                    }
+                ).toJSONObject()
         } else {
             PropertyBuilder.newInstance().append("failed_reason", failedReason).toJSONObject()
         }

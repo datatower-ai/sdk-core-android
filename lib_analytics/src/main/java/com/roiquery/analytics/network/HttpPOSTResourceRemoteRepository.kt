@@ -46,13 +46,13 @@ class HttpPOSTResourceRemoteRepository(
             override fun onResponse(response: JSONObject?) {
                 try {
                     LogUtils.json("CloudConfig onResponse", response.toString())
-                    if (response?.get("code") == 0) {
-                        success.invoke(response.get("data").toString())
+                    if (response?.get(ResponseDataKey.KEY_CODE) == 0) {
+                        success.invoke(response.getJSONObject(ResponseDataKey.KEY_DATA).toString())
                     } else {
                         fail.invoke(
                             HttpException(
-                                response?.get("code") as Int,
-                                response.get("msg") as String
+                                response?.getInt(ResponseDataKey.KEY_CODE) ?: -1,
+                                response?.getString(ResponseDataKey.KEY_MSG) ?: ""
                             )
                         )
                     }

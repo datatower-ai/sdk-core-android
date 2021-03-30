@@ -1,7 +1,6 @@
 package com.roiquery.analytics
 
 import android.content.Context
-import com.roiquery.analytics.api.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.utils.LogUtils
 import org.json.JSONObject

@@ -3,7 +3,7 @@ package com.nodetower.demo_iap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.roiquery.iap.api.ROIQueryIAPReport
+import com.roiquery.iap.ROIQueryIAPReport
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
