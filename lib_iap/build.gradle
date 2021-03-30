@@ -46,10 +46,8 @@ dependencies {
 
 // 配置上传信息
 ext {
-
     ARTIFACT_ID = rootProject.ext.iap.artifactId
     VERSION = rootProject.ext.iap.versionName
-    VERSION_SNAPSHOT = rootProject.ext.iap.versionName
 }
 
-apply from: "../pack-upload.gradle"
+apply from: "../maven-publish.gradle"

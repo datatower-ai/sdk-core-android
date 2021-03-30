@@ -61,13 +61,14 @@ dependencies {
     androidTestImplementation rootProject.ext.dependencies["espresso-core"]
 
     implementation(project(":lib_cloudconfig"))
+//    implementation 'com.roiquery.android:cloudconfig:1.0.4-SNAPSHOT'
+
 }
 
 // 配置上传信息
 ext {
     ARTIFACT_ID = rootProject.ext.analytics.artifactId
-    VERSION = rootProject.ext.analytics.versionName
-    VERSION_SNAPSHOT = rootProject.ext.analytics.versionName
+    VERSION = rootProject.ext.analytics.versionName + "-SNAPSHOT"
 }
 
-apply from: "../pack-upload.gradle"
+apply from: "../maven-publish.gradle"

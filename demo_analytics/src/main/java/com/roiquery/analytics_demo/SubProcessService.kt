@@ -3,7 +3,7 @@ package com.roiquery.analytics_demo
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import com.roiquery.analytics.api.ROIQueryAnalytics
+import com.roiquery.analytics.ROIQueryAnalytics
 
 class SubProcessService : Service() {
     override fun onBind(intent: Intent?): IBinder? {

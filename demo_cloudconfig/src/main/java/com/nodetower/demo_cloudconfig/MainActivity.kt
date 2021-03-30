@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.infinum.dbinspector.DbInspector
-import com.roiquery.analytics.api.PropertyBuilder
-import com.roiquery.analytics.api.ROIQueryAnalytics
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.cloudconfig.*
 import com.roiquery.cloudconfig.core.ConfigFetchListener

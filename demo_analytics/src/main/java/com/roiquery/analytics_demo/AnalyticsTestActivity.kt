@@ -8,7 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.jraska.console.Console
 import com.roiquery.analytics.api.PropertyBuilder
-import com.roiquery.analytics.api.ROIQueryAnalytics
+import com.roiquery.analytics.ROIQueryAnalytics
 
 
 class AnalyticsTestActivity : AppCompatActivity() {

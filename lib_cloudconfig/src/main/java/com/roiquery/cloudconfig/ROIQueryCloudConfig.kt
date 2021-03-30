@@ -10,6 +10,7 @@ class ROIQueryCloudConfig {
     companion object {
         private val mRemoteAppConfig by lazy { remoteConfig<String>() }
         private var mIsInitialized = false
+        private var mCache: JSONObject? = null
         internal var mLogger: ((String) -> Unit)? = null
 
 
@@ -40,19 +41,28 @@ class ROIQueryCloudConfig {
         }
 
         private fun getConfigJsonObject(): JSONObject? {
-            return try {
-                if (mIsInitialized) mRemoteAppConfig.get()?.let {
-                    JSONObject(it)
+             try {
+                if(mCache != null){
+                    mLogger?.invoke("config from cache")
+                    return mCache
+                }
+
+               return if (mIsInitialized) mRemoteAppConfig.get()?.let {
+                   mLogger?.invoke("config from disk")
+
+                   JSONObject(it).apply {
+                        mCache = this
+                    }
                 } else JSONObject()
             } catch (e: Exception) {
                 mLogger?.invoke(e.message ?: "")
-                JSONObject()
+                return JSONObject()
             }
 
         }
 
-        fun getConfigString(): String? {
-            return if (mIsInitialized) mRemoteAppConfig.get() else ""
+        fun getConfigString(): String {
+            return getConfigJsonObject().toString()
         }
 
         @JvmOverloads
@@ -61,6 +71,7 @@ class ROIQueryCloudConfig {
             mRemoteAppConfig.fetch({
                 listener?.let {
                     listener.onSuccess()
+                    mCache = null
                 }
             }) { error ->
                 listener?.let {

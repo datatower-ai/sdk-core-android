@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.roiquery.analytics.api.ROIQueryAnalytics;
+import com.roiquery.analytics.ROIQueryAnalytics;
 
 import java.util.HashMap;
 

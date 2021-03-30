@@ -19,7 +19,8 @@ ext {
             url_snapshot = "http://localhost:8081/repository/roiquery-sdk/",
             url_releases = "https://maven.en2joy.com/repository/maven-ironmeta-internal/",
             userName = "JunxingShi",
-            passWord = "5201314sjx"
+            passWord = "5201314sjx",
+            groupId = "com.roiquery.android"
     ]
 
     analytics = [
