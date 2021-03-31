@@ -7,6 +7,6 @@ class MyApp:Application() {
 
     override fun onCreate() {
         super.onCreate()
-        ROIQuerySDK.init(this,"demo_cloudconfig",true)
+        ROIQuerySDK.init(this,"android_cloudconfig",true)
     }
 }

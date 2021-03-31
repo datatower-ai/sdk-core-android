@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.nodetower.android_ad_report"
+        applicationId "com.nodetower.android_ad"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -45,13 +45,16 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'com.roiquery.android:analytics:1.0.4'
-    implementation 'com.roiquery.android:cloudconfig:1.0.4'
-    implementation 'com.roiquery.android:ad:1.0.1'
 
-//    implementation project(':lib_ad')
-//    implementation project(':lib_analytics')
-//    implementation project(':lib_cloudconfig')
-//        implementation(name: 'lib_ad_report-release', ext: 'aar')
+
+    if(dependence_type == "0"){
+        implementation(project(":roiquery-ad"))
+        implementation(project(":roiquery-core"))
+    }else {
+        
+        implementation 'com.roiquery.android:ad:'   + rootProject.ext.ad.versionName
+        implementation 'com.roiquery.android:core:' + rootProject.ext.core.versionName
+    }
+
 
 }

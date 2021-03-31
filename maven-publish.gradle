@@ -5,17 +5,17 @@ task generateSourcesJar(type: Jar) {
     classifier 'sources'
 }
 
-def versionName = "2.7.0-SNAPSHOT"
 
-def SNAPSHOT_REPOSITORY_URL = "http://localhost:8081/repository/roiquery-sdk/"
-def RELEASE_REPOSITORY_URL = "https://maven.en2joy.com/repository/maven-ironmeta-internal/"
+def SNAPSHOT_REPOSITORY_URL = "http://localhost:8081/repository/maven-releases/"
+def RELEASE_REPOSITORY_URL  = "https://maven.en2joy.com/repository/maven-ironmeta-internal/"
+//def RELEASE_REPOSITORY_URL  = "http://localhost:8081/repository/maven-releases/"
 
 afterEvaluate {
     publishing {
         publications {
             Production(MavenPublication) {
                 from components.release
-                // 使用方引用 implementation 'cn.com.jack:mavendemo:2.7.0-SNAPSHOT'
+                // 使用方引用 implementation 'com.roiquery.android:artifactId:version'
                 groupId = "com.roiquery.android"
                 artifactId = ARTIFACT_ID
                 version = VERSION
@@ -28,7 +28,7 @@ afterEvaluate {
             maven {
                 // 可以有且仅有一个仓库不指定 name 属性，会隐式设置为 Maven
                 // 根据 versionName 来判断仓库地址
-                url = versionName.endsWith('SNAPSHOT') ? SNAPSHOT_REPOSITORY_URL : RELEASE_REPOSITORY_URL
+                url = (DEBUG == true) ? SNAPSHOT_REPOSITORY_URL : RELEASE_REPOSITORY_URL
                 // 仓库用户名密码
                 credentials {
                     username = "JunxingShi"

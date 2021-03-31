@@ -23,26 +23,21 @@ ext {
             groupId = "com.roiquery.android"
     ]
 
-    analytics = [
-            versionCode      : 4,
-            versionName      : '1.0.4',
-            artifactId       : 'analytics'
+    core = [
+            versionCode      : 5,
+            versionName      : '1.0.5',
+            artifactId       : 'core'
     ]
-    cloudconfig = [
-            versionCode      : 4,
-            versionName      : '1.0.4',
-            lib_name         : ':lib_cloudconfig',
-            artifactId       : 'cloudconfig'
-    ]
+
     ad = [
-            versionCode      : 1,
-            versionName      : '1.0.1',
+            versionCode      : 2,
+            versionName      : '1.0.2',
             lib_name         : ':lib_ad',
             artifactId       : 'ad'
     ]
     iap = [
-            versionCode      : 1,
-            versionName      : '1.0.1',
+            versionCode      : 2,
+            versionName      : '1.0.2',
             lib_name         :  ':lib_iap',
             artifactId       : 'iap'
     ]

@@ -10,7 +10,7 @@ class MyApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        ROIQuerySDK.init(this,"android_iapreport_demo",true)
+        ROIQuerySDK.init(this,"android_iap",true)
     }
 
 }

@@ -8,6 +8,6 @@ public class MyApp2 extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ROIQuerySDK.init(this,"android_ad_report_demo",true);
+        ROIQuerySDK.init(this,"android_ad",true);
     }
 }

@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.nodetower.demo_cloudconfig"
+        applicationId "com.nodetower.android_cloudconfig"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -44,13 +44,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     debugImplementation 'com.infinum.dbinspector:dbinspector:5.2.3'
 
-    implementation project(':lib_cloudconfig')
-    implementation project(':lib_analytics')
-
-//    implementation 'com.roiquery.android:analytics:1.0.4-SNAPSHOT'
-//    implementation 'com.roiquery.android:cloudconfig:1.0.4-SNAPSHOT'
-//
-//    implementation 'com.roiquery.android:analytics:1.0.4'
-//    implementation 'com.roiquery.android:cloudconfig:1.0.4'
+    if(dependence_type == "0"){
+        implementation(project(":roiquery-core"))
+    }else {
+        implementation 'com.roiquery.android:core:'   + rootProject.ext.core.versionName
+    }
 
 }

@@ -23,7 +23,7 @@ class MyApp : Application() {
 
 
         //init SDK
-        ROIQuerySDK.init(this,"demo_test",true)
+        ROIQuerySDK.init(this,"android_analytics",true)
     }
 
 }

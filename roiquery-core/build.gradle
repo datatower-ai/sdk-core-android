@@ -1,4 +1,3 @@
-
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
@@ -12,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode rootProject.ext.analytics.versionCode
-        versionName rootProject.ext.analytics.versionName
+        versionCode rootProject.ext.core.versionCode
+        versionName rootProject.ext.core.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -23,12 +22,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "VERSION_NAME", "\"$rootProject.ext.analytics.versionName\""
+            buildConfigField "String", "VERSION_NAME", "\"$rootProject.ext.core.versionName\""
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "VERSION_NAME", "\"$rootProject.ext.analytics.versionName\""
+            buildConfigField "String", "VERSION_NAME", "\"$rootProject.ext.core.versionName\""
         }
     }
     compileOptions {
@@ -60,15 +59,14 @@ dependencies {
     androidTestImplementation rootProject.ext.dependencies["android-junit"]
     androidTestImplementation rootProject.ext.dependencies["espresso-core"]
 
-    implementation(project(":lib_cloudconfig"))
-//    implementation 'com.roiquery.android:cloudconfig:1.0.4-SNAPSHOT'
 
 }
 
 // 配置上传信息
 ext {
-    ARTIFACT_ID = rootProject.ext.analytics.artifactId
-    VERSION = rootProject.ext.analytics.versionName + "-SNAPSHOT"
+    ARTIFACT_ID = rootProject.ext.core.artifactId
+    VERSION = rootProject.ext.core.versionName
+    DEBUG = dependence_type == "1"
 }
 
 apply from: "../maven-publish.gradle"
