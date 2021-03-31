@@ -47,6 +47,7 @@ dependencies {
         implementation(project(":roiquery-iap"))
         implementation(project(":roiquery-core"))
     }else {
+
         implementation 'com.roiquery.android:iap:' + rootProject.ext.iap.versionName
         implementation 'com.roiquery.android:core:' + rootProject.ext.core.versionName
     }

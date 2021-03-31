@@ -8,7 +8,6 @@ task generateSourcesJar(type: Jar) {
 
 def SNAPSHOT_REPOSITORY_URL = "http://localhost:8081/repository/maven-releases/"
 def RELEASE_REPOSITORY_URL  = "https://maven.en2joy.com/repository/maven-ironmeta-internal/"
-//def RELEASE_REPOSITORY_URL  = "http://localhost:8081/repository/maven-releases/"
 
 afterEvaluate {
     publishing {
@@ -26,9 +25,8 @@ afterEvaluate {
         repositories {
             // 定义一个 maven 仓库
             maven {
-                // 可以有且仅有一个仓库不指定 name 属性，会隐式设置为 Maven
-                // 根据 versionName 来判断仓库地址
-                url = (DEBUG == true) ? SNAPSHOT_REPOSITORY_URL : RELEASE_REPOSITORY_URL
+
+                url = DEPENDENCE_TYPE == "1" ? SNAPSHOT_REPOSITORY_URL :(DEPENDENCE_TYPE == "2"? RELEASE_REPOSITORY_URL :"")
                 // 仓库用户名密码
                 credentials {
                     username = "JunxingShi"

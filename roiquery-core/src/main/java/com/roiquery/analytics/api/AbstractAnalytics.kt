@@ -177,8 +177,8 @@ abstract class AbstractAnalytics : IAnalytics {
                     }
                     if (PRESET_EVENT_APP_ATTRIBUTE == eventName) {
                         if (properties?.has("first_open_time") == false
-                            ||properties?.getString("first_open_time")?.isEmpty() == true
-                            ) {
+                            || properties?.getString("first_open_time")?.isEmpty() == true
+                        ) {
                             properties.put("first_open_time", mFirstOpenTime)
                         }
                     }
@@ -545,6 +545,7 @@ abstract class AbstractAnalytics : IAnalytics {
     private fun getAppAttribute() {
         var referrerClient: InstallReferrerClient? =
             InstallReferrerClient.newBuilder(mContext).build()
+
         referrerClient?.startConnection(object : InstallReferrerStateListener {
 
             override fun onInstallReferrerSetupFinished(responseCode: Int) {
@@ -554,8 +555,8 @@ abstract class AbstractAnalytics : IAnalytics {
                         trackAppAttributeEvent(referrerClient.installReferrer, "")
                     }
                     else -> trackAppAttributeEvent(
-                        referrerClient.installReferrer,
-                        responseCode.toString()
+                        ReferrerDetails(null),
+                        "responseCode:$responseCode"
                     )
                 }
                 referrerClient.endConnection()
@@ -565,7 +566,7 @@ abstract class AbstractAnalytics : IAnalytics {
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
                 trackAppAttributeEvent(
-                    referrerClient.installReferrer,
+                    ReferrerDetails(null),
                     "onInstallReferrerServiceDisconnected"
                 )
                 referrerClient.endConnection()
@@ -577,22 +578,37 @@ abstract class AbstractAnalytics : IAnalytics {
      * 采集 app 归因属性事件
      */
     private fun trackAppAttributeEvent(response: ReferrerDetails, failedReason: String) {
-        val property = if (failedReason.isBlank()) {
+        val isOK = failedReason.isBlank()
+        track(
+            PRESET_EVENT_APP_ATTRIBUTE,
             PropertyBuilder.newInstance()
                 .append(
                     HashMap<String?, Any>().apply {
-                        put("referrer_url", response.installReferrer)
-                        put("referrer_click_time", response.referrerClickTimestampSeconds)
-                        put("app_install_time", response.installBeginTimestampSeconds)
-                        put("first_open_time", mFirstOpenTime)
-                        put("instant_experience_launched", response.googlePlayInstantParam)
-                    }
-                ).toJSONObject()
-        } else {
-            PropertyBuilder.newInstance().append("failed_reason", failedReason).toJSONObject()
-        }
+                        put(
+                            "referrer_url",
+                             if (isOK) response.installReferrer else ""
+                        )
+                        put(
+                            "referrer_click_time",
+                            if (isOK) response.referrerClickTimestampSeconds  else 0
+                        )
+                        put(
+                            "app_install_time",
+                            if (isOK) response.installBeginTimestampSeconds  else 0
+                        )
+                        put(
+                            "instant_experience_launched",
+                            if (isOK) response.googlePlayInstantParam else false
+                        )
 
-        track(Constant.PRESET_EVENT_APP_ATTRIBUTE, property)
+                        if (!isOK) {
+                            put(
+                                "failed_reason",
+                                failedReason
+                            )
+                        }
+                    }
+                ).toJSONObject())
     }
 
     /**

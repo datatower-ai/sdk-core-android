@@ -40,14 +40,7 @@ class AdReportImp : IAdReport {
         entrance: String?,
     ) {
         reset()
-
-        mCurrentAdId = id
-        mCurrentAdType = type
-        mCurrentAdPlatform = platform
-        mCurrentLocation = location
-        mCurrentSeq = seq
-        entrance?.let { mCurrentEntrance = it }
-
+        set(id, type, platform, location, seq, entrance)
         adTrack(
             AdReportConstant.EVENT_AD_ENTRANCE,
             seq,
@@ -63,6 +56,7 @@ class AdReportImp : IAdReport {
         seq: String,
         entrance: String?,
     ) {
+        set(id, type, platform, location, seq, entrance)
         adTrack(
             AdReportConstant.EVENT_AD_TO_SHOW,
             seq,
@@ -80,7 +74,7 @@ class AdReportImp : IAdReport {
     ) {
 
         mShowTS = SystemClock.elapsedRealtime()
-
+        set(id, type, platform, location, seq, entrance)
         adTrack(
             AdReportConstant.EVENT_AD_SHOW,
             seq,
@@ -98,7 +92,7 @@ class AdReportImp : IAdReport {
     ) {
 
         mClickTS = SystemClock.elapsedRealtime()
-
+        set(id, type, platform, location, seq, entrance)
         adTrack(
             AdReportConstant.EVENT_AD_CLICK,
             seq,
@@ -114,6 +108,7 @@ class AdReportImp : IAdReport {
         seq: String,
         entrance: String?,
     ) {
+        set(id, type, platform, location, seq, entrance)
         adTrack(
             AdReportConstant.EVENT_AD_REWARDED,
             seq,
@@ -131,6 +126,7 @@ class AdReportImp : IAdReport {
     ) {
         mLeftApplicationTS = SystemClock.elapsedRealtime()
 
+        set(id, type, platform, location, seq, entrance)
         adTrack(
             AdReportConstant.EVENT_AD_LEFT_APP,
             seq,
@@ -172,6 +168,7 @@ class AdReportImp : IAdReport {
         seq: String,
         entrance: String?,
     ) {
+        set(id, type, platform, location, seq, entrance)
         adTrack(
             AdReportConstant.EVENT_AD_CLOSE,
             seq,
@@ -186,7 +183,7 @@ class AdReportImp : IAdReport {
     ) {
         try {
             checkSeqError(seq)
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             reset()
             return
@@ -212,7 +209,6 @@ class AdReportImp : IAdReport {
         put(AdReportConstant.PROPERTY_AD_SEQ, seq)
     }
 
-    private constructor()
 
     private constructor(context: Context?) {
         mContext = context
@@ -241,7 +237,6 @@ class AdReportImp : IAdReport {
         })
     }
 
-    @Throws(Exception::class)
     private fun checkSeqError(seq: String?) {
         checkSeqError()
         if (!TextUtils.equals(mCurrentSeq, seq)) {
@@ -249,11 +244,26 @@ class AdReportImp : IAdReport {
         }
     }
 
-    @Throws(Exception::class)
     private fun checkSeqError() {
         if (TextUtils.isEmpty(mCurrentSeq)) {
             throw Exception()
         }
+    }
+
+    private fun set(
+        id: String,
+        type: Int,
+        platform: Int,
+        location: String,
+        seq: String,
+        entrance: String?
+    ){
+        mCurrentAdId = id
+        mCurrentAdType = type
+        mCurrentAdPlatform = platform
+        mCurrentLocation = location
+        mCurrentSeq = seq
+        entrance?.let { mCurrentEntrance = it }
     }
 
     private fun reset() {
