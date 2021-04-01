@@ -54,6 +54,7 @@ dependencies {
     }else {
         
         implementation 'com.roiquery.android:ad:'   + rootProject.ext.ad.versionName
+        implementation 'com.roiquery.android:iap:'   + rootProject.ext.iap.versionName
         implementation 'com.roiquery.android:core:' + rootProject.ext.core.versionName
     }
 

@@ -43,12 +43,12 @@ dependencies {
 
     implementation rootProject.ext.dependencies["kotlin-stdlib"]
     implementation rootProject.ext.dependencies["annotation"]
-//    if (dependence_type == "0"){
-//        embed 'com.android.installreferrer:installreferrer:2.2'
-//    }else {
-//        implementation 'com.android.installreferrer:installreferrer:2.2'
-//    }
-    implementation 'com.android.installreferrer:installreferrer:2.2'
+    if (dependence_type == "0"){
+        embed 'com.android.installreferrer:installreferrer:2.2'
+    }else {
+        implementation 'com.android.installreferrer:installreferrer:2.2'
+    }
+//    implementation 'com.android.installreferrer:installreferrer:2.2'
 
     //oaid
     embed 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_ASUS:2.1.0' //华硕

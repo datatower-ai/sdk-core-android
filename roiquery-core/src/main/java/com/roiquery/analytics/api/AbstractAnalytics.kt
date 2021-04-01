@@ -531,7 +531,7 @@ abstract class AbstractAnalytics : IAnalytics {
                 LogUtils.printStackTrace(e)
                 trackAppAttributeEvent(
                     ReferrerDetails(null),
-                    e.message.toString()
+                    "Exception: "+e.message.toString()
                 )
             }
         } else {

@@ -24,20 +24,20 @@ ext {
     ]
 
     core = [
-            versionCode      : 14,
-            versionName      : '1.1.4',
+            versionCode      : 15,
+            versionName      : '1.1.5',
             artifactId       : 'core'
     ]
 
     ad = [
-            versionCode      : 14,
-            versionName      : '1.1.4',
+            versionCode      : 15,
+            versionName      : '1.1.5',
             lib_name         : ':lib_ad',
             artifactId       : 'ad'
     ]
     iap = [
-            versionCode      : 14,
-            versionName      : '1.1.4',
+            versionCode      : 15,
+            versionName      : '1.1.5',
             lib_name         :  ':lib_iap',
             artifactId       : 'iap'
     ]
