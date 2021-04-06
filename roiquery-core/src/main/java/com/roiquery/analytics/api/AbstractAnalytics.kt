@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.DeadObjectException
 import android.text.TextUtils
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
@@ -549,27 +550,44 @@ abstract class AbstractAnalytics : IAnalytics {
         referrerClient?.startConnection(object : InstallReferrerStateListener {
 
             override fun onInstallReferrerSetupFinished(responseCode: Int) {
-                when (responseCode) {
-                    InstallReferrerClient.InstallReferrerResponse.OK -> {
-                        // Connection established.
-                        trackAppAttributeEvent(referrerClient.installReferrer, "")
+                try {
+                    when (responseCode) {
+                        InstallReferrerClient.InstallReferrerResponse.OK -> {
+                            // Connection established.
+                            trackAppAttributeEvent(referrerClient.installReferrer, "")
+                        }
+                        else -> trackAppAttributeEvent(
+                            ReferrerDetails(null),
+                            "responseCode:$responseCode"
+                        )
+
                     }
-                    else -> trackAppAttributeEvent(
+                    referrerClient.endConnection()
+                }catch (e:Exception){
+                    trackAppAttributeEvent(
                         ReferrerDetails(null),
-                        "responseCode:$responseCode"
+                        "responseCode:$responseCode"+",Exception: "+e.message.toString()
                     )
                 }
-                referrerClient.endConnection()
+
             }
 
             override fun onInstallReferrerServiceDisconnected() {
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
-                trackAppAttributeEvent(
-                    ReferrerDetails(null),
-                    "onInstallReferrerServiceDisconnected"
-                )
-                referrerClient.endConnection()
+                try {
+                    trackAppAttributeEvent(
+                        ReferrerDetails(null),
+                        "onInstallReferrerServiceDisconnected"
+                    )
+                    referrerClient.endConnection()
+                }catch (e:Exception){
+                    trackAppAttributeEvent(
+                        ReferrerDetails(null),
+                        "onInstallReferrerServiceDisconnected,Exception: "+e.message.toString()
+                    )
+                }
+
             }
         })
     }

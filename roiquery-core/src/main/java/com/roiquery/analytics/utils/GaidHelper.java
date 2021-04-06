@@ -101,7 +101,7 @@ public class GaidHelper {
                 // connection to service was not successful
                 onErrorOnExecutable(new IllegalStateException("Bad GMS service connection"));
             }
-        } catch (IllegalStateException | RemoteException e){
+        } catch (Exception e){
             // can't process IBinder object
             onErrorOnExecutable(e);
         } finally {
