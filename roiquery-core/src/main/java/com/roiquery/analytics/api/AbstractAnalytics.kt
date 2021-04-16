@@ -216,6 +216,9 @@ abstract class AbstractAnalytics : IAnalytics {
             put("#oaid", mDataAdapter?.oaid.toString())//华为广告标识id,不同app在同一个设备上oaid一样
             put("#app_id", mConfigOptions?.mAppId)//应用唯一标识,后台分配
             put("#pkg", mContext.packageName)//包名
+            if(mConfigOptions?.mEnabledDebug == true){
+                put("#debug", "true")
+            }
         }
 
     }

@@ -25,8 +25,10 @@ class ROIQuerySDK {
             logLevel: Int = LogUtils.V,
             commonProperties: JSONObject = JSONObject()
         ) {
-            ROIQueryAnalytics.init(context, AnalyticsConfig(appId).setDebug(isDebug, logLevel).addCommonProperties(commonProperties))
-            LogUtils.json("ROIQuerySDK",commonProperties)
+            ROIQueryAnalytics.init(context,
+                AnalyticsConfig(appId).setDebug(isDebug, logLevel)
+                    .addCommonProperties(commonProperties)
+            )
         }
     }
 }

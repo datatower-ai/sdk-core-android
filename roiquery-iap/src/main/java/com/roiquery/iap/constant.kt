@@ -11,7 +11,9 @@ internal object Constant {
     const val EVENT_IAP_NOT_PURCHASED = PRESET_EVENT_TAG + "iap_not_purchased"
 
     const val PROPERTY_IAP_ENTRANCE = "iap_entrance"
+    const val PROPERTY_IAP_ORDER = "iap_order"
     const val PROPERTY_IAP_SKU = "iap_sku"
+    const val PROPERTY_IAP_USD_PRICE = "iap_usd_price"
     const val PROPERTY_IAP_PRICE = "iap_price"
     const val PROPERTY_IAP_CURRENCY = "iap_currency"
     const val PROPERTY_IAP_CODE = "iap_code"

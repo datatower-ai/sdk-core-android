@@ -17,59 +17,73 @@ open class ROIQueryIAPReport {
         /**
          * 展示购买入口的时候上报
          *
+         * @param order 订单
          * @param sku 商品ID
          * @param price 价格， 如 9.99
+         * @param usdPrice 美元价格
          * @param currency 货币，如usd
          * @param entrance 入口，可为空
          */
         @JvmStatic
         @JvmOverloads
         fun reportEntrance(
+            order: String,
             sku: String,
             price: Double,
+            usdPrice: Double,
             currency: String,
             entrance: String? = "",
-        ) = IAPReportImp.getInstance().reportEntrance(sku, price, currency, entrance)
+        ) = IAPReportImp.getInstance().reportEntrance(order, sku, price, usdPrice, currency, entrance)
 
         /**
          * 点击购买的时候上报
          *
+         * @param order 订单
          * @param sku 商品ID
          * @param price 价格， 如 9.99
+         * @param usdPrice 美元价格
          * @param currency 货币，如usd
          * @param entrance 入口，可为空
          */
         @JvmStatic
         @JvmOverloads
         fun reportToPurchase(
+            order: String,
             sku: String,
             price: Double,
+            usdPrice: Double,
             currency: String,
             entrance: String? = "",
-        ) = IAPReportImp.getInstance().reportToPurchase(sku, price, currency, entrance)
+        ) = IAPReportImp.getInstance().reportToPurchase(order, sku, price, usdPrice, currency, entrance)
 
         /**
          * 购买成功的时候上报，无论是否消耗
          *
+         * @param order 订单
          * @param sku 商品ID
          * @param price 价格， 如 9.99
+         * @param usdPrice 美元价格
          * @param currency 货币，如usd
          * @param entrance 入口，可为空
          */
         @JvmStatic
         @JvmOverloads
         fun reportPurchased(
+            order: String,
             sku: String,
             price: Double,
+            usdPrice: Double,
             currency: String,
             entrance: String? = "",
-        ) = IAPReportImp.getInstance().reportPurchased(sku, price, currency, entrance)
+        ) = IAPReportImp.getInstance().reportPurchased(order, sku, price, usdPrice, currency, entrance)
 
         /**
          * 购买失败的时候上报
          *
+         * @param order 订单
          * @param sku 商品ID
          * @param price 价格， 如 9.99
+         * @param usdPrice 美元价格
          * @param currency 货币，如usd
          * @param code 错误码
          * @param entrance 入口，可为空
@@ -78,14 +92,16 @@ open class ROIQueryIAPReport {
         @JvmStatic
         @JvmOverloads
         fun reportNotToPurchased(
+            order: String,
             sku: String,
             price: Double,
+            usdPrice: Double,
             currency: String,
             code: String,
             entrance: String? = "",
             msg: String? = "",
         ) = IAPReportImp.getInstance()
-            .reportNotToPurchased(sku, price, currency, code, entrance, msg)
+            .reportNotToPurchased(order, sku, price, usdPrice, currency, code, entrance, msg)
     }
 
 }
