@@ -114,9 +114,18 @@ class AnalyticsConfig : AbstractAnalyticsConfig {
     }
 
     /**
+     * 设置渠道
+     *
+     * @return NTConfigOptions
+     */
+    fun setChannel(channel: String): AnalyticsConfig{
+        mChannel = channel
+        return this
+    }
+
+    /**
      * 增加预置属性
      */
-
     fun addCommonProperties(commonProperties: JSONObject): AnalyticsConfig {
         mCommonProperties = commonProperties
         return this

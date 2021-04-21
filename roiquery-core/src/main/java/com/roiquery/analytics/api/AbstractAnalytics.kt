@@ -621,7 +621,10 @@ abstract class AbstractAnalytics : IAnalytics {
                             "instant_experience_launched",
                             if (isOK) response.googlePlayInstantParam else false
                         )
-
+                        put(
+                            "cnl",
+                            mConfigOptions?.mChannel ?: ""
+                        )
                         if (!isOK) {
                             put(
                                 "failed_reason",

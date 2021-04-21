@@ -54,6 +54,11 @@ abstract class AbstractAnalyticsConfig {
     var mEnableUpload = true
 
     /**
+     * 推广渠道
+     */
+    var mChannel = ""
+
+    /**
      * 设置公共属性
      */
     var mCommonProperties: JSONObject? = null

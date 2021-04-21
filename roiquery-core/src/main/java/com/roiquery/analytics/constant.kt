@@ -46,4 +46,15 @@ internal object Constant {
 
     // sdk switch，cloudConfig to config
     const val ENABLE_ANALYTICS_SDK_KEY = "enable_analytics_sdk"
+
+
+
+
+}
+
+
+object ROIQueryChannel{
+
+    const val GP = "gp"
+    const val APPSTORE = "app_store"
 }

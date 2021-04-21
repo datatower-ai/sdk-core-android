@@ -2,12 +2,13 @@ package com.roiquery.ad_report_demo;
 
 import android.app.Application;
 
+import com.roiquery.analytics.ROIQueryChannel;
 import com.roiquery.analytics.ROIQuerySDK;
 
 public class MyApp2 extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ROIQuerySDK.init(this,"android_ad",true);
+        ROIQuerySDK.init(this,"android_ad", ROIQueryChannel.GP,true);
     }
 }
