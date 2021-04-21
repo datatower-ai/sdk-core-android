@@ -2,6 +2,7 @@ package com.roiquery.analytics_demo
 
 import android.app.Application
 import com.jraska.console.Console
+import com.roiquery.analytics.ROIQueryChannel
 import com.roiquery.analytics.ROIQuerySDK
 import com.roiquery.analytics.utils.LogUtils
 
@@ -23,7 +24,7 @@ class MyApp : Application() {
 
 
         //init SDK
-        ROIQuerySDK.init(this,"android_analytics",true)
+        ROIQuerySDK.init(this,"android_analytics",ROIQueryChannel.GP,true)
     }
 
 }
