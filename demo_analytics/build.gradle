@@ -49,6 +49,8 @@ dependencies {
     debugImplementation 'com.infinum.dbinspector:dbinspector:5.2.3'
     releaseImplementation 'com.infinum.dbinspector:dbinspector-no-op:5.2.3'
 
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+
     if(dependence_type == "0"){
         implementation(project(":roiquery-core"))
     }else {

@@ -33,6 +33,8 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 import java.util.*
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import kotlin.collections.HashMap
@@ -45,15 +47,6 @@ abstract class AbstractAnalytics : IAnalytics {
     // SDK 配置是否初始化
     protected var mSDKConfigInit = false
 
-    // 是否为主进程
-    var mIsMainProcess = false
-
-    // 是否请求网络
-    protected var mEnableNetworkRequest = true
-
-    // 主进程名称
-    private var mMainProcessName: String? = null
-
     // 事件信息，包含事件的基本数据
     private var mEventInfo: MutableMap<String, Any?>? = null
 
@@ -64,10 +57,10 @@ abstract class AbstractAnalytics : IAnalytics {
     private var mDisableTrackDeviceId = false
 
     //事件采集管理
-    protected var mTrackTaskManager: TrackTaskManager? = null
+    protected var mTrackTaskManager: ExecutorService? = null
 
     //事件采集线程
-    private var mTrackTaskManagerThread: TrackTaskManagerThread? = null
+//    private var mTrackTaskManagerThread: TrackTaskManagerThread? = null
 
     //采集 app 活跃事件线程池
     private var mTrackEngagementEventExecutors: ScheduledThreadPoolExecutor? = null
@@ -126,7 +119,7 @@ abstract class AbstractAnalytics : IAnalytics {
      * 监听应用生命周期
      */
     private fun initAppLifecycleListener() {
-        if (!mIsMainProcess || getSdkType() == Constant.SDK_TYPE_UNITY) {
+        if (!ProcessUtils.isMainProcess(mContext as Application?) || getSdkType() == Constant.SDK_TYPE_UNITY) {
             return
         }
         AppLifecycleHelper()
@@ -147,13 +140,13 @@ abstract class AbstractAnalytics : IAnalytics {
      * 初始化数据采集
      */
     private fun initTrack(context: Context) {
-        mTrackTaskManager = TrackTaskManager.instance
-        mTrackTaskManager?.let {
-            mConfigOptions?.mEnableTrack?.let { it1 -> it.setDataTrackEnable(it1) }
-        }
-        mTrackTaskManagerThread = TrackTaskManagerThread()
+        mTrackTaskManager = Executors.newSingleThreadExecutor();
+//        mTrackTaskManager?.let {
+//            mConfigOptions?.mEnableTrack?.let { it1 -> it.setDataTrackEnable(it1) }
+//        }
+//        mTrackTaskManagerThread = TrackTaskManagerThread()
         //开启事件收集线程
-        Thread(mTrackTaskManagerThread, "TaskQueueThread").start()
+//        Thread(mTrackTaskManagerThread, "TaskQueueThread").start()
 
         mAnalyticsManager = AnalyticsManager.getInstance(context, this as AnalyticsImp)
 
@@ -380,14 +373,6 @@ abstract class AbstractAnalytics : IAnalytics {
             }
         }
 
-        this.mMainProcessName = AppInfoUtils.getMainProcessName(mContext)
-        if (TextUtils.isEmpty(this.mMainProcessName)) {
-            this.mMainProcessName =
-                configBundle!!.getString(Constant.CONFIG_BUNDLE_KEY_MAIN_PROCESS_NAME)
-        }
-        mMainProcessName?.let {
-            mIsMainProcess = AppInfoUtils.isMainProcess(mContext, it)
-        }
 
         this.mSDKConfigInit = true
     }
@@ -454,7 +439,7 @@ abstract class AbstractAnalytics : IAnalytics {
                         .withSharedPreferencesCache(mContext.applicationContext)
                         .withConnectionTimeout(Constant.NTP_TIME_OUT_M)
                         .initialize()
-                } catch (e: IOException) {
+                } catch (e: Exception) {
                     e.printStackTrace()
                     LogUtils.i("something went wrong when trying to initialize TrueTime", e.message)
                 }
@@ -517,7 +502,10 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun trackPresetEvent() {
         //子进程不采集
-        if (!mIsMainProcess) return
+        if (!ProcessUtils.isMainProcess(mContext as Application?)){
+            LogUtils.i("trackPresetEvent",ProcessUtils.getCurrentProcessName(mContext) + "is not main process")
+            return
+        }
         trackAppOpenEvent()
         tackAppEngagementEvent()
     }

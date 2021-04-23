@@ -65,7 +65,7 @@ class AnalyticsImp : AbstractAnalytics {
         set(value) {
             value?.let {
                 EventDateAdapter.getInstance()?.enableTrack = it
-                mTrackTaskManager!!.setDataTrackEnable(it)
+//                mTrackTaskManager!!.setDataTrackEnable(it)
                 mConfigOptions?.mEnableTrack = it
             }
 
@@ -105,7 +105,7 @@ class AnalyticsImp : AbstractAnalytics {
         if (!ROIQueryAnalytics.isSDKEnable()) return
 
         mTrackTaskManager?.let {
-            it.addTrackEventTask(Runnable {
+            it.execute(Runnable {
                 try {
                     if (eventName != null) {
                         trackEvent(eventName, properties)

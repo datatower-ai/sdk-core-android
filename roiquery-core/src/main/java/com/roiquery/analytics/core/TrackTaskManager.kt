@@ -16,7 +16,6 @@ class TrackTaskManager private constructor() {
 
     fun addTrackEventTask(trackEvenTask: Runnable) {
         try {
-            //用户暂未同意相关条款时，先存入缓存
             if (mDataCollectEnable)
                 mTrackEventTasks.put(trackEvenTask)
             else
