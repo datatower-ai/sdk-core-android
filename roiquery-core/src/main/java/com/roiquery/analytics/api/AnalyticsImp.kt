@@ -105,7 +105,7 @@ class AnalyticsImp : AbstractAnalytics {
         if (!ROIQueryAnalytics.isSDKEnable()) return
 
         mTrackTaskManager?.let {
-            it.execute(Runnable {
+            val task = Runnable {
                 try {
                     if (eventName != null) {
                         trackEvent(eventName, properties)
@@ -113,7 +113,8 @@ class AnalyticsImp : AbstractAnalytics {
                 } catch (e: Exception) {
                     LogUtils.printStackTrace(e)
                 }
-            })
+            }
+            it.execute(task)
         }
     }
 

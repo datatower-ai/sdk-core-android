@@ -131,6 +131,7 @@ class DataParams private constructor(packageName: String) {
 
         const val CONFIG_GAID = "gaid"
         const val CONFIG_OAID = "oaid"
+        const val CONFIG_EVENT_SESSION = "event_session"
         const val CONFIG_ACCOUNT_ID = "account_id"
         const val CONFIG_ENABLE_UPLOADS = "enable_upload"
         const val CONFIG_ENABLE_TRACK = "enable_track"

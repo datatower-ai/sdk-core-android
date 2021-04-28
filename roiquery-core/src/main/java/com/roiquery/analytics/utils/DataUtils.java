@@ -367,11 +367,7 @@ public final class DataUtils {
             while (superPropertiesIterator.hasNext()) {
                 String key = superPropertiesIterator.next();
                 Object value = source.get(key);
-                if (value instanceof Date && !"$time".equals(key)) {
-                    dest.put(key, TimeUtils.formatDate((Date) value, String.valueOf(Locale.CHINA)));
-                } else {
-                    dest.put(key, String.valueOf(value));
-                }
+                dest.put(key, String.valueOf(value));
             }
         } catch (Exception ex) {
             LogUtils.printStackTrace(ex);

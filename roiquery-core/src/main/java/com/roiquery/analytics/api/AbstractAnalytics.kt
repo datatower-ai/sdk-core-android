@@ -103,6 +103,7 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun initLocalData() {
         mDataAdapter = EventDateAdapter.getInstance(mContext!!, mContext.packageName)
+
     }
 
     /**
@@ -140,7 +141,7 @@ abstract class AbstractAnalytics : IAnalytics {
      * 初始化数据采集
      */
     private fun initTrack(context: Context) {
-        mTrackTaskManager = Executors.newSingleThreadExecutor();
+        mTrackTaskManager = Executors.newSingleThreadExecutor()
 //        mTrackTaskManager?.let {
 //            mConfigOptions?.mEnableTrack?.let { it1 -> it.setDataTrackEnable(it1) }
 //        }
@@ -176,7 +177,6 @@ abstract class AbstractAnalytics : IAnalytics {
                             properties.put("first_open_time", mFirstOpenTime)
                         }
                     }
-
                 }
                 //设置事件属性
                 val eventProperties = JSONObject(mCommonProperties).apply {
@@ -227,7 +227,11 @@ abstract class AbstractAnalytics : IAnalytics {
      * @return
      */
     protected open fun initCommonProperties() {
+        if (ProcessUtils.isMainProcess(mContext as Application?)){
+            mDataAdapter?.eventSession = DataUtils.getUUID()
+        }
         mCommonProperties = mutableMapOf<String, Any?>().apply {
+            put("#event_session", mDataAdapter?.eventSession)//系列行为标识
             put("#mcc", DeviceUtils.getMcc(mContext!!))//移动信号国家码
             put("#mnc", DeviceUtils.getMnc(mContext))//移动信号网络码
             put("#os_country", DeviceUtils.getLocalCountry(mContext))//系统国家

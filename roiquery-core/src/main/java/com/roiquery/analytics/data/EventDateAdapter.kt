@@ -91,6 +91,26 @@ class EventDateAdapter private constructor(
         }
 
 
+
+    /**
+     *  event_session
+     *
+     * @return event_session
+     */
+    var eventSession: String
+        get() {
+            val values = mOperation?.queryConfig(DataParams.CONFIG_EVENT_SESSION)
+            return if (values != null && values.isNotEmpty() && values != "null") {
+                values
+            } else ""
+        }
+        set(value) {
+            mOperation?.insertConfig(
+                DataParams.CONFIG_EVENT_SESSION,
+                value
+            )
+        }
+
     /**
      *  oaid
      *
