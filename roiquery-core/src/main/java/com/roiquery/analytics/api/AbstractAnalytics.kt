@@ -228,7 +228,7 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     protected open fun initCommonProperties() {
         if (ProcessUtils.isMainProcess(mContext as Application?)){
-            mDataAdapter?.eventSession = DataUtils.getUUID()
+            mDataAdapter?.eventSession = DataUtils.getSession()
         }
         mCommonProperties = mutableMapOf<String, Any?>().apply {
             put("#event_session", mDataAdapter?.eventSession)//系列行为标识

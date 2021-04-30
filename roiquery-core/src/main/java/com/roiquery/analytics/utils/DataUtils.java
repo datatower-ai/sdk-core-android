@@ -52,6 +52,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 public final class DataUtils {
 
@@ -129,6 +130,14 @@ public final class DataUtils {
         return uuid.replace("-","");
     }
 
+
+    public static String getSession() {
+        String uuid = "";
+        for (int i = 0; i < 16; i++) {
+            uuid = uuid + Integer.toHexString(new Random().nextInt(16));
+        }
+        return uuid;
+    }
     /**
      * 此方法谨慎修改
      * 插件配置 disableCarrier 会修改此方法
