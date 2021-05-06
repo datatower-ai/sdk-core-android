@@ -67,7 +67,7 @@ class DiskCacheClient {
 
         // has boot time changed (simple check)
         boolean bootTimeChanged = SystemClock.elapsedRealtime() < getCachedDeviceUptime();
-        TrueLog.i(TAG, "---- boot time changed " + bootTimeChanged);
+//        TrueLog.i(TAG, "---- boot time changed " + bootTimeChanged);
         return !bootTimeChanged;
     }
 

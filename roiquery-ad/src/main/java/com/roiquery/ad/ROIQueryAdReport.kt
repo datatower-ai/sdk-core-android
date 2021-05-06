@@ -139,6 +139,37 @@ open class ROIQueryAdReport {
         ) = AdReportImp.getInstance()
             .reportRewarded(id, type, platform, location, seq, entrance)
 
+
+
+        /**
+         * 上报 广告展示价值
+         *
+         * @param id 广告最小单元id
+         * @param type 广告类型
+         * @param platform 广告平台
+         * @param location 广告位
+         * @param seq 系列行为标识
+         * @param value 价值
+         * @param currencyCode 货币
+         * @param precisionType 精确度
+         * @param entrance 广告入口
+         */
+        @JvmOverloads
+        @JvmStatic
+        fun reportPaid(
+            id: String,
+            type: Int,
+            platform: Int,
+            location: String,
+            seq: String,
+            value: Long,
+            currencyCode: String,
+            precisionType: Int,
+            entrance: String? = ""
+        ) = AdReportImp.getInstance()
+            .reportPaid(id, type, platform, location, seq, value, currencyCode, precisionType, entrance)
+
+
         /**
          * 上报 访问广告链接，离开当前app(页面)
          *

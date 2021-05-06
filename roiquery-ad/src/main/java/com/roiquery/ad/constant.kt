@@ -13,6 +13,7 @@ internal object AdReportConstant {
     const val EVENT_AD_LEFT_APP = PRESET_EVENT_TAG + "ad_left_app"
     const val EVENT_AD_RETURN_APP = PRESET_EVENT_TAG + "ad_return_app"
     const val EVENT_AD_REWARDED = PRESET_EVENT_TAG + "ad_rewarded"
+    const val EVENT_AD_PAID = PRESET_EVENT_TAG + "ad_paid"
 
 
     const val PROPERTY_AD_ID = "ad_id"
@@ -23,6 +24,10 @@ internal object AdReportConstant {
     const val PROPERTY_AD_SEQ = "ad_seq"
     const val PROPERTY_AD_CLICK_GAP = "ad_click_gap"
     const val PROPERTY_AD_RETURN_GAP = "ad_return_gap"
+
+    const val PROPERTY_AD_VALUE_MICROS = "ad_value"
+    const val PROPERTY_AD_CURRENCY_CODE = "ad_currency_code"
+    const val PROPERTY_AD_PRECISION_TYPE = "ad_precision_type"
 }
 
 interface AD_TYPE {

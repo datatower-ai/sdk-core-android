@@ -44,7 +44,7 @@ class AdReportImp : IAdReport {
         adTrack(
             AdReportConstant.EVENT_AD_ENTRANCE,
             seq,
-            generateAdReportJson(id, type, platform, location, seq, entrance)
+            generateAdReportJson(id, type, platform, location, seq, entrance = entrance)
         )
     }
 
@@ -60,7 +60,7 @@ class AdReportImp : IAdReport {
         adTrack(
             AdReportConstant.EVENT_AD_TO_SHOW,
             seq,
-            generateAdReportJson(id, type, platform, location, seq, entrance)
+            generateAdReportJson(id, type, platform, location, seq, entrance = entrance)
         )
     }
 
@@ -78,7 +78,7 @@ class AdReportImp : IAdReport {
         adTrack(
             AdReportConstant.EVENT_AD_SHOW,
             seq,
-            generateAdReportJson(id, type, platform, location, seq, entrance)
+            generateAdReportJson(id, type, platform, location, seq, entrance = entrance)
         )
     }
 
@@ -96,7 +96,7 @@ class AdReportImp : IAdReport {
         adTrack(
             AdReportConstant.EVENT_AD_CLICK,
             seq,
-            generateAdReportJson(id, type, platform, location, seq, entrance)
+            generateAdReportJson(id, type, platform, location, seq, entrance = entrance)
         )
     }
 
@@ -112,7 +112,7 @@ class AdReportImp : IAdReport {
         adTrack(
             AdReportConstant.EVENT_AD_REWARDED,
             seq,
-            generateAdReportJson(id, type, platform, location, seq, entrance)
+            generateAdReportJson(id, type, platform, location, seq, entrance = entrance)
         )
     }
 
@@ -130,7 +130,26 @@ class AdReportImp : IAdReport {
         adTrack(
             AdReportConstant.EVENT_AD_LEFT_APP,
             seq,
-            generateAdReportJson(id, type, platform, location, seq, entrance)
+            generateAdReportJson(id, type, platform, location, seq, entrance = entrance)
+        )
+    }
+
+    override fun reportPaid(
+        id: String,
+        type: Int,
+        platform: Int,
+        location: String,
+        seq: String,
+        value: Long,
+        currencyCode: String,
+        precisionType: Int,
+        entrance: String?
+    ) {
+        set(id, type, platform, location, seq, entrance)
+        adTrack(
+            AdReportConstant.EVENT_AD_PAID,
+            seq,
+            generateAdReportJson(id, type, platform, location, seq, value, currencyCode, precisionType, entrance)
         )
     }
 
@@ -149,7 +168,7 @@ class AdReportImp : IAdReport {
                 mCurrentAdPlatform,
                 mCurrentLocation,
                 mCurrentSeq,
-                mCurrentEntrance
+                entrance = mCurrentEntrance
             ).apply {
                 put(AdReportConstant.PROPERTY_AD_CLICK_GAP, mClickTS - mShowTS)
                 put(
@@ -172,7 +191,7 @@ class AdReportImp : IAdReport {
         adTrack(
             AdReportConstant.EVENT_AD_CLOSE,
             seq,
-            generateAdReportJson(id, type, platform, location, seq, entrance)
+            generateAdReportJson(id, type, platform, location, seq, entrance = entrance)
         )
     }
 
@@ -188,7 +207,7 @@ class AdReportImp : IAdReport {
             reset()
             return
         }
-        LogUtils.json("$TAG:$eventName", properties)
+//        LogUtils.json("$TAG:$eventName", properties)
 
         ROIQueryAnalytics.track(eventName, properties)
     }
@@ -199,6 +218,9 @@ class AdReportImp : IAdReport {
         platform: Int,
         location: String,
         seq: String,
+        valueMicros: Long = 0L,
+        currencyCode: String = "",
+        precisionType: Int = -1,
         entrance: String?,
     ) = JSONObject().apply {
         put(AdReportConstant.PROPERTY_AD_ID, id)
@@ -207,6 +229,13 @@ class AdReportImp : IAdReport {
         put(AdReportConstant.PROPERTY_AD_ENTRANCE, entrance ?: "")
         put(AdReportConstant.PROPERTY_AD_LOCATION, location)
         put(AdReportConstant.PROPERTY_AD_SEQ, seq)
+
+        if (valueMicros != 0L || currencyCode.isNotEmpty() || precisionType != -1) {
+            put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, valueMicros)
+            put(AdReportConstant.PROPERTY_AD_CURRENCY_CODE, currencyCode)
+            put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE, precisionType)
+        }
+
     }
 
 

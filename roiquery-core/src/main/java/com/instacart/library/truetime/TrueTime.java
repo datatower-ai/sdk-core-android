@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.SystemClock;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class TrueTime {
@@ -20,7 +22,8 @@ public class TrueTime {
     private static int _serverResponseDelayMax = 750;
     private static int _udpSocketTimeoutInMillis = 30_000;
 
-    private String _ntpHost = "1.us.pool.ntp.org";
+//    private String _ntpHost = "1.us.pool.ntp.org";
+    private List<String> _ntpHosts = new ArrayList<>();
 
     /**
      * @return Date object that returns the current time in the default Timezone
@@ -47,7 +50,7 @@ public class TrueTime {
     }
 
     public void initialize() throws IOException {
-        initialize(_ntpHost);
+        initialize(0);
     }
 
     /**
@@ -108,8 +111,13 @@ public class TrueTime {
         return INSTANCE;
     }
 
-    public synchronized TrueTime withNtpHost(String ntpHost) {
-        _ntpHost = ntpHost;
+//    public synchronized TrueTime withNtpHost(String ntpHost) {
+//        _ntpHost = ntpHost;
+//        return INSTANCE;
+//    }
+
+    public synchronized TrueTime withNtpHosts(List<String> ntpHosts) {
+        _ntpHosts = ntpHosts;
         return INSTANCE;
     }
 
@@ -120,13 +128,21 @@ public class TrueTime {
 
     // -----------------------------------------------------------------------------------
 
-    protected void initialize(String ntpHost) throws IOException {
+    protected void initialize(int position){
+        int ntpHostListSize = _ntpHosts.size();
         if (isInitialized()) {
             TrueLog.i(TAG, "---- TrueTime already initialized from previous boot/init");
             return;
         }
-
-        requestTime(ntpHost);
+        try {
+           if(ntpHostListSize != 0 && position <= ntpHostListSize - 1) {
+               TrueLog.i(TAG, "---- TrueTime try :" + _ntpHosts.get(position));
+               requestTime(_ntpHosts.get(position));
+           }
+        }catch (Exception exception){
+            initialize(++ position);
+            return;
+        }
         saveTrueTimeInfoToDisk();
     }
 

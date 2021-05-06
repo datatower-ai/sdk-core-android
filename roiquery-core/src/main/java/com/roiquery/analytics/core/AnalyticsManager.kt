@@ -27,12 +27,15 @@ class AnalyticsManager private constructor(
 ) {
     private val mWorker: Worker = Worker()
     private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
-
+    private var mLastEventName: String? = null
+    private var mLastEventTime: Long? = null
 
     fun enqueueEventMessage(name: String, eventJson: JSONObject) {
         try {
             if (mDateAdapter == null) return
             synchronized(mDateAdapter) {
+                //是否数据重复
+                if (isEventRepetitive(name,eventJson.getString("#event_time").toLong())) return
                 //插入数据库
                 val ret = mDateAdapter.addJSON(eventJson)
                 val msg =
@@ -68,6 +71,21 @@ class AnalyticsManager private constructor(
             if (timeDelayMills == 0L) mWorker.runMessage(this)
             else mWorker.runMessageOnce(this, timeDelayMills)
         }
+    }
+
+    private fun isEventRepetitive(
+        eventName: String,
+        eventTime: Long
+    ) :Boolean {
+        var isRepetitive = false
+        if (mLastEventName == null || Constant.PRESET_EVENT_TAG + eventName == Constant.PRESET_EVENT_USER_PROPERTIES) {
+            isRepetitive = false
+        } else if (mLastEventName == eventName && eventTime - mLastEventTime!! < 1000){
+            isRepetitive = true
+        }
+        mLastEventName = eventName
+        mLastEventTime = eventTime
+        return isRepetitive
     }
 
     /**

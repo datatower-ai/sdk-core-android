@@ -14,6 +14,11 @@ import com.roiquery.ad.ROIQueryAdReport;
 import com.roiquery.ad.utils.UUIDUtils;
 import com.roiquery.analytics.ROIQueryAnalytics;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+
 public class MainActivity2 extends AppCompatActivity {
 
     @Override
@@ -98,8 +103,38 @@ public class MainActivity2 extends AppCompatActivity {
                 )
         );
         findViewById(R.id.button_track_sample).setOnClickListener(v -> {
-            ROIQueryAnalytics.setAccountId("1234567");
-            ROIQueryAnalytics.track("login");
+            ROIQueryAdReport.reportPaid("",
+                    AD_TYPE.BANNER,
+                    AD_PLATFORM.ADMOB,
+                    "home",
+                    seq,
+                     5000,
+                    "01",
+                    1,
+                    "main");
+
+            ROIQueryAdReport.reportPaid("",
+                    AD_TYPE.BANNER,
+                    AD_PLATFORM.ADMOB,
+                    "home",
+                    seq,
+                    5000,
+                    "01",
+                    1,
+                    "main");
+            ROIQueryAdReport.reportRewarded(
+                    "",
+                    AD_TYPE.BANNER,
+                    AD_PLATFORM.ADMOB,
+                    "home",
+                    seq,
+                    "main"
+            );
+//            Map<String,Object> p = new HashMap<>();
+//            p.put("name","shijunxing");
+//            p.put("age",30);
+//            p.put("height",165);
+//            ROIQueryAnalytics.setUserProperties(p);
         });
 
     }

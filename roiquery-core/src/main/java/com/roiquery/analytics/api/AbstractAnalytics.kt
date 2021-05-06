@@ -168,7 +168,7 @@ abstract class AbstractAnalytics : IAnalytics {
                     put("#event_syn", DataUtils.getUUID())
                     if (PRESET_EVENT_APP_FIRST_OPEN == eventName) {
                         mFirstOpenTime = getString("#event_time")
-                        LogUtils.e("first_open_time")
+//                        LogUtils.e("first_open_time")
                     }
                     if (PRESET_EVENT_APP_ATTRIBUTE == eventName) {
                         if (properties?.has("first_open_time") == false
@@ -400,7 +400,7 @@ abstract class AbstractAnalytics : IAnalytics {
                 mDataAdapter?.cloudConfigAesKey = it
             }
         ) {
-            LogUtils.d("CloudConfig", it)
+//            LogUtils.d("CloudConfig", it)
         }
     }
 
@@ -435,10 +435,22 @@ abstract class AbstractAnalytics : IAnalytics {
 
     private fun initNTP(enableLog: Boolean) {
         if (mContext != null) {
+            val list = mutableListOf<String>().apply {
+                add("pool.ntp.org")
+                add("0.pool.ntp.org")
+                add("1.pool.ntp.org")
+                add("time.google.com")
+                add("time.asia.apple.com")
+                add("time.windows.com")
+                add("asia.pool.ntp.org")
+                add("time.euro.apple.com")
+                add("time.apple.com")
+                add("time.cloudflare.com")
+            }
             Thread {
                 try {
                     TrueTime.build()
-                        .withNtpHost(Constant.NTP_HOST)
+                        .withNtpHosts(list)
                         .withLoggingEnabled(enableLog)
                         .withSharedPreferencesCache(mContext.applicationContext)
                         .withConnectionTimeout(Constant.NTP_TIME_OUT_M)
@@ -496,7 +508,7 @@ abstract class AbstractAnalytics : IAnalytics {
 
                 override fun onException(exception: java.lang.Exception) {
                     trackPresetEvent()
-                    LogUtils.printStackTrace(exception)
+                    LogUtils.d("getGAID",exception.message.toString())
                 }
             })
     }

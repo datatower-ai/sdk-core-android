@@ -144,11 +144,24 @@ class AnalyticsImp : AbstractAnalytics {
     }
 
     fun setUserProperties(properties: Map<String, Any?>?) {
-        track(Constant.PRESET_EVENT_USER_PROPERTIES, properties)
+        setUserProperties(JSONObject(properties))
     }
 
     override fun setUserProperties(properties: JSONObject?) {
-        track(Constant.PRESET_EVENT_USER_PROPERTIES, properties)
+        if (properties != null){
+            val superPropertiesIterator: Iterator<String> = properties.keys()
+            while (superPropertiesIterator.hasNext()) {
+                val key = superPropertiesIterator.next()
+                val value: Any = properties.get(key)
+                val p = JSONObject().apply {
+                    put("property_key", key)
+                    put("property_value", value)
+                }
+                track(Constant.PRESET_EVENT_USER_PROPERTIES, p)
+            }
+        } else {
+            track(Constant.PRESET_EVENT_USER_PROPERTIES, JSONObject())
+        }
     }
 
 
