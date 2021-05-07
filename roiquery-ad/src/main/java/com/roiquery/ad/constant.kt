@@ -26,8 +26,8 @@ internal object AdReportConstant {
     const val PROPERTY_AD_RETURN_GAP = "ad_return_gap"
 
     const val PROPERTY_AD_VALUE_MICROS = "ad_value"
-    const val PROPERTY_AD_CURRENCY_CODE = "ad_currency_code"
-    const val PROPERTY_AD_PRECISION_TYPE = "ad_precision_type"
+    const val PROPERTY_AD_CURRENCY_CODE = "ad_currency"
+    const val PROPERTY_AD_PRECISION_TYPE = "ad_precision"
 }
 
 interface AD_TYPE {

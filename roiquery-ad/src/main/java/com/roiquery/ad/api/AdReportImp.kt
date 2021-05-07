@@ -140,16 +140,16 @@ class AdReportImp : IAdReport {
         platform: Int,
         location: String,
         seq: String,
-        value: Long,
-        currencyCode: String,
-        precisionType: Int,
+        value: String,
+        currency: String,
+        precision: String,
         entrance: String?
     ) {
         set(id, type, platform, location, seq, entrance)
         adTrack(
             AdReportConstant.EVENT_AD_PAID,
             seq,
-            generateAdReportJson(id, type, platform, location, seq, value, currencyCode, precisionType, entrance)
+            generateAdReportJson(id, type, platform, location, seq, value, currency, precision, entrance)
         )
     }
 
@@ -218,9 +218,9 @@ class AdReportImp : IAdReport {
         platform: Int,
         location: String,
         seq: String,
-        valueMicros: Long = 0L,
-        currencyCode: String = "",
-        precisionType: Int = -1,
+        value: String = "",
+        currency: String = "",
+        precision: String = "",
         entrance: String?,
     ) = JSONObject().apply {
         put(AdReportConstant.PROPERTY_AD_ID, id)
@@ -230,10 +230,10 @@ class AdReportImp : IAdReport {
         put(AdReportConstant.PROPERTY_AD_LOCATION, location)
         put(AdReportConstant.PROPERTY_AD_SEQ, seq)
 
-        if (valueMicros != 0L || currencyCode.isNotEmpty() || precisionType != -1) {
-            put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, valueMicros)
-            put(AdReportConstant.PROPERTY_AD_CURRENCY_CODE, currencyCode)
-            put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE, precisionType)
+        if (value.isNotEmpty() || currency.isNotEmpty() || precision.isNotEmpty()) {
+            put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, value)
+            put(AdReportConstant.PROPERTY_AD_CURRENCY_CODE, currency)
+            put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE, precision)
         }
 
     }

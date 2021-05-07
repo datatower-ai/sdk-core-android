@@ -150,8 +150,8 @@ open class ROIQueryAdReport {
          * @param location 广告位
          * @param seq 系列行为标识
          * @param value 价值
-         * @param currencyCode 货币
-         * @param precisionType 精确度
+         * @param currency 货币
+         * @param precision 精确度
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -162,12 +162,12 @@ open class ROIQueryAdReport {
             platform: Int,
             location: String,
             seq: String,
-            value: Long,
-            currencyCode: String,
-            precisionType: Int,
+            value: String,
+            currency: String,
+            precision: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportPaid(id, type, platform, location, seq, value, currencyCode, precisionType, entrance)
+            .reportPaid(id, type, platform, location, seq, value, currency, precision, entrance)
 
 
         /**

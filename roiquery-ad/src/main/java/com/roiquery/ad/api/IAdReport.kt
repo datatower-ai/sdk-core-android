@@ -138,9 +138,9 @@ package com.roiquery.ad.api
       * @param platform 广告平台
       * @param location 广告位
       * @param seq 系列行为标识
-      * @param valueMicros 价值
-      * @param currencyCode 货币
-      * @param precisionType 精确度
+      * @param value 价值
+      * @param currency 货币
+      * @param precision 精确度
       * @param entrance 广告入口
       */
      fun reportPaid(
@@ -149,9 +149,9 @@ package com.roiquery.ad.api
          platform: Int,
          location: String,
          seq: String,
-         valueMicros: Long,
-         currencyCode: String,
-         precisionType: Int,
+         value: String,
+         currency: String,
+         precision: String,
          entrance: String? = "",
      )
 

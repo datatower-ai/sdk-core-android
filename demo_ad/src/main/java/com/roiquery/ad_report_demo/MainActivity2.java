@@ -108,9 +108,9 @@ public class MainActivity2 extends AppCompatActivity {
                     AD_PLATFORM.ADMOB,
                     "home",
                     seq,
-                     5000,
+                     "5000",
                     "01",
-                    1,
+                    "1",
                     "main");
 
             ROIQueryAdReport.reportPaid("",
@@ -118,9 +118,9 @@ public class MainActivity2 extends AppCompatActivity {
                     AD_PLATFORM.ADMOB,
                     "home",
                     seq,
-                    5000,
+                    "5000",
                     "01",
-                    1,
+                    "1",
                     "main");
             ROIQueryAdReport.reportRewarded(
                     "",
