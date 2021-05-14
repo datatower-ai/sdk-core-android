@@ -1,7 +1,7 @@
 package com.nodetower.demo_iap
 
 import android.app.Application
-import com.roiquery.analytics.ROIQuerySDK
+import com.roiquery.analytics.ROIQuery
 
 
 
@@ -9,7 +9,7 @@ class MyApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        ROIQuerySDK.init(this,"android_iap",true)
+        ROIQuery.initSDK(this,"android_iap",true)
     }
 
 }

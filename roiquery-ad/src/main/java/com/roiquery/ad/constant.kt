@@ -44,6 +44,18 @@ interface AD_PLATFORM {
     companion object {
         const val IDLE = -1
         const val ADMOB = 0
-
+        const val MOPUB = 1
+        const val ADCOLONY = 2
+        const val APPLOVIN = 3
+        const val CHARTBOOST = 4
+        const val FACEBOOK = 5
+        const val INMOBI = 6
+        const val IRONSOURCE = 7
+        const val PANGLE = 8
+        const val SNAP_AUDIENCE_NETWORK = 9
+        const val TAPJOY = 10
+        const val UNITY_ADS = 11
+        const val VERIZON_MEDIA = 12
+        const val VUNGLE = 13
     }
 }

@@ -111,6 +111,26 @@ class EventDateAdapter private constructor(
             )
         }
 
+
+    /**
+     *  firebase app_instance_id
+     *
+     * @return fiid
+     */
+    var fiid: String
+        get() {
+            val values = mOperation?.queryConfig(DataParams.CONFIG_FIREBASE_IID)
+            return if (values != null && values.isNotEmpty() && values != "null") {
+                values
+            } else ""
+        }
+        set(value) {
+            mOperation?.insertConfig(
+                DataParams.CONFIG_FIREBASE_IID,
+                value
+            )
+        }
+
     /**
      *  oaid
      *

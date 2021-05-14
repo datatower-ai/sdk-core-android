@@ -29,13 +29,15 @@ class AnalyticsManager private constructor(
     private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
     private var mLastEventName: String? = null
     private var mLastEventTime: Long? = null
+    private var mLastEventJson: JSONObject? = null
+
 
     fun enqueueEventMessage(name: String, eventJson: JSONObject) {
         try {
             if (mDateAdapter == null) return
             synchronized(mDateAdapter) {
                 //是否数据重复
-                if (isEventRepetitive(name,eventJson.getString("#event_time").toLong())) return
+                if (isEventRepetitive(eventJson)) return
                 //插入数据库
                 val ret = mDateAdapter.addJSON(eventJson)
                 val msg =
@@ -72,19 +74,50 @@ class AnalyticsManager private constructor(
             else mWorker.runMessageOnce(this, timeDelayMills)
         }
     }
-
+    /**
+     * 重复数据校验
+     */
     private fun isEventRepetitive(
-        eventName: String,
-        eventTime: Long
+        eventJson: JSONObject
     ) :Boolean {
         var isRepetitive = false
+        val eventName = eventJson.getString(Constant.EVENT_INFO_NAME)
+        val eventTime = eventJson.getString(Constant.EVENT_INFO_TIME).toLong()
         if (mLastEventName == null || Constant.PRESET_EVENT_TAG + eventName == Constant.PRESET_EVENT_USER_PROPERTIES) {
             isRepetitive = false
         } else if (mLastEventName == eventName && eventTime - mLastEventTime!! < 1000){
-            isRepetitive = true
+            if (mLastEventJson != null) {
+                val currentKeys = mutableListOf<String>().apply {
+                    eventJson.getJSONObject(Constant.EVENT_INFO_PROPERTIES).keys().forEach {
+                        if (!it.startsWith("#")) {
+                            this.add(it)
+                        }
+                    }
+                }
+                val lastKeys = mutableListOf<String>().apply {
+                    mLastEventJson!!.getJSONObject(Constant.EVENT_INFO_PROPERTIES).keys().forEach {
+                        if (!it.startsWith("#")) {
+                            this.add(it)
+                        }
+                    }
+                }
+                //same key
+                if (currentKeys.size == lastKeys.size && currentKeys.containsAll(lastKeys)) {
+                    isRepetitive = true
+                    for (key in currentKeys) {
+                        //if the values do not equals, that means different event
+                        if (!mLastEventJson!!.getJSONObject(Constant.EVENT_INFO_PROPERTIES).getString(key)
+                                .equals(eventJson.getJSONObject(Constant.EVENT_INFO_PROPERTIES).getString(key))) {
+                            isRepetitive = false
+                            break
+                        }
+                    }
+                }
+            }
         }
         mLastEventName = eventName
         mLastEventTime = eventTime
+        mLastEventJson = eventJson
         return isRepetitive
     }
 
@@ -183,7 +216,6 @@ class AnalyticsManager private constructor(
                         //避免事件积压，成功后再次上报
                         flush(mAnalyticsDataAPI.flushInterval!!.toLong())
                     }
-
                 }
 
                 override fun onAfter() {
@@ -263,7 +295,7 @@ class AnalyticsManager private constructor(
     }
 
     companion object {
-        private const val TAG = "AnalyticsManager"
+        private const val TAG = Constant.LOG_TAG
         private const val FLUSH_QUEUE = 3
         private const val DELETE_ALL = 4
         private val S_INSTANCES: MutableMap<Context, AnalyticsManager> = HashMap()

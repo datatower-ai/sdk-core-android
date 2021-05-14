@@ -1,15 +1,21 @@
 package com.roiquery.ad_report_demo
 
 import android.app.Application
-import com.roiquery.analytics.ROIQuerySDK
-import com.roiquery.analytics.utils.LogUtils
+import com.google.firebase.FirebaseApp
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.roiquery.analytics.ROIQueryAnalytics
+import com.roiquery.analytics.ROIQuery
 
 
 class MyApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        ROIQuerySDK.init(this,"android_ad",true, LogUtils.V)
+        ROIQuery.initSDK(this,"android_ad",true)
+        FirebaseApp.initializeApp(this)
+        FirebaseAnalytics.getInstance(this).appInstanceId.addOnSuccessListener {
+            ROIQueryAnalytics.setFirebaseAppInstanceId(it)
+        }
     }
 
 }

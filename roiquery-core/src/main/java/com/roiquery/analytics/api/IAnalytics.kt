@@ -63,6 +63,11 @@ interface IAnalytics {
      */
     var accountId: String?
 
+    /**
+     * 设置当前用户Firebase的app_instance_id
+     */
+    var fiid: String?
+
 
     /**
      * 是否禁用SDK

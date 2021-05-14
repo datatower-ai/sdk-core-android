@@ -149,6 +149,15 @@ open class ROIQueryAnalytics {
         }
 
         /**
+         * 设置Firebase的app_instance_id
+         * @param id Firebase 的 app_instance_id
+         */
+        @JvmStatic
+        fun setFirebaseAppInstanceId(id: String) {
+            AnalyticsImp.getInstance(mContext).fiid = id
+        }
+
+        /**
          * app 进入前台
          *
          */
@@ -156,7 +165,7 @@ open class ROIQueryAnalytics {
         fun onAppForeground() {
             try {
                 if (!isSDKEnable()) return
-                checkNotNull(mContext) { "Call ROIQuerySDK.init first" }
+                checkNotNull(mContext) { "Call ROIQuery.initSDK first" }
                 EventDateAdapter.getInstance()?.isAppForeground = true
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppForeground()

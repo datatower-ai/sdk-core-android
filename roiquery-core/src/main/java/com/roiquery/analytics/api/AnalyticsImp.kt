@@ -40,9 +40,19 @@ class AnalyticsImp : AbstractAnalytics {
         set(value) {
             if (value != null) {
                 EventDateAdapter.getInstance()?.accountId = value
-                updateEventInfo("#acid", value)
+                updateEventInfo(Constant.EVENT_INFO_ACID, value)
             }
         }
+
+    override var fiid: String?
+        get() = EventDateAdapter.getInstance()?.fiid
+        set(value) {
+            if (value != null) {
+                EventDateAdapter.getInstance()?.fiid = value
+                updateCommonProperties(Constant.COMMON_PROPERTY_FIREBASE_IID, value)
+            }
+        }
+
     override var enableSDK: Boolean?
         get() = enableTrack == true && enableUpload == true
         set(value) {
@@ -105,7 +115,7 @@ class AnalyticsImp : AbstractAnalytics {
         if (!ROIQueryAnalytics.isSDKEnable()) return
 
         mTrackTaskManager?.let {
-            val task = Runnable {
+            it.execute {
                 try {
                     if (eventName != null) {
                         trackEvent(eventName, properties)
@@ -114,7 +124,6 @@ class AnalyticsImp : AbstractAnalytics {
                     LogUtils.printStackTrace(e)
                 }
             }
-            it.execute(task)
         }
     }
 
@@ -154,8 +163,8 @@ class AnalyticsImp : AbstractAnalytics {
                 val key = superPropertiesIterator.next()
                 val value: Any = properties.get(key)
                 val p = JSONObject().apply {
-                    put("property_key", key)
-                    put("property_value", value)
+                    put(Constant.USER_PROPERTIES_PROPERTY_KEY, key)
+                    put(Constant.USER_PROPERTIES_PROPERTY_VALUE, value)
                 }
                 track(Constant.PRESET_EVENT_USER_PROPERTIES, p)
             }

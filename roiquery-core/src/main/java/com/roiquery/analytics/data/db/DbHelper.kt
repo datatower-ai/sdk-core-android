@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
+import com.roiquery.analytics.Constant
 import com.roiquery.analytics.data.DataParams
 import com.roiquery.analytics.utils.LogUtils
 
@@ -33,7 +34,7 @@ class DbHelper(context: Context?) :
 
 
     companion object {
-        private const val TAG = "SQLiteOpenHelper"
+        private const val TAG = Constant.LOG_TAG
         private val CREATE_EVENTS_TABLE = String.format(
             "CREATE TABLE %s (_id INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s INTEGER NOT NULL);",
             DataParams.TABLE_EVENTS,

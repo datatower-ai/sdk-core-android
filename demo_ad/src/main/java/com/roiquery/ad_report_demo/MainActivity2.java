@@ -1,6 +1,7 @@
 package com.roiquery.ad_report_demo;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,16 +9,26 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.installations.FirebaseInstallations;
 import com.roiquery.ad.AD_PLATFORM;
 import com.roiquery.ad.AD_TYPE;
 import com.roiquery.ad.ROIQueryAdReport;
 import com.roiquery.ad.utils.UUIDUtils;
-import com.roiquery.analytics.ROIQueryAnalytics;
+import com.roiquery.analytics.utils.LogUtils;
+import com.roiquery.analytics.utils.ThreadUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -31,7 +42,7 @@ public class MainActivity2 extends AppCompatActivity {
             ROIQueryAdReport.reportEntrance(
                     "1",
                     AD_TYPE.BANNER,
-                    AD_PLATFORM.ADMOB,
+                    AD_PLATFORM.MOPUB,
                     "home",
                     seq,
                     "main"
@@ -42,7 +53,7 @@ public class MainActivity2 extends AppCompatActivity {
             ROIQueryAdReport.reportToShow(
                     "2",
                     AD_TYPE.INTERSTITIAL,
-                    AD_PLATFORM.ADMOB,
+                    AD_PLATFORM.MOPUB,
                     "user",
                     seq,
                     "main"
@@ -52,7 +63,7 @@ public class MainActivity2 extends AppCompatActivity {
                 ROIQueryAdReport.reportShow(
                         "3",
                         AD_TYPE.BANNER,
-                        AD_PLATFORM.ADMOB,
+                        AD_PLATFORM.MOPUB,
                         "car",
                         seq,
                         "home"
@@ -62,7 +73,7 @@ public class MainActivity2 extends AppCompatActivity {
                 ROIQueryAdReport.reportClose(
                         "4",
                         AD_TYPE.BANNER,
-                        AD_PLATFORM.ADMOB,
+                        AD_PLATFORM.MOPUB,
                         "home",
                         seq,
                         "main"
@@ -86,7 +97,7 @@ public class MainActivity2 extends AppCompatActivity {
             ROIQueryAdReport.reportLeftApp(
                     "",
                     AD_TYPE.BANNER,
-                    AD_PLATFORM.ADMOB,
+                    AD_PLATFORM.MOPUB,
                     "home",
                     seq,
                     "main"
@@ -96,7 +107,7 @@ public class MainActivity2 extends AppCompatActivity {
                 ROIQueryAdReport.reportRewarded(
                         "",
                         AD_TYPE.BANNER,
-                        AD_PLATFORM.ADMOB,
+                        AD_PLATFORM.MOPUB,
                         "home",
                         seq,
                         "main"
@@ -105,37 +116,34 @@ public class MainActivity2 extends AppCompatActivity {
         findViewById(R.id.button_track_sample).setOnClickListener(v -> {
             ROIQueryAdReport.reportPaid("",
                     AD_TYPE.BANNER,
-                    AD_PLATFORM.ADMOB,
-                    "home",
-                    seq,
-                     "5000",
-                    "01",
-                    "1",
-                    "main");
-
-            ROIQueryAdReport.reportPaid("",
-                    AD_TYPE.BANNER,
-                    AD_PLATFORM.ADMOB,
+                    AD_PLATFORM.MOPUB,
                     "home",
                     seq,
                     "5000",
                     "01",
                     "1",
                     "main");
+
+            ROIQueryAdReport.reportPaid("",
+                    AD_TYPE.BANNER,
+                    AD_PLATFORM.MOPUB,
+                    "home",
+                    seq,
+                    "5001",
+                    "01",
+                    "1",
+                    "main");
             ROIQueryAdReport.reportRewarded(
                     "",
                     AD_TYPE.BANNER,
-                    AD_PLATFORM.ADMOB,
+                    AD_PLATFORM.MOPUB,
                     "home",
                     seq,
                     "main"
             );
-//            Map<String,Object> p = new HashMap<>();
-//            p.put("name","shijunxing");
-//            p.put("age",30);
-//            p.put("height",165);
-//            ROIQueryAnalytics.setUserProperties(p);
+
         });
 
     }
+
 }

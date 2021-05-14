@@ -5,7 +5,7 @@ import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.utils.LogUtils
 import org.json.JSONObject
 
-class ROIQuerySDK {
+class ROIQuery {
     companion object {
 
         /**
@@ -19,7 +19,7 @@ class ROIQuerySDK {
          */
         @JvmStatic
         @JvmOverloads
-        fun init(
+        fun initSDK(
             context: Context?,
             appId: String?,
             channel: String = "",
@@ -44,12 +44,12 @@ class ROIQuerySDK {
          * @param isDebug 是否打开调试，调试模式下将打印log,默认关闭
          */
         @JvmStatic
-        fun init(
+        fun initSDK(
             context: Context?,
             appId: String?,
             isDebug: Boolean = false,
         ){
-            this.init(
+            this.initSDK(
                 context,
                 appId,
                 channel = "",
@@ -68,13 +68,13 @@ class ROIQuerySDK {
          * @param logLevel log 的级别，默认为 LogUtils.V，仅在 isDebug = true 有效
          */
         @JvmStatic
-        fun init(
+        fun initSDK(
             context: Context?,
             appId: String?,
             isDebug: Boolean = false,
             logLevel: Int = LogUtils.V,
         ){
-            this.init(
+            this.initSDK(
                 context,
                 appId,
                 channel = "",
