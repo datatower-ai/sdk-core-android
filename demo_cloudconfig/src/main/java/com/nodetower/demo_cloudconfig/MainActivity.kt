@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun printCurrentConfig() {
         LogUtils.e("Config3: ${ROIQueryCloudConfig.getConfigString()}")
+        ROIQueryCloudConfig.getBoolean("config_key",false)
     }
 
 

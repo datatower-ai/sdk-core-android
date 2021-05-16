@@ -34,6 +34,7 @@ class AnalyticsTestActivity : AppCompatActivity() {
         }
         findViewById<View>(R.id.button_flush).setOnClickListener {
             ROIQueryAnalytics.flush()
+
         }
 
         findViewById<View>(R.id.button_track_ad_show).visibility= View.GONE

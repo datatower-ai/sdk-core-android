@@ -54,7 +54,10 @@ open class ROIQueryAnalytics {
          * @param properties 事件属性
 //         */
         @JvmStatic
-        fun track(eventName: String?, properties: Map<String, Any>?) =
+        fun track(
+            eventName: String?,
+            properties: Map<String, Any>?
+        ) =
             AnalyticsImp.getInstance(mContext).track(eventName, properties)
 
         /**
@@ -213,8 +216,6 @@ open class ROIQueryAnalytics {
             if (!isSDKEnable()) return
             mAppLifecycleListeners.add(listener)
         }
-
-
 
         /**
          * sdk 是否可用，默认可用，由cloud config 控制
