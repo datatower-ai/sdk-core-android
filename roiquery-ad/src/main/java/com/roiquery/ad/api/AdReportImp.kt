@@ -48,6 +48,17 @@ class AdReportImp : IAdReport {
         )
     }
 
+    override fun reportEntrance(
+        id: String,
+        type: String,
+        platform: String,
+        location: String,
+        seq: String,
+        entrance: String?
+    ) {
+        TODO("Not yet implemented")
+    }
+
     override fun reportToShow(
         id: String,
         type: Int,
@@ -151,6 +162,28 @@ class AdReportImp : IAdReport {
             seq,
             generateAdReportJson(id, type, platform, location, seq, value, currency, precision, entrance)
         )
+    }
+
+    override fun reportImpression(
+        id: String,
+        mediaitonId: String,
+        type: String,
+        platform: String,
+        mediaitonPlatform: Int,
+        location: String,
+        seq: String,
+        value: String,
+        currency: String,
+        precision: String,
+        country: String,
+        entrance: String?
+    ) {
+//        set(id, type, platform, location, seq, entrance)
+//        adTrack(
+//            AdReportConstant.EVENT_AD_PAID,
+//            seq,
+//            generateAdReportJson(id, type, platform, location, seq, value, currency, precision, entrance)
+//        )
     }
 
     override fun reportReturnApp() {

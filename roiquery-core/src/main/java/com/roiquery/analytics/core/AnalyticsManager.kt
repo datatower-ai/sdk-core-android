@@ -83,7 +83,7 @@ class AnalyticsManager private constructor(
         var isRepetitive = false
         val eventName = eventJson.getString(Constant.EVENT_INFO_NAME)
         val eventTime = eventJson.getString(Constant.EVENT_INFO_TIME).toLong()
-        if (mLastEventName == null || Constant.PRESET_EVENT_TAG + eventName == Constant.PRESET_EVENT_USER_PROPERTIES) {
+        if (mLastEventName == null) {
             isRepetitive = false
         } else if (mLastEventName == eventName && eventTime - mLastEventTime!! < 1000){
             if (mLastEventJson != null) {

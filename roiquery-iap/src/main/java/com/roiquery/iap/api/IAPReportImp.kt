@@ -122,7 +122,7 @@ class IAPReportImp : IIapReport {
         put(Constant.PROPERTY_IAP_ORDER,order)
         put(Constant.PROPERTY_IAP_SKU, sku)
         put(Constant.PROPERTY_IAP_PRICE, price)
-        put(Constant.PROPERTY_IAP_USD_PRICE,usdPrice)
+//        put(Constant.PROPERTY_IAP_USD_PRICE,usdPrice)
         put(Constant.PROPERTY_IAP_CURRENCY, currency)
         code?.let {
             put(Constant.PROPERTY_IAP_CODE, it)
