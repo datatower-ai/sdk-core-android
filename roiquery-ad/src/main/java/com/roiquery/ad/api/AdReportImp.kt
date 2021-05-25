@@ -7,6 +7,9 @@ import android.text.TextUtils
 import com.roiquery.ad.AD_PLATFORM
 import com.roiquery.ad.AD_TYPE
 import com.roiquery.ad.AdReportConstant
+import com.roiquery.ad.utils.AdEventProperty
+import com.roiquery.ad.utils.AdPlatformUtils
+import com.roiquery.ad.utils.AdTypeUtils
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.AppLifecycleHelper.OnAppStatusListener
@@ -31,6 +34,9 @@ class AdReportImp : IAdReport {
     private var mAppBackgroundedTS: Long = 0
     private var mAppForegroundedTS: Long = 0
 
+    private var mSequenessMap: MutableMap<String, AdEventProperty?> = mutableMapOf()
+
+
     override fun reportEntrance(
         id: String,
         type: Int,
@@ -46,17 +52,6 @@ class AdReportImp : IAdReport {
             seq,
             generateAdReportJson(id, type, platform, location, seq, entrance = entrance)
         )
-    }
-
-    override fun reportEntrance(
-        id: String,
-        type: String,
-        platform: String,
-        location: String,
-        seq: String,
-        entrance: String?
-    ) {
-        TODO("Not yet implemented")
     }
 
     override fun reportToShow(
@@ -166,25 +161,46 @@ class AdReportImp : IAdReport {
 
     override fun reportImpression(
         id: String,
-        mediaitonId: String,
         type: String,
         platform: String,
-        mediaitonPlatform: Int,
         location: String,
         seq: String,
+        mediation: Int,
+        mediationId: String,
         value: String,
         currency: String,
         precision: String,
         country: String,
         entrance: String?
     ) {
-//        set(id, type, platform, location, seq, entrance)
-//        adTrack(
-//            AdReportConstant.EVENT_AD_PAID,
-//            seq,
-//            generateAdReportJson(id, type, platform, location, seq, value, currency, precision, entrance)
-//        )
+        set(
+            id,
+            AdTypeUtils.getType(mediation,type),
+            AdPlatformUtils.getPlatform(mediation,platform),
+            location,
+            seq,
+            entrance
+        )
+
+        adTrack(
+            AdReportConstant.EVENT_AD_PAID,
+            seq,
+            JSONObject().apply {
+                put(AdReportConstant.PROPERTY_AD_ID, id)
+                put(AdReportConstant.PROPERTY_AD_TYPE, type)
+                put(AdReportConstant.PROPERTY_AD_PLATFORM, platform)
+                put(AdReportConstant.PROPERTY_AD_ENTRANCE, entrance ?: "")
+                put(AdReportConstant.PROPERTY_AD_LOCATION, location)
+                put(AdReportConstant.PROPERTY_AD_SEQ, seq)
+
+                put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, value)
+                put(AdReportConstant.PROPERTY_AD_CURRENCY_CODE, currency)
+                put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE, precision)
+            }
+        )
+
     }
+
 
     override fun reportReturnApp() {
         mAppForegroundedTS = SystemClock.elapsedRealtime()
@@ -341,6 +357,20 @@ class AdReportImp : IAdReport {
         mAppBackgroundedTS = 0L
         mAppForegroundedTS = 0L
     }
+
+    private fun makeAdEventProperty(seq: String){
+        if (mSequenessMap.size > 3){
+            mSequenessMap.remove(mSequenessMap.keys.last())
+        }
+        mSequenessMap[seq] = AdEventProperty()
+    }
+
+    private fun updateAdEventProperty(seq: String){
+        mSequenessMap[seq]?.let {
+
+        }
+    }
+
 
     companion object {
 

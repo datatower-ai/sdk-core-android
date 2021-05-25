@@ -21,25 +21,6 @@ package com.roiquery.ad.api
         entrance: String? = "",
     )
 
-    /**
-     * 上报 广告入口
-     *
-     * @param id 广告最小单元id
-     * @param type 广告类型
-     * @param platform 广告平台
-     * @param location 广告位
-     * @param seq 系列行为标识
-     * @param entrance 广告入口
-     */
-    fun reportEntrance(
-        id: String,
-
-        type: String,
-        platform: String,
-        location: String,
-        seq: String,
-        entrance: String? = "",
-    )
 
     /**
      * 上报 广告展示请求
@@ -180,12 +161,12 @@ package com.roiquery.ad.api
       * 上报 广告展示价值
       *
       * @param id 广告最小单元id
-      * @param mediaitonId 聚合平台广告id
       * @param type 广告类型
       * @param platform 广告平台
-      * @param mediaitonPlatform 聚合平台
       * @param location 广告位
       * @param seq 系列行为标识
+      * @param mediationId 聚合平台广告id
+      * @param mediation 聚合平台
       * @param value 价值
       * @param currency 货币
       * @param precision 精确度
@@ -194,12 +175,12 @@ package com.roiquery.ad.api
       */
      fun reportImpression(
          id: String,
-         mediaitonId: String,
          type: String,
          platform: String,
-         mediaiton: Int,
          location: String,
          seq: String,
+         mediation: Int,
+         mediationId: String,
          value: String,
          currency: String,
          precision: String,

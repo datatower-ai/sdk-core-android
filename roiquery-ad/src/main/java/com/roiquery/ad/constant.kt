@@ -40,6 +40,14 @@ interface AD_TYPE {
     }
 }
 
+interface AD_MEDIATION {
+    companion object {
+        const val IDLE = -1
+        const val MOPUB = 0
+        const val IRONSOURCE = 1
+    }
+}
+
 interface AD_PLATFORM {
     companion object {
         const val IDLE = -1

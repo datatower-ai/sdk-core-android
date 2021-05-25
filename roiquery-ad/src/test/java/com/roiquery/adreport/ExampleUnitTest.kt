@@ -1,5 +1,6 @@
 package com.roiquery.adreport
 
+import com.roiquery.ad.utils.AdEventProperty
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -12,6 +13,16 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        val mSequenessMap: MutableMap<String, AdEventProperty> = mutableMapOf()
+        mSequenessMap["seq"] = AdEventProperty()
+        mSequenessMap["seq"+"1"] = AdEventProperty()
+        mSequenessMap["seq"+"2"] = AdEventProperty()
+        mSequenessMap["seq"+"3"] = AdEventProperty()
+        mSequenessMap["seq"+"4"] = AdEventProperty()
+        mSequenessMap["seq"+"5"] = AdEventProperty()
+        if (mSequenessMap.size > 5){
+            val lastSeq = mSequenessMap.keys.last()
+            mSequenessMap.remove(mSequenessMap.keys.last())
+        }
     }
 }
