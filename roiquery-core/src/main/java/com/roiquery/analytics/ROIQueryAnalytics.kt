@@ -156,7 +156,7 @@ open class ROIQueryAnalytics {
          * @param id Firebase 的 app_instance_id
          */
         @JvmStatic
-        fun setFirebaseAppInstanceId(id: String) {
+        fun setFirebaseAppInstanceId(id: String?) {
             AnalyticsImp.getInstance(mContext).fiid = id
         }
 

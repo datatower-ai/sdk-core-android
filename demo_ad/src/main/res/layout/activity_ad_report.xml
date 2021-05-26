@@ -44,7 +44,7 @@
             android:textAllCaps="false"
             android:layout_margin="2dp"
             android:layout_height="wrap_content"
-            android:text="close"
+            android:text="impression"
             />
     </LinearLayout>
     <LinearLayout

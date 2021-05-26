@@ -9,7 +9,7 @@ object AdTypeUtils {
     fun getType(mediation: Int, typeString: String) =
         when (mediation) {
             AD_MEDIATION.MOPUB -> getMopubType(typeString)
-            else -> AD_TYPE.IDLE
+            else -> AD_MEDIATION.IDLE
         }
 
     private fun getMopubType(typeString: String) =
@@ -28,7 +28,7 @@ object AdPlatformUtils {
     fun getPlatform(mediation: Int, typeString: String) =
         when (mediation) {
             AD_MEDIATION.MOPUB -> getMopubPlatform(typeString)
-            else -> AD_PLATFORM.IDLE
+            else -> AD_MEDIATION.IDLE
         }
 
     private fun getMopubPlatform(typeString: String) =
@@ -36,23 +36,31 @@ object AdPlatformUtils {
             "admob_native" -> AD_PLATFORM.ADMOB
             "pangle" -> AD_PLATFORM.PANGLE
             "ironsource" -> AD_PLATFORM.IRONSOURCE
-            else -> AD_TYPE.IDLE
+            "marketplace" -> AD_PLATFORM.MOPUB
+            else -> AD_PLATFORM.IDLE
         }
 }
 
-data class AdEventProperty (
-    private var mCurrentLocation: String = "",
-    private var mCurrentAdType: Int = AD_TYPE.IDLE,
-    private var mCurrentAdPlatform: Int = AD_PLATFORM.IDLE,
-    private var mCurrentAdId: String = "",
-    private var mCurrentSeq: String = "",
-    private var mCurrentEntrance: String = "",
+data class AdEventProperty(
+    var location: String = "",
+    var adType: Int = AD_TYPE.IDLE,
+    var adPlatform: Int = AD_PLATFORM.IDLE,
+    var adId: String = "",
+    var seq: String = "",
+    var entrance: String = "",
 
-    private var mShowTS: Long = 0,
-    private var mClickTS: Long = 0,
-    private var mLeftApplicationTS: Long = 0,
-    private var mAppBackgroundedTS: Long = 0,
-    private var mAppForegroundedTS: Long = 0
-){
+    var mediation: Int = AD_MEDIATION.IDLE,
+    var mediationId: String = "",
+    var value: String = "",
+    var currency: String = "",
+    var precision: String = "",
+    var country: String = "",
 
-}
+    var showTS: Long = 0,
+    var clickTS: Long = 0,
+    var leftApplicationTS: Long = 0,
+    var appBackgroundedTS: Long = 0,
+    var appForegroundedTS: Long = 0,
+
+    var isLeftApplication: Boolean = false
+)

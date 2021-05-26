@@ -165,8 +165,8 @@ package com.roiquery.ad.api
       * @param platform 广告平台
       * @param location 广告位
       * @param seq 系列行为标识
-      * @param mediationId 聚合平台广告id
       * @param mediation 聚合平台
+      * @param mediationId 聚合平台广告id
       * @param value 价值
       * @param currency 货币
       * @param precision 精确度
