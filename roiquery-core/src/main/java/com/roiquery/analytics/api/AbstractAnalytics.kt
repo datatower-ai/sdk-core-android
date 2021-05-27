@@ -10,6 +10,7 @@ import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
+import com.github.gzuliyujiang.oaid.IOAIDGetter
 import com.instacart.library.truetime.TrueTime
 import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
@@ -508,34 +509,33 @@ abstract class AbstractAnalytics : IAnalytics {
         }
     }
 
+
     /**
      * oaid 获取，异步
      */
     private fun getOAID() {
         try {
-            if (!DeviceID.supportedOAID(mContext!!)) {
+            val deviceId = DeviceID.with(mContext)
+            if (!deviceId.supportOAID()) {
                 // 不支持OAID，须自行生成GUID，然后存到`SharedPreferences`及`ExternalStorage`甚至`CloudStorage`。
                 return
             }
-            // 获取OAID/AAID，异步回调
-            DeviceID.getOAID(mContext, object : IGetter {
-                override fun onOAIDGetComplete(result: String) {
-                    // 不同厂商的OAID/AAID格式是不一样的，可进行MD5、SHA1之类的哈希运算统一
+            deviceId.doGet(object : IOAIDGetter {
+                override fun onOAIDGetComplete(oaid: String) {
+                    // 不同厂商的OAID格式是不一样的，可进行MD5、SHA1之类的哈希运算统一
                     //存入sp
-                    mDataAdapter?.oaid = result
-                    updateEventInfo(Constant.EVENT_INFO_OAID, result)
+                    mDataAdapter?.oaid = oaid
+                    updateEventInfo(Constant.EVENT_INFO_OAID, oaid)
                 }
 
-                override fun onOAIDGetError(error: java.lang.Exception) {
-                    // 获取OAID/AAID失败
-                    LogUtils.printStackTrace(error)
+                override fun onOAIDGetError(exception: java.lang.Exception) {
+                    // 获取OAID失败
+                    LogUtils.printStackTrace(exception)
                 }
             })
-
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
-
     }
 
     /**
