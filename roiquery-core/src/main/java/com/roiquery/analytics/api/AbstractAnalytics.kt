@@ -4,14 +4,13 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
-
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.github.gzuliyujiang.oaid.DeviceID
-import com.github.gzuliyujiang.oaid.IGetter
 import com.github.gzuliyujiang.oaid.IOAIDGetter
 import com.instacart.library.truetime.TrueTime
+import com.instacart.library.truetime.utils.*
 import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.R
@@ -31,6 +30,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.collections.HashMap
 
 
@@ -64,6 +64,11 @@ abstract class AbstractAnalytics : IAnalytics {
 
     //本地数据适配器，包括sp、db的操作
     private var mDataAdapter: EventDateAdapter? = null
+
+    //时间校准
+    private var sCalibratedTime: ICalibratedTime? = null
+    private val sCalibratedTimeLock = ReentrantReadWriteLock()
+    private var mIsCalibrateTime: Boolean = false
 
     private var mPresetEvents = emptyArray<String>()
     private var mPresetProperties = emptyArray<String>()
@@ -143,7 +148,7 @@ abstract class AbstractAnalytics : IAnalytics {
             val realEventName = assertEvent(eventName, properties)
             //设置事件的基本信息
             val eventInfo = JSONObject(mEventInfo).apply {
-                put(Constant.EVENT_INFO_TIME, TimeUtils.getTrueTime())
+                put(Constant.EVENT_INFO_TIME, getTime())
                 put(Constant.EVENT_INFO_NAME, realEventName)
                 put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
                 if (Constant.PRESET_EVENT_APP_FIRST_OPEN == eventName) {
@@ -151,7 +156,8 @@ abstract class AbstractAnalytics : IAnalytics {
                 }
                 if (Constant.PRESET_EVENT_APP_ATTRIBUTE == eventName) {
                     if (properties?.has(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == false
-                        || properties?.getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME)?.isEmpty() == true
+                        || properties?.getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME)
+                            ?.isEmpty() == true
                     ) {
                         properties.put(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME, mFirstOpenTime)
                     }
@@ -167,10 +173,18 @@ abstract class AbstractAnalytics : IAnalytics {
 
             mAnalyticsManager?.enqueueEventMessage(realEventName, eventInfo)
 
-
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
+            trackQualityEvent("trackEvent&&$eventName&& ${e.message}")
         }
+    }
+
+    fun trackQualityEvent(qualityInfo: String) {
+        track(
+            Constant.PRESET_EVENT_APP_QUALITY,
+            JSONObject().apply {
+                put(Constant.APP_QUALITY_INFO, qualityInfo)
+            })
     }
 
     /**
@@ -324,7 +338,6 @@ abstract class AbstractAnalytics : IAnalytics {
     }
 
 
-
     private fun assertEvent(
         eventName: String,
         properties: JSONObject? = null
@@ -401,7 +414,6 @@ abstract class AbstractAnalytics : IAnalytics {
         }
 
         mConfigOptions?.let { configOptions ->
-
             configLog(configOptions.mEnabledDebug, configOptions.mLogLevel)
             initNTP(configOptions.mEnabledDebug)
             registerNetworkStatusChangedListener()
@@ -422,8 +434,6 @@ abstract class AbstractAnalytics : IAnalytics {
                 )
             }
         }
-
-
         this.mSDKConfigInit = true
     }
 
@@ -479,6 +489,48 @@ abstract class AbstractAnalytics : IAnalytics {
             })
     }
 
+
+    /**
+     * 获取当前时间的 ITime 实例
+     */
+    private fun getTime(): String {
+        sCalibratedTimeLock.readLock().lock()
+        val result: ITime = if (null != sCalibratedTime) {
+            LogUtils.i("getTime", "RTimeCalibrated")
+            RTimeCalibrated(sCalibratedTime)
+        } else {
+            LogUtils.i("getTime", "RTime")
+            RTime(TimeUtils.getTrueTime())
+        }
+        sCalibratedTimeLock.readLock().unlock()
+        return result.time
+    }
+
+    /**
+     * 校准时间.
+     * @param timestamp 当前时间戳
+     */
+    open fun calibrateTime(timestamp: Long) {
+        if (!mIsCalibrateTime) {
+            setCalibratedTime(RCalibratedTime(timestamp))
+            mIsCalibrateTime = true
+        }
+    }
+
+    /**
+     * 使用自定义的 ICalibratedTime 校准时间
+     * @param calibratedTime ICalibratedTime 实例
+     */
+    private fun setCalibratedTime(calibratedTime: ICalibratedTime) {
+        sCalibratedTimeLock.writeLock().lock()
+        sCalibratedTime = calibratedTime
+        sCalibratedTimeLock.writeLock().unlock()
+    }
+
+    /**
+     * 初始化时间服务器
+     * @param enableLog 是否开启log
+     */
     private fun initNTP(enableLog: Boolean) {
         if (mContext != null) {
             val list = mutableListOf<String>().apply {
@@ -503,6 +555,7 @@ abstract class AbstractAnalytics : IAnalytics {
                         .initialize()
                 } catch (e: Exception) {
                     e.printStackTrace()
+                    trackQualityEvent("initNTP&& ${e.message}")
                     LogUtils.i("something went wrong when trying to initialize TrueTime", e.message)
                 }
             }.start()
@@ -531,6 +584,9 @@ abstract class AbstractAnalytics : IAnalytics {
                 override fun onOAIDGetError(exception: java.lang.Exception) {
                     // 获取OAID失败
                     LogUtils.printStackTrace(exception)
+
+                    trackQualityEvent("getOAID&& ${exception.message}")
+
                 }
             })
         } catch (e: Exception) {
@@ -701,7 +757,10 @@ abstract class AbstractAnalytics : IAnalytics {
                 track(
                     Constant.PRESET_EVENT_APP_ENGAGEMENT,
                     PropertyBuilder.newInstance()
-                        .append(Constant.ENGAGEMENT_PROPERTY_IS_FOREGROUND, mDataAdapter?.isAppForeground.toString())
+                        .append(
+                            Constant.ENGAGEMENT_PROPERTY_IS_FOREGROUND,
+                            mDataAdapter?.isAppForeground.toString()
+                        )
                         .toJSONObject()
                 )
             },

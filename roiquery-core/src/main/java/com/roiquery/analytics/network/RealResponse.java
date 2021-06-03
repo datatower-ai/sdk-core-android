@@ -25,6 +25,7 @@ public class RealResponse {
     public String location;
     public int code;
     public long contentLength;
+    public long date;
     public Exception exception;
 
     @Override

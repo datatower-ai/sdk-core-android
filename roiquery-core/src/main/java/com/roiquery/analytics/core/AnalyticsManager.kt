@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.*
 import android.text.TextUtils
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.data.DataParams
 import com.roiquery.analytics.data.EventDateAdapter
@@ -205,6 +206,9 @@ class AnalyticsManager private constructor(
                 HttpCallback.StringCallback() {
                 override fun onFailure(code: Int, errorMessage: String?) {
                     LogUtils.d(TAG, errorMessage)
+                    mAnalyticsDataAPI.trackQualityEvent(
+                        "uploadData onFailure && events = $event, && error = $errorMessage"
+                    )
                 }
 
                 override fun onResponse(response: String?) {

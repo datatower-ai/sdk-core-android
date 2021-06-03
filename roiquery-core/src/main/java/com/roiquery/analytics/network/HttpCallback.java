@@ -21,6 +21,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.roiquery.analytics.ROIQueryAnalytics;
 import com.roiquery.analytics.utils.LogUtils;
 
 import org.json.JSONException;
@@ -50,6 +51,7 @@ public abstract class HttpCallback<T> {
     }
 
     void onSuccess(RealResponse response) {
+        ROIQueryAnalytics.calibrateTime(response.date);
         final T obj;
         obj = onParseResponse(response.result);
         sMainHandler.post(new Runnable() {

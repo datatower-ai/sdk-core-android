@@ -158,6 +158,7 @@ class RealRequest {
                 response.location = HttpUtils.getLocation(conn, sRequestURL);
             }
             response.contentLength = conn.getContentLength();
+            response.date = conn.getDate();
             // 当 ResponseCode 小于 HTTP_BAD_REQUEST（400）时，获取返回信息
             if (response.code < HttpURLConnection.HTTP_BAD_REQUEST) {
                 response.result = HttpUtils.getRetString(conn.getInputStream());

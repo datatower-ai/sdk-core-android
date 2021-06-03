@@ -6,6 +6,7 @@ internal object Constant {
 
     //ROIQuery base url
     private const val ANALYTICS_BASE_URL = "https://api.roiquery.com"
+//    private const val ANALYTICS_BASE_URL = "http://35.238.73.110"
     //upload url
     const val EVENT_REPORT_URL = "$ANALYTICS_BASE_URL/report"
     // cloudConfig url
@@ -67,6 +68,8 @@ internal object Constant {
     const val USER_PROPERTIES_PROPERTY_KEY         = "property_key"
     const val USER_PROPERTIES_PROPERTY_VALUE       = "property_value"
 
+    const val APP_QUALITY_INFO                     = "quality_info"
+
 
     //preset event name about Analytics
     const val PRESET_EVENT_TAG = "@.#"
@@ -78,6 +81,7 @@ internal object Constant {
     const val PRESET_EVENT_PAGE_OPEN       = PRESET_EVENT_TAG + "page_open"
     const val PRESET_EVENT_PAGE_CLOSE      = PRESET_EVENT_TAG + "page_close"
     const val PRESET_EVENT_USER_PROPERTIES = PRESET_EVENT_TAG + "user_properties"
+    const val PRESET_EVENT_APP_QUALITY     = PRESET_EVENT_TAG + "app_quality"
 
 
     //engagement interval time

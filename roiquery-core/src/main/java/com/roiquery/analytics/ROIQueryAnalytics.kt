@@ -161,6 +161,15 @@ open class ROIQueryAnalytics {
         }
 
         /**
+         * 校准时间
+         * @param timestamp 当前时间戳
+         */
+        @JvmStatic
+        fun calibrateTime(timestamp: Long){
+            AnalyticsImp.getInstance(mContext).calibrateTime(timestamp)
+        }
+
+        /**
          * app 进入前台
          *
          */
@@ -177,7 +186,6 @@ open class ROIQueryAnalytics {
             } catch (e: Exception) {
                 LogUtils.printStackTrace("RoiqueryAnalytics", e)
             }
-
         }
 
         /**

@@ -204,7 +204,7 @@ public class SntpClient {
             return t;
 
         } catch (Exception e) {
-            TrueLog.d(TAG, "---- SNTP request failed for " + ntpHost);
+            TrueLog.d(TAG, "---- SNTP request failed for " + ntpHost +"error: "+e.getMessage());
             throw e;
         } finally {
             if (socket != null) {
