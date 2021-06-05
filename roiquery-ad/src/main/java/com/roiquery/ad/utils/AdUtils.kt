@@ -19,6 +19,7 @@ object AdTypeUtils {
             "Custom" -> AD_TYPE.NATIVE
             "Medium Rectangle" -> AD_TYPE.NATIVE
             "Rewarded Ad" -> AD_TYPE.REWARDED
+            "Rewarded Video" -> AD_TYPE.REWARDED
             else -> AD_TYPE.IDLE
         }
 }
@@ -37,6 +38,8 @@ object AdPlatformUtils {
             "pangle" -> AD_PLATFORM.PANGLE
             "ironsource" -> AD_PLATFORM.IRONSOURCE
             "marketplace" -> AD_PLATFORM.MOPUB
+            "unity" -> AD_PLATFORM.UNITY_ADS
+            "facebook" -> AD_PLATFORM.FACEBOOK
             else -> AD_PLATFORM.IDLE
         }
 }

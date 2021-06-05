@@ -104,8 +104,8 @@ public class MainActivity2 extends AppCompatActivity {
         findViewById(R.id.button_track_close).setOnClickListener(v -> {
                     ROIQueryAdReport.reportImpression(
                             "12435",
-                            "Rewarded Ad",
-                            "ironsource",
+                            "Rewarded Video",
+                            "unity",
                             "home",
                             seq2,
                             AD_MEDIATION.MOPUB,

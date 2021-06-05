@@ -134,6 +134,18 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         precision: String,
         entrance: String?
     ) {
+        LogUtils.d(
+            "reportPaid",
+            "id: $id,\n" +
+                    "        type: $type,\n" +
+                    "        platform: $platform,\n" +
+                    "        location: $location,\n" +
+                    "        seq: $seq,\n" +
+                    "        value: $value,\n" +
+                    "        currency: $currency,\n" +
+                    "        precision: $precision,\n" +
+                    "        entrance: $entrance?"
+        )
         val property = updateAdEventProperty(id, type, platform, location, seq, entrance)?.apply {
             this.value = value
             this.currency = currency
@@ -147,7 +159,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
                 put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, property?.value)
                 put(AdReportConstant.PROPERTY_AD_CURRENCY_CODE, property?.currency)
                 put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE, property?.precision)
-                put(AdReportConstant.PROPERTY_AD_COUNTRY, property?.precision)
+                put(AdReportConstant.PROPERTY_AD_COUNTRY, property?.country)
             }
         )
     }
@@ -166,6 +178,21 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         country: String,
         entrance: String?
     ) {
+        LogUtils.d(
+            "reportImpression",
+            "id: $id,\n" +
+                    "        type: $type,\n" +
+                    "        platform: $platform,\n" +
+                    "        location: $location,\n" +
+                    "        seq: $seq,\n" +
+                    "        mediation: $mediation,\n" +
+                    "        mediationId: $mediationId,\n" +
+                    "        value: $value,\n" +
+                    "        currency: $currency,\n" +
+                    "        precision: $precision,\n" +
+                    "        country: $country,\n" +
+                    "        entrance: $entrance?"
+        )
 
         val property = updateAdEventProperty(
             id,
@@ -190,7 +217,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
                 put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, property?.value)
                 put(AdReportConstant.PROPERTY_AD_CURRENCY_CODE, property?.currency)
                 put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE, property?.precision)
-                put(AdReportConstant.PROPERTY_AD_COUNTRY, property?.precision)
+                put(AdReportConstant.PROPERTY_AD_COUNTRY, property?.country)
             }
         )
 
@@ -317,7 +344,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
             if (type != AD_TYPE.IDLE){
                 it.adType = type
             }
-            if (type != AD_PLATFORM.IDLE){
+            if (platform != AD_PLATFORM.IDLE){
                 it.adPlatform = platform
             }
             it.seq = seq
