@@ -36,10 +36,13 @@ import kotlin.collections.HashMap
 
 abstract class AbstractAnalytics : IAnalytics {
 
-    protected val mContext: Context?
+    protected var mContext: Context? = null
 
     // SDK 配置是否初始化
     protected var mSDKConfigInit = false
+
+    // 是否采集了预置事件
+    protected var mIstrackPresetEvent = false
 
     // 事件信息，包含事件的基本数据
     private var mEventInfo: MutableMap<String, Any?>? = null
@@ -83,22 +86,28 @@ abstract class AbstractAnalytics : IAnalytics {
 
 
     constructor(context: Context?) {
-        mContext = context
-        initConfig(context!!.packageName)
-        initLocalData()
-        initProperties()
-        initCloudConfig()
-        initAppLifecycleListener()
-        initTrack(context)
-        this.mSDKConfigInit = true
+        try {
+            mContext = context
+            initConfig(mContext!!.packageName)
+            initLocalData()
+            initTrack(mContext!!)
+            initProperties()
+            initCloudConfig()
+            initAppLifecycleListener()
+            getGAID()
+            getOAID()
+            this.mSDKConfigInit = true
+        }catch (e:Exception){
+            LogUtils.printStackTrace(e)
+        }
+
     }
 
     /**
      * 初始化本地数据
      */
     private fun initLocalData() {
-        mDataAdapter = EventDateAdapter.getInstance(mContext!!, mContext.packageName)
-
+        mDataAdapter = EventDateAdapter.getInstance(mContext!!, mContext!!.packageName)
     }
 
     /**
@@ -107,8 +116,6 @@ abstract class AbstractAnalytics : IAnalytics {
     private fun initProperties() {
         initEventInfo()
         initCommonProperties()
-        getGAID()
-        getOAID()
     }
 
     /**
@@ -137,7 +144,7 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun initTrack(context: Context) {
         mTrackTaskManager = Executors.newSingleThreadExecutor()
-        mAnalyticsManager = AnalyticsManager.getInstance(context, this as AnalyticsImp)
+        mAnalyticsManager = AnalyticsManager.getInstance(context)
     }
 
 
@@ -217,7 +224,7 @@ abstract class AbstractAnalytics : IAnalytics {
             )//应用唯一标识,后台分配
             put(
                 Constant.EVENT_INFO_PKG,
-                mContext.packageName
+                mContext?.packageName
             )//包名
             if (mConfigOptions?.mEnabledDebug == true) {
                 put(Constant.EVENT_INFO_DEBUG, "true")
@@ -254,11 +261,11 @@ abstract class AbstractAnalytics : IAnalytics {
             )//移动信号国家码
             put(
                 Constant.COMMON_PROPERTY_MNC,
-                DeviceUtils.getMnc(mContext)
+                DeviceUtils.getMnc(mContext!!)
             )//移动信号网络码
             put(
                 Constant.COMMON_PROPERTY_OS_COUNTRY,
-                DeviceUtils.getLocalCountry(mContext)
+                DeviceUtils.getLocalCountry(mContext!!)
             )//系统国家
             put(
                 Constant.COMMON_PROPERTY_OS_LANG,
@@ -300,7 +307,7 @@ abstract class AbstractAnalytics : IAnalytics {
                 Constant.COMMON_PROPERTY_DEVICE_MODEL,
                 DeviceUtils.model
             )//设备型号,用户设备的型号，如 iPhone 8 等
-            val size = DeviceUtils.getDeviceSize(mContext)
+            val size = DeviceUtils.getDeviceSize(mContext!!)
             put(
                 Constant.COMMON_PROPERTY_SCREEN_HEIGHT,
                 size[0].toString()
@@ -551,7 +558,7 @@ abstract class AbstractAnalytics : IAnalytics {
                     TrueTime.build()
                         .withNtpHosts(list)
                         .withLoggingEnabled(enableLog)
-                        .withSharedPreferencesCache(mContext.applicationContext)
+                        .withSharedPreferencesCache(mContext!!.applicationContext)
                         .withConnectionTimeout(Constant.NTP_TIME_OUT_M)
                         .initialize()
                 } catch (e: Exception) {
@@ -599,6 +606,7 @@ abstract class AbstractAnalytics : IAnalytics {
      * gaid 获取，异步
      */
     private fun getGAID() {
+        LogUtils.d("getGAID", "start")
         GaidHelper.getAdInfo(
             mContext?.applicationContext,
             object : GaidHelper.GaidListener {
@@ -607,29 +615,43 @@ abstract class AbstractAnalytics : IAnalytics {
                     updateEventInfo(Constant.EVENT_INFO_GAID, info.adId)
                     //由于id 比较重要，所以在id回调之后再进行事件采集
                     trackPresetEvent()
+                    LogUtils.d("getGAID", "onSuccess")
                 }
 
                 override fun onException(exception: java.lang.Exception) {
                     trackPresetEvent()
-                    LogUtils.d("getGAID", exception.message.toString())
+                    LogUtils.d("getGAID", "onException:"+exception.message.toString())
                 }
             })
+
+        val task: TimerTask = object : TimerTask() {
+            override fun run() {
+                trackPresetEvent()
+            }
+        }
+        val timer = Timer()
+        timer.schedule(task, 3000) //3秒后执行TimeTask的run方法
+
     }
 
     /**
      * 采集app 预置事件
      */
     private fun trackPresetEvent() {
+        if (mIstrackPresetEvent) {
+            return
+        }
         //子进程不采集
         if (!ProcessUtils.isMainProcess(mContext as Application?)) {
             LogUtils.i(
                 "trackPresetEvent",
-                ProcessUtils.getCurrentProcessName(mContext) + "is not main process"
+                ProcessUtils.getCurrentProcessName(mContext as Application) + "is not main process"
             )
             return
         }
         trackAppOpenEvent()
         tackAppEngagementEvent()
+        mIstrackPresetEvent = true
     }
 
     /**
@@ -715,9 +737,11 @@ abstract class AbstractAnalytics : IAnalytics {
             PropertyBuilder.newInstance()
                 .append(
                     HashMap<String?, Any>().apply {
+
+                        val cnl = mConfigOptions?.mChannel ?: ""
                         put(
                             Constant.ATTRIBUTE_PROPERTY_REFERRER_URL,
-                            if (isOK) response.installReferrer else ""
+                            if (isOK) response.installReferrer + "&cnl=$cnl" else "cnl=$cnl"
                         )
                         put(
                             Constant.ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME,

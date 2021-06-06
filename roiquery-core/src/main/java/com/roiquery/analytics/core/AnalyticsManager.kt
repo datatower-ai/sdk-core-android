@@ -24,7 +24,7 @@ import kotlin.collections.HashMap
  */
 class AnalyticsManager private constructor(
     var mContext: Context,
-    var mAnalyticsDataAPI: AnalyticsImp
+//    var mAnalyticsDataAPI: AnalyticsImp
 ) {
     private val mWorker: Worker = Worker()
     private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
@@ -51,12 +51,12 @@ class AnalyticsManager private constructor(
                     // 立即发送：有特殊事件需要立即上报、库存已满（无法插入）、超过允许本地缓存日志的最大条目数
                     if (isNeedFlushImmediately(name)
                         || ret == DataParams.DB_OUT_OF_MEMORY_ERROR
-                        || ret > mAnalyticsDataAPI.flushBulkSize!!
+                        || ret > 100
                     ) {
                         mWorker.runMessage(this)
                     } else {
                         //不立即上报，有时间间隔
-                        mWorker.runMessageOnce(this, mAnalyticsDataAPI.flushInterval!!.toLong())
+                        mWorker.runMessageOnce(this, 2000L)
                     }
                 }
             }
@@ -206,9 +206,9 @@ class AnalyticsManager private constructor(
                 HttpCallback.StringCallback() {
                 override fun onFailure(code: Int, errorMessage: String?) {
                     LogUtils.d(TAG, errorMessage)
-                    mAnalyticsDataAPI.trackQualityEvent(
-                        "uploadData onFailure && events = $event, && error = $errorMessage"
-                    )
+//                    mAnalyticsDataAPI.trackQualityEvent(
+//                        "uploadData onFailure && events = $event, && error = $errorMessage"
+//                    )
                 }
 
                 override fun onResponse(response: String?) {
@@ -218,7 +218,7 @@ class AnalyticsManager private constructor(
                         val leftCount = mDateAdapter.cleanupEvents(lastId)
                         LogUtils.d(TAG, "db left count = $leftCount")
                         //避免事件积压，成功后再次上报
-                        flush(mAnalyticsDataAPI.flushInterval!!.toLong())
+                        flush(2000L)
                     }
                 }
 
@@ -312,13 +312,13 @@ class AnalyticsManager private constructor(
          */
         fun getInstance(
             messageContext: Context,
-            analyticsAPI: AnalyticsImp
+//            analyticsAPI: AnalyticsImp
         ): AnalyticsManager? {
             synchronized(S_INSTANCES) {
                 val appContext: Context = messageContext.applicationContext
                 val ret: AnalyticsManager?
                 if (!S_INSTANCES.containsKey(appContext)) {
-                    ret = AnalyticsManager(appContext, analyticsAPI)
+                    ret = AnalyticsManager(appContext)
                     S_INSTANCES[appContext] = ret
                 } else {
                     ret = S_INSTANCES[appContext]
