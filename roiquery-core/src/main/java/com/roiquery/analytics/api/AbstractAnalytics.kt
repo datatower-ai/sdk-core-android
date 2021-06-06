@@ -90,6 +90,7 @@ abstract class AbstractAnalytics : IAnalytics {
         initCloudConfig()
         initAppLifecycleListener()
         initTrack(context)
+        this.mSDKConfigInit = true
     }
 
     /**
@@ -180,11 +181,11 @@ abstract class AbstractAnalytics : IAnalytics {
     }
 
     fun trackQualityEvent(qualityInfo: String) {
-        track(
-            Constant.PRESET_EVENT_APP_QUALITY,
-            JSONObject().apply {
-                put(Constant.APP_QUALITY_INFO, qualityInfo)
-            })
+//        track(
+//            Constant.PRESET_EVENT_APP_QUALITY,
+//            JSONObject().apply {
+//                put(Constant.APP_QUALITY_INFO, qualityInfo)
+//            })
     }
 
     /**
@@ -434,7 +435,7 @@ abstract class AbstractAnalytics : IAnalytics {
                 )
             }
         }
-        this.mSDKConfigInit = true
+
     }
 
     /**
