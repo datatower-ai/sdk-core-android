@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".MyApp"
+        android:name=".MyApp2"
         android:theme="@style/Theme.ROIQuerySDK">
         <activity android:name=".FirstActivity">
             <intent-filter>
