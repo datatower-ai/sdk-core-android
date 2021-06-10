@@ -97,7 +97,7 @@ abstract class AbstractAnalytics : IAnalytics {
             getGAID()
             getOAID()
             this.mSDKConfigInit = true
-        }catch (e:Exception){
+        } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
 
@@ -620,18 +620,20 @@ abstract class AbstractAnalytics : IAnalytics {
 
                 override fun onException(exception: java.lang.Exception) {
                     trackPresetEvent()
-                    LogUtils.d("getGAID", "onException:"+exception.message.toString())
+                    LogUtils.d("getGAID", "onException:" + exception.message.toString())
                 }
             })
 
-        val task: TimerTask = object : TimerTask() {
-            override fun run() {
-                trackPresetEvent()
+        //处理unity onException 不回调的问题
+        if (getSdkType() == Constant.SDK_TYPE_UNITY) {
+            val task: TimerTask = object : TimerTask() {
+                override fun run() {
+                    trackPresetEvent()
+                }
             }
+            val timer = Timer()
+            timer.schedule(task, 5000) //3秒后执行TimeTask的run方法
         }
-        val timer = Timer()
-        timer.schedule(task, 3000) //3秒后执行TimeTask的run方法
-
     }
 
     /**
@@ -777,23 +779,30 @@ abstract class AbstractAnalytics : IAnalytics {
             mEngagemenExecutors?.shutdown()
         }
         mEngagemenExecutors = ScheduledThreadPoolExecutor(1)
-        mEngagemenExecutors?.scheduleAtFixedRate(
-            {
-                track(
-                    Constant.PRESET_EVENT_APP_ENGAGEMENT,
-                    PropertyBuilder.newInstance()
-                        .append(
-                            Constant.ENGAGEMENT_PROPERTY_IS_FOREGROUND,
-                            mDataAdapter?.isAppForeground.toString()
+        if (mEngagemenExecutors?.isShutdown != true
+            && mEngagemenExecutors?.isTerminated != true
+            && mEngagemenExecutors?.isTerminating != true) {
+            mEngagemenExecutors?.scheduleAtFixedRate(
+                {
+                    if (mEngagemenExecutors?.isShutdown != true
+                        && mEngagemenExecutors?.isTerminated != true
+                        && mEngagemenExecutors?.isTerminating != true) {
+                        track(
+                            Constant.PRESET_EVENT_APP_ENGAGEMENT,
+                            PropertyBuilder.newInstance()
+                                .append(
+                                    Constant.ENGAGEMENT_PROPERTY_IS_FOREGROUND,
+                                    mDataAdapter?.isAppForeground.toString()
+                                )
+                                .toJSONObject()
                         )
-                        .toJSONObject()
-                )
-            },
-            0,
-            Constant.APP_ENGAGEMENT_INTERVAL_TIME,
-            TimeUnit.MILLISECONDS
-        )
-
+                    }
+                },
+                0,
+                Constant.APP_ENGAGEMENT_INTERVAL_TIME,
+                TimeUnit.MILLISECONDS
+            )
+        }
     }
 
 

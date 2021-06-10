@@ -229,7 +229,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
             appForegroundedTS = SystemClock.elapsedRealtime()
             isLeftApplication = false
         }
-        if (property?.clickTS == 0L || property?.leftApplicationTS == 0L || property?.appForegroundedTS!! <= property.leftApplicationTS) {
+        if (property == null || property.clickTS == 0L || property.leftApplicationTS == 0L || property.appForegroundedTS <= property.leftApplicationTS) {
             return
         }
         adTrack(
@@ -280,7 +280,6 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
             }
         }
 
-
     init {
         initAppStatusListener()
     }
@@ -314,7 +313,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
     }
 
     private fun makeAdEventProperty(seq: String) {
-        if (mSequenessMap.size > 3) {
+        if (mSequenessMap.size > 3 && mSequenessMap.keys.isNotEmpty()) {
             mSequenessMap.remove(mSequenessMap.keys.last())
         }
         mSequenessMap[seq] = AdEventProperty()

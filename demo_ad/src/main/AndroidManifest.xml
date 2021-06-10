@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:name=".MyApp2"
         android:theme="@style/Theme.ROIQuerySDK">
-        <activity android:name=".FirstActivity">
+        <activity android:name=".MainActivity2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity2"/>
+<!--        <activity android:name=".MainActivity2"/>-->
     </application>
 
 </manifest>
