@@ -23,6 +23,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
     private var mIsMainProcess: Boolean = true
 
     private var mSequenessMap: MutableMap<String, AdEventProperty?> = mutableMapOf()
+    private val mMaxSequenessSize = 5
 
 
     override fun reportEntrance(
@@ -313,7 +314,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
     }
 
     private fun makeAdEventProperty(seq: String) {
-        if (mSequenessMap.size > 3 && mSequenessMap.keys.isNotEmpty()) {
+        if (mSequenessMap.size > mMaxSequenessSize && mSequenessMap.keys.iterator().hasNext()) {
             mSequenessMap.remove(mSequenessMap.keys.last())
         }
         mSequenessMap[seq] = AdEventProperty()
