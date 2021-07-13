@@ -4,6 +4,9 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
@@ -761,6 +764,10 @@ abstract class AbstractAnalytics : IAnalytics {
                             Constant.ATTRIBUTE_PROPERTY_CNL,
                             mConfigOptions?.mChannel ?: ""
                         )
+                        put(
+                            Constant.ATTRIBUTE_USER_AGENT,
+                            getUserAgent()
+                        )
                         if (!isOK) {
                             put(
                                 Constant.ATTRIBUTE_PROPERTY_FAILED_REASON,
@@ -803,6 +810,16 @@ abstract class AbstractAnalytics : IAnalytics {
                 TimeUnit.MILLISECONDS
             )
         }
+    }
+
+    /**
+     * 获取userAgent
+     */
+    private fun getUserAgent(): String{
+        val webView = mContext?.let { WebView(it) }
+        val userAgent = webView?.settings?.userAgentString
+        webView?.destroy()
+        return userAgent?:""
     }
 
 
