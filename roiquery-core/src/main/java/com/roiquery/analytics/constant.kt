@@ -1,16 +1,19 @@
 package com.roiquery.analytics
 
+
+
 internal object Constant {
 
     const val LOG_TAG = "ROIQuery"
 
     //ROIQuery base url
-    private const val ANALYTICS_BASE_URL = "https://api.roiquery.com"
+    private val ANALYTICS_BASE_URL = if ("0" == BuildConfig.LINK_SITE)"http://35.238.73.110" else "https://api.roiquery.com"
+
 //    private const val ANALYTICS_BASE_URL = "http://35.238.73.110"
     //upload url
-    const val EVENT_REPORT_URL = "$ANALYTICS_BASE_URL/report"
+    val EVENT_REPORT_URL = "$ANALYTICS_BASE_URL/report"
     // cloudConfig url
-    const val CLOUD_CONFIG_URL = "$ANALYTICS_BASE_URL/cfg"
+    val CLOUD_CONFIG_URL = "$ANALYTICS_BASE_URL/cfg"
 //    const val CLOUD_CONFIG_URL = "http://192.168.60.70:8000/apitest/cfg"
 
     //ntp server url
@@ -60,6 +63,7 @@ internal object Constant {
     const val ATTRIBUTE_PROPERTY_INSTANT_EXPERIENCE_LAUNCHED = "instant_experience_launched"
     const val ATTRIBUTE_PROPERTY_FAILED_REASON               = "failed_reason"
     const val ATTRIBUTE_PROPERTY_CNL                         = "cnl"
+    const val ATTRIBUTE_USER_AGENT                           =  "user_agent"
 
 
     const val ENGAGEMENT_PROPERTY_IS_FOREGROUND    = "is_foreground"
