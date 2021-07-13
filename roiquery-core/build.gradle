@@ -23,11 +23,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "VERSION_NAME", "\"$rootProject.ext.core.versionName\""
+            buildConfigField "String", "LINK_SITE", "\"$appFormalLinkSite\""
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "VERSION_NAME", "\"$rootProject.ext.core.versionName\""
+            buildConfigField "String", "LINK_SITE", "\"$appLinkSite\""
         }
     }
     compileOptions {
