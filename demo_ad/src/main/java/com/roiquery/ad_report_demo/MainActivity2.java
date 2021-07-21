@@ -102,7 +102,7 @@ public class MainActivity2 extends AppCompatActivity {
 
         );
         findViewById(R.id.button_track_close).setOnClickListener(v -> {
-                    ROIQueryAdReport.reportImpression(
+                    ROIQueryAdReport.reportPaid(
                             "12435",
                             "Rewarded Video",
                             "unity",
@@ -143,7 +143,7 @@ public class MainActivity2 extends AppCompatActivity {
                     "main"
             );
         });
-        findViewById(R.id.button_track_rewarded).setOnClickListener(v ->
+        findViewById(R.id.button_track_paid).setOnClickListener(v ->
                 ROIQueryAdReport.reportRewarded(
                         "",
                         AD_TYPE.IDLE,
@@ -153,7 +153,7 @@ public class MainActivity2 extends AppCompatActivity {
                         "main"
                 )
         );
-        findViewById(R.id.button_track_sample).setOnClickListener(v -> {
+        findViewById(R.id.button_track_paid).setOnClickListener(v -> {
             ROIQueryAdReport.reportPaid("",
                     AD_TYPE.BANNER,
                     AD_PLATFORM.MOPUB,

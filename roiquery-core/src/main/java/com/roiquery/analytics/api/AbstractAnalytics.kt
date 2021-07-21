@@ -635,7 +635,7 @@ abstract class AbstractAnalytics : IAnalytics {
                 }
             }
             val timer = Timer()
-            timer.schedule(task, 5000) //3秒后执行TimeTask的run方法
+            timer.schedule(task, 5000) //5秒后执行TimeTask的run方法
         }
     }
 

@@ -212,6 +212,7 @@ class AnalyticsManager private constructor(
                 }
 
                 override fun onResponse(response: String?) {
+                    LogUtils.d("$TAG upload event url  ", Constant.EVENT_REPORT_URL)
                     LogUtils.json("$TAG upload event result  ", response)
                     if (!response.isNullOrBlank() && JSONObject(response).getInt(ResponseDataKey.KEY_CODE) == 0) {
                         //上报成功后删除本地数据
