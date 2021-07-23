@@ -42,6 +42,7 @@ interface AD_CONVERSION_SOURCE {
         const val CLICK      = "by_click"
         const val LEFT_APP   = "by_left_app"
         const val IMPRESSION = "by_impression"
+        const val REWARDED   = "by_rewarded"
     }
 }
 

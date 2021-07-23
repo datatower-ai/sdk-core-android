@@ -63,6 +63,10 @@ open class ROIQueryAdReport {
          */
         @JvmOverloads
         @JvmStatic
+        @Deprecated(
+            "this method will be removed in next version",
+            ReplaceWith("ROIQueryAdReport.reportImpression(id,type,platform,location,seq,entrance)"),
+            DeprecationLevel.WARNING)
         fun reportShow(
             id: String,
             type: Int,
@@ -109,6 +113,7 @@ open class ROIQueryAdReport {
          */
         @JvmOverloads
         @JvmStatic
+        @Deprecated("this method has be deprecated",ReplaceWith("reportLeftApp"),DeprecationLevel.HIDDEN)
         fun reportOpen(
             id: String,
             type: Int,
@@ -188,7 +193,7 @@ open class ROIQueryAdReport {
 
 
         /**
-         * 上报 自定义转化（by_click）
+         * 上报 自定义转化，通过点击
          *
          * @param id 广告最小单元id
          * @param type 广告类型
@@ -212,7 +217,7 @@ open class ROIQueryAdReport {
 
 
         /**
-         * 上报 自定义转化（by_left_app）
+         * 上报 自定义转化，通过跳出app
          *
          * @param id 广告最小单元id
          * @param type 广告类型
@@ -235,7 +240,7 @@ open class ROIQueryAdReport {
 
 
         /**
-         * 上报 自定义转化（by_impression）
+         * 上报 自定义转化，通过曝光
          *
          * @param id 广告最小单元id
          * @param type 广告类型
@@ -255,6 +260,30 @@ open class ROIQueryAdReport {
             entrance: String? = ""
         ) = AdReportImp.getInstance()
             .reportConversion(id, type, platform, location, seq,AD_CONVERSION_SOURCE.IMPRESSION, entrance)
+
+
+
+        /**
+         * 上报 自定义转化事件，通过获得激励
+         *
+         * @param id 广告最小单元id
+         * @param type 广告类型
+         * @param platform 广告平台
+         * @param location 广告位
+         * @param seq 系列行为标识
+         * @param entrance 广告入口
+         */
+        @JvmOverloads
+        @JvmStatic
+        fun reportConversionByRewarded(
+            id: String,
+            type: Int,
+            platform: Int,
+            location: String,
+            seq: String,
+            entrance: String? = ""
+        ) = AdReportImp.getInstance()
+            .reportConversion(id, type, platform, location, seq,AD_CONVERSION_SOURCE.REWARDED, entrance)
 
 
 

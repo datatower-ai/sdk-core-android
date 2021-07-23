@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 
             }
             findViewById<View>(R.id.button_track_open).setOnClickListener {
-                ROIQueryAdReport.reportOpen(
+                ROIQueryAdReport.reportImpression(
                     "4",
                     AD_TYPE.BANNER,
                     AD_PLATFORM.ADMOB,
@@ -164,6 +164,14 @@ class MainActivity : AppCompatActivity() {
 
             findViewById<View>(R.id.button_track_conversion_impression).setOnClickListener {
                 ROIQueryAdReport.reportConversionByImpression(
+                    "4",
+                    AD_TYPE.BANNER,
+                    AD_PLATFORM.ADMOB,
+                    "home",
+                    seq,
+                    "main"
+                )
+                ROIQueryAdReport.reportConversionByRewarded(
                     "4",
                     AD_TYPE.BANNER,
                     AD_PLATFORM.ADMOB,
