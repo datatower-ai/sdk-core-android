@@ -52,7 +52,7 @@ open class ROIQueryAnalytics {
          *
          * @param eventName 事件的名称
          * @param properties 事件属性
-//         */
+        */
         @JvmStatic
         fun track(
             eventName: String?,

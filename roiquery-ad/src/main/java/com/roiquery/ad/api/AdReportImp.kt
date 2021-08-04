@@ -23,7 +23,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
     private var mIsMainProcess: Boolean = true
 
     private var mSequenessMap: MutableMap<String, AdEventProperty?> = mutableMapOf()
-    private val mMaxSequenessSize = 5
+    private val mMaxSequenessSize = 10
 
 
     override fun reportEntrance(
@@ -81,7 +81,9 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         seq: String,
         entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, entrance)
+        updateAdEventProperty(id, type, platform, location, seq, entrance)?.apply {
+            showTS = SystemClock.elapsedRealtime()
+        }
         adTrack(
             AdReportConstant.EVENT_AD_IMPRESSION,
             generateAdReportJson(seq)
@@ -126,7 +128,6 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         seq: String,
         entrance: String?,
     ) {
-
         updateAdEventProperty(id, type, platform, location, seq, entrance)?.apply {
             clickTS = SystemClock.elapsedRealtime()
         }

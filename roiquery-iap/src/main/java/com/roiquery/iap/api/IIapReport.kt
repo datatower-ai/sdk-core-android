@@ -8,7 +8,6 @@ interface IIapReport {
      * @param order 订单
      * @param sku 商品ID
      * @param price 价格， 如 9.99
-     * @param usdPrice 美元价格
      * @param currency 货币，如usd
      * @param entrance 入口，可为空
      */
@@ -16,7 +15,6 @@ interface IIapReport {
         order: String,
         sku: String,
         price: Double,
-        usdPrice: Double,
         currency: String,
         entrance: String? = "",
     )
@@ -27,7 +25,6 @@ interface IIapReport {
      * @param order 订单
      * @param sku 商品ID
      * @param price 价格， 如 9.99
-     * @param usdPrice 美元价格
      * @param currency 货币，如usd
      * @param entrance 入口，可为空
      */
@@ -35,7 +32,6 @@ interface IIapReport {
         order: String,
         sku: String,
         price: Double,
-        usdPrice: Double,
         currency: String,
         entrance: String? = "",
     )
@@ -46,7 +42,6 @@ interface IIapReport {
      * @param order 订单
      * @param sku 商品ID
      * @param price 价格， 如 9.99
-     * @param usdPrice 美元价格
      * @param currency 货币，如usd
      * @param entrance 入口，可为空
      */
@@ -54,7 +49,6 @@ interface IIapReport {
         order: String,
         sku: String,
         price: Double,
-        usdPrice: Double,
         currency: String,
         entrance: String? = "",
     )
@@ -65,7 +59,6 @@ interface IIapReport {
      * @param order 订单
      * @param sku 商品ID
      * @param price 价格， 如 9.99
-     * @param usdPrice 美元价格
      * @param currency 货币，如usd
      * @param code 错误码
      * @param entrance 入口，可为空
@@ -75,7 +68,6 @@ interface IIapReport {
         order: String,
         sku: String,
         price: Double,
-        usdPrice: Double,
         currency: String,
         code:String,
         entrance: String? = "",

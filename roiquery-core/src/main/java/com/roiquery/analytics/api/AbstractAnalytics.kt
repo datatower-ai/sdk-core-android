@@ -765,7 +765,7 @@ abstract class AbstractAnalytics : IAnalytics {
                             mConfigOptions?.mChannel ?: ""
                         )
                         put(
-                            Constant.ATTRIBUTE_USER_AGENT,
+                            Constant.ATTRIBUTE_PROPERTY_USER_AGENT,
                             getUserAgent()
                         )
                         if (!isOK) {
