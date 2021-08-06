@@ -231,7 +231,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
 
     override fun reportPaid(
         id: String,
-        type: String,
+        type: Int,
         platform: String,
         location: String,
         seq: String,
@@ -261,7 +261,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
 
         val property = updateAdEventProperty(
             id,
-            AdTypeUtils.getType(mediation, type),
+            type,
             AdPlatformUtils.getPlatform(mediation, platform),
             location,
             seq,

@@ -818,7 +818,6 @@ abstract class AbstractAnalytics : IAnalytics {
     private fun getUserAgent(): String{
         val webView = mContext?.let { WebView(it) }
         val userAgent = webView?.settings?.userAgentString
-        webView?.destroy()
         return userAgent?:""
     }
 

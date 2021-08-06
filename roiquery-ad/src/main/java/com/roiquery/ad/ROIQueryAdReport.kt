@@ -63,10 +63,6 @@ open class ROIQueryAdReport {
          */
         @JvmOverloads
         @JvmStatic
-        @Deprecated(
-            "this method will be removed in next version",
-            ReplaceWith("ROIQueryAdReport.reportImpression(id,type,platform,location,seq,entrance)"),
-            DeprecationLevel.WARNING)
         fun reportShow(
             id: String,
             type: Int,
@@ -335,7 +331,7 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportPaid(
             id: String,
-            type: String,
+            type: Int,
             platform: String,
             location: String,
             seq: String,

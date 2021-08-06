@@ -104,7 +104,7 @@ public class MainActivity2 extends AppCompatActivity {
         findViewById(R.id.button_track_close).setOnClickListener(v -> {
                     ROIQueryAdReport.reportPaid(
                             "12435",
-                            "Rewarded Video",
+                            AD_TYPE.REWARDED,
                             "unity",
                             "home",
                             seq2,

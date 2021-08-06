@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<View>(R.id.button_track_paid_mediation).setOnClickListener {
                 ROIQueryAdReport.reportPaid(
                     "12435",
-                    "Rewarded Video",
+                    AD_TYPE.REWARDED,
                     "unity",
                     "home",
                     seq,

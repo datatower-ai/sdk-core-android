@@ -232,7 +232,7 @@ package com.roiquery.ad.api
       */
      fun reportPaid(
          id: String,
-         type: String,
+         type: Int,
          platform: String,
          location: String,
          seq: String,
