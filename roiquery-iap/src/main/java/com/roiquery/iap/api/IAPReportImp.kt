@@ -16,7 +16,6 @@ class IAPReportImp : IIapReport {
         order: String,
         sku: String,
         price: Double,
-        usdPrice: Double,
         currency: String,
         entrance: String?
     ) {
@@ -25,7 +24,6 @@ class IAPReportImp : IIapReport {
             order = order,
             sku = sku,
             price = price,
-            usdPrice = usdPrice,
             currency = currency,
             entrance = entrance
         )
@@ -35,7 +33,6 @@ class IAPReportImp : IIapReport {
         order: String,
         sku: String,
         price: Double,
-        usdPrice: Double,
         currency: String,
         entrance: String?
     ) {
@@ -44,7 +41,6 @@ class IAPReportImp : IIapReport {
             order = order,
             sku = sku,
             price = price,
-            usdPrice = usdPrice,
             currency = currency,
             entrance = entrance
         )
@@ -54,7 +50,6 @@ class IAPReportImp : IIapReport {
         order: String,
         sku: String,
         price: Double,
-        usdPrice: Double,
         currency: String,
         entrance: String?
     ) {
@@ -63,7 +58,6 @@ class IAPReportImp : IIapReport {
             order = order,
             sku = sku,
             price = price,
-            usdPrice = usdPrice,
             currency = currency,
             entrance = entrance
         )
@@ -73,7 +67,6 @@ class IAPReportImp : IIapReport {
         order: String,
         sku: String,
         price: Double,
-        usdPrice: Double,
         currency: String,
         code: String,
         entrance: String?,
@@ -84,7 +77,6 @@ class IAPReportImp : IIapReport {
             order = order,
             sku = sku,
             price = price,
-            usdPrice = usdPrice,
             currency = currency,
             code, entrance, msg
         )
@@ -95,7 +87,6 @@ class IAPReportImp : IIapReport {
         order: String,
         sku: String,
         price: Double,
-        usdPrice: Double,
         currency: String,
         code: String? = null,
         entrance: String? = null,
@@ -104,7 +95,7 @@ class IAPReportImp : IIapReport {
         if (!ROIQueryIAPReport.isSDKEnable()) return
         ROIQueryAnalytics.track(
             eventName, generateAdReportJson(
-                order,sku, price,usdPrice, currency, code, entrance, msg
+                order,sku, price, currency, code, entrance, msg
             )
         )
     }
@@ -113,7 +104,6 @@ class IAPReportImp : IIapReport {
         order: String,
         sku: String,
         price: Double,
-        usdPrice: Double,
         currency: String,
         code: String? = null,
         entrance: String?,

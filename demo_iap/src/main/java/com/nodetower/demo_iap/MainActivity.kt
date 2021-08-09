@@ -13,19 +13,19 @@ class MainActivity : AppCompatActivity() {
         val order = UUIDUtils.generateUUID()
 
         findViewById<View>(R.id.button_report_entrance).setOnClickListener {
-            ROIQueryIAPReport.reportEntrance(order,"IDS",4.343,1.24,"eu","home")
+            ROIQueryIAPReport.reportEntrance(order,"IDS",4.343,"eu","home")
         }
 
         findViewById<View>(R.id.button_track_to_purchase).setOnClickListener {
-            ROIQueryIAPReport.reportToPurchase(order,"IDS",4.343,1.24,"usd","home")
+            ROIQueryIAPReport.reportToPurchase(order,"IDS",4.343,"usd","home")
         }
 
         findViewById<View>(R.id.button_track_purchased).setOnClickListener {
-            ROIQueryIAPReport.reportPurchased(order,"IDS",4.343,1.24,"usd","home")
+            ROIQueryIAPReport.reportPurchased(order,"IDS",4.343,"usd","home")
         }
 
         findViewById<View>(R.id.button_track_not_purchased).setOnClickListener {
-            ROIQueryIAPReport.reportNotToPurchased(order,"IDS",4.343,1.24,"usd","301","user","no meney")
+            ROIQueryIAPReport.reportNotToPurchased(order,"IDS",4.343,"usd","301","user","no meney")
         }
 
     }

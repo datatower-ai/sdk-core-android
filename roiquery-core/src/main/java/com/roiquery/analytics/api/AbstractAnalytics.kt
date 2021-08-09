@@ -635,7 +635,7 @@ abstract class AbstractAnalytics : IAnalytics {
                 }
             }
             val timer = Timer()
-            timer.schedule(task, 5000) //3秒后执行TimeTask的run方法
+            timer.schedule(task, 5000) //5秒后执行TimeTask的run方法
         }
     }
 
@@ -765,7 +765,7 @@ abstract class AbstractAnalytics : IAnalytics {
                             mConfigOptions?.mChannel ?: ""
                         )
                         put(
-                            Constant.ATTRIBUTE_USER_AGENT,
+                            Constant.ATTRIBUTE_PROPERTY_USER_AGENT,
                             getUserAgent()
                         )
                         if (!isOK) {
@@ -818,7 +818,6 @@ abstract class AbstractAnalytics : IAnalytics {
     private fun getUserAgent(): String{
         val webView = mContext?.let { WebView(it) }
         val userAgent = webView?.settings?.userAgentString
-        webView?.destroy()
         return userAgent?:""
     }
 

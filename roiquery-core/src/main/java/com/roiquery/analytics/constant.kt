@@ -63,7 +63,7 @@ internal object Constant {
     const val ATTRIBUTE_PROPERTY_INSTANT_EXPERIENCE_LAUNCHED = "instant_experience_launched"
     const val ATTRIBUTE_PROPERTY_FAILED_REASON               = "failed_reason"
     const val ATTRIBUTE_PROPERTY_CNL                         = "cnl"
-    const val ATTRIBUTE_USER_AGENT                           =  "user_agent"
+    const val ATTRIBUTE_PROPERTY_USER_AGENT                  =  "user_agent"
 
 
     const val ENGAGEMENT_PROPERTY_IS_FOREGROUND    = "is_foreground"

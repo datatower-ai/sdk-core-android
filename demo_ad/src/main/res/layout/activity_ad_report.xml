@@ -39,7 +39,7 @@
             android:text="show"
             />
         <Button
-            android:id="@+id/button_track_close"
+            android:id="@+id/button_track_impression"
             android:layout_width="wrap_content"
             android:textAllCaps="false"
             android:layout_margin="2dp"
@@ -62,25 +62,90 @@
             />
 
         <Button
-            android:id="@+id/button_track_rewarded"
+            android:id="@+id/button_track_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:layout_margin="2dp"
+            android:text="open"
+            />
+
+
+        <Button
+            android:id="@+id/button_track_close"
             android:layout_width="wrap_content"
             android:textAllCaps="false"
             android:layout_margin="2dp"
             android:layout_height="wrap_content"
-            android:text="rewarded"
+            android:text="close"
             />
 
         <Button
-            android:id="@+id/button_track_sample"
+            android:id="@+id/button_track_left"
             android:layout_width="wrap_content"
             android:textAllCaps="false"
             android:layout_margin="2dp"
             android:layout_height="wrap_content"
-            android:text="track_sample"
+            android:text="left_app"
             />
 
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/button_track_paid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:layout_margin="2dp"
+            android:text="paid"
+            />
 
+        <Button
+            android:id="@+id/button_track_paid_mediation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:layout_margin="2dp"
+            android:text="paid_mediation"
+            />
+
+
+
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_track_conversion_click"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:layout_margin="2dp"
+        android:text="conversion_click"
+        />
+
+    <Button
+        android:id="@+id/button_track_conversion_left_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:layout_margin="2dp"
+        android:text="conversion_left_app"
+        />
+
+
+    <Button
+        android:id="@+id/button_track_conversion_impression"
+        android:layout_width="wrap_content"
+        android:textAllCaps="false"
+        android:layout_margin="2dp"
+        android:layout_height="wrap_content"
+        android:text="conversion_impression"
+        />
 
 </LinearLayout>

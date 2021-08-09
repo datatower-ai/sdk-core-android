@@ -23,7 +23,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
     private var mIsMainProcess: Boolean = true
 
     private var mSequenessMap: MutableMap<String, AdEventProperty?> = mutableMapOf()
-    private val mMaxSequenessSize = 5
+    private val mMaxSequenessSize = 10
 
 
     override fun reportEntrance(
@@ -73,6 +73,53 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         )
     }
 
+    override fun reportImpression(
+        id: String,
+        type: Int,
+        platform: Int,
+        location: String,
+        seq: String,
+        entrance: String?
+    ) {
+        updateAdEventProperty(id, type, platform, location, seq, entrance)?.apply {
+            showTS = SystemClock.elapsedRealtime()
+        }
+        adTrack(
+            AdReportConstant.EVENT_AD_IMPRESSION,
+            generateAdReportJson(seq)
+        )
+    }
+
+    override fun reportOpen(
+        id: String,
+        type: Int,
+        platform: Int,
+        location: String,
+        seq: String,
+        entrance: String?
+    ) {
+        updateAdEventProperty(id, type, platform, location, seq, entrance)
+        adTrack(
+            AdReportConstant.EVENT_AD_OPEN,
+            generateAdReportJson(seq)
+        )
+    }
+
+    override fun reportClose(
+        id: String,
+        type: Int,
+        platform: Int,
+        location: String,
+        seq: String,
+        entrance: String?,
+    ) {
+        updateAdEventProperty(id, type, platform, location, seq, entrance)
+        adTrack(
+            AdReportConstant.EVENT_AD_CLOSE,
+            generateAdReportJson(seq)
+        )
+    }
+
     override fun reportClick(
         id: String,
         type: Int,
@@ -81,7 +128,6 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         seq: String,
         entrance: String?,
     ) {
-
         updateAdEventProperty(id, type, platform, location, seq, entrance)?.apply {
             clickTS = SystemClock.elapsedRealtime()
         }
@@ -103,6 +149,24 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         adTrack(
             AdReportConstant.EVENT_AD_REWARDED,
             generateAdReportJson(seq)
+        )
+    }
+
+    override fun reportConversion(
+        id: String,
+        type: Int,
+        platform: Int,
+        location: String,
+        seq: String,
+        conversionSource: String,
+        entrance: String?
+    ) {
+        updateAdEventProperty(id, type, platform, location, seq, entrance)
+        adTrack(
+            AdReportConstant.EVENT_AD_CONVERSION,
+            generateAdReportJson(seq).apply {
+                put(AdReportConstant.PROPERTY_AD_CONVERSION_SOURCE,conversionSource)
+            }
         )
     }
 
@@ -165,9 +229,9 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         )
     }
 
-    override fun reportImpression(
+    override fun reportPaid(
         id: String,
-        type: String,
+        type: Int,
         platform: String,
         location: String,
         seq: String,
@@ -197,7 +261,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
 
         val property = updateAdEventProperty(
             id,
-            AdTypeUtils.getType(mediation, type),
+            type,
             AdPlatformUtils.getPlatform(mediation, platform),
             location,
             seq,
@@ -245,20 +309,6 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         )
     }
 
-    override fun reportClose(
-        id: String,
-        type: Int,
-        platform: Int,
-        location: String,
-        seq: String,
-        entrance: String?,
-    ) {
-        updateAdEventProperty(id, type, platform, location, seq, entrance)
-        adTrack(
-            AdReportConstant.EVENT_AD_CLOSE,
-            generateAdReportJson(seq)
-        )
-    }
 
 
     private fun adTrack(

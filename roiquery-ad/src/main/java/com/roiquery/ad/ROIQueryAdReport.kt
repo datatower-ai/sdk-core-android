@@ -73,6 +73,54 @@ open class ROIQueryAdReport {
         ) = AdReportImp.getInstance()
             .reportShow(id, type, platform, location, seq, entrance)
 
+
+        /**
+         * 上报 广告曝光
+         *
+         * @param id 广告最小单元id
+         * @param type 广告类型
+         * @param platform 广告平台
+         * @param location 广告位
+         * @param seq 系列行为标识
+         * @param entrance 广告入口
+         */
+        @JvmOverloads
+        @JvmStatic
+        fun reportImpression(
+            id: String,
+            type: Int,
+            platform: Int,
+            location: String,
+            seq: String,
+            entrance: String? = ""
+        ) = AdReportImp.getInstance()
+            .reportImpression(id, type, platform, location, seq, entrance)
+
+
+        /**
+         * 上报 广告打开
+         *
+         * @param id 广告最小单元id
+         * @param type 广告类型
+         * @param platform 广告平台
+         * @param location 广告位
+         * @param seq 系列行为标识
+         * @param entrance 广告入口
+         */
+        @JvmOverloads
+        @JvmStatic
+        @Deprecated("this method has be deprecated",ReplaceWith("reportLeftApp"),DeprecationLevel.HIDDEN)
+        fun reportOpen(
+            id: String,
+            type: Int,
+            platform: Int,
+            location: String,
+            seq: String,
+            entrance: String? = ""
+        ) = AdReportImp.getInstance()
+            .reportOpen(id, type, platform, location, seq, entrance)
+
+
         /**
          * 上报 广告关闭
          *
@@ -140,6 +188,100 @@ open class ROIQueryAdReport {
             .reportRewarded(id, type, platform, location, seq, entrance)
 
 
+        /**
+         * 上报 自定义转化，通过点击
+         *
+         * @param id 广告最小单元id
+         * @param type 广告类型
+         * @param platform 广告平台
+         * @param location 广告位
+         * @param seq 系列行为标识
+         * @param entrance 广告入口
+         */
+        @JvmOverloads
+        @JvmStatic
+        fun reportConversionByClick(
+            id: String,
+            type: Int,
+            platform: Int,
+            location: String,
+            seq: String,
+            entrance: String? = ""
+        ) = AdReportImp.getInstance()
+            .reportConversion(id, type, platform, location, seq,AD_CONVERSION_SOURCE.CLICK, entrance)
+
+
+
+        /**
+         * 上报 自定义转化，通过跳出app
+         *
+         * @param id 广告最小单元id
+         * @param type 广告类型
+         * @param platform 广告平台
+         * @param location 广告位
+         * @param seq 系列行为标识
+         * @param entrance 广告入口
+         */
+        @JvmOverloads
+        @JvmStatic
+        fun reportConversionByLeftApp(
+            id: String,
+            type: Int,
+            platform: Int,
+            location: String,
+            seq: String,
+            entrance: String? = ""
+        ) = AdReportImp.getInstance()
+            .reportConversion(id, type, platform, location, seq,AD_CONVERSION_SOURCE.LEFT_APP, entrance)
+
+
+        /**
+         * 上报 自定义转化，通过曝光
+         *
+         * @param id 广告最小单元id
+         * @param type 广告类型
+         * @param platform 广告平台
+         * @param location 广告位
+         * @param seq 系列行为标识
+         * @param entrance 广告入口
+         */
+        @JvmOverloads
+        @JvmStatic
+        fun reportConversionByImpression(
+            id: String,
+            type: Int,
+            platform: Int,
+            location: String,
+            seq: String,
+            entrance: String? = ""
+        ) = AdReportImp.getInstance()
+            .reportConversion(id, type, platform, location, seq,AD_CONVERSION_SOURCE.IMPRESSION, entrance)
+
+
+
+        /**
+         * 上报 自定义转化事件，通过获得激励
+         *
+         * @param id 广告最小单元id
+         * @param type 广告类型
+         * @param platform 广告平台
+         * @param location 广告位
+         * @param seq 系列行为标识
+         * @param entrance 广告入口
+         */
+        @JvmOverloads
+        @JvmStatic
+        fun reportConversionByRewarded(
+            id: String,
+            type: Int,
+            platform: Int,
+            location: String,
+            seq: String,
+            entrance: String? = ""
+        ) = AdReportImp.getInstance()
+            .reportConversion(id, type, platform, location, seq,AD_CONVERSION_SOURCE.REWARDED, entrance)
+
+
 
         /**
          * 上报 广告展示价值
@@ -187,9 +329,9 @@ open class ROIQueryAdReport {
          */
         @JvmOverloads
         @JvmStatic
-        fun reportImpression(
+        fun reportPaid(
             id: String,
-            type: String,
+            type: Int,
             platform: String,
             location: String,
             seq: String,
@@ -201,7 +343,7 @@ open class ROIQueryAdReport {
             country: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportImpression(id, type, platform, location, seq, mediation, mediationId, value, currency, precision, country, entrance)
+            .reportPaid(id, type, platform, location, seq, mediation, mediationId, value, currency, precision, country, entrance)
 
         /**
          * 上报 访问广告链接，离开当前app(页面)

@@ -58,6 +58,42 @@ package com.roiquery.ad.api
         seq: String,
         entrance: String? = "",
     )
+     /**
+      * 上报 广告曝光
+      *
+      * @param id 广告最小单元id
+      * @param type 广告类型
+      * @param platform 广告平台
+      * @param location 广告位
+      * @param seq 系列行为标识
+      * @param entrance 广告入口
+      */
+     fun reportImpression(
+         id: String,
+         type: Int,
+         platform: Int,
+         location: String,
+         seq: String,
+         entrance: String? = "",
+     )
+     /**
+      * 上报 广告打开
+      *
+      * @param id 广告最小单元id
+      * @param type 广告类型
+      * @param platform 广告平台
+      * @param location 广告位
+      * @param seq 系列行为标识
+      * @param entrance 广告入口
+      */
+     fun reportOpen(
+         id: String,
+         type: Int,
+         platform: Int,
+         location: String,
+         seq: String,
+         entrance: String? = "",
+     )
     /**
      * 上报 广告关闭
      *
@@ -112,6 +148,27 @@ package com.roiquery.ad.api
         seq: String,
         entrance: String? = "",
     )
+
+    /**
+     * 上报 自定义转化
+     *
+     * @param id 广告最小单元id
+     * @param type 广告类型
+     * @param platform 广告平台
+     * @param location 广告位
+     * @param seq 系列行为标识
+     * @param conversionSource 转化来源
+     * @param entrance 广告入口
+     */
+    fun reportConversion(
+        id: String,
+        type: Int,
+        platform: Int,
+        location: String,
+        seq: String,
+        conversionSource: String,
+        entrance: String? = "",
+    )
     /**
      * 上报 访问广告链接，离开当前app(页面)
      *
@@ -132,7 +189,7 @@ package com.roiquery.ad.api
     )
 
      /**
-      * 上报 广告展示价值
+      * 上报 广告展示价值，用于单独广告平台
       *
       * @param id 广告最小单元id
       * @param type 广告类型
@@ -158,7 +215,7 @@ package com.roiquery.ad.api
 
 
      /**
-      * 上报 广告展示价值
+      * 上报 广告展示价值，用于聚合广告平台
       *
       * @param id 广告最小单元id
       * @param type 广告类型
@@ -173,9 +230,9 @@ package com.roiquery.ad.api
       * @param country 国家
       * @param entrance 广告入口
       */
-     fun reportImpression(
+     fun reportPaid(
          id: String,
-         type: String,
+         type: Int,
          platform: String,
          location: String,
          seq: String,
