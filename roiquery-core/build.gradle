@@ -11,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode rootProject.ext.core.versionCode
-        versionName rootProject.ext.core.versionName
+        versionCode rootProject.ext.core.coreVersionCode
+        versionName rootProject.ext.core.coreVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -73,7 +73,7 @@ dependencies {
 // 配置上传信息
 ext {
     ARTIFACT_ID = rootProject.ext.core.artifactId
-    VERSION = rootProject.ext.core.versionName
+    VERSION = rootProject.ext.core.coreVersionName
     DEPENDENCE_TYPE = dependence_type
 }
 
