@@ -5,7 +5,7 @@ plugins {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
         applicationId "com.nodetower.android_analytics"
@@ -54,6 +54,6 @@ dependencies {
     if(dependence_type == "0"){
         implementation(project(":roiquery-core"))
     }else {
-        implementation 'com.roiquery.android:core:'   + rootProject.ext.core.versionName
+        implementation 'com.roiquery.android:core:'   + rootProject.ext.core.coreVersionName
     }
 }
