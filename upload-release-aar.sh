@@ -62,7 +62,7 @@ modifyVersionCode(){
 }
 
 modifyDependenceType
-git pull
+git pull origin master
 if [  $# == 0 ]; then
     exit
 fi
@@ -183,4 +183,6 @@ if [ "${need_update_auth_version}" == "yes" ]  || [ "${need_update_auth_version}
     git commit conf.gradle -m "update auth versionName ${aar_version_name}, versionCode ${aar_version_code}"
     git tag auth/${aar_version_name}
 fi
-git push origin --all
+
+git push origin master
+git push --tags
