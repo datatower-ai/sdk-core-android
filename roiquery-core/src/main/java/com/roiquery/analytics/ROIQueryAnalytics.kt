@@ -161,6 +161,24 @@ open class ROIQueryAnalytics {
         }
 
         /**
+         * 设置AppsFlyer id
+         * @param id appsflyer id
+         */
+        @JvmStatic
+        fun setAppsFlyerId(id: String?) {
+            AnalyticsImp.getInstance(mContext).afid = id
+        }
+
+        /**
+         * 设置kochava id
+         * @param id kochava id
+         */
+        @JvmStatic
+        fun setKochavaId(id: String?) {
+            AnalyticsImp.getInstance(mContext).koid = id
+        }
+
+        /**
          * 校准时间
          * @param timestamp 当前时间戳
          */

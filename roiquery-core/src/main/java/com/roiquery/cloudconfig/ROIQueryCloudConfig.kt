@@ -70,8 +70,8 @@ class ROIQueryCloudConfig {
         fun fetch(listener: ConfigFetchListener? = null) {
             mRemoteAppConfig.fetch({
                 listener?.let {
-                    listener.onSuccess()
                     mCache = null
+                    listener.onSuccess()
                 }
             }) { error ->
                 listener?.let {

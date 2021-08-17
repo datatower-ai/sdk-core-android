@@ -52,6 +52,22 @@ class AnalyticsImp : AbstractAnalytics {
                 updateCommonProperties(Constant.COMMON_PROPERTY_FIREBASE_IID, value)
             }
         }
+    override var afid: String?
+        get() = EventDateAdapter.getInstance()?.afid
+        set(value) {
+            if (value != null) {
+                EventDateAdapter.getInstance()?.afid = value
+                updateCommonProperties(Constant.COMMON_PROPERTY_APPSFLYER_ID, value)
+            }
+        }
+    override var koid: String?
+        get() = EventDateAdapter.getInstance()?.koid
+        set(value) {
+            if (value != null) {
+                EventDateAdapter.getInstance()?.koid = value
+                updateCommonProperties(Constant.COMMON_PROPERTY_KOCHAVA_ID, value)
+            }
+        }
 
     override var enableSDK: Boolean?
         get() = enableTrack == true && enableUpload == true
