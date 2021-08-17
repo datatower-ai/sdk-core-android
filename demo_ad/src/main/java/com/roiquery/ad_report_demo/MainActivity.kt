@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         val seq = UUIDUtils.generateUUID()
         findViewById<View>(R.id.button_track_entrance).setOnClickListener {
-//            ROIQueryAnalytics.setAppsFlyerId("shafdjfkajd")
+            ROIQueryAnalytics.setAppsFlyerId("shafdjfkajd")
             ROIQueryAdReport.reportEntrance(
                 "",
                 AD_TYPE.BANNER,
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         findViewById<View>(R.id.button_track_to_show).setOnClickListener {
-//            ROIQueryAnalytics.setKochavaId("sdf23r243r")
+            ROIQueryAnalytics.setKochavaId("sdf23r243r")
             ROIQueryAdReport.reportToShow(
                 "",
                 AD_TYPE.INTERSTITIAL,
