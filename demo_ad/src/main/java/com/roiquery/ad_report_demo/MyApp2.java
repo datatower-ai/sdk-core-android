@@ -19,7 +19,7 @@ public class MyApp2 extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ROIQuery.initSDK(this,"rq_nocard", ROIQueryChannel.GP,true);
+        ROIQuery.initSDK(this,"android_ad", ROIQueryChannel.GP,true);
         ROIQueryCloudConfig.fetch(new ConfigFetchListener() {
             @Override
             public void onSuccess() {

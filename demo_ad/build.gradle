@@ -60,6 +60,7 @@ dependencies {
         implementation 'com.roiquery.android:ad:'   + rootProject.ext.ad.adVersionName
         implementation 'com.roiquery.android:iap:'   + rootProject.ext.iap.iapVersionName
         implementation 'com.roiquery.android:core:' + rootProject.ext.core.coreVersionName
+//        implementation 'com.roiquery.android:core:' + '1.4.41'
     }
 
 
