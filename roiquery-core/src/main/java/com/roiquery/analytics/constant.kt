@@ -39,6 +39,8 @@ internal object Constant {
 
     const val COMMON_PROPERTY_EVENT_SESSION       = "#event_session"
     const val COMMON_PROPERTY_FIREBASE_IID        = "#firebase_iid"
+    const val COMMON_PROPERTY_APPSFLYER_ID        = "#appsflyer_id"
+    const val COMMON_PROPERTY_KOCHAVA_ID          = "#kochava_id"
     const val COMMON_PROPERTY_MCC                 = "#mcc"
     const val COMMON_PROPERTY_MNC                 = "#mnc"
     const val COMMON_PROPERTY_OS_COUNTRY          = "#os_country"

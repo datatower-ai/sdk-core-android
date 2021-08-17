@@ -26,27 +26,27 @@ ext {
     core = [
 			coreVersionCode      :39,
 			coreVersionName      :'1.1.29',
-            artifactId       : 'core'
+            artifactId           :'core'
     ]
 
     ad = [
 
-			adVersionCode      :39,
-			adVersionName      :'1.1.29',
-            lib_name         : ':lib_ad',
-            artifactId       : 'ad'
+			adVersionCode      :38,
+			adVersionName      :'1.1.28',
+            lib_name           :':lib_ad',
+            artifactId         :'ad'
     ]
     iap = [
-			iapVersionCode      :39,
-			iapVersionName      :'1.1.29',
-            lib_name         :  ':lib_iap',
-            artifactId       : 'iap'
+			iapVersionCode      :38,
+			iapVersionName      :'1.1.28',
+            lib_name            :':lib_iap',
+            artifactId          :'iap'
     ]
     auth = [
-            authVersionCode      : 39,
-            authVersionName      : '1.1.29',
-            lib_name         :  ':lib_auth',
-            artifactId       : 'auth'
+            authVersionCode     : 39,
+            authVersionName     : '1.1.29',
+            lib_name            : ':lib_auth',
+            artifactId          : 'auth'
     ]
 
 

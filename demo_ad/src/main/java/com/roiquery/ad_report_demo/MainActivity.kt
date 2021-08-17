@@ -10,6 +10,7 @@ import com.roiquery.ad.AD_PLATFORM
 import com.roiquery.ad.AD_TYPE
 import com.roiquery.ad.ROIQueryAdReport
 import com.roiquery.ad.utils.UUIDUtils
+import com.roiquery.analytics.ROIQueryAnalytics
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         val seq = UUIDUtils.generateUUID()
         findViewById<View>(R.id.button_track_entrance).setOnClickListener {
+//            ROIQueryAnalytics.setAppsFlyerId("shafdjfkajd")
             ROIQueryAdReport.reportEntrance(
                 "",
                 AD_TYPE.BANNER,
@@ -30,8 +32,10 @@ class MainActivity : AppCompatActivity() {
                 seq,
                 "main"
             )
+
         }
         findViewById<View>(R.id.button_track_to_show).setOnClickListener {
+//            ROIQueryAnalytics.setKochavaId("sdf23r243r")
             ROIQueryAdReport.reportToShow(
                 "",
                 AD_TYPE.INTERSTITIAL,
@@ -125,20 +129,20 @@ class MainActivity : AppCompatActivity() {
                 )
             }
             findViewById<View>(R.id.button_track_paid_mediation).setOnClickListener {
-                ROIQueryAdReport.reportPaid(
-                    "12435",
-                    AD_TYPE.REWARDED,
-                    "unity",
-                    "home",
-                    seq,
-                    AD_MEDIATION.MOPUB,
-                    "32432545",
-                    "5000",
-                    "usd",
-                    "sdf",
-                    "USA",
-                    "hone"
-                )
+//                ROIQueryAdReport.reportPaid(
+//                    "12435",
+//                    AD_TYPE.REWARDED,
+//                    "unity",
+//                    "home",
+//                    seq,
+//                    AD_MEDIATION.MOPUB,
+//                    "32432545",
+//                    "5000",
+//                    "usd",
+//                    "sdf",
+//                    "USA",
+//                    "hone"
+//                )
             }
 
             findViewById<View>(R.id.button_track_conversion_click).setOnClickListener {

@@ -57,40 +57,20 @@ class EventDateAdapter private constructor(
         return mOperation?.queryData(mDbParams!!.eventUri, limit)
     }
 
+
     /**
      *  acountId,自有用户系统id
      *
      * @return acountId
      */
     var accountId: String
-        get() {
-            val values = mOperation?.queryConfig(DataParams.CONFIG_ACCOUNT_ID)
-            return if (values != null && values.isNotEmpty() && values != "null") {
-                values
-            } else ""
-        }
-        set(value) {
-            mOperation?.insertConfig(
-                DataParams.CONFIG_ACCOUNT_ID,
-                value
-            )
-        }
+        get() = getStringConfig(DataParams.CONFIG_ACCOUNT_ID)
+        set(value) = setStringConfig(DataParams.CONFIG_ACCOUNT_ID,value)
+
 
     var cloudConfigAesKey: String
-        get() {
-            val values = mOperation?.queryConfig(DataParams.CLOUD_CONFIG_AES_KEY)
-            return if (values != null && values.isNotEmpty() && values != "null") {
-                values
-            } else ""
-        }
-        set(value) {
-            mOperation?.insertConfig(
-                DataParams.CLOUD_CONFIG_AES_KEY,
-                value
-            )
-        }
-
-
+        get() = getStringConfig(DataParams.CLOUD_CONFIG_AES_KEY)
+        set(value) = setStringConfig(DataParams.CLOUD_CONFIG_AES_KEY,value)
 
     /**
      *  event_session
@@ -98,19 +78,8 @@ class EventDateAdapter private constructor(
      * @return event_session
      */
     var eventSession: String
-        get() {
-            val values = mOperation?.queryConfig(DataParams.CONFIG_EVENT_SESSION)
-            return if (values != null && values.isNotEmpty() && values != "null") {
-                values
-            } else ""
-        }
-        set(value) {
-            mOperation?.insertConfig(
-                DataParams.CONFIG_EVENT_SESSION,
-                value
-            )
-        }
-
+        get() = getStringConfig(DataParams.CONFIG_EVENT_SESSION)
+        set(value) = setStringConfig(DataParams.CONFIG_EVENT_SESSION,value)
 
     /**
      *  firebase app_instance_id
@@ -118,18 +87,28 @@ class EventDateAdapter private constructor(
      * @return fiid
      */
     var fiid: String
-        get() {
-            val values = mOperation?.queryConfig(DataParams.CONFIG_FIREBASE_IID)
-            return if (values != null && values.isNotEmpty() && values != "null") {
-                values
-            } else ""
-        }
-        set(value) {
-            mOperation?.insertConfig(
-                DataParams.CONFIG_FIREBASE_IID,
-                value
-            )
-        }
+        get() = getStringConfig(DataParams.CONFIG_FIREBASE_IID)
+        set(value) = setStringConfig(DataParams.CONFIG_FIREBASE_IID,value)
+
+
+    /**
+     *  AppsFlyers id
+     *
+     * @return afid
+     */
+    var afid: String
+        get() = getStringConfig(DataParams.CONFIG_APPSFLYER_ID)
+        set(value) = setStringConfig(DataParams.CONFIG_APPSFLYER_ID,value)
+
+
+    /**
+     *  kochava id
+     *
+     * @return koid
+     */
+    var koid: String
+        get() = getStringConfig(DataParams.CONFIG_KOCHAVA_ID)
+        set(value) = setStringConfig(DataParams.CONFIG_KOCHAVA_ID,value)
 
     /**
      *  oaid
@@ -137,18 +116,8 @@ class EventDateAdapter private constructor(
      * @return oaid
      */
     var oaid: String
-        get() {
-            val values = mOperation?.queryConfig(DataParams.CONFIG_OAID)
-            return if (values != null && values.isNotEmpty() && values != "null") {
-                values
-            } else ""
-        }
-        set(value) {
-            mOperation?.insertConfig(
-                DataParams.CONFIG_OAID,
-                value
-            )
-        }
+        get() = getStringConfig(DataParams.CONFIG_OAID)
+        set(value) = setStringConfig(DataParams.CONFIG_OAID,value)
 
     /**
      *  gaid
@@ -156,89 +125,75 @@ class EventDateAdapter private constructor(
      * @return gaid
      */
     var gaid: String
-        get() {
-            val values = mOperation?.queryConfig(DataParams.CONFIG_GAID)
-            return if (values != null && values.isNotEmpty() && values != "null") {
-                values
-            } else ""
-        }
-        set(value) {
-            mOperation?.insertConfig(
-                DataParams.CONFIG_GAID,
-                value
-            )
-        }
-
+        get() = getStringConfig(DataParams.CONFIG_GAID)
+        set(value) = setStringConfig(DataParams.CONFIG_GAID,value)
 
     /**
      * 是否上报数据，默认是
      */
     var enableUpload: Boolean
-        get() {
-            val values = mOperation?.queryConfig(DataParams.CONFIG_ENABLE_UPLOADS)
-            return if (values != null && values.isNotEmpty()) {
-                values == "true" || values == "null"
-            } else true
-        }
-        set(value) {
-            mOperation?.insertConfig(
-                DataParams.CONFIG_ENABLE_UPLOADS,
-                value.toString()
-            )
-        }
+        get() = getBooleanConfig(DataParams.CONFIG_ENABLE_UPLOADS)
+        set(value) = setBooleanConfig(DataParams.CONFIG_ENABLE_UPLOADS,value)
+
 
     /**
      * 是否采集数据，默认是
      */
     var enableTrack: Boolean
-        get() {
-            val values = mOperation?.queryConfig(DataParams.CONFIG_ENABLE_TRACK)
-            return if (values != null && values.isNotEmpty()) {
-                values == "true" || values == "null"
-            } else true
-        }
-        set(value) {
-            mOperation?.insertConfig(
-                DataParams.CONFIG_ENABLE_TRACK,
-                value.toString()
-            )
-        }
+        get() = getBooleanConfig(DataParams.CONFIG_ENABLE_TRACK)
+        set(value) = setBooleanConfig(DataParams.CONFIG_ENABLE_TRACK,value)
 
 
     /**
      * 是否首次打开
      */
     var isFirstOpen: Boolean
-        get() {
-            val values = mOperation?.queryConfig(DataParams.CONFIG_FIRST_OPEN)
-            return if (values != null && values.isNotEmpty()) {
-                values == "true" || values == "null"
-            } else true
-        }
-        set(value) {
-            mOperation?.insertConfig(
-                DataParams.CONFIG_FIRST_OPEN,
-                value.toString()
-            )
-        }
+        get() = getBooleanConfig(DataParams.CONFIG_FIRST_OPEN)
+        set(value) = setBooleanConfig(DataParams.CONFIG_FIRST_OPEN,value)
+
 
     /**
      * app 是否在后台
      */
     var isAppForeground: Boolean
-        get() {
-            val values = mOperation?.queryConfig(DataParams.CONFIG_IS_FOREGROUND)
-            return if (values != null && values.isNotEmpty()) {
-                values == "true" || values == "null"
-            } else true
-        }
-        set(value) {
-            mOperation?.insertConfig(
-                DataParams.CONFIG_IS_FOREGROUND,
-                value.toString()
-            )
-        }
+        get() = getBooleanConfig(DataParams.CONFIG_IS_FOREGROUND)
+        set(value) = setBooleanConfig(DataParams.CONFIG_IS_FOREGROUND,value)
 
+
+    private fun getBooleanConfig(key: String): Boolean{
+        val values = mOperation?.queryConfig(key)
+        return if (values != null && values.isNotEmpty()) {
+            values == "true" || values == "null"
+        } else true
+    }
+
+    private fun setBooleanConfig(
+        key: String,
+        value: Boolean
+    ) {
+        mOperation?.insertConfig(
+            key,
+            value.toString()
+        )
+    }
+
+
+    private fun getStringConfig(key: String): String{
+        val values = mOperation?.queryConfig(key)
+        return if (values != null && values.isNotEmpty() && values != "null") {
+            values
+        } else ""
+    }
+
+    private fun setStringConfig(
+        key: String,
+        value: String
+    ) {
+        mOperation?.insertConfig(
+            key,
+            value
+        )
+    }
 
     companion object {
         private var instance: EventDateAdapter? = null

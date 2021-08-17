@@ -70,6 +70,18 @@ interface IAnalytics {
 
 
     /**
+     * 设置当前AppsFlyers id
+     */
+    var afid: String?
+
+
+    /**
+     * 设置当kochava id
+     */
+    var koid: String?
+
+
+    /**
      * 是否禁用SDK
      */
     var enableSDK: Boolean?

@@ -259,6 +259,14 @@ abstract class AbstractAnalytics : IAnalytics {
                 mDataAdapter?.fiid
             )//Firebase的app_instance_id
             put(
+                Constant.COMMON_PROPERTY_APPSFLYER_ID,
+                mDataAdapter?.afid
+            )//appsflyer_id
+            put(
+                Constant.COMMON_PROPERTY_KOCHAVA_ID,
+                mDataAdapter?.koid
+            )//kochava_id
+            put(
                 Constant.COMMON_PROPERTY_MCC,
                 DeviceUtils.getMcc(mContext!!)
             )//移动信号国家码
@@ -788,12 +796,14 @@ abstract class AbstractAnalytics : IAnalytics {
         mEngagemenExecutors = ScheduledThreadPoolExecutor(1)
         if (mEngagemenExecutors?.isShutdown != true
             && mEngagemenExecutors?.isTerminated != true
-            && mEngagemenExecutors?.isTerminating != true) {
+            && mEngagemenExecutors?.isTerminating != true
+        ) {
             mEngagemenExecutors?.scheduleAtFixedRate(
                 {
                     if (mEngagemenExecutors?.isShutdown != true
                         && mEngagemenExecutors?.isTerminated != true
-                        && mEngagemenExecutors?.isTerminating != true) {
+                        && mEngagemenExecutors?.isTerminating != true
+                    ) {
                         track(
                             Constant.PRESET_EVENT_APP_ENGAGEMENT,
                             PropertyBuilder.newInstance()
@@ -815,10 +825,15 @@ abstract class AbstractAnalytics : IAnalytics {
     /**
      * 获取userAgent
      */
-    private fun getUserAgent(): String{
-        val webView = mContext?.let { WebView(it) }
-        val userAgent = webView?.settings?.userAgentString
-        return userAgent?:""
+    private fun getUserAgent(): String {
+        var userAgent = ""
+        try {
+            val webView = mContext?.let { WebView(it) }
+            userAgent = webView?.settings?.userAgentString.toString()
+        } catch (e: Exception) {
+
+        }
+        return userAgent
     }
 
 
