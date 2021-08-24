@@ -21,13 +21,13 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportEntrance(
             id: String,
-            type: Int,
-            platform: Int,
+            type: AdType,
+            platform: AdPlatform,
             location: String,
             seq: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportEntrance(id, type, platform, location, seq, entrance)
+            .reportEntrance(id, type.value, platform.value, location, seq, entrance)
 
         /**
          * 上报 广告展示请求
@@ -43,13 +43,13 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportToShow(
             id: String,
-            type: Int,
-            platform: Int,
+            type: AdType,
+            platform: AdPlatform,
             location: String,
             seq: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportToShow(id, type, platform, location, seq, entrance)
+            .reportToShow(id, type.value, platform.value, location, seq, entrance)
 
         /**
          * 上报 广告展示
@@ -65,13 +65,13 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportShow(
             id: String,
-            type: Int,
-            platform: Int,
+            type: AdType,
+            platform: AdPlatform,
             location: String,
             seq: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportShow(id, type, platform, location, seq, entrance)
+            .reportShow(id, type.value, platform.value, location, seq, entrance)
 
 
         /**
@@ -88,13 +88,13 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportImpression(
             id: String,
-            type: Int,
-            platform: Int,
+            type: AdType,
+            platform: AdPlatform,
             location: String,
             seq: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportImpression(id, type, platform, location, seq, entrance)
+            .reportImpression(id, type.value, platform.value, location, seq, entrance)
 
 
         /**
@@ -112,13 +112,13 @@ open class ROIQueryAdReport {
         @Deprecated("this method has be deprecated",ReplaceWith("reportLeftApp"),DeprecationLevel.HIDDEN)
         fun reportOpen(
             id: String,
-            type: Int,
-            platform: Int,
+            type: AdType,
+            platform: AdPlatform,
             location: String,
             seq: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportOpen(id, type, platform, location, seq, entrance)
+            .reportOpen(id, type.value, platform.value, location, seq, entrance)
 
 
         /**
@@ -135,13 +135,13 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportClose(
             id: String,
-            type: Int,
-            platform: Int,
+            type: AdType,
+            platform: AdPlatform,
             location: String,
             seq: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportClose(id, type, platform, location, seq, entrance)
+            .reportClose(id, type.value, platform.value, location, seq, entrance)
 
         /**
          * 上报 广告点击
@@ -157,13 +157,13 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportClick(
             id: String,
-            type: Int,
-            platform: Int,
+            type: AdType,
+            platform: AdPlatform,
             location: String,
             seq: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportClick(id, type, platform, location, seq, entrance)
+            .reportClick(id, type.value, platform.value, location, seq, entrance)
 
         /**
          * 上报 激励广告已获得奖励
@@ -179,13 +179,13 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportRewarded(
             id: String,
-            type: Int,
-            platform: Int,
+            type: AdType,
+            platform: AdPlatform,
             location: String,
             seq: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportRewarded(id, type, platform, location, seq, entrance)
+            .reportRewarded(id, type.value, platform.value, location, seq, entrance)
 
 
         /**
@@ -202,13 +202,13 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportConversionByClick(
             id: String,
-            type: Int,
-            platform: Int,
+            type: AdType,
+            platform: AdPlatform,
             location: String,
             seq: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportConversion(id, type, platform, location, seq,AD_CONVERSION_SOURCE.CLICK, entrance)
+            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.CLICK, entrance)
 
 
 
@@ -226,13 +226,13 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportConversionByLeftApp(
             id: String,
-            type: Int,
-            platform: Int,
+            type: AdType,
+            platform: AdPlatform,
             location: String,
             seq: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportConversion(id, type, platform, location, seq,AD_CONVERSION_SOURCE.LEFT_APP, entrance)
+            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.LEFT_APP, entrance)
 
 
         /**
@@ -249,13 +249,13 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportConversionByImpression(
             id: String,
-            type: Int,
-            platform: Int,
+            type: AdType,
+            platform: AdPlatform,
             location: String,
             seq: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportConversion(id, type, platform, location, seq,AD_CONVERSION_SOURCE.IMPRESSION, entrance)
+            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.IMPRESSION, entrance)
 
 
 
@@ -273,13 +273,13 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportConversionByRewarded(
             id: String,
-            type: Int,
-            platform: Int,
+            type: AdType,
+            platform: AdPlatform,
             location: String,
             seq: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportConversion(id, type, platform, location, seq,AD_CONVERSION_SOURCE.REWARDED, entrance)
+            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.REWARDED, entrance)
 
 
 
@@ -300,8 +300,8 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportPaid(
             id: String,
-            type: Int,
-            platform: Int,
+            type: AdType,
+            platform: AdPlatform,
             location: String,
             seq: String,
             value: String,
@@ -309,7 +309,7 @@ open class ROIQueryAdReport {
             precision: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportPaid(id, type, platform, location, seq, value, currency, precision, entrance)
+            .reportPaid(id, type.value, platform.value, location, seq, value, currency, precision, entrance)
 
         /**
          * 上报 广告展示价值
@@ -331,11 +331,11 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportPaid(
             id: String,
-            type: Int,
+            type: AdType,
             platform: String,
             location: String,
             seq: String,
-            mediation: Int,
+            mediation: AdMediation,
             mediationId: String,
             value: String,
             currency: String,
@@ -343,7 +343,7 @@ open class ROIQueryAdReport {
             country: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportPaid(id, type, platform, location, seq, mediation, mediationId, value, currency, precision, country, entrance)
+            .reportPaid(id, type.value, platform, location, seq, mediation.value, mediationId, value, currency, precision, country, entrance)
 
         /**
          * 上报 访问广告链接，离开当前app(页面)
@@ -359,13 +359,13 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun reportLeftApp(
             id: String,
-            type: Int,
-            platform: Int,
+            type: AdType,
+            platform: AdPlatform,
             location: String,
             seq: String,
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportLeftApp(id, type, platform, location, seq, entrance)
+            .reportLeftApp(id, type.value, platform.value, location, seq, entrance)
 
         /**
          * 上报 访问广告链接，回到当前app(页面)
