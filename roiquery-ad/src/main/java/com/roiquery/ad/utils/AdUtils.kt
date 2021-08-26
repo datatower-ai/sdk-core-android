@@ -1,58 +1,39 @@
 package com.roiquery.ad.utils
 
-import com.roiquery.ad.AD_MEDIATION
-import com.roiquery.ad.AD_PLATFORM
-import com.roiquery.ad.AD_TYPE
+import com.roiquery.ad.AdMediation
+import com.roiquery.ad.AdPlatform
+import com.roiquery.ad.AdType
 
-object AdTypeUtils {
-
-    fun getType(mediation: Int, typeString: String) =
-        when (mediation) {
-            AD_MEDIATION.MOPUB -> getMopubType(typeString)
-            else -> AD_MEDIATION.IDLE
-        }
-
-    private fun getMopubType(typeString: String) =
-        when (typeString) {
-            "Banner" -> AD_TYPE.BANNER
-            "Fullscreen" -> AD_TYPE.INTERSTITIAL
-            "Custom" -> AD_TYPE.NATIVE
-            "Medium Rectangle" -> AD_TYPE.NATIVE
-            "Rewarded Ad" -> AD_TYPE.REWARDED
-            "Rewarded Video" -> AD_TYPE.REWARDED
-            else -> AD_TYPE.IDLE
-        }
-}
 
 object AdPlatformUtils {
 
     fun getPlatform(mediation: Int, typeString: String) =
         when (mediation) {
-            AD_MEDIATION.MOPUB -> getMopubPlatform(typeString)
-            else -> AD_MEDIATION.IDLE
+            AdMediation.MOPUB.value -> getMopubPlatform(typeString).value
+            else -> AdMediation.IDLE.value
         }
 
     private fun getMopubPlatform(typeString: String) =
         when (typeString) {
-            "admob_native" -> AD_PLATFORM.ADMOB
-            "pangle" -> AD_PLATFORM.PANGLE
-            "ironsource" -> AD_PLATFORM.IRONSOURCE
-            "marketplace" -> AD_PLATFORM.MOPUB
-            "unity" -> AD_PLATFORM.UNITY_ADS
-            "facebook" -> AD_PLATFORM.FACEBOOK
-            else -> AD_PLATFORM.IDLE
+            "admob_native" -> AdPlatform.ADMOB
+            "pangle" -> AdPlatform.PANGLE
+            "ironsource" -> AdPlatform.IRONSOURCE
+            "marketplace" -> AdPlatform.MOPUB
+            "unity" -> AdPlatform.UNITY_ADS
+            "facebook" -> AdPlatform.FACEBOOK
+            else -> AdPlatform.IDLE
         }
 }
 
 data class AdEventProperty(
     var location: String = "",
-    var adType: Int = AD_TYPE.IDLE,
-    var adPlatform: Int = AD_PLATFORM.IDLE,
+    var adType: Int = AdType.IDLE.value,
+    var adPlatform: Int = AdPlatform.IDLE.value,
     var adId: String = "",
     var seq: String = "",
     var entrance: String = "",
 
-    var mediation: Int = AD_MEDIATION.IDLE,
+    var mediation: Int = AdMediation.IDLE.value,
     var mediationId: String = "",
     var value: String = "",
     var currency: String = "",

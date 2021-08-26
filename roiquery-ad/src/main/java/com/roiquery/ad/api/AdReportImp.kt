@@ -5,12 +5,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.SystemClock
 import android.text.TextUtils
-import com.roiquery.ad.AD_PLATFORM
-import com.roiquery.ad.AD_TYPE
+import com.roiquery.ad.AdPlatform
 import com.roiquery.ad.AdReportConstant
+import com.roiquery.ad.AdType
 import com.roiquery.ad.utils.AdEventProperty
 import com.roiquery.ad.utils.AdPlatformUtils
-import com.roiquery.ad.utils.AdTypeUtils
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.AppLifecycleHelper.OnAppStatusListener
@@ -391,10 +390,10 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
             if (id.isNotEmpty()) {
                 it.adId = id
             }
-            if (type != AD_TYPE.IDLE){
+            if (type != AdType.IDLE.value){
                 it.adType = type
             }
-            if (platform != AD_PLATFORM.IDLE){
+            if (platform != AdPlatform.IDLE.value){
                 it.adPlatform = platform
             }
             it.seq = seq
