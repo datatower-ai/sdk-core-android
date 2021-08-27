@@ -9,6 +9,7 @@ interface IIapReport {
      * @param sku 商品ID
      * @param price 价格， 如 9.99
      * @param currency 货币，如usd
+     * @param seq 系列行为标识
      * @param entrance 入口，可为空
      */
     fun reportEntrance(
@@ -16,6 +17,7 @@ interface IIapReport {
         sku: String,
         price: Double,
         currency: String,
+        seq: String,
         entrance: String? = "",
     )
 
@@ -26,6 +28,7 @@ interface IIapReport {
      * @param sku 商品ID
      * @param price 价格， 如 9.99
      * @param currency 货币，如usd
+     * @param seq 系列行为标识
      * @param entrance 入口，可为空
      */
     fun reportToPurchase(
@@ -33,6 +36,7 @@ interface IIapReport {
         sku: String,
         price: Double,
         currency: String,
+        seq: String,
         entrance: String? = "",
     )
 
@@ -43,6 +47,7 @@ interface IIapReport {
      * @param sku 商品ID
      * @param price 价格， 如 9.99
      * @param currency 货币，如usd
+     * @param seq 系列行为标识
      * @param entrance 入口，可为空
      */
     fun reportPurchased(
@@ -50,6 +55,7 @@ interface IIapReport {
         sku: String,
         price: Double,
         currency: String,
+        seq: String,
         entrance: String? = "",
     )
 
@@ -60,6 +66,7 @@ interface IIapReport {
      * @param sku 商品ID
      * @param price 价格， 如 9.99
      * @param currency 货币，如usd
+     * @param seq 系列行为标识
      * @param code 错误码
      * @param entrance 入口，可为空
      * @param msg 额外信息，可为空
@@ -69,6 +76,7 @@ interface IIapReport {
         sku: String,
         price: Double,
         currency: String,
+        seq: String,
         code:String,
         entrance: String? = "",
         msg: String? = "",
