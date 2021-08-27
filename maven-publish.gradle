@@ -7,7 +7,7 @@ task generateSourcesJar(type: Jar) {
 
 
 def SNAPSHOT_REPOSITORY_URL = "http://localhost:8081/repository/maven-releases/"
-def RELEASE_REPOSITORY_URL  = "https://maven.en2joy.com/repository/maven-ironmeta-internal/"
+def RELEASE_REPOSITORY_URL  = "https://repo.en2joy.com/repository/maven-ironmeta-internal/"
 
 afterEvaluate {
     publishing {

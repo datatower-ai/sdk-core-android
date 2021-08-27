@@ -129,6 +129,7 @@ class DataParams private constructor(packageName: String) {
         const val KEY_CONFIG_NAME = "name"
         const val KEY_CONFIG_VALUE = "value"
 
+        const val CONFIG_FIRST_OPEN_TIME = "first_open_time"
         const val CONFIG_GAID = "gaid"
         const val CONFIG_OAID = "oaid"
         const val CONFIG_EVENT_SESSION = "event_session"
@@ -139,14 +140,17 @@ class DataParams private constructor(packageName: String) {
         const val CONFIG_ENABLE_UPLOADS = "enable_upload"
         const val CONFIG_ENABLE_TRACK = "enable_track"
         const val CONFIG_FIRST_OPEN = "first_open"
+        const val CONFIG_ATTRIBUTE = "app_attribute"
         const val CONFIG_IS_FOREGROUND = "is_foreground"
         const val CLOUD_CONFIG_AES_KEY = "cloud_config_aes_key"
 
 
 
         /* 数据库状态 */
+        const val DB_INSERT_SUCCEED = 0
         const val DB_UPDATE_ERROR = -1
         const val DB_OUT_OF_MEMORY_ERROR = -2
+        const val DB_INSERT_EXCEPTION = -3
         const val DB_INSERT_ERROR = -3L
         const val DB_UPDATE_CONFIG_ERROR = -4
         const val VALUE = "value"

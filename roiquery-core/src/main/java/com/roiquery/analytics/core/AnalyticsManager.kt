@@ -40,9 +40,10 @@ class AnalyticsManager private constructor(
                 //是否数据重复
                 if (isEventRepetitive(eventJson)) return
                 //插入数据库
-                val ret = mDateAdapter.addJSON(eventJson)
+                val insertedCount = mDateAdapter.addJSON(eventJson)
+                checkAppAttributeInsertState(insertedCount,name)
                 val msg =
-                    if (ret < 0) " Failed to insert the event " else " the event: $name  has been inserted to db，count = $ret  "
+                    if (insertedCount < 0) " Failed to insert the event " else " the event: $name  has been inserted to db，count = $insertedCount  "
                 LogUtils.json(TAG + msg, eventJson.toString())
                 //发送上报的message
                 Message.obtain().apply {
@@ -50,8 +51,8 @@ class AnalyticsManager private constructor(
                     this.what = FLUSH_QUEUE
                     // 立即发送：有特殊事件需要立即上报、库存已满（无法插入）、超过允许本地缓存日志的最大条目数
                     if (isNeedFlushImmediately(name)
-                        || ret == DataParams.DB_OUT_OF_MEMORY_ERROR
-                        || ret > 100
+                        || insertedCount == DataParams.DB_OUT_OF_MEMORY_ERROR
+                        || insertedCount > 100
                     ) {
                         mWorker.runMessage(this)
                     } else {
@@ -75,18 +76,28 @@ class AnalyticsManager private constructor(
             else mWorker.runMessageOnce(this, timeDelayMills)
         }
     }
+
+    /**
+     * app_attribute 事件采集情况
+     */
+    private fun checkAppAttributeInsertState(insertCount: Int, eventName: String) {
+        if (insertCount > 0 && Constant.PRESET_EVENT_TAG + eventName ==  Constant.PRESET_EVENT_APP_ATTRIBUTE) {
+            mDateAdapter?.isAttributed = true
+        }
+    }
+
     /**
      * 重复数据校验
      */
     private fun isEventRepetitive(
         eventJson: JSONObject
-    ) :Boolean {
+    ): Boolean {
         var isRepetitive = false
         val eventName = eventJson.getString(Constant.EVENT_INFO_NAME)
         val eventTime = eventJson.getString(Constant.EVENT_INFO_TIME).toLong()
         if (mLastEventName == null) {
             isRepetitive = false
-        } else if (mLastEventName == eventName && eventTime - mLastEventTime!! < 1000){
+        } else if (mLastEventName == eventName && eventTime - mLastEventTime!! < 1000) {
             if (mLastEventJson != null) {
                 val currentKeys = mutableListOf<String>().apply {
                     eventJson.getJSONObject(Constant.EVENT_INFO_PROPERTIES).keys().forEach {
@@ -107,8 +118,13 @@ class AnalyticsManager private constructor(
                     isRepetitive = true
                     for (key in currentKeys) {
                         //if the values do not equals, that means different event
-                        if (!mLastEventJson!!.getJSONObject(Constant.EVENT_INFO_PROPERTIES).getString(key)
-                                .equals(eventJson.getJSONObject(Constant.EVENT_INFO_PROPERTIES).getString(key))) {
+                        if (!mLastEventJson!!.getJSONObject(Constant.EVENT_INFO_PROPERTIES)
+                                .getString(key)
+                                .equals(
+                                    eventJson.getJSONObject(Constant.EVENT_INFO_PROPERTIES)
+                                        .getString(key)
+                                )
+                        ) {
                             isRepetitive = false
                             break
                         }

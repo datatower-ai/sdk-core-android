@@ -3,6 +3,7 @@ package com.roiquery.analytics
 import android.annotation.SuppressLint
 import android.content.Context
 import com.roiquery.analytics.Constant.ENABLE_ANALYTICS_SDK_KEY
+import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
@@ -43,7 +44,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         @JvmOverloads
-        fun track(eventName: String?, properties: JSONObject?  = JSONObject()) =
+        fun track(eventName: String?, properties: JSONObject? = JSONObject()) =
             AnalyticsImp.getInstance(mContext).track(eventName, properties)
 
 
@@ -52,7 +53,7 @@ open class ROIQueryAnalytics {
          *
          * @param eventName 事件的名称
          * @param properties 事件属性
-        */
+         */
         @JvmStatic
         fun track(
             eventName: String?,
@@ -183,7 +184,7 @@ open class ROIQueryAnalytics {
          * @param timestamp 当前时间戳
          */
         @JvmStatic
-        fun calibrateTime(timestamp: Long){
+        fun calibrateTime(timestamp: Long) {
             AnalyticsImp.getInstance(mContext).calibrateTime(timestamp)
         }
 
@@ -247,10 +248,14 @@ open class ROIQueryAnalytics {
          * sdk 是否可用，默认可用，由cloud config 控制
          */
         @JvmStatic
-        internal fun isSDKEnable() =
-            ROIQueryCloudConfig.getBoolean(ENABLE_ANALYTICS_SDK_KEY, true).apply {
-                //switch
-                AnalyticsImp.getInstance(mContext).enableSDK = this
-            }
+        internal fun isSDKEnable(): Boolean {
+            return if (!AbstractAnalytics.mSDKConfigInit) true
+            else
+                ROIQueryCloudConfig.getBoolean(ENABLE_ANALYTICS_SDK_KEY, true).apply {
+                    //switch
+                    AnalyticsImp.getInstance(mContext).enableSDK = this
+                }
+        }
+
     }
 }
