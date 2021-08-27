@@ -7,7 +7,8 @@ task generateSourcesJar(type: Jar) {
 
 
 def SNAPSHOT_REPOSITORY_URL = "http://localhost:8081/repository/maven-releases/"
-def RELEASE_REPOSITORY_URL  = "https://repo.en2joy.com/repository/maven-ironmeta-internal/"
+//def RELEASE_REPOSITORY_URL  = "https://repo.en2joy.com/repository/maven-ironmeta-internal/"
+def RELEASE_REPOSITORY_URL  = "https://repo-public.en2joy.com/repository/maven-releases/"
 
 afterEvaluate {
     publishing {
@@ -29,8 +30,8 @@ afterEvaluate {
                 url = DEPENDENCE_TYPE == "1" ? SNAPSHOT_REPOSITORY_URL :(DEPENDENCE_TYPE == "2"? RELEASE_REPOSITORY_URL :"")
                 // 仓库用户名密码
                 credentials {
-                    username = "JunxingShi"
-                    password = "5201314sjx"
+                    username = "admin"
+                    password = "48416b9e-f0ad-46fc-9628-8eb0faea4965"
                 }
             }
 
