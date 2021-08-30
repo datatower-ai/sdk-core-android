@@ -37,11 +37,12 @@ internal class EventDataOperation(private val mContext: Context) {
                     System.currentTimeMillis()
                 )
             }
-            mDbHelper?.insert(uri!!, cv)
+            val insertResult = mDbHelper?.insert(cv) !!
+            return if (insertResult >= 0L) DataParams.DB_INSERT_SUCCEED else DataParams.DB_INSERT_EXCEPTION
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
+            return DataParams.DB_INSERT_EXCEPTION
         }
-        return 0
     }
 
 

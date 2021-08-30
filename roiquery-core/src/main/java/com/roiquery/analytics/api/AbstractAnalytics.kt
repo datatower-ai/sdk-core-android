@@ -4,9 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.webkit.WebChromeClient
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
@@ -41,26 +39,14 @@ abstract class AbstractAnalytics : IAnalytics {
 
     protected var mContext: Context? = null
 
-    // SDK 配置是否初始化
-    protected var mSDKConfigInit = false
-
-    // 是否采集了预置事件
-    protected var mIstrackPresetEvent = false
-
     // 事件信息，包含事件的基本数据
     private var mEventInfo: MutableMap<String, Any?>? = null
 
     // 事件通用属性
     private var mCommonProperties: MutableMap<String, Any?>? = null
 
-    //是否允许采集did
-    private var mDisableTrackDeviceId = false
-
     //事件采集管理
     protected var mTrackTaskManager: ExecutorService? = null
-
-    //事件采集线程
-//    private var mTrackTaskManagerThread: TrackTaskManagerThread? = null
 
     //采集 app 活跃事件线程池
     private var mEngagemenExecutors: ScheduledThreadPoolExecutor? = null
@@ -78,13 +64,15 @@ abstract class AbstractAnalytics : IAnalytics {
 
     private var mPresetEvents = emptyArray<String>()
     private var mPresetProperties = emptyArray<String>()
-    private var mFirstOpenTime = ""
 
     companion object {
         const val TAG = "AnalyticsApi"
 
         // 配置
         internal var mConfigOptions: AnalyticsConfig? = null
+
+        // SDK 配置是否初始化
+        var mSDKConfigInit = false
     }
 
 
@@ -93,17 +81,17 @@ abstract class AbstractAnalytics : IAnalytics {
             mContext = context
             initConfig(mContext!!.packageName)
             initLocalData()
-            initTrack(mContext!!)
+            initTracker(mContext!!)
             initProperties()
             initCloudConfig()
             initAppLifecycleListener()
+            trackPresetEvent()
             getGAID()
             getOAID()
-            this.mSDKConfigInit = true
+            mSDKConfigInit = true
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
-
     }
 
     /**
@@ -145,7 +133,7 @@ abstract class AbstractAnalytics : IAnalytics {
     /**
      * 初始化数据采集
      */
-    private fun initTrack(context: Context) {
+    private fun initTracker(context: Context) {
         mTrackTaskManager = Executors.newSingleThreadExecutor()
         mAnalyticsManager = AnalyticsManager.getInstance(context)
     }
@@ -163,14 +151,17 @@ abstract class AbstractAnalytics : IAnalytics {
                 put(Constant.EVENT_INFO_NAME, realEventName)
                 put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
                 if (Constant.PRESET_EVENT_APP_FIRST_OPEN == eventName) {
-                    mFirstOpenTime = getString(Constant.EVENT_INFO_TIME)
+                    mDataAdapter?.firstOpenTime = getString(Constant.EVENT_INFO_TIME)
                 }
                 if (Constant.PRESET_EVENT_APP_ATTRIBUTE == eventName) {
                     if (properties?.has(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == false
                         || properties?.getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME)
                             ?.isEmpty() == true
                     ) {
-                        properties.put(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME, mFirstOpenTime)
+                        properties.put(
+                            Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
+                            mDataAdapter?.firstOpenTime
+                        )
                     }
                 }
             }
@@ -624,36 +615,19 @@ abstract class AbstractAnalytics : IAnalytics {
                 override fun onSuccess(info: GaidHelper.AdIdInfo) {
                     mDataAdapter?.gaid = info.adId
                     updateEventInfo(Constant.EVENT_INFO_GAID, info.adId)
-                    //由于id 比较重要，所以在id回调之后再进行事件采集
-                    trackPresetEvent()
                     LogUtils.d("getGAID", "onSuccess")
                 }
 
                 override fun onException(exception: java.lang.Exception) {
-                    trackPresetEvent()
                     LogUtils.d("getGAID", "onException:" + exception.message.toString())
                 }
             })
-
-        //处理unity onException 不回调的问题
-        if (getSdkType() == Constant.SDK_TYPE_UNITY) {
-            val task: TimerTask = object : TimerTask() {
-                override fun run() {
-                    trackPresetEvent()
-                }
-            }
-            val timer = Timer()
-            timer.schedule(task, 5000) //5秒后执行TimeTask的run方法
-        }
     }
 
     /**
      * 采集app 预置事件
      */
     private fun trackPresetEvent() {
-        if (mIstrackPresetEvent) {
-            return
-        }
         //子进程不采集
         if (!ProcessUtils.isMainProcess(mContext as Application?)) {
             LogUtils.i(
@@ -663,8 +637,8 @@ abstract class AbstractAnalytics : IAnalytics {
             return
         }
         trackAppOpenEvent()
+        startAppAttribute()
         tackAppEngagementEvent()
-        mIstrackPresetEvent = true
     }
 
     /**
@@ -674,18 +648,23 @@ abstract class AbstractAnalytics : IAnalytics {
         if (mDataAdapter?.isFirstOpen == true) {
             track(Constant.PRESET_EVENT_APP_FIRST_OPEN)
             mDataAdapter?.isFirstOpen = false
-            try {
-                getAppAttribute()
-            } catch (e: Exception) {
-                LogUtils.printStackTrace(e)
-                trackAppAttributeEvent(
-                    ReferrerDetails(null),
-                    "Exception: " + e.message.toString()
-                )
-            }
         } else {
             track(Constant.PRESET_EVENT_APP_OPEN)
         }
+    }
+
+
+    private fun startAppAttribute() {
+        try {
+            getAppAttribute()
+        } catch (e: Exception) {
+            LogUtils.printStackTrace(e)
+            trackAppAttributeEvent(
+                ReferrerDetails(null),
+                "Exception: " + e.message.toString()
+            )
+        }
+
     }
 
     /**
@@ -744,6 +723,7 @@ abstract class AbstractAnalytics : IAnalytics {
      * 采集 app 归因属性事件
      */
     private fun trackAppAttributeEvent(response: ReferrerDetails, failedReason: String) {
+        if (mDataAdapter?.isAttributed == true ) return
         val isOK = failedReason.isBlank()
         track(
             Constant.PRESET_EVENT_APP_ATTRIBUTE,
@@ -813,6 +793,7 @@ abstract class AbstractAnalytics : IAnalytics {
                                 )
                                 .toJSONObject()
                         )
+                        startAppAttribute()
                     }
                 },
                 0,

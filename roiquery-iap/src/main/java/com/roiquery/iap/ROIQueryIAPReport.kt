@@ -21,6 +21,7 @@ open class ROIQueryIAPReport {
          * @param sku 商品ID
          * @param price 价格， 如 9.99
          * @param currency 货币，如usd
+         * @param seq 系列行为标识
          * @param entrance 入口，可为空
          */
         @JvmStatic
@@ -30,8 +31,9 @@ open class ROIQueryIAPReport {
             sku: String,
             price: Double,
             currency: String,
+            seq: String,
             entrance: String? = "",
-        ) = IAPReportImp.getInstance().reportEntrance(order, sku, price, currency, entrance)
+        ) = IAPReportImp.getInstance().reportEntrance(order, sku, price, currency,seq, entrance)
 
         /**
          * 点击购买的时候上报
@@ -40,6 +42,7 @@ open class ROIQueryIAPReport {
          * @param sku 商品ID
          * @param price 价格， 如 9.99
          * @param currency 货币，如usd
+         * @param seq 系列行为标识
          * @param entrance 入口，可为空
          */
         @JvmStatic
@@ -49,8 +52,9 @@ open class ROIQueryIAPReport {
             sku: String,
             price: Double,
             currency: String,
+            seq: String,
             entrance: String? = "",
-        ) = IAPReportImp.getInstance().reportToPurchase(order, sku, price, currency, entrance)
+        ) = IAPReportImp.getInstance().reportToPurchase(order, sku, price, currency, seq, entrance)
 
         /**
          * 购买成功的时候上报，无论是否消耗
@@ -59,6 +63,7 @@ open class ROIQueryIAPReport {
          * @param sku 商品ID
          * @param price 价格， 如 9.9
          * @param currency 货币，如usd
+         * @param seq 系列行为标识
          * @param entrance 入口，可为空
          */
         @JvmStatic
@@ -68,8 +73,9 @@ open class ROIQueryIAPReport {
             sku: String,
             price: Double,
             currency: String,
+            seq: String,
             entrance: String? = "",
-        ) = IAPReportImp.getInstance().reportPurchased(order, sku, price, currency, entrance)
+        ) = IAPReportImp.getInstance().reportPurchased(order, sku, price, currency, seq, entrance)
 
         /**
          * 购买失败的时候上报
@@ -78,6 +84,7 @@ open class ROIQueryIAPReport {
          * @param sku 商品ID
          * @param price 价格， 如 9.99
          * @param currency 货币，如usd
+         * @param seq 系列行为标识
          * @param code 错误码
          * @param entrance 入口，可为空
          * @param msg 额外信息，可为空
@@ -89,11 +96,12 @@ open class ROIQueryIAPReport {
             sku: String,
             price: Double,
             currency: String,
+            seq: String,
             code: String,
             entrance: String? = "",
             msg: String? = "",
         ) = IAPReportImp.getInstance()
-            .reportNotToPurchased(order, sku, price, currency, code, entrance, msg)
+            .reportNotToPurchased(order, sku, price, currency, seq, code, entrance, msg)
     }
 
 }

@@ -17,6 +17,7 @@ class IAPReportImp : IIapReport {
         sku: String,
         price: Double,
         currency: String,
+        seq: String,
         entrance: String?
     ) {
         iapTrack(
@@ -25,6 +26,7 @@ class IAPReportImp : IIapReport {
             sku = sku,
             price = price,
             currency = currency,
+            seq = seq,
             entrance = entrance
         )
     }
@@ -34,6 +36,7 @@ class IAPReportImp : IIapReport {
         sku: String,
         price: Double,
         currency: String,
+        seq: String,
         entrance: String?
     ) {
         iapTrack(
@@ -42,6 +45,7 @@ class IAPReportImp : IIapReport {
             sku = sku,
             price = price,
             currency = currency,
+            seq = seq,
             entrance = entrance
         )
     }
@@ -51,6 +55,7 @@ class IAPReportImp : IIapReport {
         sku: String,
         price: Double,
         currency: String,
+        seq: String,
         entrance: String?
     ) {
         iapTrack(
@@ -59,6 +64,7 @@ class IAPReportImp : IIapReport {
             sku = sku,
             price = price,
             currency = currency,
+            seq = seq,
             entrance = entrance
         )
     }
@@ -68,6 +74,7 @@ class IAPReportImp : IIapReport {
         sku: String,
         price: Double,
         currency: String,
+        seq: String,
         code: String,
         entrance: String?,
         msg: String?
@@ -78,6 +85,7 @@ class IAPReportImp : IIapReport {
             sku = sku,
             price = price,
             currency = currency,
+            seq = seq,
             code, entrance, msg
         )
     }
@@ -88,6 +96,7 @@ class IAPReportImp : IIapReport {
         sku: String,
         price: Double,
         currency: String,
+        seq: String,
         code: String? = null,
         entrance: String? = null,
         msg: String? = null
@@ -95,7 +104,7 @@ class IAPReportImp : IIapReport {
         if (!ROIQueryIAPReport.isSDKEnable()) return
         ROIQueryAnalytics.track(
             eventName, generateAdReportJson(
-                order,sku, price, currency, code, entrance, msg
+                order,sku, price, currency,seq, code, entrance, msg
             )
         )
     }
@@ -105,14 +114,16 @@ class IAPReportImp : IIapReport {
         sku: String,
         price: Double,
         currency: String,
+        seq: String,
         code: String? = null,
         entrance: String?,
         msg: String?
     ) = JSONObject().apply {
+
+        put(Constant.PROPERTY_IAP_SEQ,seq)
         put(Constant.PROPERTY_IAP_ORDER,order)
         put(Constant.PROPERTY_IAP_SKU, sku)
         put(Constant.PROPERTY_IAP_PRICE, price)
-//        put(Constant.PROPERTY_IAP_USD_PRICE,usdPrice)
         put(Constant.PROPERTY_IAP_CURRENCY, currency)
         code?.let {
             put(Constant.PROPERTY_IAP_CODE, it)

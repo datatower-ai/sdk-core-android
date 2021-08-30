@@ -31,12 +31,8 @@ allprojects {
         maven { url "https://dl.bintray.com/infinum/android" }
         maven(){
             def maven_url =  dependence_type == "1" ? "http://localhost:8081/repository/maven-releases/"
-                    : "https://maven.en2joy.com/repository/maven-ironmeta-internal/"
+                    : "https://repo-public.en2joy.com/repository/maven-releases/"
             url = maven_url
-            credentials {
-                username = "JunxingShi"
-                password = "5201314sjx"
-            }
         }
 
     }

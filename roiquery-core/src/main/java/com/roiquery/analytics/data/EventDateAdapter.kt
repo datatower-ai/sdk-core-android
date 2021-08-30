@@ -59,6 +59,15 @@ class EventDateAdapter private constructor(
 
 
     /**
+     *  app 首次打开时间
+     *
+     * @return acountId
+     */
+    var firstOpenTime: String
+        get() = getStringConfig(DataParams.CONFIG_FIRST_OPEN_TIME)
+        set(value) = setStringConfig(DataParams.CONFIG_FIRST_OPEN_TIME,value)
+
+    /**
      *  acountId,自有用户系统id
      *
      * @return acountId
@@ -152,6 +161,15 @@ class EventDateAdapter private constructor(
         set(value) = setBooleanConfig(DataParams.CONFIG_FIRST_OPEN,value)
 
 
+
+    /**
+     * 是否上报了attribute事件
+     */
+    var isAttributed: Boolean
+        get() = getBooleanConfig(DataParams.CONFIG_ATTRIBUTE,false)
+        set(value) = setBooleanConfig(DataParams.CONFIG_ATTRIBUTE,value)
+
+
     /**
      * app 是否在后台
      */
@@ -160,11 +178,11 @@ class EventDateAdapter private constructor(
         set(value) = setBooleanConfig(DataParams.CONFIG_IS_FOREGROUND,value)
 
 
-    private fun getBooleanConfig(key: String): Boolean{
+    private fun getBooleanConfig(key: String,default:Boolean = true): Boolean{
         val values = mOperation?.queryConfig(key)
         return if (values != null && values.isNotEmpty()) {
-            values == "true" || values == "null"
-        } else true
+            values == "true" || (values == "null" && default)
+        } else default
     }
 
     private fun setBooleanConfig(

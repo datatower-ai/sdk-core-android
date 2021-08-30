@@ -75,33 +75,32 @@ class DbHelper(context: Context?) :
     }
 
 
-     fun insert(uri: Uri, values: ContentValues?): Uri? {
+     fun insert(values: ContentValues?): Long {
         // 不处理 values = null 或者 values 为空的情况
         if (!isDbWritable || values == null || values.size() == 0) {
-            return uri
+            return DataParams.DB_INSERT_ERROR
         }
         try {
-            return insertEvent(uri, values)
+            return insertEvent(values)
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
-        return uri
+        return DataParams.DB_INSERT_ERROR
     }
 
-    private fun insertEvent(uri: Uri, values: ContentValues): Uri {
+    private fun insertEvent(values: ContentValues): Long {
         val database: SQLiteDatabase
         try {
             database = writableDatabase
         } catch (e: SQLiteException) {
             isDbWritable = false
             LogUtils.printStackTrace(e)
-            return uri
+            return DataParams.DB_INSERT_ERROR
         }
         if (!values.containsKey(DataParams.KEY_DATA) || !values.containsKey(DataParams.KEY_CREATED_AT)) {
-            return uri
+            return DataParams.DB_INSERT_ERROR
         }
-        val d = database.insert(DataParams.TABLE_EVENTS, "_id", values)
-        return ContentUris.withAppendedId(uri, d)
+        return database.insert(DataParams.TABLE_EVENTS, "_id", values)
     }
 
      fun insertConfig(values: ContentValues): Long {
