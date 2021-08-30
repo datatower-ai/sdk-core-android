@@ -19,8 +19,14 @@ android {
 
     buildTypes {
         release {
+            minifyEnabled true
+            proguardFiles file('../proguard-rules/common-rules.pro')
+            proguardFiles file('../proguard-rules/core-proguard-rules.pro')
+        }
+        debug {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles file('../proguard-rules/common-rules.pro')
+            proguardFiles file('../proguard-rules/core-proguard-rules.pro')
         }
     }
     compileOptions {
