@@ -99,15 +99,6 @@
 # XML映射问题，一些控件无法Inflate
 -keep class org.xmlpull.v1.** {*;}
 
-# 删除控制台日志打印
--assumenosideeffects class android.util.Log {
-    public static boolean isLoggable(java.lang.String, int);
-    public static int v(...);
-    public static int i(...);
-    public static int w(...);
-    public static int d(...);
-    public static int e(...);
-}
 -assumenosideeffects class java.io.PrintStream {
     public *** println(...);
     public *** print(...);
