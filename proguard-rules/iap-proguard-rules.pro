@@ -20,5 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.roiquery.iap.ROIQueryIAPReport.*{*;}
+-keep class com.roiquery.iap.ROIQueryIAPReport{*;}
 -keep class com.roiquery.iap.ROIQueryIAPReport$Companion{*;}
+-keeppackagenames com.roiquery.iap

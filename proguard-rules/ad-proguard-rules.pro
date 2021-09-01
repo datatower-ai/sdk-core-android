@@ -19,8 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep enum com.roiquery.ad.*
+-keep enum com.roiquery.ad.*{*;}
 -keep class com.roiquery.ad.ROIQueryAdReport{*;}
 -keep class com.roiquery.ad.ROIQueryAdReport$Companion{*;}
 
 -keep class com.roiquery.ad.utils.UUIDUtils{*;}
+
+-keeppackagenames com.roiquery.ad

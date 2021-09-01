@@ -15,5 +15,10 @@
     public <methods>;
 }
 
--keep class com.roiquery.analytics.utils.LogUtils{*;}
+-keep class com.roiquery.analytics.utils.**{*;}
+-keep class com.roiquery.cloudconfig.utils.**{*;}
 -keep class com.roiquery.analytics.ROIQueryChannel{*;}
+
+
+-keeppackagenames com.roiquery.analytics
+-keeppackagenames com.roiquery.cloudconfig
