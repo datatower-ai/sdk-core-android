@@ -7,8 +7,8 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.jraska.console.Console
-import com.roiquery.analytics.api.PropertyBuilder
 import com.roiquery.analytics.ROIQueryAnalytics
+import org.json.JSONObject
 
 
 class AnalyticsTestActivity : AppCompatActivity() {
@@ -25,11 +25,7 @@ class AnalyticsTestActivity : AppCompatActivity() {
 
             ROIQueryAnalytics.setAccountId("7344506")
             ROIQueryAnalytics.track(
-                "app_open_like",
-                PropertyBuilder.newInstance()
-                    .append("test_property_1", "自定义属性值1")
-                    .append("test_property_2", "自定义属性值2")
-                    .toJSONObject()
+                "app_open_like", JSONObject()
             )
         }
         findViewById<View>(R.id.button_flush).setOnClickListener {
@@ -45,15 +41,11 @@ class AnalyticsTestActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.button_track_page_close).setOnClickListener {
             ROIQueryAnalytics.trackPageClose(
-                PropertyBuilder.newInstance()
-                    .append("#sdk_type", "关闭了页面1")
-                    .append("page_close_property_2", "关闭了页面2")
-                    .toJSONObject()
+                JSONObject()
             )
         }
         findViewById<View>(R.id.button_track_app_close).setOnClickListener {
-            ROIQueryAnalytics.trackAppClose(
-                PropertyBuilder.newInstance().append("app_close_property", "关闭了app").toJSONObject()
+            ROIQueryAnalytics.trackAppClose(JSONObject()
             )
         }
 

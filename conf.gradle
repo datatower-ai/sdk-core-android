@@ -24,30 +24,25 @@ ext {
     ]
 
     core = [
-			coreVersionCode      :37,
-			coreVersionName      :'1.1.37',
+			coreVersionCode      :43,
+			coreVersionName      :'1.1.43',
             artifactId           :'core'
     ]
 
     ad = [
 
-			adVersionCode      :37,
-			adVersionName      :'1.1.37',
+			adVersionCode      :43,
+			adVersionName      :'1.1.43',
             lib_name           :':lib_ad',
             artifactId         :'ad'
     ]
     iap = [
-			iapVersionCode      :1136,
-			iapVersionName      :'1.1.36',
+			iapVersionCode      :43,
+			iapVersionName      :'1.1.43',
             lib_name            :':lib_iap',
             artifactId          :'iap'
     ]
-    auth = [
-            authVersionCode     : 39,
-            authVersionName     : '1.1.29',
-            lib_name            : ':lib_auth',
-            artifactId          : 'auth'
-    ]
+
 
 
     dependencies = [

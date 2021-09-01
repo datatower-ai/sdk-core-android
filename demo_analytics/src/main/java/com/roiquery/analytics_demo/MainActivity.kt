@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.infinum.dbinspector.DbInspector
-import com.roiquery.analytics.ROIQueryAnalytics
-import com.roiquery.analytics.api.IAnalytics
 import com.roiquery.analytics.utils.LogUtils
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -14,7 +12,6 @@ import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
-    var mApi: IAnalytics? = null
     //事件采集管理
     protected var mTrackTaskManager: ExecutorService? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,12 +44,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        mApi?.trackPageOpen()
     }
 
     override fun onStop() {
         super.onStop()
-        mApi?.trackPageClose()
     }
 
 
