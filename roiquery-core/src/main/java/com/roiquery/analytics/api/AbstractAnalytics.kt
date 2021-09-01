@@ -9,7 +9,7 @@ import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.github.gzuliyujiang.oaid.DeviceID
-import com.github.gzuliyujiang.oaid.IOAIDGetter
+import com.github.gzuliyujiang.oaid.IGetter
 import com.instacart.library.truetime.TrueTime
 import com.instacart.library.truetime.utils.*
 import com.roiquery.analytics.BuildConfig
@@ -578,12 +578,11 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun getOAID() {
         try {
-            val deviceId = DeviceID.with(mContext)
-            if (!deviceId.supportOAID()) {
+            if (!DeviceID.supportedOAID(mContext)) {
                 // 不支持OAID，须自行生成GUID，然后存到`SharedPreferences`及`ExternalStorage`甚至`CloudStorage`。
                 return
             }
-            deviceId.doGet(object : IOAIDGetter {
+            DeviceID.getOAID(mContext,object : IGetter {
                 override fun onOAIDGetComplete(oaid: String) {
                     // 不同厂商的OAID格式是不一样的，可进行MD5、SHA1之类的哈希运算统一
                     //存入sp

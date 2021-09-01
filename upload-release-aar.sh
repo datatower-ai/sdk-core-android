@@ -123,11 +123,5 @@ if [ "${need_update_iap_version}" == "yes" ]  || [ "${need_update_iap_version}" 
 fi
 
 
-echo "是否需要修改auth 版本:（yes/no or Y/N）"
-read -r need_update_auth_version
-if [ "${need_update_auth_version}" == "yes" ]  || [ "${need_update_auth_version}" == "Y" ]; then
-    mavenAarByType auth
-fi
-
 git push origin master
 git push --tags
