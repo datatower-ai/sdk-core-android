@@ -59,7 +59,7 @@ dependencies {
     implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_ZUI:2.1.0' //联想、摩托罗拉
     implementation 'com.github.gzu-liyujiang.Android_CN_OAID:OAID_IMPL:2.1.0' //具体实现
     implementation 'com.github.gzu-liyujiang:Logger:1.2.2' //具体实现*/
-    implementation 'com.github.gzu-liyujiang:Android_CN_OAID:4.2.2'
+    implementation 'com.github.gzu-liyujiang:Android_CN_OAID:4.2.3'
 }
 
 // 配置上传信息
