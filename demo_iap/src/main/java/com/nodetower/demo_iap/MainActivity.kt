@@ -4,16 +4,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.roiquery.iap.ROIQueryIAPReport
-import com.roiquery.iap.utils.UUIDUtils
+import java.lang.StringBuilder
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val order = UUIDUtils.generateUUID()
+        var order = generateUUID()?:"24234"
 
         findViewById<View>(R.id.button_report_entrance).setOnClickListener {
             ROIQueryIAPReport.reportEntrance(order,"IDS",4.343,"eu","home")
+
         }
 
         findViewById<View>(R.id.button_track_to_purchase).setOnClickListener {
@@ -28,5 +30,12 @@ class MainActivity : AppCompatActivity() {
             ROIQueryIAPReport.reportNotToPurchased(order,"IDS",4.343,"usd","301","user","no meney")
         }
 
+    }
+    fun generateUUID(): String? {
+        val uuid = StringBuilder()
+        for (i in 0..15) {
+            uuid.append(Integer.toHexString(Random().nextInt(16)))
+        }
+        return uuid.toString()
     }
 }
