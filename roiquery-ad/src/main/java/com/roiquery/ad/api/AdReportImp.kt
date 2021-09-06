@@ -31,9 +31,10 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         platform: Int,
         location: String,
         seq: String,
-        entrance: String?,
+        properties: MutableMap<String, Any>?,
+        entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, entrance)
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)
         adTrack(
             AdReportConstant.EVENT_AD_ENTRANCE,
             generateAdReportJson(seq)
@@ -46,9 +47,10 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         platform: Int,
         location: String,
         seq: String,
-        entrance: String?,
+        properties: MutableMap<String, Any>?,
+        entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, entrance)
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)
         adTrack(
             AdReportConstant.EVENT_AD_TO_SHOW,
             generateAdReportJson(seq)
@@ -61,9 +63,10 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         platform: Int,
         location: String,
         seq: String,
-        entrance: String?,
+        properties: MutableMap<String, Any>?,
+        entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, entrance)?.apply {
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
             showTS = SystemClock.elapsedRealtime()
         }
         adTrack(
@@ -78,9 +81,10 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         platform: Int,
         location: String,
         seq: String,
+        properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, entrance)?.apply {
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
             showTS = SystemClock.elapsedRealtime()
         }
         adTrack(
@@ -95,9 +99,10 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         platform: Int,
         location: String,
         seq: String,
+        properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, entrance)
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)
         adTrack(
             AdReportConstant.EVENT_AD_OPEN,
             generateAdReportJson(seq)
@@ -110,9 +115,10 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         platform: Int,
         location: String,
         seq: String,
+        properties: MutableMap<String, Any>?,
         entrance: String?,
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, entrance)
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)
         adTrack(
             AdReportConstant.EVENT_AD_CLOSE,
             generateAdReportJson(seq)
@@ -125,9 +131,10 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         platform: Int,
         location: String,
         seq: String,
+        properties: MutableMap<String, Any>?,
         entrance: String?,
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, entrance)?.apply {
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
             clickTS = SystemClock.elapsedRealtime()
         }
         adTrack(
@@ -142,9 +149,10 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         platform: Int,
         location: String,
         seq: String,
+        properties: MutableMap<String, Any>?,
         entrance: String?,
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, entrance)
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)
         adTrack(
             AdReportConstant.EVENT_AD_REWARDED,
             generateAdReportJson(seq)
@@ -158,9 +166,10 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         location: String,
         seq: String,
         conversionSource: String,
+        properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, entrance)
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)
         adTrack(
             AdReportConstant.EVENT_AD_CONVERSION,
             generateAdReportJson(seq).apply {
@@ -175,9 +184,10 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         platform: Int,
         location: String,
         seq: String,
+        properties: MutableMap<String, Any>?,
         entrance: String?,
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, entrance)?.apply {
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
             leftApplicationTS = SystemClock.elapsedRealtime()
             isLeftApplication = true
         }
@@ -196,6 +206,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         value: String,
         currency: String,
         precision: String,
+        properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
         LogUtils.d(
@@ -210,7 +221,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
                     "        precision: $precision,\n" +
                     "        entrance: $entrance?"
         )
-        val property = updateAdEventProperty(id, type, platform, location, seq, entrance)?.apply {
+        val property = updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
             this.value = value
             this.currency = currency
             this.precision = precision
@@ -240,6 +251,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         currency: String,
         precision: String,
         country: String,
+        properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
         LogUtils.d(
@@ -264,6 +276,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
             AdPlatformUtils.getPlatform(mediation, platform),
             location,
             seq,
+            properties,
             entrance
         )?.apply {
             this.mediation = mediation
@@ -327,6 +340,13 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
                 put(AdReportConstant.PROPERTY_AD_ENTRANCE, adEventProperty.entrance)
                 put(AdReportConstant.PROPERTY_AD_LOCATION, adEventProperty.location)
                 put(AdReportConstant.PROPERTY_AD_SEQ, seq)
+
+                adEventProperty.properties?.let {
+                    it.forEach { property ->
+                        put(property.key, property.value)
+                    }
+                }
+
             }
         }
 
@@ -375,6 +395,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         platform: Int,
         location: String,
         seq: String,
+        properties: MutableMap<String, Any>?,
         entrance: String?
     ): AdEventProperty? {
         try {
@@ -397,6 +418,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
                 it.adPlatform = platform
             }
             it.seq = seq
+            it.properties = properties
             it.location = location
             it.entrance = entrance ?: ""
         }

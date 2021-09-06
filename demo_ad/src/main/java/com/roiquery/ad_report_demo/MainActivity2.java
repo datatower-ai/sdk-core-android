@@ -15,6 +15,8 @@ import com.roiquery.ad.AdType;
 import com.roiquery.ad.ROIQueryAdReport;
 import com.roiquery.ad.utils.UUIDUtils;
 
+import java.util.HashMap;
+
 public class MainActivity2 extends AppCompatActivity {
 
     @Override
@@ -26,23 +28,18 @@ public class MainActivity2 extends AppCompatActivity {
         String seq2 = UUIDUtils.generateUUID();
 
         findViewById(R.id.button_track_entrance).setOnClickListener(v -> {
+            HashMap<String, Object> pro = new HashMap<>();
+            pro.put("test_property_3", false);
+            pro.put("test_property_4", 2.3);
             ROIQueryAdReport.reportEntrance(
                     "1",
                     AdType.BANNER,
                     AdPlatform.MOPUB,
                     "home",
                     seq,
-                    "main"
+                    pro
             );
 
-            ROIQueryAdReport.reportEntrance(
-                    "1",
-                    AdType.BANNER,
-                    AdPlatform.MOPUB,
-                    "home2",
-                    seq2,
-                    "main"
-            );
         });
 
         findViewById(R.id.button_track_to_show).setOnClickListener(v -> {
@@ -51,8 +48,8 @@ public class MainActivity2 extends AppCompatActivity {
                     AdType.INTERSTITIAL,
                     AdPlatform.MOPUB,
                     "user",
-                    seq,
-                    "main"
+                    seq
+
             );
 
             ROIQueryAdReport.reportToShow(
@@ -60,8 +57,7 @@ public class MainActivity2 extends AppCompatActivity {
                     AdType.INTERSTITIAL,
                     AdPlatform.MOPUB,
                     "user2",
-                    seq2,
-                    "main"
+                    seq2
             );
         });
         findViewById(R.id.button_track_show).setOnClickListener(v -> {
@@ -70,16 +66,14 @@ public class MainActivity2 extends AppCompatActivity {
                             AdType.BANNER,
                             AdPlatform.MOPUB,
                             "car",
-                            seq,
-                            "home"
+                            seq
                     );
                     ROIQueryAdReport.reportShow(
                             "3",
                             AdType.BANNER,
                             AdPlatform.MOPUB,
                             "car2",
-                            seq2,
-                            "home"
+                            seq2
                     );
                 }
 
@@ -108,8 +102,7 @@ public class MainActivity2 extends AppCompatActivity {
                     AdType.IDLE,
                     AdPlatform.IDLE,
                     "home",
-                    seq2,
-                    "main"
+                    seq2
             );
 
             //从其他浏览器打开
@@ -122,8 +115,7 @@ public class MainActivity2 extends AppCompatActivity {
                     AdType.IDLE,
                     AdPlatform.IDLE,
                     "home",
-                    seq2,
-                    "main"
+                    seq2
             );
         });
         findViewById(R.id.button_track_paid).setOnClickListener(v ->
@@ -132,8 +124,7 @@ public class MainActivity2 extends AppCompatActivity {
                         AdType.IDLE,
                         AdPlatform.IDLE,
                         "home",
-                        seq2,
-                        "main"
+                        seq2
                 )
         );
         findViewById(R.id.button_track_paid).setOnClickListener(v -> {
@@ -144,8 +135,7 @@ public class MainActivity2 extends AppCompatActivity {
                     seq,
                     "5000",
                     "01",
-                    "1",
-                    "main");
+                    "1");
 
             ROIQueryAdReport.reportPaid("",
                     AdType.BANNER,
@@ -154,15 +144,13 @@ public class MainActivity2 extends AppCompatActivity {
                     seq,
                     "5001",
                     "01",
-                    "1",
-                    "main");
+                    "1");
             ROIQueryAdReport.reportRewarded(
                     "",
                     AdType.BANNER,
                     AdPlatform.MOPUB,
                     "home",
-                    seq,
-                    "main"
+                    seq
             );
 
         });

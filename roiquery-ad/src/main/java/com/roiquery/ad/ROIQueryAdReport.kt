@@ -15,6 +15,7 @@ open class ROIQueryAdReport {
          * @param platform 广告平台
          * @param location 广告位
          * @param seq 系列行为标识
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -25,9 +26,10 @@ open class ROIQueryAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportEntrance(id, type.value, platform.value, location, seq, entrance)
+            .reportEntrance(id, type.value, platform.value, location, seq, properties, entrance)
 
         /**
          * 上报 广告展示请求
@@ -37,6 +39,7 @@ open class ROIQueryAdReport {
          * @param platform 广告平台
          * @param location 广告位
          * @param seq 系列行为标识
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -47,9 +50,10 @@ open class ROIQueryAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportToShow(id, type.value, platform.value, location, seq, entrance)
+            .reportToShow(id, type.value, platform.value, location, seq, properties, entrance)
 
         /**
          * 上报 广告展示
@@ -59,6 +63,7 @@ open class ROIQueryAdReport {
          * @param platform 广告平台
          * @param location 广告位
          * @param seq 系列行为标识
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -69,9 +74,10 @@ open class ROIQueryAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportShow(id, type.value, platform.value, location, seq, entrance)
+            .reportShow(id, type.value, platform.value, location, seq, properties, entrance)
 
 
         /**
@@ -82,6 +88,7 @@ open class ROIQueryAdReport {
          * @param platform 广告平台
          * @param location 广告位
          * @param seq 系列行为标识
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -92,9 +99,10 @@ open class ROIQueryAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportImpression(id, type.value, platform.value, location, seq, entrance)
+            .reportImpression(id, type.value, platform.value, location, seq, properties, entrance)
 
 
         /**
@@ -105,6 +113,7 @@ open class ROIQueryAdReport {
          * @param platform 广告平台
          * @param location 广告位
          * @param seq 系列行为标识
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -116,9 +125,10 @@ open class ROIQueryAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportOpen(id, type.value, platform.value, location, seq, entrance)
+            .reportOpen(id, type.value, platform.value, location, seq, properties, entrance)
 
 
         /**
@@ -129,6 +139,7 @@ open class ROIQueryAdReport {
          * @param platform 广告平台
          * @param location 广告位
          * @param seq 系列行为标识
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -139,9 +150,10 @@ open class ROIQueryAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportClose(id, type.value, platform.value, location, seq, entrance)
+            .reportClose(id, type.value, platform.value, location, seq, properties, entrance)
 
         /**
          * 上报 广告点击
@@ -151,6 +163,7 @@ open class ROIQueryAdReport {
          * @param platform 广告平台
          * @param location 广告位
          * @param seq 系列行为标识
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -161,9 +174,10 @@ open class ROIQueryAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportClick(id, type.value, platform.value, location, seq, entrance)
+            .reportClick(id, type.value, platform.value, location, seq, properties, entrance)
 
         /**
          * 上报 激励广告已获得奖励
@@ -173,6 +187,7 @@ open class ROIQueryAdReport {
          * @param platform 广告平台
          * @param location 广告位
          * @param seq 系列行为标识
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -183,9 +198,10 @@ open class ROIQueryAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportRewarded(id, type.value, platform.value, location, seq, entrance)
+            .reportRewarded(id, type.value, platform.value, location, seq, properties, entrance)
 
 
         /**
@@ -196,6 +212,7 @@ open class ROIQueryAdReport {
          * @param platform 广告平台
          * @param location 广告位
          * @param seq 系列行为标识
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -206,9 +223,10 @@ open class ROIQueryAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.CLICK, entrance)
+            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.CLICK, properties, entrance)
 
 
 
@@ -220,6 +238,7 @@ open class ROIQueryAdReport {
          * @param platform 广告平台
          * @param location 广告位
          * @param seq 系列行为标识
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -230,9 +249,10 @@ open class ROIQueryAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.LEFT_APP, entrance)
+            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.LEFT_APP, properties, entrance)
 
 
         /**
@@ -243,6 +263,7 @@ open class ROIQueryAdReport {
          * @param platform 广告平台
          * @param location 广告位
          * @param seq 系列行为标识
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -253,9 +274,10 @@ open class ROIQueryAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.IMPRESSION, entrance)
+            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.IMPRESSION, properties, entrance)
 
 
 
@@ -267,6 +289,7 @@ open class ROIQueryAdReport {
          * @param platform 广告平台
          * @param location 广告位
          * @param seq 系列行为标识
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -277,9 +300,10 @@ open class ROIQueryAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.REWARDED, entrance)
+            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.REWARDED, properties, entrance)
 
 
 
@@ -294,6 +318,7 @@ open class ROIQueryAdReport {
          * @param value 价值
          * @param currency 货币
          * @param precision 精确度
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -307,9 +332,10 @@ open class ROIQueryAdReport {
             value: String,
             currency: String,
             precision: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportPaid(id, type.value, platform.value, location, seq, value, currency, precision, entrance)
+            .reportPaid(id, type.value, platform.value, location, seq, value, currency, precision, properties,entrance)
 
         /**
          * 上报 广告展示价值
@@ -325,6 +351,7 @@ open class ROIQueryAdReport {
          * @param currency 货币
          * @param precision 精确度
          * @param country 国家
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -341,9 +368,10 @@ open class ROIQueryAdReport {
             currency: String,
             precision: String,
             country: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportPaid(id, type.value, platform, location, seq, mediation.value, mediationId, value, currency, precision, country, entrance)
+            .reportPaid(id, type.value, platform, location, seq, mediation.value, mediationId, value, currency, precision, country, properties, entrance)
 
         /**
          * 上报 访问广告链接，离开当前app(页面)
@@ -353,6 +381,7 @@ open class ROIQueryAdReport {
          * @param platform 广告平台
          * @param location 广告位
          * @param seq 系列行为标识
+         * @param properties 额外事件属性
          * @param entrance 广告入口
          */
         @JvmOverloads
@@ -363,9 +392,10 @@ open class ROIQueryAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportLeftApp(id, type.value, platform.value, location, seq, entrance)
+            .reportLeftApp(id, type.value, platform.value, location, seq, properties, entrance)
 
         /**
          * 上报 访问广告链接，回到当前app(页面)

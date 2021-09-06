@@ -10,6 +10,7 @@ package com.roiquery.ad.api
      * @param platform 广告平台
      * @param location 广告位
      * @param seq 系列行为标识
+     * @param properties 额外事件属性
      * @param entrance 广告入口
      */
     fun reportEntrance(
@@ -18,7 +19,8 @@ package com.roiquery.ad.api
         platform: Int,
         location: String,
         seq: String,
-        entrance: String? = "",
+        properties: MutableMap<String, Any>? = mutableMapOf(),
+        entrance: String? = ""
     )
 
 
@@ -30,6 +32,7 @@ package com.roiquery.ad.api
      * @param platform 广告平台
      * @param location 广告位
      * @param seq 系列行为标识
+     * @param properties 额外事件属性
      * @param entrance 广告入口
      */
     fun reportToShow(
@@ -38,7 +41,9 @@ package com.roiquery.ad.api
         platform: Int,
         location: String,
         seq: String,
-        entrance: String? = "",
+        properties: MutableMap<String, Any>? = mutableMapOf(),
+        entrance: String? = ""
+
     )
     /**
      * 上报 广告展示
@@ -48,6 +53,7 @@ package com.roiquery.ad.api
      * @param platform 广告平台
      * @param location 广告位
      * @param seq 系列行为标识
+     * @param properties 额外事件属性
      * @param entrance 广告入口
      */
     fun reportShow(
@@ -56,7 +62,8 @@ package com.roiquery.ad.api
         platform: Int,
         location: String,
         seq: String,
-        entrance: String? = "",
+        properties: MutableMap<String, Any>? = mutableMapOf(),
+        entrance: String? = ""
     )
      /**
       * 上报 广告曝光
@@ -66,6 +73,7 @@ package com.roiquery.ad.api
       * @param platform 广告平台
       * @param location 广告位
       * @param seq 系列行为标识
+      * @param properties 额外事件属性
       * @param entrance 广告入口
       */
      fun reportImpression(
@@ -74,7 +82,8 @@ package com.roiquery.ad.api
          platform: Int,
          location: String,
          seq: String,
-         entrance: String? = "",
+         properties: MutableMap<String, Any>? = mutableMapOf(),
+         entrance: String? = ""
      )
      /**
       * 上报 广告打开
@@ -84,6 +93,7 @@ package com.roiquery.ad.api
       * @param platform 广告平台
       * @param location 广告位
       * @param seq 系列行为标识
+      * @param properties 额外事件属性
       * @param entrance 广告入口
       */
      fun reportOpen(
@@ -92,7 +102,8 @@ package com.roiquery.ad.api
          platform: Int,
          location: String,
          seq: String,
-         entrance: String? = "",
+         properties: MutableMap<String, Any>? = mutableMapOf(),
+         entrance: String? = ""
      )
     /**
      * 上报 广告关闭
@@ -102,6 +113,7 @@ package com.roiquery.ad.api
      * @param platform 广告平台
      * @param location 广告位
      * @param seq 系列行为标识
+     * @param properties 额外事件属性
      * @param entrance 广告入口
      */
     fun reportClose(
@@ -110,7 +122,8 @@ package com.roiquery.ad.api
         platform: Int,
         location: String,
         seq: String,
-        entrance: String? = "",
+        properties: MutableMap<String, Any>? = mutableMapOf(),
+        entrance: String? = ""
     )
     /**
      * 上报 广告点击
@@ -120,6 +133,7 @@ package com.roiquery.ad.api
      * @param platform 广告平台
      * @param location 广告位
      * @param seq 系列行为标识
+     * @param properties 额外事件属性
      * @param entrance 广告入口
      */
     fun reportClick(
@@ -128,7 +142,8 @@ package com.roiquery.ad.api
         platform: Int,
         location: String,
         seq: String,
-        entrance: String? = "",
+        properties: MutableMap<String, Any>? = mutableMapOf(),
+        entrance: String? = ""
     )
     /**
      * 上报 激励广告已获得奖励
@@ -138,6 +153,7 @@ package com.roiquery.ad.api
      * @param platform 广告平台
      * @param location 广告位
      * @param seq 系列行为标识
+     * @param properties 额外事件属性
      * @param entrance 广告入口
      */
     fun reportRewarded(
@@ -146,7 +162,8 @@ package com.roiquery.ad.api
         platform: Int,
         location: String,
         seq: String,
-        entrance: String? = "",
+        properties: MutableMap<String, Any>? = mutableMapOf(),
+        entrance: String? = ""
     )
 
     /**
@@ -158,6 +175,7 @@ package com.roiquery.ad.api
      * @param location 广告位
      * @param seq 系列行为标识
      * @param conversionSource 转化来源
+     * @param properties 额外事件属性
      * @param entrance 广告入口
      */
     fun reportConversion(
@@ -167,7 +185,8 @@ package com.roiquery.ad.api
         location: String,
         seq: String,
         conversionSource: String,
-        entrance: String? = "",
+        properties: MutableMap<String, Any>? = mutableMapOf(),
+        entrance: String? = ""
     )
     /**
      * 上报 访问广告链接，离开当前app(页面)
@@ -177,6 +196,7 @@ package com.roiquery.ad.api
      * @param platform 广告平台
      * @param location 广告位
      * @param seq 系列行为标识
+     * @param properties 额外事件属性
      * @param entrance 广告入口
      */
     fun reportLeftApp(
@@ -185,7 +205,8 @@ package com.roiquery.ad.api
         platform: Int,
         location: String,
         seq: String,
-        entrance: String? = "",
+        properties: MutableMap<String, Any>? = mutableMapOf(),
+        entrance: String? = ""
     )
 
      /**
@@ -199,6 +220,7 @@ package com.roiquery.ad.api
       * @param value 价值
       * @param currency 货币
       * @param precision 精确度
+      * @param properties 额外事件属性
       * @param entrance 广告入口
       */
      fun reportPaid(
@@ -210,7 +232,8 @@ package com.roiquery.ad.api
          value: String,
          currency: String,
          precision: String,
-         entrance: String? = "",
+         properties: MutableMap<String, Any>? = mutableMapOf(),
+         entrance: String? = ""
      )
 
 
@@ -228,6 +251,7 @@ package com.roiquery.ad.api
       * @param currency 货币
       * @param precision 精确度
       * @param country 国家
+      * @param properties 额外事件属性
       * @param entrance 广告入口
       */
      fun reportPaid(
@@ -242,7 +266,8 @@ package com.roiquery.ad.api
          currency: String,
          precision: String,
          country: String,
-         entrance: String? = "",
+         properties: MutableMap<String, Any>? = mutableMapOf(),
+         entrance: String? = ""
      )
 
      /**

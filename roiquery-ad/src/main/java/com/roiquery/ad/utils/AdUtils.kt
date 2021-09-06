@@ -31,6 +31,7 @@ data class AdEventProperty(
     var adPlatform: Int = AdPlatform.IDLE.value,
     var adId: String = "",
     var seq: String = "",
+    var properties: MutableMap<String, Any>? = mutableMapOf(),
     var entrance: String = "",
 
     var mediation: Int = AdMediation.IDLE.value,

@@ -24,24 +24,32 @@ class MainActivity : AppCompatActivity() {
         val seq = UUIDUtils.generateUUID()
         findViewById<View>(R.id.button_track_entrance).setOnClickListener {
             ROIQueryAnalytics.setAppsFlyerId("shafdjfkajd")
+            val p = mutableMapOf<String,Any>()
+            p["sd1"] = false
+            p["sd2"] = 2.09
             ROIQueryAdReport.reportEntrance(
                 "",
                 AdType.REWARDED_INTERSTITIAL,
                 AdPlatform.ADX,
                 "home",
                 seq,
+                p,
                 "main"
             )
 
         }
         findViewById<View>(R.id.button_track_to_show).setOnClickListener {
             ROIQueryAnalytics.setKochavaId("sdf23r243r")
+            val p = mutableMapOf<String,Any>()
+            p["sd3"] = "p3"
+            p["sd4"] = "p4"
             ROIQueryAdReport.reportToShow(
                 "",
                 AdType.REWARDED_INTERSTITIAL,
                 AdPlatform.ADX,
                 "user",
                 seq,
+                p,
                 "main"
             )
         }
@@ -51,8 +59,7 @@ class MainActivity : AppCompatActivity() {
                 AdType.REWARDED_INTERSTITIAL,
                 AdPlatform.ADX,
                 "car",
-                seq,
-                "home"
+                seq
             )
         }
         findViewById<View>(R.id.button_track_impression).setOnClickListener {
@@ -61,8 +68,7 @@ class MainActivity : AppCompatActivity() {
                 AdType.REWARDED_INTERSTITIAL,
                 AdPlatform.ADX,
                 "home",
-                seq,
-                "main"
+                seq
             )
         }
             findViewById<View>(R.id.button_track_click).setOnClickListener {
@@ -71,8 +77,7 @@ class MainActivity : AppCompatActivity() {
                     AdType.REWARDED_INTERSTITIAL,
                     AdPlatform.ADX,
                     "home",
-                    seq,
-                    "main"
+                    seq
                 )
 
             }
@@ -82,8 +87,7 @@ class MainActivity : AppCompatActivity() {
                     AdType.REWARDED_INTERSTITIAL,
                     AdPlatform.ADX,
                     "home",
-                    seq,
-                    "main"
+                    seq
                 )
             }
 
@@ -93,8 +97,7 @@ class MainActivity : AppCompatActivity() {
                     AdType.REWARDED_INTERSTITIAL,
                     AdPlatform.ADX,
                     "home",
-                    seq,
-                    "main"
+                    seq
                 )
             }
 
@@ -110,8 +113,7 @@ class MainActivity : AppCompatActivity() {
                     AdType.REWARDED_INTERSTITIAL,
                     AdPlatform.ADX,
                     "home",
-                    seq,
-                    "main"
+                    seq
                 )
             }
 
@@ -124,8 +126,7 @@ class MainActivity : AppCompatActivity() {
                     seq,
                     "5000",
                     "01",
-                    "1",
-                    "main"
+                    "1"
                 )
             }
             findViewById<View>(R.id.button_track_paid_mediation).setOnClickListener {
@@ -140,8 +141,7 @@ class MainActivity : AppCompatActivity() {
                     "5000",
                     "usd",
                     "sdf",
-                    "USA",
-                    "hone"
+                    "USA"
                 )
             }
 
@@ -151,8 +151,7 @@ class MainActivity : AppCompatActivity() {
                     AdType.REWARDED_INTERSTITIAL,
                     AdPlatform.ADX,
                     "home",
-                    seq,
-                    "main"
+                    seq
                 )
             }
 
@@ -162,8 +161,7 @@ class MainActivity : AppCompatActivity() {
                     AdType.REWARDED_INTERSTITIAL,
                     AdPlatform.ADX,
                     "home",
-                    seq,
-                    "main"
+                    seq
                 )
             }
 
@@ -173,16 +171,14 @@ class MainActivity : AppCompatActivity() {
                     AdType.REWARDED_INTERSTITIAL,
                     AdPlatform.ADX,
                     "home",
-                    seq,
-                    "main"
+                    seq
                 )
                 ROIQueryAdReport.reportConversionByRewarded(
                     "4",
                     AdType.REWARDED_INTERSTITIAL,
                     AdPlatform.ADX,
                     "home",
-                    seq,
-                    "main"
+                    seq
                 )
             }
         }
