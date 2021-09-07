@@ -33,6 +33,12 @@ import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.collections.HashMap
+import android.webkit.WebSettings
+
+import android.os.Build
+
+
+
 
 
 abstract class AbstractAnalytics : IAnalytics {
@@ -65,6 +71,8 @@ abstract class AbstractAnalytics : IAnalytics {
     private var mPresetEvents = emptyArray<String>()
     private var mPresetProperties = emptyArray<String>()
 
+    private var mUserAgent = ""
+
     companion object {
         const val TAG = "AnalyticsApi"
 
@@ -85,6 +93,7 @@ abstract class AbstractAnalytics : IAnalytics {
             initProperties()
             initCloudConfig()
             initAppLifecycleListener()
+            getUserAgentByUIThread()
             trackPresetEvent()
             getGAID()
             getOAID()
@@ -753,7 +762,7 @@ abstract class AbstractAnalytics : IAnalytics {
                         )
                         put(
                             Constant.ATTRIBUTE_PROPERTY_USER_AGENT,
-                            getUserAgent()
+                            mUserAgent
                         )
                         if (!isOK) {
                             put(
@@ -802,19 +811,13 @@ abstract class AbstractAnalytics : IAnalytics {
         }
     }
 
-    /**
-     * 获取userAgent
-     */
-    private fun getUserAgent(): String {
-        var userAgent = ""
-        try {
-            val webView = mContext?.let { WebView(it) }
-            userAgent = webView?.settings?.userAgentString.toString()
-        } catch (e: Exception) {
 
+    private fun getUserAgentByUIThread() {
+        ThreadUtils.runOnUiThread {
+            mContext?.let {
+                mUserAgent = NetworkUtils.getUserAgent(it)
+            }
         }
-        return userAgent
     }
-
 
 }

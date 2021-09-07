@@ -25,6 +25,8 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.telephony.TelephonyManager
 import android.text.TextUtils
+import android.webkit.WebSettings
+import android.webkit.WebView
 import androidx.annotation.RequiresApi
 
 import java.net.HttpURLConnection
@@ -38,6 +40,24 @@ object NetworkUtils {
      */
     private const val HTTP_307 = 307
 
+    /**
+     * 获取userAgent
+     */
+     fun getUserAgent(context: Context): String {
+        var ua: String = ""
+        try {
+            if (Build.VERSION.SDK_INT < 19) {
+                val web = WebView(context)
+                ua = web.settings.userAgentString
+                web.destroy()
+            } else {
+                ua = WebSettings.getDefaultUserAgent(context)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return ua
+    }
 
     /**
      * 是否有可用网络
