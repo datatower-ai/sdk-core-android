@@ -33,7 +33,6 @@ allprojects {
                     : "https://repo-public.en2joy.com/repository/maven-releases/"
             url = maven_url
         }
-
     }
 }
 

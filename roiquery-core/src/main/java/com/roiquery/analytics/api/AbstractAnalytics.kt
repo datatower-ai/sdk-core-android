@@ -73,6 +73,8 @@ abstract class AbstractAnalytics : IAnalytics {
 
     private var mUserAgent = ""
 
+    private var mFirstOpenTime = ""
+
     companion object {
         const val TAG = "AnalyticsApi"
 
@@ -159,17 +161,19 @@ abstract class AbstractAnalytics : IAnalytics {
                 put(Constant.EVENT_INFO_TIME, getTime())
                 put(Constant.EVENT_INFO_NAME, realEventName)
                 put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
+                //向 app_attribute 增加 first_open_time 属性
                 if (Constant.PRESET_EVENT_APP_FIRST_OPEN == eventName) {
-                    mDataAdapter?.firstOpenTime = getString(Constant.EVENT_INFO_TIME)
+                    getString(Constant.EVENT_INFO_TIME).apply {
+                        mFirstOpenTime = this
+                        mDataAdapter?.firstOpenTime = this
+                    }
                 }
                 if (Constant.PRESET_EVENT_APP_ATTRIBUTE == eventName) {
                     if (properties?.has(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == false
-                        || properties?.getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME)
-                            ?.isEmpty() == true
-                    ) {
+                        || properties?.getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME)?.isEmpty() == true) {
                         properties.put(
                             Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
-                            mDataAdapter?.firstOpenTime
+                            if( mFirstOpenTime != "") mFirstOpenTime else mDataAdapter?.firstOpenTime
                         )
                     }
                 }
