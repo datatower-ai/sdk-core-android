@@ -273,7 +273,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         val property = updateAdEventProperty(
             id,
             type,
-            AdPlatformUtils.getPlatform(mediation, platform),
+            AdPlatformUtils.getPlatform(mediation, platform, id),
             location,
             seq,
             properties,

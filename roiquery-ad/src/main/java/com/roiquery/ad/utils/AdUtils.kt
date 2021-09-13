@@ -7,15 +7,17 @@ import com.roiquery.ad.AdType
 
 object AdPlatformUtils {
 
-    fun getPlatform(mediation: Int, typeString: String) =
+    private const val ADMOB_ADID_PREFIX = "ca-app-pub-"
+
+    fun getPlatform(mediation: Int, typeString: String, adId: String) =
         when (mediation) {
-            AdMediation.MOPUB.value -> getMopubPlatform(typeString).value
+            AdMediation.MOPUB.value -> getMopubPlatform(typeString, adId).value
             else -> AdMediation.IDLE.value
         }
 
-    private fun getMopubPlatform(typeString: String) =
+    private fun getMopubPlatform(typeString: String, adId: String) =
         when (typeString) {
-            "admob_native" -> AdPlatform.ADMOB
+            "admob_native" -> if (adId.startsWith(ADMOB_ADID_PREFIX))  AdPlatform.ADMOB else AdPlatform.ADX
             "pangle" -> AdPlatform.PANGLE
             "ironsource" -> AdPlatform.IRONSOURCE
             "marketplace" -> AdPlatform.MOPUB
@@ -23,6 +25,7 @@ object AdPlatformUtils {
             "facebook" -> AdPlatform.FACEBOOK
             else -> AdPlatform.IDLE
         }
+
 }
 
 data class AdEventProperty(
