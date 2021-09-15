@@ -226,7 +226,8 @@ open class ROIQueryAdReport {
             properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.CLICK, properties, entrance)
+            .reportConversion(id, type.value, platform.value, location, seq,
+                AD_CONVERSION_SOURCE.CLICK, properties, entrance)
 
 
 
@@ -252,7 +253,8 @@ open class ROIQueryAdReport {
             properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.LEFT_APP, properties, entrance)
+            .reportConversion(id, type.value, platform.value, location, seq,
+                AD_CONVERSION_SOURCE.LEFT_APP, properties, entrance)
 
 
         /**
@@ -277,7 +279,8 @@ open class ROIQueryAdReport {
             properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.IMPRESSION, properties, entrance)
+            .reportConversion(id, type.value, platform.value, location, seq,
+                AD_CONVERSION_SOURCE.IMPRESSION, properties, entrance)
 
 
 
@@ -303,7 +306,8 @@ open class ROIQueryAdReport {
             properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportConversion(id, type.value, platform.value, location, seq,AD_CONVERSION_SOURCE.REWARDED, properties, entrance)
+            .reportConversion(id, type.value, platform.value, location, seq,
+                AD_CONVERSION_SOURCE.REWARDED, properties, entrance)
 
 
 

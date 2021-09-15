@@ -21,14 +21,12 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
             proguardFiles file('../proguard-rules/common-rules.pro')
-            proguardFiles file('../proguard-rules/ad-proguard-rules.pro')
             proguardFiles file('../proguard-rules/core-proguard-rules.pro')
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
             proguardFiles file('../proguard-rules/common-rules.pro')
-            proguardFiles file('../proguard-rules/ad-proguard-rules.pro')
             proguardFiles file('../proguard-rules/core-proguard-rules.pro')
         }
     }
@@ -58,16 +56,10 @@ dependencies {
     implementation 'com.appsflyer:af-android-sdk:6.2.3'
 
     if(dependence_type == "0"){
-        implementation(project(":roiquery-ad"))
         implementation(project(":roiquery-core"))
     }else {
-        implementation 'com.roiquery.android:ad:'   + rootProject.ext.ad.adVersionName
-//        implementation 'com.roiquery.android:ad:'   + '1.1.30'
-        implementation 'com.roiquery.android:iap:'   + rootProject.ext.iap.iapVersionName
-//        implementation 'com.roiquery.android:iap:'   + '1.1.30'
-        implementation 'com.roiquery.android:core:' + rootProject.ext.core.coreVersionName
-//        implementation 'com.roiquery.android:core:' + '1.4.41'
-    }
+       implementation 'com.roiquery.android:core:' + rootProject.ext.core.coreVersionName
+  }
 
 
 }

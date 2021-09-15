@@ -29,7 +29,7 @@ ext {
             artifactId           :'core'
     ]
 
-    ad = [
+    /*ad = [
 
 			adVersionCode      :47,
 			adVersionName      :'1.1.47',
@@ -42,7 +42,7 @@ ext {
             lib_name            :':lib_iap',
             artifactId          :'iap'
     ]
-
+*/
 
 
     dependencies = [

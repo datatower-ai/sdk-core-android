@@ -105,23 +105,8 @@ echo "是否需要修改core 版本:（yes/no or Y/N)"
 read -r need_update_core_version
 
 if [ "${need_update_core_version}" == "yes" ]  || [ "${need_update_core_version}" == "Y" ]; then
-   mavenAarByType core
+     mavenAarByType core
+     git push origin master
+     git push --tags
 fi
 
-
-echo "是否需要修改ad 版本:（yes/no or Y/N）"
-read -r need_update_ad_version
-if [ "${need_update_ad_version}" == "yes" ]  || [ "${need_update_ad_version}" == "Y" ]; then
-    mavenAarByType ad
-fi
-
-echo "是否需要修改iap 版本:（yes/no or Y/N）"
-read -r need_update_iap_version
-echo "iap 版本${need_update_iap_version}"
-if [ "${need_update_iap_version}" == "yes" ]  || [ "${need_update_iap_version}" == "Y" ]; then
-     mavenAarByType iap
-fi
-
-
-git push origin master
-git push --tags
