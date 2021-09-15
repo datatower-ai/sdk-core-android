@@ -50,11 +50,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     if(dependence_type == "0"){
-        implementation(project(":roiquery-iap"))
         implementation(project(":roiquery-core"))
     }else {
 
-        implementation 'com.roiquery.android:iap:' + rootProject.ext.iap.iapVersionName
         implementation 'com.roiquery.android:core:' + rootProject.ext.core.coreVersionName
     }
 }
