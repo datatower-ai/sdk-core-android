@@ -470,9 +470,10 @@ abstract class AbstractAnalytics : IAnalytics {
                 Constant.CLOUD_CONFIG_URL//拉取配置地址
                 //拉取参数
             ) {
-                JSONObject(mEventInfo).apply {
-                    DataUtils.mergeJSONObject(JSONObject(mCommonProperties), this)
-                }
+              mutableMapOf<String,String>().apply {
+                  put("app_id", mConfigOptions?.mAppId ?: "")
+                  put("did", DeviceUtils.getAndroidID(mContext!!) ?: "")
+              }
             },
             mDataAdapter?.cloudConfigAesKey ?: "",
             {

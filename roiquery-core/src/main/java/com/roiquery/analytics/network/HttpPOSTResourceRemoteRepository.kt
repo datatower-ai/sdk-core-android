@@ -8,7 +8,7 @@ import org.json.JSONObject
 
 class HttpPOSTResourceRemoteRepository(
     private val url: String,
-    private val params: () -> JSONObject
+    private val params: () -> Map<String, String>
 ) : ResourceRemoteRepository {
 
     override fun fetch(
@@ -18,10 +18,10 @@ class HttpPOSTResourceRemoteRepository(
         //http 请求
         val call =
             RequestHelper.Builder(
-                HttpMethod.POST,
+                HttpMethod.GET,
                 url
             )
-                .jsonData(params.invoke().toString())
+                .params(params.invoke())
                 .retryCount(3)
         LogUtils.json("CloudConfig Reques：$url", params.invoke().toString())
         invokeInternal(call, success, fail)
@@ -72,7 +72,7 @@ class HttpPOSTResourceRemoteRepository(
 
 
     companion object {
-        fun create(url: String, params: () -> JSONObject): ResourceRemoteRepository =
+        fun create(url: String, params: () -> Map<String, String>): ResourceRemoteRepository =
             HttpPOSTResourceRemoteRepository(url, params)
     }
 }
