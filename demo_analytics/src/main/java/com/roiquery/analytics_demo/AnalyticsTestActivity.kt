@@ -45,7 +45,7 @@ class AnalyticsTestActivity : AppCompatActivity() {
             )
         }
         findViewById<View>(R.id.button_track_app_close).setOnClickListener {
-            ROIQueryAnalytics.trackAppClose(JSONObject()
+            ROIQueryAnalytics.trackAppClose(null
             )
         }
 
