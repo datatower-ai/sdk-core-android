@@ -14,6 +14,7 @@ import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.AppLifecycleHelper.OnAppStatusListener
 import com.roiquery.analytics.utils.LogUtils
+import com.roiquery.analytics.utils.VariableTransform
 import org.json.JSONObject
 
 class AdReportImp private constructor(context: Context?) : IAdReport {
@@ -25,7 +26,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
     private val mMaxSequenessSize = 10
 
 
-    override fun reportEntrance(
+    override fun  reportEntrance(
         id: String,
         type: Int,
         platform: Int,
@@ -327,7 +328,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         eventName: String,
         properties: JSONObject?,
     ) {
-        ROIQueryAnalytics.track(eventName, properties)
+        ROIQueryAnalytics.track(eventName, VariableTransform.transJSONObject2Map(properties))
     }
 
     private fun generateAdReportJson(seq: String) =
