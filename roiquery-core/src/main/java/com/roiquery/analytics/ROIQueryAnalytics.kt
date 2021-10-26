@@ -36,17 +36,6 @@ open class ROIQueryAnalytics {
             AnalyticsImp.init(context, configOptions)
         }
 
-        /**
-         * 调用 track 接口，追踪一个带有属性的事件
-         *
-         * @param eventName 事件的名称
-         * @param properties 事件属性
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun track(eventName: String?, properties: JSONObject? = JSONObject()) =
-            AnalyticsImp.getInstance(mContext).track(eventName, properties)
-
 
         /**
          * 调用 track 接口，追踪一个带有属性的事件
@@ -61,15 +50,7 @@ open class ROIQueryAnalytics {
         ) =
             AnalyticsImp.getInstance(mContext).track(eventName, properties)
 
-        /**
-         * 采集 app 退出
-         *
-         * @param properties 事件属性，可为空
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackAppClose(properties: JSONObject? = JSONObject()) =
-            AnalyticsImp.getInstance(mContext).trackAppClose(properties)
+
 
         /**
          * 采集 app 退出
@@ -80,15 +61,6 @@ open class ROIQueryAnalytics {
         fun trackAppClose(properties: Map<String, Any>?) =
             AnalyticsImp.getInstance(mContext).trackAppClose(properties)
 
-        /**
-         * 采集 页面打开
-         *
-         * @param properties 事件属性，可为空
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackPageOpen(properties: JSONObject? = JSONObject()) =
-            AnalyticsImp.getInstance(mContext).trackPageOpen(properties)
 
         /**
          * 采集 页面打开
@@ -108,15 +80,7 @@ open class ROIQueryAnalytics {
         fun trackPageClose(properties: Map<String, Any>?) =
             AnalyticsImp.getInstance(mContext).trackPageClose(properties)
 
-        /**
-         * 采集 页面关闭
-         *
-         * @param properties 事件属性，可为空
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackPageClose(properties: JSONObject? = JSONObject()) =
-            AnalyticsImp.getInstance(mContext).trackPageClose(properties)
+
 
         /**
          * 设置用户属性
@@ -127,14 +91,7 @@ open class ROIQueryAnalytics {
         fun setUserProperties(properties: Map<String, Any>?) =
             AnalyticsImp.getInstance(mContext).setUserProperties(properties)
 
-        /**
-         * 设置用户属性
-         *
-         * @param properties 事件属性
-         */
-        @JvmStatic
-        fun setUserProperties(properties: JSONObject?) =
-            AnalyticsImp.getInstance(mContext).setUserProperties(properties)
+
 
         /**
          * 主动上报本地数据事件

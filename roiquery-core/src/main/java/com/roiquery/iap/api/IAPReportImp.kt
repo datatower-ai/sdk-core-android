@@ -6,7 +6,6 @@ import android.content.Context
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.iap.Constant
 import com.roiquery.iap.ROIQueryIAPReport
-import org.json.JSONObject
 
 class IAPReportImp : IIapReport {
 
@@ -103,13 +102,13 @@ class IAPReportImp : IIapReport {
     ) {
         if (!ROIQueryIAPReport.isSDKEnable()) return
         ROIQueryAnalytics.track(
-            eventName, generateAdReportJson(
+            eventName, generateAdReportMap(
                 order,sku, price, currency,seq, code, entrance, msg
             )
         )
     }
 
-    private fun generateAdReportJson(
+    private fun generateAdReportMap(
         order: String,
         sku: String,
         price: Double,
@@ -118,7 +117,7 @@ class IAPReportImp : IIapReport {
         code: String? = null,
         entrance: String?,
         msg: String?
-    ) = JSONObject().apply {
+    ) = mutableMapOf<String,Any>().apply {
 
         put(Constant.PROPERTY_IAP_SEQ,seq)
         put(Constant.PROPERTY_IAP_ORDER,order)

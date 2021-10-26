@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         mTrackTaskManager = Executors.newSingleThreadExecutor()
 
         findViewById<View>(R.id.button_analytics_test).setOnClickListener {
-            startActivity(Intent(this,AnalyticsTestActivity2::class.java))
+            startActivity(Intent(this,AnalyticsTestActivity::class.java))
         }
         findViewById<View>(R.id.button_analytics_process).setOnClickListener {
             startService(Intent(this, SubProcessService::class.java))

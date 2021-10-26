@@ -25,7 +25,7 @@ class AnalyticsTestActivity : AppCompatActivity() {
 
             ROIQueryAnalytics.setAccountId("7344506")
             ROIQueryAnalytics.track(
-                "app_open_like", JSONObject()
+                "app_open_like", null
             )
         }
         findViewById<View>(R.id.button_flush).setOnClickListener {
@@ -40,12 +40,11 @@ class AnalyticsTestActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.button_track_page_close).setOnClickListener {
-            ROIQueryAnalytics.trackPageClose(
-                JSONObject()
+            ROIQueryAnalytics.trackPageClose(null
             )
         }
         findViewById<View>(R.id.button_track_app_close).setOnClickListener {
-            ROIQueryAnalytics.trackAppClose(JSONObject()
+            ROIQueryAnalytics.trackAppClose(null
             )
         }
 
@@ -55,12 +54,12 @@ class AnalyticsTestActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        ROIQueryAnalytics.trackPageOpen()
+        ROIQueryAnalytics.trackPageOpen(null)
     }
 
     override fun onStop() {
         super.onStop()
-        ROIQueryAnalytics.trackPageClose()
+        ROIQueryAnalytics.trackPageClose(null)
     }
 
     //设置监听事件,点击返回按钮则退出当前页面
