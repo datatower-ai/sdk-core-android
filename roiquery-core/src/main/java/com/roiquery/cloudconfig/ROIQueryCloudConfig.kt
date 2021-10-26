@@ -136,5 +136,16 @@ class ROIQueryCloudConfig {
         }
 
 
+        @JvmStatic
+        @JvmOverloads
+        fun getJsonObject(
+            key: String,
+            defaultValue: JSONObject = JSONObject()
+        ) = try {
+            getConfigJsonObject()?.getJSONObject(key) ?: defaultValue
+        } catch (e: Exception) {
+            defaultValue
+        }
+
     }
 }

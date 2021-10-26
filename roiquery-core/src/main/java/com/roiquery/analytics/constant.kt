@@ -13,8 +13,8 @@ internal object Constant {
     //upload url
     val EVENT_REPORT_URL = "$ANALYTICS_BASE_URL/report"
     // cloudConfig url
-    val CLOUD_CONFIG_URL = "$ANALYTICS_BASE_URL/cfg"
-//    const val CLOUD_CONFIG_URL = "http://192.168.60.70:8000/apitest/cfg"
+    val CLOUD_CONFIG_URL = "$ANALYTICS_BASE_URL/remote/configurator"
+//    const val CLOUD_CONFIG_URL = "http://test.roiquery.com/remote/configurator"
 
     //ntp server url
     const val NTP_TIME_OUT_M = 31428
