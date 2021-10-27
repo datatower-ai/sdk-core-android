@@ -46,7 +46,7 @@ open class ROIQueryAnalytics {
         @JvmStatic
         fun track(
             eventName: String?,
-            properties: Map<String, Any>?
+            properties: Map<String, Any>? = mutableMapOf()
         ) =
             AnalyticsImp.getInstance(mContext).track(eventName, properties)
 
@@ -58,7 +58,7 @@ open class ROIQueryAnalytics {
          * @param properties 事件属性，可为空
          */
         @JvmStatic
-        fun trackAppClose(properties: Map<String, Any>?) =
+        fun trackAppClose(properties: Map<String, Any>? = mutableMapOf()) =
             AnalyticsImp.getInstance(mContext).trackAppClose(properties)
 
 
@@ -68,7 +68,7 @@ open class ROIQueryAnalytics {
          * @param properties 事件属性，可为空
          */
         @JvmStatic
-        fun trackPageOpen(properties: Map<String, Any>?) =
+        fun trackPageOpen(properties: Map<String, Any>? = mutableMapOf()) =
             AnalyticsImp.getInstance(mContext).trackPageOpen(properties)
 
         /**
@@ -77,7 +77,7 @@ open class ROIQueryAnalytics {
          * @param properties 事件属性，可为空
          */
         @JvmStatic
-        fun trackPageClose(properties: Map<String, Any>?) =
+        fun trackPageClose(properties: Map<String, Any>? = mutableMapOf()) =
             AnalyticsImp.getInstance(mContext).trackPageClose(properties)
 
 
@@ -88,7 +88,7 @@ open class ROIQueryAnalytics {
          * @param properties 事件属性
          */
         @JvmStatic
-        fun setUserProperties(properties: Map<String, Any>?) =
+        fun setUserProperties(properties: Map<String, Any>? = mutableMapOf()) =
             AnalyticsImp.getInstance(mContext).setUserProperties(properties)
 
 
