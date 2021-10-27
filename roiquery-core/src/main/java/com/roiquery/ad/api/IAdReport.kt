@@ -243,6 +243,7 @@ package com.roiquery.ad.api
       * @param id 广告最小单元id
       * @param type 广告类型
       * @param platform 广告平台
+      * @param adgroupType 广告组类别
       * @param location 广告位
       * @param seq 系列行为标识
       * @param mediation 聚合平台
@@ -258,6 +259,7 @@ package com.roiquery.ad.api
          id: String,
          type: Int,
          platform: String,
+         adgroupType: String,
          location: String,
          seq: String,
          mediation: Int,
