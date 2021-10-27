@@ -35,8 +35,8 @@ object AdPlatformUtils {
                 networkName,
                 networkPlacementId,
                 adgroupType
-            ).value
-            else -> AdMediation.IDLE.value
+            )
+            else -> AdPlatform.IDLE
         }
 
     private fun isMarketPlace(network: String, adgroupType: String) =
