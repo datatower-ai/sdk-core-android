@@ -244,6 +244,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         id: String,
         type: Int,
         platform: String,
+        adgroupType: String,
         location: String,
         seq: String,
         mediation: Int,
@@ -260,6 +261,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
             "id: $id,\n" +
                     "        type: $type,\n" +
                     "        platform: $platform,\n" +
+                    "        adgroupType: $adgroupType,\n" +
                     "        location: $location,\n" +
                     "        seq: $seq,\n" +
                     "        mediation: $mediation,\n" +
@@ -272,9 +274,9 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         )
 
         val property = updateAdEventProperty(
-            id,
+            AdPlatformUtils.getId(mediationId, id, adgroupType),
             type,
-            AdPlatformUtils.getPlatform(mediation, platform, id),
+            AdPlatformUtils.getPlatform(mediation, platform, id, adgroupType),
             location,
             seq,
             properties,

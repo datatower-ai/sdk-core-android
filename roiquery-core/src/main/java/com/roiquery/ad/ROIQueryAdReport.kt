@@ -1,6 +1,7 @@
 package com.roiquery.ad
 
 import com.roiquery.ad.api.AdReportImp
+import com.roiquery.ad.utils.AdPlatformUtils
 import com.roiquery.ad.utils.UUIDUtils
 
 open class ROIQueryAdReport {
@@ -347,6 +348,7 @@ open class ROIQueryAdReport {
          * @param id 广告最小单元id
          * @param type 广告类型
          * @param platform 广告平台
+         * @param adgroupType 广告组类别
          * @param location 广告位
          * @param seq 系列行为标识
          * @param mediation 聚合平台
@@ -364,6 +366,7 @@ open class ROIQueryAdReport {
             id: String,
             type: AdType,
             platform: String,
+            adgroupType: String,
             location: String,
             seq: String,
             mediation: AdMediation,
@@ -375,7 +378,7 @@ open class ROIQueryAdReport {
             properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportPaid(id, type.value, platform, location, seq, mediation.value, mediationId, value, currency, precision, country, properties, entrance)
+            .reportPaid(id, type.value, platform, adgroupType, location, seq, mediation.value, mediationId, value, currency, precision, country, properties, entrance)
 
         /**
          * 上报 访问广告链接，离开当前app(页面)
@@ -409,12 +412,23 @@ open class ROIQueryAdReport {
             .reportReturnApp()
 
 
-
         /**
          * 生成UUID
          */
         @JvmStatic
         fun generateUUID() = UUIDUtils.generateUUID()
+
+
+        /**
+         * 获取聚合平台具体广告网络的广告单元
+         */
+        @JvmStatic
+        fun getPlatform(
+            mediation: Int,
+            networkName: String,
+            networkPlacementId: String,
+            adgroupType: String
+        ) = AdPlatformUtils.getPlatform(mediation, networkName, networkPlacementId, adgroupType)
 
     }
 }

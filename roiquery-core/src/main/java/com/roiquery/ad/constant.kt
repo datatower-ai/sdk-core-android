@@ -63,6 +63,7 @@ enum class AdMediation(val value: Int){
 }
 
 enum class AdPlatform(val value: Int){
+     UNDISCLOSED(-2),
      IDLE(-1),
      ADMOB(0),
      MOPUB(1),
