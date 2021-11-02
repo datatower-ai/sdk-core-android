@@ -79,5 +79,6 @@ enum class AdPlatform(val value: Int){
      UNITY_ADS (11),
      VERIZON_MEDIA(12),
      VUNGLE(13),
-     ADX(14)
+     ADX(14),
+     COMBO(15)
 }
