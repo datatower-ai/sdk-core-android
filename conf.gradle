@@ -24,8 +24,8 @@ ext {
     ]
 
     core = [
-			coreVersionCode      :52,
-			coreVersionName      :'1.2.0',
+			coreVersionCode      :53,
+			coreVersionName      :'1.2.1',
             artifactId           :'core'
     ]
 
