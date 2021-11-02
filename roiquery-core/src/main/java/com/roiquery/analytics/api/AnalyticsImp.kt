@@ -2,6 +2,7 @@ package com.roiquery.analytics.api
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.annotation.Nullable
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
@@ -120,14 +121,13 @@ class AnalyticsImp : AbstractAnalytics {
     fun track(eventName: String?, properties: Map<String, Any?>?) {
         try {
             if (!ROIQueryAnalytics.isSDKEnable()) return
-
-            track(eventName, JSONObject(properties))
+            track(eventName, JSONObject(properties ?: mutableMapOf<String,Any>()))
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
     }
 
-    override fun track(eventName: String?, properties: JSONObject?) {
+    override fun track(eventName: String?,  properties: JSONObject?) {
         if (!ROIQueryAnalytics.isSDKEnable()) return
 
         mTrackTaskManager?.let {
