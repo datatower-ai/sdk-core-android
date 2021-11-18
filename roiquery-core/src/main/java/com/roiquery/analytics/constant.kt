@@ -1,5 +1,6 @@
 package com.roiquery.analytics
 
+import java.util.ArrayList
 
 
 internal object Constant {
@@ -35,6 +36,9 @@ internal object Constant {
     const val EVENT_INFO_NAME        = "#event_name"
     const val EVENT_INFO_SYN         = "#event_syn"
     const val EVENT_INFO_PROPERTIES  = "properties"
+
+    const val EVENT_BODY  = "body"
+    const val EVENT_TIME_CALIBRATED  = "time_calibrated"
 
 
     const val COMMON_PROPERTY_EVENT_SESSION       = "#event_session"
@@ -99,6 +103,19 @@ internal object Constant {
 
     // sdk switch，cloudConfig to config
     const val ENABLE_ANALYTICS_SDK_KEY = "enable_analytics_sdk"
+
+    val BASE_EVENT_NAME: ArrayList<String> = object : ArrayList<String>() {
+        init {
+            add(PRESET_EVENT_APP_FIRST_OPEN)
+            add(PRESET_EVENT_APP_OPEN)
+            add(PRESET_EVENT_APP_ATTRIBUTE)
+            add(PRESET_EVENT_APP_ENGAGEMENT)
+            add(PRESET_EVENT_APP_CLOSE)
+            add(PRESET_EVENT_PAGE_OPEN)
+            add(PRESET_EVENT_PAGE_CLOSE)
+            add(PRESET_EVENT_USER_PROPERTIES)
+        }
+    }
 
 }
 

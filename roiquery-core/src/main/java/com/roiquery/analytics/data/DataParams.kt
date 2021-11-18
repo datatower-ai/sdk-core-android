@@ -143,6 +143,7 @@ class DataParams private constructor(packageName: String) {
         const val CONFIG_ATTRIBUTE = "app_attribute"
         const val CONFIG_IS_FOREGROUND = "is_foreground"
         const val CLOUD_CONFIG_AES_KEY = "cloud_config_aes_key"
+        const val TIME_SERVER_LOCAL_OFFSET = "time_server_local_offset"
 
 
 

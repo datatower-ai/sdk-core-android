@@ -51,6 +51,15 @@ open class ROIQueryAnalytics {
         ) =
             AnalyticsImp.getInstance(mContext).track(eventName, properties)
 
+        /**
+         * 调用 track 接口，追踪一个带有属性的事件
+         *
+         * @param eventName 事件的名称
+         * @param properties 事件属性
+         */
+        @JvmStatic
+        fun track(eventName: String?, properties: JSONObject?) =
+            AnalyticsImp.getInstance(mContext).track(eventName, properties)
 
 
         /**
@@ -149,6 +158,17 @@ open class ROIQueryAnalytics {
         fun calibrateTime(timestamp: Long) {
             AnalyticsImp.getInstance(mContext).calibrateTime(timestamp)
         }
+
+
+        /**
+         * 获取当前时间，如果没有校准，则返回系统时间
+         * @param timestamp 当前时间戳
+         */
+        @JvmStatic
+        fun getRealTime() =
+            AnalyticsImp.getInstance(mContext).getRealTime()
+
+
 
         /**
          * app 进入前台

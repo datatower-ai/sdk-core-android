@@ -14,9 +14,11 @@ import com.roiquery.analytics.network.RequestHelper
 import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
+import org.json.JSONArray
 
 import org.json.JSONObject
 import kotlin.collections.HashMap
+import kotlin.math.abs
 
 
 /**
@@ -38,7 +40,7 @@ class AnalyticsManager private constructor(
             if (mDateAdapter == null) return
             synchronized(mDateAdapter) {
                 //是否数据重复
-                if (isEventRepetitive(eventJson)) return
+                if (isEventRepetitive(eventJson.getJSONObject(Constant.EVENT_BODY))) return
                 //插入数据库
                 val insertedCount = mDateAdapter.addJSON(eventJson)
                 checkAppAttributeInsertState(insertedCount,name)
@@ -179,6 +181,38 @@ class AnalyticsManager private constructor(
     }
 
     /**
+     * 更新事件时间
+     */
+    private fun updateEventTime(eventsData: String):String{
+        val resule = JSONArray()
+        val data = JSONArray(eventsData)
+        for(i in 0 until data.length()){
+            data.getJSONObject(i)?.let {
+                //如果事件是在时间同步之前发生的，需要校准
+                if (!it.getBoolean(Constant.EVENT_TIME_CALIBRATED)) {
+                    it.getJSONObject(Constant.EVENT_BODY).apply {
+                        val time =  getString(Constant.EVENT_INFO_TIME).toLong()
+                        val realTime = time + ((mDateAdapter?.timeOffset?.toLong() ?: 0L))
+                        put(Constant.EVENT_INFO_TIME,realTime.toString())
+                        //app_attribute 事件特殊处理first_open_time
+                        if ((Constant.PRESET_EVENT_TAG + getString(Constant.EVENT_INFO_NAME)) == Constant.PRESET_EVENT_APP_ATTRIBUTE){
+                            val firstOpenTime = getJSONObject(Constant.EVENT_INFO_PROPERTIES).getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME).toLong()
+                            val realFirstOpenTime = firstOpenTime + ((mDateAdapter?.timeOffset?.toLong() ?: 0L))
+                            getJSONObject(Constant.EVENT_INFO_PROPERTIES).put(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,realFirstOpenTime.toString())
+                        }
+                        resule.put(this)
+                    }
+
+                }else {
+                    resule.put(it.getJSONObject(Constant.EVENT_BODY))
+                }
+            }
+        }
+
+        return resule.toString()
+    }
+
+    /**
      * 数据上报到服务器
      */
     private fun uploadData() {
@@ -202,14 +236,28 @@ class AnalyticsManager private constructor(
             mDateAdapter.enableUpload = true
             return
         }
+
+        //列表最后一条数据的id，删除时根据此id <= 进行删除
+        var lastId = ""
+        //事件主体，json格式
+        var event  = ""
+
+        //如果未进行时间同步，发空参数进行时间同步
+        if (mDateAdapter.timeOffset.isEmpty()){
+            LogUtils.d(TAG, "time do not calibrate yet")
+            lastId = ""
+            event = "{}"
+        }else {
+            //列表最后一条数据的id，删除时根据此id <= 进行删除
+             lastId = eventsData!![0]
+            //事件主体，json格式
+             event = updateEventTime(eventsData!![1])
+        }
+
         LogUtils.json(
             TAG,
-            "event uploading,process:${AppInfoUtils.getCurrentProcessName(mContext.applicationContext)}"
+            event
         )
-        //列表最后一条数据的id，删除时根据此id <= 进行删除
-        val lastId = eventsData!![0]
-        //事件主体，json格式
-        val event = eventsData!![1]
 
         //http 请求
         RequestHelper.Builder(
@@ -222,9 +270,6 @@ class AnalyticsManager private constructor(
                 HttpCallback.StringCallback() {
                 override fun onFailure(code: Int, errorMessage: String?) {
                     LogUtils.d(TAG, errorMessage)
-//                    mAnalyticsDataAPI.trackQualityEvent(
-//                        "uploadData onFailure && events = $event, && error = $errorMessage"
-//                    )
                 }
 
                 override fun onResponse(response: String?) {
@@ -232,7 +277,7 @@ class AnalyticsManager private constructor(
                     LogUtils.json("$TAG upload event result  ", response)
                     if (!response.isNullOrBlank() && JSONObject(response).getInt(ResponseDataKey.KEY_CODE) == 0) {
                         //上报成功后删除本地数据
-                        val leftCount = mDateAdapter.cleanupEvents(lastId)
+                        val leftCount = if(lastId.isEmpty()) -1 else mDateAdapter.cleanupEvents(lastId)
                         LogUtils.d(TAG, "db left count = $leftCount")
                         //避免事件积压，成功后再次上报
                         flush(2000L)

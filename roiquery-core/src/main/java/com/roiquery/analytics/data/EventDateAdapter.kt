@@ -82,6 +82,15 @@ class EventDateAdapter private constructor(
         set(value) = setStringConfig(DataParams.CLOUD_CONFIG_AES_KEY,value)
 
     /**
+     *  服务器与本地时间差
+     *
+     * @return event_session
+     */
+    var timeOffset: String
+        get() = getStringConfig(DataParams.TIME_SERVER_LOCAL_OFFSET)
+        set(value) = setStringConfig(DataParams.TIME_SERVER_LOCAL_OFFSET,value)
+
+    /**
      *  event_session
      *
      * @return event_session

@@ -25,7 +25,7 @@ class AnalyticsTestActivity : AppCompatActivity() {
 
             ROIQueryAnalytics.setAccountId("7344506")
             ROIQueryAnalytics.track(
-                "app_open_like", null
+                ".app_open_like"
             )
         }
         findViewById<View>(R.id.button_flush).setOnClickListener {

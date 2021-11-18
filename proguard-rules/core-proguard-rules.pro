@@ -15,15 +15,13 @@
     public <methods>;
 }
 
--keep class com.roiquery.analytics.utils.**{*;}
--keep class com.roiquery.cloudconfig.utils.**{*;}
+
 -keep class com.roiquery.analytics.ROIQueryChannel{*;}
 
 -keep enum com.roiquery.ad.*{*;}
 -keep class com.roiquery.ad.ROIQueryAdReport{*;}
 -keep class com.roiquery.ad.ROIQueryAdReport$Companion{*;}
 
--keep class com.roiquery.ad.utils.UUIDUtils{*;}
 -keep class com.roiquery.iap.ROIQueryIAPReport{*;}
 -keep class com.roiquery.iap.ROIQueryIAPReport$Companion{*;}
 
