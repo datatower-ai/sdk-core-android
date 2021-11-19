@@ -95,7 +95,8 @@ internal object Constant {
 
 
     //engagement interval time
-    const val APP_ENGAGEMENT_INTERVAL_TIME = 5 * 60 * 1000L // 5min
+    const val APP_ENGAGEMENT_INTERVAL_TIME_INT = 5 * 60 * 1000 // 5min
+    const val APP_ENGAGEMENT_INTERVAL_TIME_LONG = 5 * 60 * 1000L // 5min
 
     const val SDK_TYPE_ANDROID = "Android"
     const val SDK_TYPE_UNITY   = "Unity"

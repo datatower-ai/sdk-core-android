@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
@@ -12,24 +13,17 @@ import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
 import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.R
-import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.AnalyticsManager
 import com.roiquery.analytics.data.EventDateAdapter
-import com.roiquery.analytics.exception.InvalidDataException
 import com.roiquery.analytics.network.HttpPOSTResourceRemoteRepository
 import com.roiquery.analytics.utils.*
 import com.roiquery.cloudconfig.ROIQueryCloudConfig
-import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
-import java.util.*
+import org.qiyi.basecore.taskmanager.TickTask
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledThreadPoolExecutor
-import java.util.concurrent.TimeUnit
-import kotlin.collections.HashMap
 
 
 abstract class AbstractAnalytics : IAnalytics {
@@ -112,18 +106,7 @@ abstract class AbstractAnalytics : IAnalytics {
         if (!ProcessUtils.isMainProcess(mContext as Application?) || getSdkType() == Constant.SDK_TYPE_UNITY) {
             return
         }
-        AppLifecycleHelper()
-            .register(mContext as Application?, object :
-                AppLifecycleHelper.OnAppStatusListener {
-                override fun onAppForeground() {
-                    ROIQueryAnalytics.onAppForeground()
-                }
-
-                override fun onAppBackground() {
-                    ROIQueryAnalytics.onAppBackground()
-                }
-
-            })
+       ProcessLifecycleOwner.get().lifecycle.addObserver(LifecycleObserverImpl())
     }
 
     /**
@@ -144,7 +127,7 @@ abstract class AbstractAnalytics : IAnalytics {
             if(TextUtils.isEmpty(realEventName)) return
             //设置事件的基本信息
             val eventInfo = JSONObject(mEventInfo).apply {
-                put(Constant.EVENT_INFO_TIME, getRealTime())
+                put(Constant.EVENT_INFO_TIME, getRealTime().toString())
                 put(Constant.EVENT_INFO_NAME, realEventName)
                 put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
                 //向 app_attribute 增加 first_open_time 属性
@@ -475,16 +458,15 @@ abstract class AbstractAnalytics : IAnalytics {
      * 获取当前时间，如果没有校准，则返回系统时间
      */
     @Synchronized
-    open fun getRealTime(): String {
+    open fun getRealTime(): Long {
         return try {
             if (isTimeCalibrated()) {
-                (System.currentTimeMillis() + ((mDataAdapter?.timeOffset)?.toLong()
-                    ?: 0L)).toString()
+                System.currentTimeMillis() + (mDataAdapter?.timeOffset?.toLong() ?: 0L)
             } else {
-                System.currentTimeMillis().toString()
+                System.currentTimeMillis()
             }
         } catch (e: Exception) {
-            System.currentTimeMillis().toString()
+            System.currentTimeMillis()
         }
     }
 
@@ -562,7 +544,7 @@ abstract class AbstractAnalytics : IAnalytics {
         }
         trackAppOpenEvent()
         startAppAttribute()
-        tackAppEngagementEvent()
+        trackAppEngagementEvent()
     }
 
     /**
@@ -595,9 +577,8 @@ abstract class AbstractAnalytics : IAnalytics {
      * 获取 app 归因属性
      */
     private fun getAppAttribute() {
-        var referrerClient: InstallReferrerClient? =
-            InstallReferrerClient.newBuilder(mContext).build()
-
+        if (mDataAdapter?.isAttributed == true) return
+        val referrerClient: InstallReferrerClient? = InstallReferrerClient.newBuilder(mContext).build()
         referrerClient?.startConnection(object : InstallReferrerStateListener {
 
             override fun onInstallReferrerSetupFinished(responseCode: Int) {
@@ -691,43 +672,28 @@ abstract class AbstractAnalytics : IAnalytics {
     }
 
     /**
-     * 采集 app 活跃事件
+     * 如果超过六分钟，则可能 app_engagement 上报有中断，重新触发
      */
-    private fun tackAppEngagementEvent() {
-        if (mEngagemenExecutors != null && !mEngagemenExecutors?.isShutdown!!) {
-            mEngagemenExecutors?.shutdown()
-        }
-        mEngagemenExecutors = ScheduledThreadPoolExecutor(1)
-        if (mEngagemenExecutors?.isShutdown != true
-            && mEngagemenExecutors?.isTerminated != true
-            && mEngagemenExecutors?.isTerminating != true
-        ) {
-            mEngagemenExecutors?.scheduleAtFixedRate(
-                {
-                    if (mEngagemenExecutors?.isShutdown != true
-                        && mEngagemenExecutors?.isTerminated != true
-                        && mEngagemenExecutors?.isTerminating != true
-                    ) {
-                        track(
-                            Constant.PRESET_EVENT_APP_ENGAGEMENT,
-                            PropertyBuilder.newInstance()
-                                .append(
-                                    Constant.ENGAGEMENT_PROPERTY_IS_FOREGROUND,
-                                    mDataAdapter?.isAppForeground.toString()
-                                )
-                                .toJSONObject()
-                        )
-                        startAppAttribute()
-                    }
-                },
-                0,
-                Constant.APP_ENGAGEMENT_INTERVAL_TIME,
-                TimeUnit.MILLISECONDS
-            )
+    fun checkAppEngagementEvent(){
+        if (!mDataAdapter?.lastEngagementTime.isNullOrEmpty() &&
+        getRealTime() - (mDataAdapter?.lastEngagementTime?.toLong() ?: 0L) > Constant.APP_ENGAGEMENT_INTERVAL_TIME_LONG + 60 * 1000L){
+            trackAppEngagementEvent()
         }
     }
 
+    /**
+     * 采集 app 活跃事件
+     */
+    private fun trackAppEngagementEvent() {
+        EngagementTask("EngagementTask")
+            .setIntervalWithFixedRate(Constant.APP_ENGAGEMENT_INTERVAL_TIME_INT)
+            .setMaxLoopTime(Int.MAX_VALUE)
+            .postAsync()
+    }
 
+    /**
+     * 获取浏览器user_agent
+     */
     private fun getUserAgentByUIThread() {
         ThreadUtils.runOnUiThread {
             mContext?.let {
@@ -736,4 +702,23 @@ abstract class AbstractAnalytics : IAnalytics {
         }
     }
 
+
+   inner class EngagementTask(name: String?) : TickTask(name) {
+
+        override fun onTick(loopTime: Int) {
+            track(
+                Constant.PRESET_EVENT_APP_ENGAGEMENT,
+                PropertyBuilder.newInstance()
+                    .append(
+                        Constant.ENGAGEMENT_PROPERTY_IS_FOREGROUND,
+                        mDataAdapter?.isAppForeground.toString()
+                    )
+                    .toJSONObject()
+            )
+            mDataAdapter?.lastEngagementTime = getRealTime().toString()
+            //补发，以免异常情况获取不到 app_attribute 事件
+            startAppAttribute()
+        }
+
+    }
 }

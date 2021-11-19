@@ -106,7 +106,6 @@ open class ROIQueryAnalytics {
             AnalyticsImp.getInstance(mContext).setUserProperties(properties)
 
 
-
         /**
          * 主动上报本地数据事件
          *
@@ -165,9 +164,7 @@ open class ROIQueryAnalytics {
          * @param timestamp 当前时间戳
          */
         @JvmStatic
-        fun getRealTime() =
-            AnalyticsImp.getInstance(mContext).getRealTime()
-
+        fun getRealTime() = AnalyticsImp.getInstance(mContext).getRealTime()
 
 
         /**
@@ -180,6 +177,7 @@ open class ROIQueryAnalytics {
                 if (!isSDKEnable()) return
                 checkNotNull(mContext) { "Call ROIQuery.initSDK first" }
                 EventDateAdapter.getInstance()?.isAppForeground = true
+                AnalyticsImp.getInstance(mContext).checkAppEngagementEvent()
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppForeground()
                 }

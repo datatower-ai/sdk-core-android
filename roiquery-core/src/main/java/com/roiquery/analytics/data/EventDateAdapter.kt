@@ -91,6 +91,15 @@ class EventDateAdapter private constructor(
         set(value) = setStringConfig(DataParams.TIME_SERVER_LOCAL_OFFSET,value)
 
     /**
+     *  app_engagement 最后发生时间
+     *
+     * @return event_session
+     */
+    var lastEngagementTime: String
+        get() = getStringConfig(DataParams.LAST_APP_ENGAGEMENT_TIME)
+        set(value) = setStringConfig(DataParams.LAST_APP_ENGAGEMENT_TIME,value)
+
+    /**
      *  event_session
      *
      * @return event_session
