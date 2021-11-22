@@ -55,7 +55,7 @@ class AnalyticsTestActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        ROIQueryAnalytics.trackPageClose(null)
+        ROIQueryAnalytics.trackPageClose()
     }
 
     //设置监听事件,点击返回按钮则退出当前页面

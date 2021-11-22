@@ -267,15 +267,15 @@ class AnalyticsManager private constructor(
             .jsonData(event)
             .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
             .callback(object :
-                HttpCallback.StringCallback() {
+                HttpCallback.JsonCallback() {
                 override fun onFailure(code: Int, errorMessage: String?) {
                     LogUtils.d(TAG, errorMessage)
                 }
 
-                override fun onResponse(response: String?) {
+                override fun onResponse(response: JSONObject?) {
                     LogUtils.d("$TAG upload event url  ", Constant.EVENT_REPORT_URL)
                     LogUtils.json("$TAG upload event result  ", response)
-                    if (!response.isNullOrBlank() && JSONObject(response).getInt(ResponseDataKey.KEY_CODE) == 0) {
+                    if (response?.getInt(ResponseDataKey.KEY_CODE) == 0) {
                         //上报成功后删除本地数据
                         val leftCount = if(lastId.isEmpty()) -1 else mDateAdapter.cleanupEvents(lastId)
                         LogUtils.d(TAG, "db left count = $leftCount")

@@ -8,6 +8,7 @@ import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.AppLifecycleHelper
+import com.roiquery.analytics.utils.DeviceUtils
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.cloudconfig.ROIQueryCloudConfig
 
@@ -51,6 +52,7 @@ open class ROIQueryAnalytics {
         ) =
             AnalyticsImp.getInstance(mContext).track(eventName, properties)
 
+
         /**
          * 调用 track 接口，追踪一个带有属性的事件
          *
@@ -72,6 +74,16 @@ open class ROIQueryAnalytics {
         fun trackAppClose(properties: Map<String, Any>? = mutableMapOf()) =
             AnalyticsImp.getInstance(mContext).trackAppClose(properties)
 
+        /**
+         * 采集 app 退出
+         *
+         * @param properties 事件属性
+         */
+        @JvmStatic
+        @JvmOverloads
+        fun trackAppClose(properties: JSONObject?) =
+            AnalyticsImp.getInstance(mContext).trackAppClose(properties)
+
 
         /**
          * 采集 页面打开
@@ -84,6 +96,16 @@ open class ROIQueryAnalytics {
             AnalyticsImp.getInstance(mContext).trackPageOpen(properties)
 
         /**
+         * 采集 页面打开
+         *
+         * @param properties 事件属性，可为空
+         */
+        @JvmStatic
+        @JvmOverloads
+        fun trackPageOpen(properties: JSONObject?) =
+            AnalyticsImp.getInstance(mContext).trackPageOpen(properties)
+
+        /**
          * 采集 页面关闭
          *
          * @param properties 事件属性，可为空
@@ -91,6 +113,16 @@ open class ROIQueryAnalytics {
         @JvmStatic
         @JvmOverloads
         fun trackPageClose(properties: Map<String, Any>? = mutableMapOf()) =
+            AnalyticsImp.getInstance(mContext).trackPageClose(properties)
+
+        /**
+         * 采集 页面关闭
+         *
+         * @param properties 事件属性，可为空
+         */
+        @JvmStatic
+        @JvmOverloads
+        fun trackPageClose(properties: JSONObject?) =
             AnalyticsImp.getInstance(mContext).trackPageClose(properties)
 
 
@@ -105,6 +137,15 @@ open class ROIQueryAnalytics {
         fun setUserProperties(properties: Map<String, Any>? = mutableMapOf()) =
             AnalyticsImp.getInstance(mContext).setUserProperties(properties)
 
+        /**
+         * 设置用户属性
+         *
+         * @param properties 事件属性
+         */
+        @JvmStatic
+        @JvmOverloads
+        fun setUserProperties(properties: JSONObject?) =
+            AnalyticsImp.getInstance(mContext).setUserProperties(properties)
 
         /**
          * 主动上报本地数据事件
@@ -112,6 +153,14 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun flush() = AnalyticsImp.getInstance(mContext).flush()
+
+        /**
+         * 获取ROIQuery ID
+         */
+        @JvmStatic
+        fun getROIQueryId() {
+            DeviceUtils.getAndroidID(mContext!!)
+        }
 
         /**
          * 设置自有用户系统的id
@@ -123,7 +172,7 @@ open class ROIQueryAnalytics {
         }
 
         /**
-         * 设置Firebase的app_instance_id
+         * 设置 Firebase 的 app_instance_id
          * @param id Firebase 的 app_instance_id
          */
         @JvmStatic
@@ -132,7 +181,7 @@ open class ROIQueryAnalytics {
         }
 
         /**
-         * 设置AppsFlyer id
+         * 设置 AppsFlyer id
          * @param id appsflyer id
          */
         @JvmStatic
@@ -141,7 +190,7 @@ open class ROIQueryAnalytics {
         }
 
         /**
-         * 设置kochava id
+         * 设置 kochava id
          * @param id kochava id
          */
         @JvmStatic
@@ -149,23 +198,29 @@ open class ROIQueryAnalytics {
             AnalyticsImp.getInstance(mContext).koid = id
         }
 
-        /**
-         * 校准时间
-         * @param timestamp 当前时间戳
-         */
-        @JvmStatic
-        fun calibrateTime(timestamp: Long) {
-            AnalyticsImp.getInstance(mContext).calibrateTime(timestamp)
-        }
-
 
         /**
          * 获取当前时间，如果没有校准，则返回系统时间
-         * @param timestamp 当前时间戳
+         * @return
          */
         @JvmStatic
         fun getRealTime() = AnalyticsImp.getInstance(mContext).getRealTime()
 
+        /**
+         * 异步获取服务器时间
+         * @return
+         */
+        fun getServerTimeAsync(){
+
+        }
+
+        /**
+         * 同步获取服务器时间
+         * @return
+         */
+        fun getServerTimeSync(){
+
+        }
 
         /**
          * app 进入前台

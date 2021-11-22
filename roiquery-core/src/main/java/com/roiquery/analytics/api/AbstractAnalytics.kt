@@ -28,7 +28,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor
 
 abstract class AbstractAnalytics : IAnalytics {
 
-    protected var mContext: Context? = null
+    private var mContext: Context? = null
 
     // 事件信息，包含事件的基本数据
     private var mEventInfo: MutableMap<String, Any?>? = null
@@ -39,15 +39,11 @@ abstract class AbstractAnalytics : IAnalytics {
     //事件采集管理
     protected var mTrackTaskManager: ExecutorService? = null
 
-    //采集 app 活跃事件线程池
-    private var mEngagemenExecutors: ScheduledThreadPoolExecutor? = null
-
     //采集 、上报管理
     protected var mAnalyticsManager: AnalyticsManager? = null
 
     //本地数据适配器，包括sp、db的操作
     private var mDataAdapter: EventDateAdapter? = null
-
 
     private var mUserAgent = ""
 
@@ -184,35 +180,7 @@ abstract class AbstractAnalytics : IAnalytics {
      * @return
      */
     protected open fun initEventInfo() {
-        mEventInfo = mutableMapOf<String, Any?>().apply {
-            put(
-                Constant.EVENT_INFO_DID,
-                DeviceUtils.getAndroidID(mContext!!)
-            )//设备 ID。即唯一ID，区分设备的最小ID
-            put(
-                Constant.EVENT_INFO_ACID,
-                mDataAdapter?.accountId
-            )//登录账号id
-            put(
-                Constant.EVENT_INFO_GAID,
-                mDataAdapter?.gaid.toString()
-            )//谷歌广告标识id,不同app在同一个设备上gaid一样
-            put(
-                Constant.EVENT_INFO_OAID,
-                mDataAdapter?.oaid.toString()
-            )//华为广告标识id,不同app在同一个设备上oaid一样
-            put(
-                Constant.EVENT_INFO_APP_ID,
-                mConfigOptions?.mAppId
-            )//应用唯一标识,后台分配
-            put(
-                Constant.EVENT_INFO_PKG,
-                mContext?.packageName
-            )//包名
-            if (mConfigOptions?.mEnabledDebug == true) {
-                put(Constant.EVENT_INFO_DEBUG, "true")
-            }
-        }
+        mEventInfo =EventUtils.getEventInfo(mContext!!,mDataAdapter)
 
     }
 
@@ -229,85 +197,7 @@ abstract class AbstractAnalytics : IAnalytics {
         if (ProcessUtils.isMainProcess(mContext as Application?)) {
             mDataAdapter?.eventSession = DataUtils.getSession()
         }
-        mCommonProperties = mutableMapOf<String, Any?>().apply {
-            put(
-                Constant.COMMON_PROPERTY_EVENT_SESSION,
-                mDataAdapter?.eventSession
-            )//系列行为标识
-            put(
-                Constant.COMMON_PROPERTY_FIREBASE_IID,
-                mDataAdapter?.fiid
-            )//Firebase的app_instance_id
-            put(
-                Constant.COMMON_PROPERTY_APPSFLYER_ID,
-                mDataAdapter?.afid
-            )//appsflyer_id
-            put(
-                Constant.COMMON_PROPERTY_KOCHAVA_ID,
-                mDataAdapter?.koid
-            )//kochava_id
-            put(
-                Constant.COMMON_PROPERTY_MCC,
-                DeviceUtils.getMcc(mContext!!)
-            )//移动信号国家码
-            put(
-                Constant.COMMON_PROPERTY_MNC,
-                DeviceUtils.getMnc(mContext!!)
-            )//移动信号网络码
-            put(
-                Constant.COMMON_PROPERTY_OS_COUNTRY,
-                DeviceUtils.getLocalCountry(mContext!!)
-            )//系统国家
-            put(
-                Constant.COMMON_PROPERTY_OS_LANG,
-                DeviceUtils.getLocaleLanguage()
-            )//系统语言
-            put(
-                Constant.COMMON_PROPERTY_APP_VERSION_CODE,
-                AppInfoUtils.getAppVersionCode(mContext).toString()
-            )//应用版本号
-            put(
-                Constant.COMMON_PROPERTY_APP_VERSION_NAME,
-                AppInfoUtils.getAppVersionName(mContext)
-            )//应用版本号
-            put(
-                Constant.COMMON_PROPERTY_SDK_TYPE,
-                Constant.SDK_TYPE_ANDROID
-            )//接入 SDK 的类型，如 Android，iOS,Unity ,Flutter
-            put(
-                Constant.COMMON_PROPERTY_SDK_VERSION,
-                BuildConfig.VERSION_NAME
-            )//SDK 版本,如 1.1.2
-            put(
-                Constant.COMMON_PROPERTY_OS,
-                Constant.SDK_TYPE_ANDROID
-            )//如 Android、iOS 等
-            put(
-                Constant.COMMON_PROPERTY_OS_VERSION,
-                DeviceUtils.oS
-            )//操作系统版本,iOS 11.2.2、Android 8.0.0 等
-            put(
-                Constant.COMMON_PROPERTY_DEVICE_MANUFACTURER,
-                DeviceUtils.manufacturer
-            )//用户设备的制造商，如 Apple，vivo 等
-            put(
-                Constant.COMMON_PROPERTY_DEVICE_BRAND,
-                DeviceUtils.brand
-            )//设备品牌,如 Galaxy、Pixel
-            put(
-                Constant.COMMON_PROPERTY_DEVICE_MODEL,
-                DeviceUtils.model
-            )//设备型号,用户设备的型号，如 iPhone 8 等
-            val size = DeviceUtils.getDeviceSize(mContext!!)
-            put(
-                Constant.COMMON_PROPERTY_SCREEN_HEIGHT,
-                size[0].toString()
-            )//屏幕高度
-            put(
-                Constant.COMMON_PROPERTY_SCREEN_WIDTH,
-                size[1].toString()
-            )//屏幕宽度
-        }
+        mCommonProperties = EventUtils.getCommonProperties(mContext!!,mDataAdapter);
         mConfigOptions.let { config ->
             if (config?.mCommonProperties != null) {
                 val iterator = config.mCommonProperties!!.keys()
@@ -378,9 +268,7 @@ abstract class AbstractAnalytics : IAnalytics {
 
         mConfigOptions?.let { configOptions ->
             configLog(configOptions.mEnabledDebug, configOptions.mLogLevel)
-//            initNTP(configOptions.mEnabledDebug)
             registerNetworkStatusChangedListener()
-
             if (configOptions.mFlushInterval == 0) {
                 configOptions.setFlushInterval(
                     2000
