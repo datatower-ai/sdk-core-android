@@ -22,11 +22,8 @@ class AnalyticsTestActivity : AppCompatActivity() {
         title = "AnalyticsTest"
 
         findViewById<View>(R.id.button_track).setOnClickListener {
-
             ROIQueryAnalytics.setAccountId("7344506")
-            ROIQueryAnalytics.track(
-                ".app_open_like"
-            )
+            ROIQueryAnalytics.track(".app_open_like")
         }
         findViewById<View>(R.id.button_flush).setOnClickListener {
             ROIQueryAnalytics.flush()
@@ -40,12 +37,11 @@ class AnalyticsTestActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.button_track_page_close).setOnClickListener {
-            ROIQueryAnalytics.trackPageClose(null
-            )
+            ROIQueryAnalytics.trackPageClose()
+
         }
         findViewById<View>(R.id.button_track_app_close).setOnClickListener {
-            ROIQueryAnalytics.trackAppClose(null
-            )
+            ROIQueryAnalytics.trackAppClose()
         }
 
     }
@@ -54,7 +50,7 @@ class AnalyticsTestActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        ROIQueryAnalytics.trackPageOpen(null)
+        ROIQueryAnalytics.trackPageOpen()
     }
 
     override fun onStop() {

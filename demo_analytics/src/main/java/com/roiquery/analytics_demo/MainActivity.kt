@@ -12,13 +12,10 @@ import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
-    //事件采集管理
-    protected var mTrackTaskManager: ExecutorService? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
-        mTrackTaskManager = Executors.newSingleThreadExecutor()
 
         findViewById<View>(R.id.button_analytics_test).setOnClickListener {
             startActivity(Intent(this,AnalyticsTestActivity::class.java))
@@ -36,11 +33,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun test(name: String){
-        mTrackTaskManager?.execute{
-            LogUtils.e(name)
-        }
-    }
 
     override fun onStart() {
         super.onStart()
