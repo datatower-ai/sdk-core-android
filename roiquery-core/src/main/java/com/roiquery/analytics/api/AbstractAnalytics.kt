@@ -20,6 +20,7 @@ import com.roiquery.analytics.network.HttpPOSTResourceRemoteRepository
 import com.roiquery.analytics.utils.*
 import com.roiquery.cloudconfig.ROIQueryCloudConfig
 import org.json.JSONObject
+import org.qiyi.basecore.taskmanager.TM
 import org.qiyi.basecore.taskmanager.TickTask
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -99,10 +100,9 @@ abstract class AbstractAnalytics : IAnalytics {
      * 监听应用生命周期
      */
     private fun initAppLifecycleListener() {
-        if (!ProcessUtils.isMainProcess(mContext as Application?) || getSdkType() == Constant.SDK_TYPE_UNITY) {
-            return
+        TM.postUI {
+            ProcessLifecycleOwner.get().lifecycle.addObserver(LifecycleObserverImpl())
         }
-       ProcessLifecycleOwner.get().lifecycle.addObserver(LifecycleObserverImpl())
     }
 
     /**

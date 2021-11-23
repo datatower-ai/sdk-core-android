@@ -46,7 +46,7 @@ abstract class HttpCallback<T> {
 
     fun onSuccess(response: RealResponse) {
         AnalyticsImp.getInstance(ROIQueryAnalytics.mContext).calibrateTime(response.date)
-        val obj: T = onParseResponse(response.result)
+        val obj: T = onParseResponse(response,response.result)
         sMainHandler.post {
             onResponse(obj)
             onAfter()
@@ -59,7 +59,7 @@ abstract class HttpCallback<T> {
      * @param result 网络请求返回信息
      * @return T
      */
-    abstract fun onParseResponse(result: String): T
+    abstract fun onParseResponse(response: RealResponse,result: String): T
 
     /**
      * 访问网络失败后被调用，执行在 UI 线程
@@ -80,14 +80,21 @@ abstract class HttpCallback<T> {
      * 访问网络成功或失败后调用
      */
     abstract fun onAfter()
+
+    abstract class TimeCallback : HttpCallback<Long>() {
+        override fun onParseResponse(response: RealResponse, result: String): Long {
+            return response.date
+        }
+        override fun onAfter() {}
+    }
     abstract class StringCallback : HttpCallback<String>() {
-        override fun onParseResponse(result: String): String {
+        override fun onParseResponse(response: RealResponse,result: String): String {
             return result
         }
     }
 
     abstract class JsonCallback : HttpCallback<JSONObject?>() {
-        override fun onParseResponse(result: String): JSONObject? {
+        override fun onParseResponse(response: RealResponse,result: String): JSONObject? {
             try {
                 if (!TextUtils.isEmpty(result)) {
                     return JSONObject(result)

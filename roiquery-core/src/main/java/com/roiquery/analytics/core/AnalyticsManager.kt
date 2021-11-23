@@ -261,7 +261,7 @@ class AnalyticsManager private constructor(
 
         //http 请求
         RequestHelper.Builder(
-            HttpMethod.POST,
+            HttpMethod.POST_ASYNC,
             Constant.EVENT_REPORT_URL
         )
             .jsonData(event)

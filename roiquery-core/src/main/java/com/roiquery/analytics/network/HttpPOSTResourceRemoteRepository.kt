@@ -18,7 +18,7 @@ class HttpPOSTResourceRemoteRepository(
         //http 请求
         val call =
             RequestHelper.Builder(
-                HttpMethod.GET,
+                HttpMethod.GET_ASYNC,
                 url
             )
                 .params(params.invoke())

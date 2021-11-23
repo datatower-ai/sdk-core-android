@@ -5,8 +5,14 @@ import android.content.Context
 import com.roiquery.analytics.Constant.ENABLE_ANALYTICS_SDK_KEY
 import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.api.AnalyticsImp
+import com.roiquery.analytics.api.ServerTimeListener
 import com.roiquery.analytics.config.AnalyticsConfig
+import com.roiquery.analytics.core.AnalyticsManager
 import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.network.HttpCallback
+import com.roiquery.analytics.network.HttpMethod
+import com.roiquery.analytics.network.RealResponse
+import com.roiquery.analytics.network.RequestHelper
 import com.roiquery.analytics.utils.AppLifecycleHelper
 import com.roiquery.analytics.utils.DeviceUtils
 import com.roiquery.analytics.utils.LogUtils
@@ -24,19 +30,6 @@ open class ROIQueryAnalytics {
 
         private var mAppLifecycleListeners =
             mutableListOf<AppLifecycleHelper.OnAppStatusListener?>()
-
-
-        /**
-         * 初始化
-         *
-         * @param context 上下文
-         * @param configOptions 配置
-         */
-        @JvmStatic
-        internal fun init(context: Context?, configOptions: AnalyticsConfig?) {
-            AnalyticsImp.init(context, configOptions)
-        }
-
 
         /**
          * 调用 track 接口，追踪一个带有属性的事件
@@ -126,7 +119,6 @@ open class ROIQueryAnalytics {
             AnalyticsImp.getInstance(mContext).trackPageClose(properties)
 
 
-
         /**
          * 设置用户属性
          *
@@ -210,24 +202,61 @@ open class ROIQueryAnalytics {
          * 异步获取服务器时间
          * @return
          */
-        fun getServerTimeAsync(){
+        @JvmStatic
+        fun getServerTimeAsync(serverTimeListener: ServerTimeListener?) {
+            RequestHelper.Builder(
+                HttpMethod.POST_ASYNC,
+                Constant.EVENT_REPORT_URL
+            )
+                .jsonData("{}")
+                .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
+                .callback(object : HttpCallback.TimeCallback() {
+                    override fun onFailure(code: Int, errorMessage: String?) {
+                        serverTimeListener?.onFinished(0L,errorMessage ?: "onFailure")
+                    }
 
+                    override fun onResponse(response: Long) {
+                        serverTimeListener?.onFinished(response,"ok")
+                    }
+                })
+                .execute()
         }
 
         /**
          * 同步获取服务器时间
          * @return
          */
-        fun getServerTimeSync(){
+        @JvmStatic
+        fun getServerTimeSync():Long {
+            RequestHelper.Builder(
+                HttpMethod.POST_SYNC,
+                Constant.EVENT_REPORT_URL
+            )
+                .jsonData("{}")
+                .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
+                .executeSync()?.let {
+                    return it.date
+                }
+            return 0L
+        }
 
+        /******************** internal *******************/
+
+        /**
+         * 初始化
+         *
+         * @param context 上下文
+         * @param configOptions 配置
+         */
+        internal fun init(context: Context?, configOptions: AnalyticsConfig?) {
+            AnalyticsImp.init(context, configOptions)
         }
 
         /**
          * app 进入前台
          *
          */
-        @JvmStatic
-        fun onAppForeground() {
+        internal fun onAppForeground() {
             try {
                 if (!isSDKEnable()) return
                 checkNotNull(mContext) { "Call ROIQuery.initSDK first" }
@@ -245,8 +274,7 @@ open class ROIQueryAnalytics {
         /**
          * app 进入后台
          */
-        @JvmStatic
-        fun onAppBackground() {
+        internal fun onAppBackground() {
             try {
                 if (!isSDKEnable()) return
                 checkNotNull(mContext) { "Call ROIQuerySDK.init first" }
@@ -261,8 +289,8 @@ open class ROIQueryAnalytics {
 
         }
 
-        @JvmStatic
-        fun getContext(): Context? {
+
+        internal fun getContext(): Context? {
             return try {
                 if (!isSDKEnable()) return null
                 checkNotNull(mContext) { "Call ROIQuerySDK.init first" }
@@ -273,8 +301,8 @@ open class ROIQueryAnalytics {
             }
         }
 
-        @JvmStatic
-        fun addAppStatusListener(listener: AppLifecycleHelper.OnAppStatusListener?) {
+
+        internal fun addAppStatusListener(listener: AppLifecycleHelper.OnAppStatusListener?) {
             if (!isSDKEnable()) return
             mAppLifecycleListeners.add(listener)
         }
@@ -282,7 +310,6 @@ open class ROIQueryAnalytics {
         /**
          * sdk 是否可用，默认可用，由cloud config 控制
          */
-        @JvmStatic
         internal fun isSDKEnable(): Boolean {
             return if (!AbstractAnalytics.mSDKConfigInit) true
             else

@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
                 "main"
             )
 
+            ROIQueryAnalytics.getServerTimeAsync()
+
         }
         findViewById<View>(R.id.button_track_to_show).setOnClickListener {
             ROIQueryAnalytics.setKochavaId("sdf23r243r")
