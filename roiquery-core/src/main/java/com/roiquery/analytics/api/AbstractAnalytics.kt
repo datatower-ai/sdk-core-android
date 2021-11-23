@@ -86,6 +86,7 @@ abstract class AbstractAnalytics : IAnalytics {
     private fun initLocalData() {
         mDataAdapter = EventDateAdapter.getInstance(mContext!!, mContext!!.packageName)
         mDataAdapter?.timeOffset = ""
+        mDataAdapter?.lastEngagementTime = ""
     }
 
     /**
@@ -167,11 +168,7 @@ abstract class AbstractAnalytics : IAnalytics {
     }
 
     fun trackQualityEvent(qualityInfo: String) {
-//        track(
-//            Constant.PRESET_EVENT_APP_QUALITY,
-//            JSONObject().apply {
-//                put(Constant.APP_QUALITY_INFO, qualityInfo)
-//            })
+
     }
 
     /**
@@ -180,8 +177,7 @@ abstract class AbstractAnalytics : IAnalytics {
      * @return
      */
     protected open fun initEventInfo() {
-        mEventInfo =EventUtils.getEventInfo(mContext!!,mDataAdapter)
-
+        mEventInfo = EventUtils.getEventInfo(mContext!!,mDataAdapter)
     }
 
     fun updateEventInfo(key: String, value: String) {
@@ -219,12 +215,6 @@ abstract class AbstractAnalytics : IAnalytics {
         mCommonProperties?.put(key, value)
     }
 
-    private fun getSdkType(): String {
-        if (mCommonProperties?.contains(Constant.COMMON_PROPERTY_SDK_TYPE) == true) {
-            return mCommonProperties?.get(Constant.COMMON_PROPERTY_SDK_TYPE).toString()
-        }
-        return ""
-    }
 
     /**
      * 事件校验
