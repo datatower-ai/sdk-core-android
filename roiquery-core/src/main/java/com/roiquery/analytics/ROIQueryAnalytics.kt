@@ -150,9 +150,9 @@ open class ROIQueryAnalytics {
          * 获取ROIQuery ID
          */
         @JvmStatic
-        fun getROIQueryId() {
+        fun getROIQueryId() =
             DeviceUtils.getAndroidID(mContext!!)
-        }
+
 
         /**
          * 设置自有用户系统的id
