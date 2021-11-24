@@ -11,12 +11,12 @@ class SubProcessService : Service() {
     }
 
     override fun onCreate() {
-        ROIQueryAnalytics.track("sub_process_service_oncreate",null)
+        ROIQueryAnalytics.track("sub_process_service_oncreate")
         super.onCreate()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        ROIQueryAnalytics.track("sub_process_service_onstartcommand",null)
+        ROIQueryAnalytics.track("sub_process_service_onstartcommand")
         return super.onStartCommand(intent, flags, startId)
     }
 

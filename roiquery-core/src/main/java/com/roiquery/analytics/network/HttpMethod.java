@@ -18,6 +18,8 @@
 package com.roiquery.analytics.network;
 
 public enum HttpMethod {
-    POST,
-    GET
+    POST_ASYNC,
+    GET_ASYNC,
+    POST_SYNC,
+    GET_SYNC
 }

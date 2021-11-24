@@ -14,6 +14,7 @@ import com.roiquery.ad.AdPlatform;
 import com.roiquery.ad.AdType;
 import com.roiquery.ad.ROIQueryAdReport;
 import com.roiquery.ad.utils.UUIDUtils;
+import com.roiquery.analytics.ROIQueryAnalytics;
 
 import java.util.HashMap;
 
@@ -24,8 +25,8 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad_report);
 
-        String seq = UUIDUtils.generateUUID();
-        String seq2 = UUIDUtils.generateUUID();
+        String seq = ROIQueryAdReport.generateUUID();
+        String seq2 = ROIQueryAdReport.generateUUID();
 
         findViewById(R.id.button_track_entrance).setOnClickListener(v -> {
             HashMap<String, Object> pro = new HashMap<>();

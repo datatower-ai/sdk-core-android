@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.appsflyer.AppsFlyerConversionListener;
 import com.appsflyer.AppsFlyerLib;
+import com.roiquery.ad.AdPlatform;
 import com.roiquery.analytics.ROIQueryAnalytics;
 import com.roiquery.analytics.ROIQueryChannel;
 import com.roiquery.analytics.ROIQuery;
@@ -21,7 +22,7 @@ public class MyApp2 extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ROIQuery.initSDK(this,"rq_idlesquad", ROIQueryChannel.GP,true);
+        ROIQuery.initSDK(this,"rq_unity_demo", ROIQueryChannel.GP,true);
         AppsFlyerLib.getInstance().getAppsFlyerUID(this);
 
         ROIQueryCloudConfig.fetch(new ConfigFetchListener() {

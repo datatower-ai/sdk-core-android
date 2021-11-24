@@ -26,9 +26,15 @@ import java.util.Map;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
 
+import com.roiquery.analytics.utils.LogUtils;
+
 public class RequestHelper {
     //重定向 URL
     private boolean isRedirected = false;
+
+
+
+    private RequestHelper(){}
 
     /**
      * 网络请求
@@ -41,10 +47,10 @@ public class RequestHelper {
      */
     private RequestHelper(HttpMethod method, String url, Map<String, String> paramsMap, Map<String, String> headerMap, int retryCount, HttpCallback callBack) {
         switch (method) {
-            case GET:
+            case GET_ASYNC:
                 urlHttpGet(url, paramsMap, headerMap, retryCount, callBack);
                 break;
-            case POST:
+            case POST_ASYNC:
                 urlHttpPost(url, paramsMap, "", headerMap, retryCount, callBack);
                 break;
         }
@@ -134,6 +140,26 @@ public class RequestHelper {
                 }
             }
         });
+    }
+
+    private RealResponse urlHttpPostSync(final String url, final Map<String, String> paramsMap,
+                                 final String jsonData, final Map<String, String> headerMap,
+                                 final int retryCount){
+        final int requestCount = retryCount - 1;
+
+        RealResponse response = new RealRequest().postData(url, getPostBody(paramsMap, jsonData), getPostBodyType(paramsMap, jsonData), headerMap);
+        if (response.code == HTTP_OK || response.code == HTTP_NO_CONTENT) {
+            return response;
+        } else if (!isRedirected && HttpUtils.needRedirects(response.code)) {
+            isRedirected = true;
+            return urlHttpPostSync(response.location, paramsMap, jsonData, headerMap, retryCount);
+        } else {
+            if (requestCount != 0) {
+                return urlHttpPostSync(url, paramsMap, jsonData, headerMap, requestCount);
+            } else {
+                return null;
+            }
+        }
     }
 
     /**
@@ -260,11 +286,31 @@ public class RequestHelper {
         }
 
         public void execute() {
-            if (httpMethod == HttpMethod.POST && paramsMap == null) {
+            if (httpMethod == HttpMethod.POST_ASYNC && paramsMap == null) {
                 new RequestHelper(httpUrl, jsonData, headerMap, retryCount, callBack);
             } else {
                 new RequestHelper(httpMethod, httpUrl, paramsMap, headerMap, retryCount, callBack);
             }
         }
+
+        public RealResponse executeSync(){
+            if (httpMethod == HttpMethod.POST_SYNC) {
+                return new RequestHelper().urlHttpPostSync(httpUrl, paramsMap, jsonData, headerMap, retryCount);
+            }else {
+                return new RealResponse();
+            }
+        }
+    }
+
+    /**
+     * 发生异常时，返回包含异常信息的 RealResponse 对象
+     *
+     * @return RealResponse 异常信息
+     */
+    private RealResponse getExceptionResponse(Exception e) {
+        RealResponse response = new RealResponse();
+        response.exception = e;
+        response.errorMsg = e.getMessage();
+        return response;
     }
 }

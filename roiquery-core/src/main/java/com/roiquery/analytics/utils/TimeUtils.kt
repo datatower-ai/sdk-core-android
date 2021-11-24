@@ -2,7 +2,6 @@ package com.roiquery.analytics.utils
 
 import android.net.ParseException
 import android.text.TextUtils
-import com.instacart.library.truetime.TrueTime
 import org.json.JSONException
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -21,17 +20,6 @@ object TimeUtils {
     private val formatMaps: MutableMap<String?, ThreadLocal<SimpleDateFormat?>> = HashMap()
 
 
-    fun getTrueTime(): String {
-        if (TrueTime.isInitialized()) {
-            return try {
-                TrueTime.now().time.toString()
-            } catch (e: Exception) {
-                LogUtils.printStackTrace(e)
-                System.currentTimeMillis().toString()
-            }
-        }
-        return System.currentTimeMillis().toString()
-    }
 
     /**
      * format Date 输出文本格式
