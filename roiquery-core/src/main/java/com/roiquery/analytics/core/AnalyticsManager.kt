@@ -188,30 +188,33 @@ class AnalyticsManager private constructor(
         val data = JSONArray(eventsData)
         for(i in 0 until data.length()){
             data.getJSONObject(i)?.let {
-                //如果事件是在时间同步之前发生的，需要校准
-                if (!it.getBoolean(Constant.EVENT_TIME_CALIBRATED)) {
-                    it.getJSONObject(Constant.EVENT_BODY).apply {
-                        val time =  getString(Constant.EVENT_INFO_TIME).toLong()
-                        val realTime = time + ((mDateAdapter?.timeOffset?.toLong() ?: 0L))
-                        put(Constant.EVENT_INFO_TIME,realTime.toString())
-                        //app_attribute 事件特殊处理first_open_time
-                        if ((Constant.PRESET_EVENT_TAG + getString(Constant.EVENT_INFO_NAME)) == Constant.PRESET_EVENT_APP_ATTRIBUTE){
-                            val firstOpenTime = getJSONObject(Constant.EVENT_INFO_PROPERTIES).getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME).toLong()
-                            val realFirstOpenTime = firstOpenTime + ((mDateAdapter?.timeOffset?.toLong() ?: 0L))
-                            getJSONObject(Constant.EVENT_INFO_PROPERTIES).put(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,realFirstOpenTime.toString())
+                if (it.has(Constant.EVENT_TIME_CALIBRATED) && it.has(Constant.EVENT_BODY)) {
+                    //如果事件是在时间同步之前发生的，需要校准
+                    if (!it.getBoolean(Constant.EVENT_TIME_CALIBRATED)) {
+                        it.getJSONObject(Constant.EVENT_BODY).apply {
+                            val time =  getString(Constant.EVENT_INFO_TIME).toLong()
+                            val realTime = time + ((mDateAdapter?.timeOffset?.toLong() ?: 0L))
+                            put(Constant.EVENT_INFO_TIME,realTime.toString())
+                            //app_attribute 事件特殊处理first_open_time
+                            if ((Constant.PRESET_EVENT_TAG + getString(Constant.EVENT_INFO_NAME)) == Constant.PRESET_EVENT_APP_ATTRIBUTE){
+                                val firstOpenTime = getJSONObject(Constant.EVENT_INFO_PROPERTIES).getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME).toLong()
+                                val realFirstOpenTime = firstOpenTime + ((mDateAdapter?.timeOffset?.toLong() ?: 0L))
+                                getJSONObject(Constant.EVENT_INFO_PROPERTIES).put(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,realFirstOpenTime.toString())
+                            }
+                            resule.put(this)
                         }
-                        resule.put(this)
-                    }
 
-                }else {
-                    resule.put(it.getJSONObject(Constant.EVENT_BODY))
+                    }else {
+                        resule.put(it.getJSONObject(Constant.EVENT_BODY))
+                    }
+                }else {//原来的旧数据
+                    resule.put(it)
                 }
             }
         }
 
         return resule.toString()
     }
-
     /**
      * 数据上报到服务器
      */
