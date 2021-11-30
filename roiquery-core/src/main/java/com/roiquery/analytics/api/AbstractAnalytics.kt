@@ -371,7 +371,6 @@ abstract class AbstractAnalytics : IAnalytics {
             DeviceID.getOAID(mContext, object : IGetter {
                 override fun onOAIDGetComplete(oaid: String) {
                     // 不同厂商的OAID格式是不一样的，可进行MD5、SHA1之类的哈希运算统一
-                    //存入sp
                     mDataAdapter?.oaid = oaid
                     updateEventInfo(Constant.EVENT_INFO_OAID, oaid)
                 }
@@ -437,13 +436,27 @@ abstract class AbstractAnalytics : IAnalytics {
         }
     }
 
+    private fun checkAttribute(entrance: String) :Boolean{
+        mDataAdapter?.attributedCount?.let {
+            return if (it > 6){
+                false
+            } else {
+                LogUtils.d("checkAttribute: $entrance", it)
+                mDataAdapter?.attributedCount = it + 1
+                true
+            }
+        }
+        return false
+
+    }
 
     private fun startAppAttribute() {
         try {
-            getAppAttribute()
+            getAppAttribute("startAppAttribute")
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
             trackAppAttributeEvent(
+                "startAppAttribute Exception",
                 ReferrerDetails(null),
                 "Exception: " + e.message.toString()
             )
@@ -454,8 +467,8 @@ abstract class AbstractAnalytics : IAnalytics {
     /**
      * 获取 app 归因属性
      */
-    private fun getAppAttribute() {
-        if (mDataAdapter?.isAttributed == true) return
+    private fun getAppAttribute(entrance: String) {
+//        if (!checkAttribute(entrance)) return
         val referrerClient: InstallReferrerClient? = InstallReferrerClient.newBuilder(mContext).build()
         referrerClient?.startConnection(object : InstallReferrerStateListener {
 
@@ -464,9 +477,10 @@ abstract class AbstractAnalytics : IAnalytics {
                     when (responseCode) {
                         InstallReferrerClient.InstallReferrerResponse.OK -> {
                             // Connection established.
-                            trackAppAttributeEvent(referrerClient.installReferrer, "")
+                            trackAppAttributeEvent("onInstallReferrerSetupFinished $responseCode",referrerClient.installReferrer, "")
                         }
                         else -> trackAppAttributeEvent(
+                            "onInstallReferrerSetupFinished $responseCode",
                             ReferrerDetails(null),
                             "responseCode:$responseCode"
                         )
@@ -475,6 +489,7 @@ abstract class AbstractAnalytics : IAnalytics {
                     referrerClient.endConnection()
                 } catch (e: Exception) {
                     trackAppAttributeEvent(
+                        "onInstallReferrerSetupFinished Exception",
                         ReferrerDetails(null),
                         "responseCode:$responseCode" + ",Exception: " + e.message.toString()
                     )
@@ -487,12 +502,14 @@ abstract class AbstractAnalytics : IAnalytics {
                 // Google Play by calling the startConnection() method.
                 try {
                     trackAppAttributeEvent(
+                        "onInstallReferrerServiceDisconnected",
                         ReferrerDetails(null),
                         "onInstallReferrerServiceDisconnected"
                     )
                     referrerClient.endConnection()
                 } catch (e: Exception) {
                     trackAppAttributeEvent(
+                        "onInstallReferrerServiceDisconnected Exception",
                         ReferrerDetails(null),
                         "onInstallReferrerServiceDisconnected,Exception: " + e.message.toString()
                     )
@@ -505,8 +522,8 @@ abstract class AbstractAnalytics : IAnalytics {
     /**
      * 采集 app 归因属性事件
      */
-    private fun trackAppAttributeEvent(response: ReferrerDetails, failedReason: String) {
-        if (mDataAdapter?.isAttributed == true) return
+    private fun trackAppAttributeEvent(entrance: String,response: ReferrerDetails, failedReason: String) {
+        if (!checkAttribute(entrance)) return
         val isOK = failedReason.isBlank()
         track(
             Constant.PRESET_EVENT_APP_ATTRIBUTE,

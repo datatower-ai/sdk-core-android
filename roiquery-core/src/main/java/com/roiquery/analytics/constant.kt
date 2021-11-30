@@ -93,6 +93,13 @@ internal object Constant {
     const val PRESET_EVENT_USER_PROPERTIES = PRESET_EVENT_TAG + "user_properties"
     const val PRESET_EVENT_APP_QUALITY     = PRESET_EVENT_TAG + "app_quality"
 
+    const val EVENT_TYPE_TRACK = "track"
+    const val EVENT_TYPE_USER_ADD = "user_add"
+    const val EVENT_TYPE_USER_SET = "user_set"
+    const val EVENT_TYPE_USER_SET_ONCE = "user_set_once"
+    const val EVENT_TYPE_USER_UNSET = "user_unset"
+    const val EVENT_TYPE_USER_APPEND = "user_append"
+    const val EVENT_TYPE_USER_DEL = "user_delete"
 
     //engagement interval time
     const val APP_ENGAGEMENT_INTERVAL_TIME_INT = 5 * 60 * 1000 // 5min

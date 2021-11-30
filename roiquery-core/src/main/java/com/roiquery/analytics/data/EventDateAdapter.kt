@@ -181,11 +181,11 @@ class EventDateAdapter private constructor(
 
 
     /**
-     * 是否上报了attribute事件
+     * 上报了attribute事件的个数
      */
-    var isAttributed: Boolean
-        get() = getBooleanConfig(DataParams.CONFIG_ATTRIBUTE,false)
-        set(value) = setBooleanConfig(DataParams.CONFIG_ATTRIBUTE,value)
+    var attributedCount: Int
+        get() = getIntConfig(DataParams.CONFIG_ATTRIBUTE_COUNT,0)
+        set(value) = setIntConfig(DataParams.CONFIG_ATTRIBUTE_COUNT,value)
 
 
     /**
@@ -206,6 +206,24 @@ class EventDateAdapter private constructor(
     private fun setBooleanConfig(
         key: String,
         value: Boolean
+    ) {
+        mOperation?.insertConfig(
+            key,
+            value.toString()
+        )
+    }
+
+
+    private fun getIntConfig(key: String,default: Int = 0): Int{
+        val values = mOperation?.queryConfig(key)
+        return if (values != null && values.isNotEmpty() && values != "null") {
+            values.toInt()
+        } else default
+    }
+
+    private fun setIntConfig(
+        key: String,
+        value: Int
     ) {
         mOperation?.insertConfig(
             key,
