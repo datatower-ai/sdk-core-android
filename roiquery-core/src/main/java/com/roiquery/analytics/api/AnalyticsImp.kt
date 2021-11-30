@@ -118,23 +118,23 @@ class AnalyticsImp : AbstractAnalytics {
 
         }
 
-    fun track(eventName: String?, properties: Map<String, Any?>?) {
+    fun track(eventName: String?, eventType: String,properties: Map<String, Any?>?) {
         try {
             if (!ROIQueryAnalytics.isSDKEnable()) return
-            track(eventName, JSONObject(properties ?: mutableMapOf<String,Any>()))
+            track(eventName, eventType,JSONObject(properties ?: mutableMapOf<String,Any>()))
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
     }
 
-    override fun track(eventName: String?,  properties: JSONObject?) {
+    override fun track(eventName: String?, eventType: String, properties: JSONObject?) {
         if (!ROIQueryAnalytics.isSDKEnable()) return
 
         mTrackTaskManager?.let {
             it.execute {
                 try {
                     if (eventName != null) {
-                        trackEvent(eventName, properties)
+                        trackEvent(eventName,eventType, properties)
                     }
                 } catch (e: Exception) {
                     LogUtils.printStackTrace(e)
@@ -144,50 +144,66 @@ class AnalyticsImp : AbstractAnalytics {
     }
 
 
+    fun trackNormal(eventName: String?, properties: JSONObject?){
+        track(eventName,Constant.EVENT_TYPE_TRACK,properties)
+    }
+
+
+    fun trackNormal(eventName: String?, properties: Map<String, Any?>?){
+        track(eventName,Constant.EVENT_TYPE_TRACK,properties)
+    }
+
+
     fun trackAppClose(properties: Map<String, Any?>?) {
-        track(Constant.PRESET_EVENT_APP_CLOSE, properties)
+        trackNormal(Constant.PRESET_EVENT_APP_CLOSE, properties)
     }
 
     override fun trackAppClose(properties: JSONObject?) {
-        track(Constant.PRESET_EVENT_APP_CLOSE, properties)
+        trackNormal(Constant.PRESET_EVENT_APP_CLOSE, properties)
     }
 
     fun trackPageOpen(properties: Map<String, Any?>?) {
-        track(Constant.PRESET_EVENT_PAGE_OPEN, properties)
+        trackNormal(Constant.PRESET_EVENT_PAGE_OPEN,  properties)
     }
 
     override fun trackPageOpen(properties: JSONObject?) {
-        track(Constant.PRESET_EVENT_PAGE_OPEN, properties)
+        trackNormal(Constant.PRESET_EVENT_PAGE_OPEN, properties)
     }
 
     fun trackPageClose(properties: Map<String, Any?>?) {
-        track(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
+        trackNormal(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
     }
 
     override fun trackPageClose(properties: JSONObject?) {
-        track(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
+        trackNormal(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
     }
 
-    fun setUserProperties(properties: Map<String, Any?>?) {
-        setUserProperties(JSONObject(properties))
+
+    fun userSet(properties: JSONObject?){
+
     }
 
-    override fun setUserProperties(properties: JSONObject?) {
-        if (properties != null){
-            val superPropertiesIterator: Iterator<String> = properties.keys()
-            while (superPropertiesIterator.hasNext()) {
-                val key = superPropertiesIterator.next()
-                val value: Any = properties.get(key)
-                val p = JSONObject().apply {
-                    put(Constant.USER_PROPERTIES_PROPERTY_KEY, key)
-                    put(Constant.USER_PROPERTIES_PROPERTY_VALUE, value)
-                }
-                track(Constant.PRESET_EVENT_USER_PROPERTIES, p)
-            }
-        } else {
-            track(Constant.PRESET_EVENT_USER_PROPERTIES, JSONObject())
-        }
-    }
+
+//    fun setUserProperties(properties: Map<String, Any?>?) {
+//        setUserProperties(JSONObject(properties))
+//    }
+//
+//    override fun setUserProperties(properties: JSONObject?) {
+//        if (properties != null){
+//            val superPropertiesIterator: Iterator<String> = properties.keys()
+//            while (superPropertiesIterator.hasNext()) {
+//                val key = superPropertiesIterator.next()
+//                val value: Any = properties.get(key)
+//                val p = JSONObject().apply {
+//                    put(Constant.USER_PROPERTIES_PROPERTY_KEY, key)
+//                    put(Constant.USER_PROPERTIES_PROPERTY_VALUE, value)
+//                }
+//                track(Constant.PRESET_EVENT_USER_PROPERTIES, p)
+//            }
+//        } else {
+//            track(Constant.PRESET_EVENT_USER_PROPERTIES, JSONObject())
+//        }
+//    }
 
 
     override fun flush() {

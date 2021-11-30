@@ -1,5 +1,6 @@
 package com.roiquery.analytics.api
 
+import com.roiquery.analytics.Constant
 import org.json.JSONObject
 
 interface IAnalytics {
@@ -109,8 +110,9 @@ interface IAnalytics {
      * 调用 track 接口，追踪一个带有属性的事件
      *
      * @param eventName 事件的名称
+     * @param eventType 事件的类型
      */
-    fun track(eventName: String?, properties: JSONObject? = JSONObject())
+    fun track(eventName: String?,  eventType: String, properties: JSONObject? = JSONObject())
 
 
     /**
@@ -136,13 +138,13 @@ interface IAnalytics {
      */
     fun trackPageClose(properties: JSONObject? = JSONObject())
 
-
-    /**
-     * 设置用户属性
-     *
-     * @param properties 事件的属性
-     */
-    fun setUserProperties(properties: JSONObject? = JSONObject())
+//
+//    /**
+//     * 设置用户属性
+//     *
+//     * @param properties 事件的属性
+//     */
+//    fun setUserProperties(properties: JSONObject? = JSONObject())
 
 
     /**

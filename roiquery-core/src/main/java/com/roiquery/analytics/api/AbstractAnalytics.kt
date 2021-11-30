@@ -13,6 +13,7 @@ import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
 import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.ROIQueryAnalytics.Companion.track
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.AnalyticsManager
 import com.roiquery.analytics.data.EventDateAdapter
@@ -117,6 +118,7 @@ abstract class AbstractAnalytics : IAnalytics {
 
     protected fun trackEvent(
         eventName: String,
+        eventType: String,
         properties: JSONObject? = null
     ) {
         try {
@@ -126,6 +128,7 @@ abstract class AbstractAnalytics : IAnalytics {
             val eventInfo = JSONObject(mEventInfo).apply {
                 put(Constant.EVENT_INFO_TIME, getRealTime().toString())
                 put(Constant.EVENT_INFO_NAME, realEventName)
+                put(Constant.EVENT_INFO_TYPE, eventType)
                 put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
                 //向 app_attribute 增加 first_open_time 属性
                 if (Constant.PRESET_EVENT_APP_FIRST_OPEN == eventName) {

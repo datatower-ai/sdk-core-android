@@ -43,7 +43,7 @@ open class ROIQueryAnalytics {
             eventName: String?,
             properties: Map<String, Any>? = mutableMapOf()
         ) =
-            AnalyticsImp.getInstance(mContext).track(eventName, properties)
+            AnalyticsImp.getInstance(mContext).trackNormal(eventName, properties)
 
 
         /**
@@ -54,7 +54,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun track(eventName: String?, properties: JSONObject?) =
-            AnalyticsImp.getInstance(mContext).track(eventName, properties)
+            AnalyticsImp.getInstance(mContext).trackNormal(eventName,properties)
 
 
         /**
@@ -119,25 +119,6 @@ open class ROIQueryAnalytics {
             AnalyticsImp.getInstance(mContext).trackPageClose(properties)
 
 
-        /**
-         * 设置用户属性
-         *
-         * @param properties 事件属性
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun setUserProperties(properties: Map<String, Any>? = mutableMapOf()) =
-            AnalyticsImp.getInstance(mContext).setUserProperties(properties)
-
-        /**
-         * 设置用户属性
-         *
-         * @param properties 事件属性
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun setUserProperties(properties: JSONObject?) =
-            AnalyticsImp.getInstance(mContext).setUserProperties(properties)
 
         /**
          * 主动上报本地数据事件
