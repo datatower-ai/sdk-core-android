@@ -118,16 +118,16 @@ class AnalyticsImp : AbstractAnalytics {
 
         }
 
-    fun track(eventName: String?, eventType: String,properties: Map<String, Any?>?) {
+    fun trackInternal(eventName: String?, eventType: String,properties: Map<String, Any?>?) {
         try {
             if (!ROIQueryAnalytics.isSDKEnable()) return
-            track(eventName, eventType,JSONObject(properties ?: mutableMapOf<String,Any>()))
+            trackInternal(eventName, eventType,JSONObject(properties ?: mutableMapOf<String,Any>()))
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
     }
 
-    override fun track(eventName: String?, eventType: String, properties: JSONObject?) {
+     fun trackInternal(eventName: String?, eventType: String, properties: JSONObject?) {
         if (!ROIQueryAnalytics.isSDKEnable()) return
 
         mTrackTaskManager?.let {
@@ -144,13 +144,17 @@ class AnalyticsImp : AbstractAnalytics {
     }
 
 
-    fun trackNormal(eventName: String?, properties: JSONObject?){
-        track(eventName,Constant.EVENT_TYPE_TRACK,properties)
+    override fun trackUser(eventType: String,properties: JSONObject?) {
+        trackInternal(eventType, eventType, properties)
+    }
+
+   override fun trackNormal(eventName: String?, properties: JSONObject?){
+       trackInternal(eventName, Constant.EVENT_TYPE_TRACK, properties)
     }
 
 
     fun trackNormal(eventName: String?, properties: Map<String, Any?>?){
-        track(eventName,Constant.EVENT_TYPE_TRACK,properties)
+        trackInternal(eventName, Constant.EVENT_TYPE_TRACK,properties)
     }
 
 
@@ -180,7 +184,7 @@ class AnalyticsImp : AbstractAnalytics {
 
 
     fun userSet(properties: JSONObject?){
-
+        trackUser(Constant.EVENT_TYPE_USER_SET, properties)
     }
 
 

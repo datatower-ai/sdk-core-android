@@ -21,10 +21,5 @@
         <meta-data
             android:name="com.roiquery.analytics.android.MainProcessName"
             android:value="${applicationId}" />
-        <receiver android:name="com.instacart.library.truetime.BootCompletedBroadcastReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
     </application>
 </manifest>

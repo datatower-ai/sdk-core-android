@@ -112,7 +112,15 @@ interface IAnalytics {
      * @param eventName 事件的名称
      * @param eventType 事件的类型
      */
-    fun track(eventName: String?,  eventType: String, properties: JSONObject? = JSONObject())
+    fun trackNormal(eventName: String?, properties: JSONObject? = JSONObject())
+
+     /**
+     * 调用 track 用户属性接口，追踪一个带有属性的事件
+     *
+     * @param eventName 事件的名称
+     * @param eventType 事件的类型
+     */
+    fun trackUser(eventType: String, properties: JSONObject? = JSONObject())
 
 
     /**

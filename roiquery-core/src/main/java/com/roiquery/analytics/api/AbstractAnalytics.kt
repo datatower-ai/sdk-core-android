@@ -11,7 +11,6 @@ import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
-import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryAnalytics.Companion.track
 import com.roiquery.analytics.config.AnalyticsConfig
@@ -25,7 +24,6 @@ import org.qiyi.basecore.taskmanager.TM
 import org.qiyi.basecore.taskmanager.TickTask
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledThreadPoolExecutor
 
 
 abstract class AbstractAnalytics : IAnalytics {
@@ -432,10 +430,10 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun trackAppOpenEvent() {
         if (mDataAdapter?.isFirstOpen == true) {
-            track(Constant.PRESET_EVENT_APP_FIRST_OPEN)
+            trackNormal(Constant.PRESET_EVENT_APP_FIRST_OPEN)
             mDataAdapter?.isFirstOpen = false
         } else {
-            track(Constant.PRESET_EVENT_APP_OPEN)
+            trackNormal(Constant.PRESET_EVENT_APP_OPEN)
         }
     }
 
@@ -528,7 +526,7 @@ abstract class AbstractAnalytics : IAnalytics {
     private fun trackAppAttributeEvent(entrance: String,response: ReferrerDetails, failedReason: String) {
         if (!checkAttribute(entrance)) return
         val isOK = failedReason.isBlank()
-        track(
+        trackNormal(
             Constant.PRESET_EVENT_APP_ATTRIBUTE,
             PropertyBuilder.newInstance()
                 .append(
@@ -604,7 +602,7 @@ abstract class AbstractAnalytics : IAnalytics {
    inner class EngagementTask(name: String?) : TickTask(name) {
 
         override fun onTick(loopTime: Int) {
-            track(
+            trackNormal(
                 Constant.PRESET_EVENT_APP_ENGAGEMENT,
                 PropertyBuilder.newInstance()
                     .append(
