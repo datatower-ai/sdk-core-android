@@ -12,19 +12,11 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:node="remove"
         tools:ignore="ProtectedPermissions" />
 
-    <!--Detect boot to invalidate TrueTime-->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
     <application
         android:usesCleartextTraffic="true"
         >
         <meta-data
             android:name="com.roiquery.analytics.android.MainProcessName"
             android:value="${applicationId}" />
-        <receiver android:name="com.instacart.library.truetime.BootCompletedBroadcastReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
     </application>
 </manifest>
