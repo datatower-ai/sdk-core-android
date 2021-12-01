@@ -34,8 +34,9 @@
         <activity android:name=".AnalyticsTestActivity2"
             android:theme="@style/Theme.ROIQuerySDK.NoActionBar"/>
 
-        <service android:name=".SubProcessService"
-            android:process=":subProcessService"/>
+        <activity android:name=".UserSetTest"
+            android:theme="@style/Theme.ROIQuerySDK.NoActionBar"/>
+
     </application>
 
 </manifest>

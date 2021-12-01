@@ -65,6 +65,11 @@ interface IAnalytics {
     var accountId: String?
 
     /**
+     * roiquery id
+     */
+    var rqid: String?
+
+     /**
      * 设置当前用户Firebase的app_instance_id
      */
     var fiid: String?

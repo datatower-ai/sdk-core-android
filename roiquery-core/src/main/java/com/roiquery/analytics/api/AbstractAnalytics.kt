@@ -12,7 +12,6 @@ import com.android.installreferrer.api.ReferrerDetails
 import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.ROIQueryAnalytics.Companion.track
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.AnalyticsManager
 import com.roiquery.analytics.data.EventDateAdapter
@@ -150,7 +149,7 @@ abstract class AbstractAnalytics : IAnalytics {
             //设置事件属性
             val eventProperties = JSONObject(mCommonProperties).apply {
                 //合并用户自定义属性和通用属性
-                DataUtils.mergeJSONObject(properties, this)
+                DataUtils.mergeJSONObject(properties, this,null)
             }
             //设置事件属性
             eventInfo.put(Constant.EVENT_INFO_PROPERTIES, eventProperties)
@@ -380,7 +379,6 @@ abstract class AbstractAnalytics : IAnalytics {
                     // 获取OAID失败
                     LogUtils.printStackTrace(exception)
                     trackQualityEvent("getOAID&& ${exception.message}")
-
                 }
             })
         } catch (e: Exception) {

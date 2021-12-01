@@ -118,6 +118,63 @@ open class ROIQueryAnalytics {
         fun trackPageClose(properties: JSONObject?) =
             AnalyticsImp.getInstance(mContext).trackPageClose(properties)
 
+        /**
+         * 设置一般的用户属性
+         *
+         * @param properties 属性
+         */
+        @JvmStatic
+        fun userSet(properties: JSONObject?){
+            AnalyticsImp.getInstance(mContext).userSet(properties)
+        }
+
+        /**
+         * 设置只要设置一次的用户属性
+         *
+         * @param properties 属性
+         */
+        @JvmStatic
+        fun userSetOnce(properties: JSONObject?){
+            AnalyticsImp.getInstance(mContext).userSetOnce(properties)
+        }
+
+        /**
+         * 设置可累加的用户属性
+         *
+         * @param properties 属性
+         */
+        @JvmStatic
+        fun userAdd(properties: JSONObject?){
+            AnalyticsImp.getInstance(mContext).userAdd(properties)
+        }
+
+        /**
+         * 清空用户属性
+         *
+         * @param properties 属性
+         */
+        @JvmStatic
+        fun userUnset(vararg properties: String?){
+            AnalyticsImp.getInstance(mContext).userUnset(*properties)
+        }
+
+        /**
+         * 删除用户
+         */
+        @JvmStatic
+        fun userDelete(){
+            AnalyticsImp.getInstance(mContext).userDelete()
+        }
+
+        /**
+         * 对 JSONArray 类型的用户属性进
+         *
+         * @param properties 属性
+         */
+        @JvmStatic
+        fun userAppend(properties: JSONObject?){
+            AnalyticsImp.getInstance(mContext).userAppend(properties)
+        }
 
 
         /**
@@ -132,8 +189,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun getROIQueryId() =
-            DeviceUtils.getAndroidID(mContext!!)
-
+            AnalyticsImp.getInstance(mContext).rqid
 
         /**
          * 设置自有用户系统的id

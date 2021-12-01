@@ -1,7 +1,6 @@
 package com.roiquery.analytics.utils
 
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
@@ -12,6 +11,7 @@ import android.telephony.TelephonyManager
 import android.text.TextUtils
 import android.view.Surface
 import android.view.WindowManager
+import com.roiquery.analytics.data.EventDateAdapter
 
 import java.util.*
 
@@ -49,6 +49,15 @@ object DeviceUtils {
         get() = if (TextUtils.isEmpty(Build.MODEL)) "UNKNOWN" else Build.MODEL.trim { it <= ' ' }
     val brand: String
         get() = if (TextUtils.isEmpty(Build.BRAND)) "UNKNOWN" else Build.BRAND.trim { it <= ' ' }
+
+
+    fun getROIQueryID(dataAdapter: EventDateAdapter?): String{
+        if (dataAdapter?.rqid.isNullOrEmpty()) {
+            return UUID.randomUUID().toString().replace("-", "").apply { dataAdapter?.rqid = this }
+        }
+        return  dataAdapter?.rqid ?: ""
+    }
+
 
     /**
      * 获取屏幕的宽高信息

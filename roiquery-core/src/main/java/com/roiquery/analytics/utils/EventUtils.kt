@@ -44,10 +44,8 @@ object EventUtils {
                 context.packageName
             )//包名
             if (AbstractAnalytics.mConfigOptions?.mEnabledDebug == true) {
-                put(Constant.EVENT_INFO_DEBUG, "true")
+                put(Constant.EVENT_INFO_DEBUG, true)
             }
-
-
     }
 
     fun getCommonProperties(context: Context, dataAdapter: EventDateAdapter?) =
@@ -69,6 +67,10 @@ object EventUtils {
                 dataAdapter?.koid
             )//kochava_id
             put(
+                Constant.COMMON_PROPERTY_ROIQUERY_ID,
+                DeviceUtils.getROIQueryID(dataAdapter)
+            )//roiquery_id
+            put(
                 Constant.COMMON_PROPERTY_MCC,
                 DeviceUtils.getMcc(context)
             )//移动信号国家码
@@ -86,7 +88,7 @@ object EventUtils {
             )//系统语言
             put(
                 Constant.COMMON_PROPERTY_APP_VERSION_CODE,
-                AppInfoUtils.getAppVersionCode(context).toString()
+                AppInfoUtils.getAppVersionCode(context)
             )//应用版本号
             put(
                 Constant.COMMON_PROPERTY_APP_VERSION_NAME,
@@ -123,11 +125,11 @@ object EventUtils {
             val size = DeviceUtils.getDeviceSize(context)
             put(
                 Constant.COMMON_PROPERTY_SCREEN_HEIGHT,
-                size[0].toString()
+                size[0]
             )//屏幕高度
             put(
                 Constant.COMMON_PROPERTY_SCREEN_WIDTH,
-                size[1].toString()
+                size[1]
             )//屏幕宽度
         }
 

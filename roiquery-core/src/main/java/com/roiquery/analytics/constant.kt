@@ -46,6 +46,7 @@ internal object Constant {
     const val COMMON_PROPERTY_FIREBASE_IID        = "#firebase_iid"
     const val COMMON_PROPERTY_APPSFLYER_ID        = "#appsflyer_id"
     const val COMMON_PROPERTY_KOCHAVA_ID          = "#kochava_id"
+    const val COMMON_PROPERTY_ROIQUERY_ID         = "#roiquery_id"
     const val COMMON_PROPERTY_MCC                 = "#mcc"
     const val COMMON_PROPERTY_MNC                 = "#mnc"
     const val COMMON_PROPERTY_OS_COUNTRY          = "#os_country"
@@ -74,13 +75,6 @@ internal object Constant {
 
 
     const val ENGAGEMENT_PROPERTY_IS_FOREGROUND    = "is_foreground"
-
-
-    const val USER_PROPERTIES_PROPERTY_KEY         = "property_key"
-    const val USER_PROPERTIES_PROPERTY_VALUE       = "property_value"
-
-    const val APP_QUALITY_INFO                     = "quality_info"
-
 
     //preset event name about Analytics
     const val PRESET_EVENT_TAG = "@.#"
@@ -113,18 +107,6 @@ internal object Constant {
     // sdk switch，cloudConfig to config
     const val ENABLE_ANALYTICS_SDK_KEY = "enable_analytics_sdk"
 
-    val BASE_EVENT_NAME: ArrayList<String> = object : ArrayList<String>() {
-        init {
-            add(PRESET_EVENT_APP_FIRST_OPEN)
-            add(PRESET_EVENT_APP_OPEN)
-            add(PRESET_EVENT_APP_ATTRIBUTE)
-            add(PRESET_EVENT_APP_ENGAGEMENT)
-            add(PRESET_EVENT_APP_CLOSE)
-            add(PRESET_EVENT_PAGE_OPEN)
-            add(PRESET_EVENT_PAGE_CLOSE)
-            add(PRESET_EVENT_USER_PROPERTIES)
-        }
-    }
 
 }
 

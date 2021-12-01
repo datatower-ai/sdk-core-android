@@ -109,6 +109,15 @@ class EventDateAdapter private constructor(
         set(value) = setStringConfig(DataParams.CONFIG_EVENT_SESSION,value)
 
     /**
+     *  ROIQuery id
+     *
+     * @return rqid
+     */
+    var rqid: String
+        get() = getStringConfig(DataParams.CONFIG_ROIQUERY_ID)
+        set(value) = setStringConfig(DataParams.CONFIG_ROIQUERY_ID,value)
+
+    /**
      *  firebase app_instance_id
      *
      * @return fiid

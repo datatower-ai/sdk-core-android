@@ -133,6 +133,7 @@ class DataParams private constructor(packageName: String) {
         const val CONFIG_GAID = "gaid"
         const val CONFIG_OAID = "oaid"
         const val CONFIG_EVENT_SESSION = "event_session"
+        const val CONFIG_ROIQUERY_ID = "roiquery_id"
         const val CONFIG_FIREBASE_IID = "firebase_iid"
         const val CONFIG_APPSFLYER_ID = "appsflyer_id"
         const val CONFIG_KOCHAVA_ID = "kochava_id"
