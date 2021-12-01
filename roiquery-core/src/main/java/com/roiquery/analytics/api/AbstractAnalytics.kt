@@ -11,7 +11,6 @@ import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
-import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.AnalyticsManager
@@ -19,12 +18,13 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpPOSTResourceRemoteRepository
 import com.roiquery.analytics.utils.*
 import com.roiquery.cloudconfig.ROIQueryCloudConfig
+import com.roiquery.erro.report.ROIQueryErrorParams
+import com.roiquery.erro.report.ROIQueryErrorReportHelper
 import org.json.JSONObject
 import org.qiyi.basecore.taskmanager.TM
 import org.qiyi.basecore.taskmanager.TickTask
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledThreadPoolExecutor
 
 
 abstract class AbstractAnalytics : IAnalytics {
@@ -163,12 +163,12 @@ abstract class AbstractAnalytics : IAnalytics {
 
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
-            trackQualityEvent("trackEvent&&$eventName&& ${e.message}")
+            trackQualityEvent(e.stackTraceToString(),properties)
         }
     }
 
-    fun trackQualityEvent(qualityInfo: String) {
-
+    fun trackQualityEvent(qualityInfo: String, properties: JSONObject?) {
+        ROIQueryErrorReportHelper.instance().reportDebugErrorReport(ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL,errorMsg = qualityInfo,properties)
     }
 
     /**
@@ -379,8 +379,6 @@ abstract class AbstractAnalytics : IAnalytics {
                 override fun onOAIDGetError(exception: java.lang.Exception) {
                     // 获取OAID失败
                     LogUtils.printStackTrace(exception)
-                    trackQualityEvent("getOAID&& ${exception.message}")
-
                 }
             })
         } catch (e: Exception) {

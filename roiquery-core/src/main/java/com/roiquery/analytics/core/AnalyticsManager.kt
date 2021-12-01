@@ -2,23 +2,20 @@ package com.roiquery.analytics.core
 
 import android.content.Context
 import android.os.*
-import android.text.TextUtils
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.ROIQueryAnalytics
-import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.data.DataParams
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
-import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
+import com.roiquery.erro.report.ROIQueryErrorParams
+import com.roiquery.erro.report.ROIQueryErrorReportHelper
 import org.json.JSONArray
 
 import org.json.JSONObject
 import kotlin.collections.HashMap
-import kotlin.math.abs
 
 
 /**
@@ -43,6 +40,9 @@ class AnalyticsManager private constructor(
                 if (isEventRepetitive(eventJson.getJSONObject(Constant.EVENT_BODY))) return
                 //插入数据库
                 val insertedCount = mDateAdapter.addJSON(eventJson)
+
+                qualityReport(insertedCount, eventJson)
+
                 checkAppAttributeInsertState(insertedCount,name)
                 val msg =
                     if (insertedCount < 0) " Failed to insert the event " else " the event: $name  has been inserted to db，count = $insertedCount  "
@@ -65,6 +65,17 @@ class AnalyticsManager private constructor(
             }
         } catch (e: Exception) {
             LogUtils.i(TAG, "enqueueEventMessage error:$e")
+            ROIQueryErrorReportHelper.instance().reportDebugErrorReport(ROIQueryErrorParams.UNKNOWN_TYPE,e.stackTraceToString(),eventJson)
+        }
+    }
+
+    private fun qualityReport(insertedCount: Int, eventJson: JSONObject) {
+        if (insertedCount == DataParams.DB_INSERT_EXCEPTION) {
+            ROIQueryErrorReportHelper.instance().reportDebugErrorReport(
+                ROIQueryErrorParams.DATA_INSERT_ERROR,
+                insertedCount.toString(),
+                eventJson
+            );
         }
     }
 
@@ -344,6 +355,7 @@ class AnalyticsManager private constructor(
                         }
                     }
                 } catch (e: RuntimeException) {
+                    ROIQueryErrorReportHelper.instance().reportDebugErrorReport(ROIQueryErrorParams.UNKNOWN_TYPE,e.stackTraceToString(),jsonObject = null)
                     LogUtils.i(
                         TAG,
                         "Worker threw an unhandled exception",

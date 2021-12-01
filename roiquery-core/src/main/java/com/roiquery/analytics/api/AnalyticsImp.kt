@@ -2,12 +2,13 @@ package com.roiquery.analytics.api
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.annotation.Nullable
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.LogUtils
+import com.roiquery.erro.report.ROIQueryErrorParams
+import com.roiquery.erro.report.ROIQueryErrorReportHelper
 
 import org.json.JSONObject
 
@@ -121,15 +122,23 @@ class AnalyticsImp : AbstractAnalytics {
     fun track(eventName: String?, properties: Map<String, Any?>?) {
         try {
             if (!ROIQueryAnalytics.isSDKEnable()) return
-            track(eventName, JSONObject(properties ?: mutableMapOf<String,Any>()))
+            val jsonObject = try {
+                JSONObject(properties ?: mutableMapOf<String, Any>())
+            } catch (e: Exception) {
+                ROIQueryErrorReportHelper.instance().reportDebugErrorReport(ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL,e.stackTraceToString(),properties);
+                return
+            }
+            track(eventName, jsonObject)
         } catch (e: Exception) {
-            LogUtils.printStackTrace(e)
         }
+
     }
 
     override fun track(eventName: String?,  properties: JSONObject?) {
-        if (!ROIQueryAnalytics.isSDKEnable()) return
-
+        if (!ROIQueryAnalytics.isSDKEnable()) {
+            ROIQueryErrorReportHelper.instance().reportDebugErrorReport(ROIQueryErrorParams.SDK_INIT_ERROR,"SDK is unable ",properties);
+            return
+        }
         mTrackTaskManager?.let {
             it.execute {
                 try {
