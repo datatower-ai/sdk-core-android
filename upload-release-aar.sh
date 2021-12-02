@@ -12,7 +12,9 @@ modifyDependenceType(){
   if [ $dependence_type != "\"2\"" ]; then
     sed -i.bak "s/ext.dependence_type.*=.*$dependence_type/ext.dependence_type = \"2\"/g" build.gradle
     rm -rf build.gradle.bak
-    git commit build.gradle -m "update maven type"
+    if [ $type == 1 ]; then
+      git commit build.gradle -m "update maven type"
+    fi
     if [ $? -ne 0 ]; then
         exit
     fi
@@ -23,7 +25,7 @@ modifyDependenceType(){
 modifyVersionName(){
   aar_version_name=$1
   aar_type=$2
-  versionName=("${aar_type}VersionName")
+  versionName="${aar_type}VersionName"
   #获取aar 版本名称
   # shellcheck disable=SC2128
   version_name=$(cat -v ./conf.gradle | grep  "${versionName}")
@@ -42,7 +44,7 @@ modifyVersionName(){
 modifyVersionCode(){
   aar_version_code=$1
   aar_type=$2
-  versionCode=("${aar_type}VersionCode")
+  versionCode="${aar_type}VersionCode"
   #获取aar 版本号
   # shellcheck disable=SC2128
   version_code=$(cat -v ./conf.gradle | grep  "${versionCode}")
@@ -63,17 +65,6 @@ mavenAarByType(){
   aar_type=$1
   echo ---------------------${aar_type}  start --------------------------
 
-  version_name=$(cat -v ./conf.gradle | grep  "${aar_type}VersionName")
-  version_code=$(cat -v ./conf.gradle | grep  "${aar_type}VersionCode")
-  old_version_code=$(echo "${version_code##*versionCode}" |awk -F ":" '{print $2}' |awk -F "," '{print $1}')
-  old_version_name=$(echo "${version_name##*versionName}" |awk -F ":" '{print $2}' |awk -F "," '{print $1}'|awk -F "'" '{print $2}')
-
-  echo  "请输入${aar_type} aar 版本名称(eg: 1.0.25),当前版本为${old_version_name}:"
-  read aar_version_name
-
-  echo  "请输入${aar_type} 版本号,当前版本号为${old_version_code}:"
-  read aar_version_code
-
   modifyVersionName "${aar_version_name}"  "${aar_type}"
   modifyVersionCode  "${aar_version_code}" "${aar_type}"
 
@@ -85,9 +76,10 @@ mavenAarByType(){
         exit
     fi
   cd ..
-
-  git commit  conf.gradle -m "update ${aar_type} versionName ${aar_version_name}, versionCode ${aar_version_code}"
-  git tag "${aar_type}"/${aar_version_name}
+  if [ $type == 1 ]; then
+    git commit  conf.gradle -m "update ${aar_type} versionName ${aar_version_name}, versionCode ${aar_version_code}"
+    git tag "${aar_type}"/${aar_version_name}
+  fi
 
   if [  $? -ne 0 ]; then
       exit
@@ -96,17 +88,22 @@ mavenAarByType(){
   echo ---------------------${aar_type}  end --------------------------
 }
 
+aar_version_name=$1
+aar_version_code=$2
+type=$3
+echo $0 === $1 ==== $2 == $3
 modifyDependenceType
-git pull origin master
+if [ $type == 1 ]; then
+  git pull origin master
+fi
+
 if [  $? -ne 0 ]; then
     exit
 fi
-echo "是否需要修改core 版本:（yes/no or Y/N)"
-read -r need_update_core_version
-
-if [ "${need_update_core_version}" == "yes" ]  || [ "${need_update_core_version}" == "Y" ]; then
-     mavenAarByType core
-     git push origin master
-     git push --tags
+mavenAarByType core
+if [ $type == 1 ]; then
+  git push origin master
+  git push --tags
 fi
+
 
