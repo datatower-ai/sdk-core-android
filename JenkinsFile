@@ -1,0 +1,49 @@
+pipeline{
+ agent any
+    environment {
+        GRADLE_HOME = "$JENKINS_HOME/.local/softwares/gradle7"
+        PATH = "$GRADLE_HOME/bin:$HOME/.cargo/bin:$PATH"
+    }
+
+    stages{
+      stage('Git'){
+      steps{
+       cleanWs()
+                  git branch: 'master', credentialsId: 'ROIQuery-SDK-gitlab-user', url: 'git@gitlab.com:nodetower/roiquery-sdk/android/core.git'
+      }
+
+        }
+
+        stage('params'){
+            steps{
+                script{
+                    properties(
+                        [gitLabConnection(gitLabConnection: 'default', jobCredentialId: ''),
+                        [$class: 'RebuildSettings', autoRebuild: false, rebuildDisabled: false],
+                        parameters([string(defaultValue: 'defalut', description: '请输入aar 版本名称(eg: 1.0.25):', name: 'version_name'),
+                        string(defaultValue: '0', description: '请输入版本号:', name: 'version_code')]),
+                        throttleJobProperty(categories: [], limitOneJobWithMatchingParams: false, maxConcurrentPerNode: 0,
+                        maxConcurrentTotal: 0, paramsToUseForLimit: '', throttleEnabled: false, throttleOption: 'project')])
+                }
+
+            }
+
+        }
+
+        stage("upload maven"){
+          steps{
+              withCredentials([sshUserPrivateKey(credentialsId: 'ROIQuery-SDK-gitlab-user', keyFileVariable: '')]) {
+                      withGradle {
+                            script{
+                                   sh '''chmod +x upload-release-aar.sh
+                                    ./upload-release-aar.sh ${version_name} ${version_code} 1'''
+                            } 
+                      }
+              }
+
+                }
+
+        }
+    }
+
+}
