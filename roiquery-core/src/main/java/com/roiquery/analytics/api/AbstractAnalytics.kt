@@ -116,7 +116,7 @@ abstract class AbstractAnalytics : IAnalytics {
 
 
     protected fun trackEvent(
-        eventName: String,
+        eventName: String?,
         eventType: String,
         properties: JSONObject? = null
     ) {

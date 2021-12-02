@@ -9,6 +9,7 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
+import org.json.JSONException
 
 import org.json.JSONObject
 
@@ -127,19 +128,11 @@ class AnalyticsImp : AbstractAnalytics {
         try {
             trackInternal(eventName, eventType,JSONObject(properties ?: mutableMapOf<String,Any>()))
         } catch (e: Exception) {
-            LogUtils.printStackTrace(e)
-            if (!ROIQueryAnalytics.isSDKEnable()) return
-            val jsonObject = try {
-                JSONObject(properties ?: mutableMapOf<String, Any>())
-            } catch (e: Exception) {
-                ROIQueryQualityHelper.instance.reportQualityMessage(
-                    ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL,
-                    "event name: $eventName" + e.stackTraceToString()
-                );
-                return
-            }
-            track(eventName, jsonObject)
-        } catch (e: Exception) {
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL,
+                "event name: $eventName" + e.stackTraceToString()
+            );
+            return
         }
 
     }
@@ -149,24 +142,22 @@ class AnalyticsImp : AbstractAnalytics {
              ROIQueryQualityHelper.instance.reportQualityMessage(
                  ROIQueryErrorParams.SDK_INIT_ERROR,
                  "SDK is unable, event name: $eventName "
-             );
+             )
              return
          }
 
          mTrackTaskManager?.let {
              try {
                  it.execute {
-                     trackEvent(eventName, properties)
+                     trackEvent(eventName,eventType, properties)
                  }
              } catch (e: Exception) {
                  LogUtils.printStackTrace(e)
                  ROIQueryQualityHelper.instance.reportQualityMessage(
                      ROIQueryErrorParams.TRACK_TASK_MANAGER_ERROR,
-                     "SDK is unable, event name: $eventName "
+                     "event name: $eventName "
                  );
              }
-
-
          }
     }
 
