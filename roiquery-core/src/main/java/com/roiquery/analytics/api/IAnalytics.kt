@@ -1,5 +1,6 @@
 package com.roiquery.analytics.api
 
+import com.roiquery.analytics.Constant
 import org.json.JSONObject
 
 interface IAnalytics {
@@ -64,6 +65,11 @@ interface IAnalytics {
     var accountId: String?
 
     /**
+     * roiquery id
+     */
+    var rqid: String?
+
+     /**
      * 设置当前用户Firebase的app_instance_id
      */
     var fiid: String?
@@ -109,8 +115,17 @@ interface IAnalytics {
      * 调用 track 接口，追踪一个带有属性的事件
      *
      * @param eventName 事件的名称
+     * @param eventType 事件的类型
      */
-    fun track(eventName: String?, properties: JSONObject? = JSONObject())
+    fun trackNormal(eventName: String?, properties: JSONObject? = JSONObject())
+
+     /**
+     * 调用 track 用户属性接口，追踪一个带有属性的事件
+     *
+     * @param eventName 事件的名称
+     * @param eventType 事件的类型
+     */
+    fun trackUser(eventType: String, properties: JSONObject? = JSONObject())
 
 
     /**
@@ -136,13 +151,13 @@ interface IAnalytics {
      */
     fun trackPageClose(properties: JSONObject? = JSONObject())
 
-
-    /**
-     * 设置用户属性
-     *
-     * @param properties 事件的属性
-     */
-    fun setUserProperties(properties: JSONObject? = JSONObject())
+//
+//    /**
+//     * 设置用户属性
+//     *
+//     * @param properties 事件的属性
+//     */
+//    fun setUserProperties(properties: JSONObject? = JSONObject())
 
 
     /**

@@ -9,6 +9,7 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
+import org.json.JSONException
 
 import org.json.JSONObject
 
@@ -45,6 +46,10 @@ class AnalyticsImp : AbstractAnalytics {
                 updateEventInfo(Constant.EVENT_INFO_ACID, value)
             }
         }
+
+    override var rqid: String?
+        get() = EventDateAdapter.getInstance()?.rqid
+        set(value) {}
 
     override var fiid: String?
         get() = EventDateAdapter.getInstance()?.fiid
@@ -119,92 +124,112 @@ class AnalyticsImp : AbstractAnalytics {
 
         }
 
-    fun track(eventName: String?, properties: Map<String, Any?>?) {
+    private fun trackInternal(eventName: String?, eventType: String, properties: Map<String, Any?>?) {
         try {
-            if (!ROIQueryAnalytics.isSDKEnable()) return
-            val jsonObject = try {
-                JSONObject(properties ?: mutableMapOf<String, Any>())
-            } catch (e: Exception) {
-                ROIQueryQualityHelper.instance.reportQualityMessage(
-                    ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL,
-                    "event name: $eventName" + e.stackTraceToString()
-                );
-                return
-            }
-            track(eventName, jsonObject)
+            trackInternal(eventName, eventType,JSONObject(properties ?: mutableMapOf<String,Any>()))
         } catch (e: Exception) {
-        }
-
-    }
-
-    override fun track(eventName: String?, properties: JSONObject?) {
-        if (!ROIQueryAnalytics.isSDKEnable()) {
             ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.SDK_INIT_ERROR,
-                "SDK is unable, event name: $eventName "
+                ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL,
+                "event name: $eventName" + e.stackTraceToString()
             );
             return
         }
-        mTrackTaskManager?.let {
-            try {
-                it.execute {
-                    trackEvent(eventName, properties)
-                }
-            } catch (e: Exception) {
-                LogUtils.printStackTrace(e)
-                ROIQueryQualityHelper.instance.reportQualityMessage(
-                    ROIQueryErrorParams.TRACK_TASK_MANAGER_ERROR,
-                    "SDK is unable, event name: $eventName "
-                );
-            }
 
-        }
+    }
+
+     private fun trackInternal(eventName: String?, eventType: String, properties: JSONObject?) {
+         if (!ROIQueryAnalytics.isSDKEnable()) {
+             ROIQueryQualityHelper.instance.reportQualityMessage(
+                 ROIQueryErrorParams.SDK_INIT_ERROR,
+                 "SDK is unable, event name: $eventName "
+             )
+             return
+         }
+
+         mTrackTaskManager?.let {
+             try {
+                 it.execute {
+                     trackEvent(eventName,eventType, properties)
+                 }
+             } catch (e: Exception) {
+                 LogUtils.printStackTrace(e)
+                 ROIQueryQualityHelper.instance.reportQualityMessage(
+                     ROIQueryErrorParams.TRACK_TASK_MANAGER_ERROR,
+                     "event name: $eventName "
+                 );
+             }
+         }
     }
 
 
+    override fun trackUser(eventType: String,properties: JSONObject?) {
+        trackInternal(eventType, eventType, properties)
+    }
+
+   override fun trackNormal(eventName: String?, properties: JSONObject?){
+       trackInternal(eventName, Constant.EVENT_TYPE_TRACK, properties)
+    }
+
+    fun trackNormal(eventName: String?, properties: Map<String, Any?>?){
+        trackInternal(eventName, Constant.EVENT_TYPE_TRACK,properties)
+    }
+
     fun trackAppClose(properties: Map<String, Any?>?) {
-        track(Constant.PRESET_EVENT_APP_CLOSE, properties)
+        trackNormal(Constant.PRESET_EVENT_APP_CLOSE, properties)
     }
 
     override fun trackAppClose(properties: JSONObject?) {
-        track(Constant.PRESET_EVENT_APP_CLOSE, properties)
+        trackNormal(Constant.PRESET_EVENT_APP_CLOSE, properties)
     }
 
     fun trackPageOpen(properties: Map<String, Any?>?) {
-        track(Constant.PRESET_EVENT_PAGE_OPEN, properties)
+        trackNormal(Constant.PRESET_EVENT_PAGE_OPEN,  properties)
     }
 
     override fun trackPageOpen(properties: JSONObject?) {
-        track(Constant.PRESET_EVENT_PAGE_OPEN, properties)
+        trackNormal(Constant.PRESET_EVENT_PAGE_OPEN, properties)
     }
 
     fun trackPageClose(properties: Map<String, Any?>?) {
-        track(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
+        trackNormal(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
     }
 
     override fun trackPageClose(properties: JSONObject?) {
-        track(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
+        trackNormal(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
     }
 
-    fun setUserProperties(properties: Map<String, Any?>?) {
-        setUserProperties(JSONObject(properties))
+    fun userSet(properties: JSONObject?){
+        trackUser(Constant.EVENT_TYPE_USER_SET, properties)
     }
 
-    override fun setUserProperties(properties: JSONObject?) {
-        if (properties != null) {
-            val superPropertiesIterator: Iterator<String> = properties.keys()
-            while (superPropertiesIterator.hasNext()) {
-                val key = superPropertiesIterator.next()
-                val value: Any = properties.get(key)
-                val p = JSONObject().apply {
-                    put(Constant.USER_PROPERTIES_PROPERTY_KEY, key)
-                    put(Constant.USER_PROPERTIES_PROPERTY_VALUE, value)
-                }
-                track(Constant.PRESET_EVENT_USER_PROPERTIES, p)
+    fun userSetOnce(properties: JSONObject?){
+        trackUser(Constant.EVENT_TYPE_USER_SET_ONCE, properties)
+    }
+
+    fun userAdd(properties: JSONObject?){
+        trackUser(Constant.EVENT_TYPE_USER_ADD, properties)
+    }
+
+    fun userUnset(vararg properties: String?){
+        val props = JSONObject()
+        for (s in properties) {
+            try {
+                props.put(s, 0)
+            } catch (e: JSONException) {
+                e.printStackTrace()
             }
-        } else {
-            track(Constant.PRESET_EVENT_USER_PROPERTIES, JSONObject())
         }
+        if (props.length() > 0) {
+            trackUser(Constant.EVENT_TYPE_USER_UNSET, props)
+        }
+    }
+
+    fun userDelete(){
+        trackUser(Constant.EVENT_TYPE_USER_DEL, JSONObject())
+    }
+
+    fun userAppend(properties: JSONObject?){
+        trackUser(Constant.EVENT_TYPE_USER_APPEND, properties)
     }
 
 

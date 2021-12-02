@@ -16,9 +16,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.button_analytics_test).setOnClickListener {
             startActivity(Intent(this,AnalyticsTestActivity::class.java))
         }
-        findViewById<View>(R.id.button_analytics_process).setOnClickListener {
-            startService(Intent(this, SubProcessService::class.java))
-
+        findViewById<View>(R.id.User_Operate).setOnClickListener {
+            startActivity(Intent(this, UserSetTest::class.java))
         }
 
         findViewById<View>(R.id.button_db_view).setOnClickListener {

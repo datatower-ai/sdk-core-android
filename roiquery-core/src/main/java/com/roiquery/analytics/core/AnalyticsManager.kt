@@ -42,8 +42,6 @@ class AnalyticsManager private constructor(
                 val insertedCount = mDateAdapter.addJSON(eventJson)
 
                 qualityReport(insertedCount)
-
-                checkAppAttributeInsertState(insertedCount,name)
                 val msg =
                     if (insertedCount < 0) " Failed to insert the event " else " the event: $name  has been inserted to db，count = $insertedCount  "
                 LogUtils.json(TAG + msg, eventJson.toString())
@@ -92,11 +90,11 @@ class AnalyticsManager private constructor(
     /**
      * app_attribute 事件采集情况
      */
-    private fun checkAppAttributeInsertState(insertCount: Int, eventName: String) {
-        if (insertCount > 0 && Constant.PRESET_EVENT_TAG + eventName ==  Constant.PRESET_EVENT_APP_ATTRIBUTE) {
-            mDateAdapter?.isAttributed = true
-        }
-    }
+//    private fun checkAppAttributeInsertState(insertCount: Int, eventName: String) {
+//        if (insertCount > 0 && Constant.PRESET_EVENT_TAG + eventName ==  Constant.PRESET_EVENT_APP_ATTRIBUTE) {
+//            mDateAdapter?.isAttributed = true
+//        }
+//    }
 
     /**
      * 重复数据校验

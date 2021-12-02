@@ -117,6 +117,7 @@ abstract class AbstractAnalytics : IAnalytics {
 
     protected fun trackEvent(
         eventName: String?,
+        eventType: String,
         properties: JSONObject? = null
     ) {
         try {
@@ -127,6 +128,7 @@ abstract class AbstractAnalytics : IAnalytics {
             val eventInfo = JSONObject(mEventInfo).apply {
                 put(Constant.EVENT_INFO_TIME, getRealTime().toString())
                 put(Constant.EVENT_INFO_NAME, realEventName)
+                put(Constant.EVENT_INFO_TYPE, eventType)
                 put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
                 //向 app_attribute 增加 first_open_time 属性
                 if (Constant.PRESET_EVENT_APP_FIRST_OPEN == eventName) {
@@ -150,7 +152,7 @@ abstract class AbstractAnalytics : IAnalytics {
             //设置事件属性
             val eventProperties = JSONObject(mCommonProperties).apply {
                 //合并用户自定义属性和通用属性
-                DataUtils.mergeJSONObject(properties, this)
+                DataUtils.mergeJSONObject(properties, this,null)
             }
             //设置事件属性
             eventInfo.put(Constant.EVENT_INFO_PROPERTIES, eventProperties)
@@ -164,7 +166,7 @@ abstract class AbstractAnalytics : IAnalytics {
 
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
-            trackQualityEvent(e.stackTraceToString())
+            trackQualityEvent("trackEvent&&$eventName&& ${e.message}")
         }
     }
 
@@ -376,7 +378,6 @@ abstract class AbstractAnalytics : IAnalytics {
             DeviceID.getOAID(mContext, object : IGetter {
                 override fun onOAIDGetComplete(oaid: String) {
                     // 不同厂商的OAID格式是不一样的，可进行MD5、SHA1之类的哈希运算统一
-                    //存入sp
                     mDataAdapter?.oaid = oaid
                     updateEventInfo(Constant.EVENT_INFO_OAID, oaid)
                 }
@@ -384,6 +385,7 @@ abstract class AbstractAnalytics : IAnalytics {
                 override fun onOAIDGetError(exception: java.lang.Exception) {
                     // 获取OAID失败
                     LogUtils.printStackTrace(exception)
+                    trackQualityEvent("getOAID&& ${exception.message}")
                 }
             })
         } catch (e: Exception) {
@@ -433,13 +435,25 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun trackAppOpenEvent() {
         if (mDataAdapter?.isFirstOpen == true) {
-            track(Constant.PRESET_EVENT_APP_FIRST_OPEN)
+            trackNormal(Constant.PRESET_EVENT_APP_FIRST_OPEN)
             mDataAdapter?.isFirstOpen = false
         } else {
-            track(Constant.PRESET_EVENT_APP_OPEN)
+            trackNormal(Constant.PRESET_EVENT_APP_OPEN)
         }
     }
 
+    private fun checkAttribute() :Boolean{
+        mDataAdapter?.attributedCount?.let {
+            return if (it > 4){
+                false
+            } else {
+                mDataAdapter?.attributedCount = it + 1
+                true
+            }
+        }
+        return false
+
+    }
 
     private fun startAppAttribute() {
         try {
@@ -458,7 +472,7 @@ abstract class AbstractAnalytics : IAnalytics {
      * 获取 app 归因属性
      */
     private fun getAppAttribute() {
-        if (mDataAdapter?.isAttributed == true) return
+//        if (!checkAttribute(entrance)) return
         val referrerClient: InstallReferrerClient? = InstallReferrerClient.newBuilder(mContext).build()
         referrerClient?.startConnection(object : InstallReferrerStateListener {
 
@@ -509,9 +523,9 @@ abstract class AbstractAnalytics : IAnalytics {
      * 采集 app 归因属性事件
      */
     private fun trackAppAttributeEvent(response: ReferrerDetails, failedReason: String) {
-        if (mDataAdapter?.isAttributed == true) return
+        if (!checkAttribute()) return
         val isOK = failedReason.isBlank()
-        track(
+        trackNormal(
             Constant.PRESET_EVENT_APP_ATTRIBUTE,
             PropertyBuilder.newInstance()
                 .append(
@@ -587,7 +601,7 @@ abstract class AbstractAnalytics : IAnalytics {
    inner class EngagementTask(name: String?) : TickTask(name) {
 
         override fun onTick(loopTime: Int) {
-            track(
+            trackNormal(
                 Constant.PRESET_EVENT_APP_ENGAGEMENT,
                 PropertyBuilder.newInstance()
                     .append(

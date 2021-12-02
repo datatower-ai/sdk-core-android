@@ -29,13 +29,13 @@
         android:text="AnalyticsTest"
         />
     <Button
-        android:id="@+id/button_analytics_process"
+        android:id="@+id/User_Operate"
         android:layout_width="match_parent"
         android:textAllCaps="false"
         android:layout_margin="5dp"
         android:textSize="18sp"
         android:layout_height="wrap_content"
-        android:text="AnalyticsTest_Sub_Process"
+        android:text="User_Operate"
         />
     <Button
         android:id="@+id/button_db_view"

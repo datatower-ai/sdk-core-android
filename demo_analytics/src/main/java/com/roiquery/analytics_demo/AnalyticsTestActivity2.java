@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.roiquery.analytics.ROIQueryAnalytics;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 public class AnalyticsTestActivity2 extends AppCompatActivity {
@@ -41,23 +43,9 @@ public class AnalyticsTestActivity2 extends AppCompatActivity {
             pro.put("user_age", 23);
             pro.put("user_money", 23000.01);
 
-            ROIQueryAnalytics.setUserProperties(
-                    pro
-            );
-
         });
 
-        for (int i = 0; i < 15; i++) {
-            test2();
-//            int finalI = i;
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    test1(finalI + "");
-//                }
-//            }).start();
 
-        }
     }
 
     private void test1(String name) {
@@ -73,15 +61,20 @@ public class AnalyticsTestActivity2 extends AppCompatActivity {
     }
 
     private void test2() {
-        HashMap<String, Object> pro = new HashMap<>();
-        pro.put("user_sex_man", false);
-        pro.put("user_pwd", "5201314");
-        pro.put("user_age", 23);
-        pro.put("user_money", 23000.01);
+        try {
+            JSONObject pro = new JSONObject();
+            pro.put("user_sex_man", false);
+            pro.put("user_pwd", "5201314");
+            pro.put("user_age", 23);
+            pro.put("user_money", 23000.01);
 
-        ROIQueryAnalytics.setUserProperties(
-                pro
-        );
+            ROIQueryAnalytics.userSet(
+                    pro
+            );
+        }catch (Exception ignored){
+
+        }
+
 
     }
 }

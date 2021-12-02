@@ -36,6 +36,8 @@ import android.text.TextUtils;
 import android.webkit.WebSettings;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -44,6 +46,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.NetworkInterface;
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -53,6 +56,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.TimeZone;
 
 public final class DataUtils {
 
@@ -124,10 +128,10 @@ public final class DataUtils {
         return stringBuilder.toString();
     }
 
-    public static String getUUID(){
+    public static String getUUID() {
         SecureRandom random = new SecureRandom();
         String uuid = String.valueOf(random.nextLong());
-        return uuid.replace("-","");
+        return uuid.replace("-", "");
     }
 
 
@@ -138,6 +142,7 @@ public final class DataUtils {
         }
         return uuid;
     }
+
     /**
      * 此方法谨慎修改
      * 插件配置 disableCarrier 会修改此方法
@@ -233,8 +238,8 @@ public final class DataUtils {
     /**
      * 根据 operator，获取本地化运营商信息
      *
-     * @param context context
-     * @param operator sim operator
+     * @param context         context
+     * @param operator        sim operator
      * @param alternativeName 备选名称
      * @return local carrier name
      */
@@ -334,7 +339,7 @@ public final class DataUtils {
      * 尝试读取页面 title
      *
      * @param properties JSONObject
-     * @param activity Activity
+     * @param activity   Activity
      */
     public static void getScreenNameAndTitleFromActivity(JSONObject properties, Activity activity) {
         if (activity == null || properties == null) {
@@ -384,11 +389,88 @@ public final class DataUtils {
         }
     }
 
+    public static void mergeJSONObject(final JSONObject source, JSONObject dest, TimeZone timeZone)
+            throws JSONException {
+        Iterator<String> sourceIterator = source.keys();
+        while (sourceIterator.hasNext()) {
+            String key = sourceIterator.next();
+            Object value = source.get(key);
+            if (value instanceof Date) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.CHINA);
+                if (null != timeZone) {
+                    dateFormat.setTimeZone(timeZone);
+                }
+                dest.put(key, dateFormat.format((Date) value));
+            } else if (value instanceof JSONArray) {
+                dest.put(key, formatJSONArray((JSONArray) value, timeZone));
+            } else if (value instanceof JSONObject) {
+                dest.put(key, formatJSONObject((JSONObject) value, timeZone));
+            } else {
+                dest.put(key, value);
+            }
+        }
+    }
+
+    public static JSONObject formatJSONObject(JSONObject jsonObject, TimeZone timeZone) {
+        JSONObject result = new JSONObject();
+        Iterator<String> iterator = jsonObject.keys();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            Object value = null;
+            try {
+                value = jsonObject.get(key);
+                if (value instanceof Date) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.CHINA);
+                    if (null != timeZone) {
+                        dateFormat.setTimeZone(timeZone);
+                    }
+                    result.put(key, dateFormat.format((Date) value));
+                } else if (value instanceof JSONArray) {
+                    result.put(key, formatJSONArray((JSONArray) value, timeZone));
+                } else if (value instanceof JSONObject) {
+                    result.put(key, formatJSONObject((JSONObject) value, timeZone));
+                } else {
+                    result.put(key, value);
+                }
+            } catch (JSONException exception) {
+                exception.printStackTrace();
+            }
+
+        }
+        return result;
+
+    }
+
+    public static JSONArray formatJSONArray(JSONArray jsonArr, TimeZone timeZone) {
+        JSONArray result = new JSONArray();
+        for (int i = 0; i < jsonArr.length(); i++) {
+            Object value = jsonArr.opt(i);
+            if (value != null) {
+                if (value instanceof Date) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.CHINA);
+                    if (null != timeZone) {
+                        dateFormat.setTimeZone(timeZone);
+                    }
+                    result.put(dateFormat.format((Date) value));
+                } else if (value instanceof JSONArray) {
+                    result.put(formatJSONArray((JSONArray) value, timeZone));
+                } else if (value instanceof JSONObject) {
+                    JSONObject newObject = formatJSONObject((JSONObject) value, timeZone);
+                    result.put(newObject);
+                } else {
+                    result.put(value);
+                }
+            }
+
+        }
+        return result;
+    }
+
     /**
      * 合并、去重公共属性
      *
      * @param source 新加入或者优先级高的属性
-     * @param dest 本地缓存或者优先级低的属性，如果有重复会删除该属性
+     * @param dest   本地缓存或者优先级低的属性，如果有重复会删除该属性
      * @return 合并后的属性
      */
     public static JSONObject mergeSuperJSONObject(JSONObject source, JSONObject dest) {
@@ -464,7 +546,7 @@ public final class DataUtils {
     /**
      * 检测权限F
      *
-     * @param context Context
+     * @param context    Context
      * @param permission 权限名称
      * @return true:已允许该权限; false:没有允许该权限
      */
@@ -503,7 +585,6 @@ public final class DataUtils {
             return true;
         }
     }
-
 
 
     /**
@@ -610,7 +691,7 @@ public final class DataUtils {
     /**
      * 检查版本是否经过升级
      *
-     * @param context context
+     * @param context     context
      * @param currVersion 当前 SDK 版本
      * @return true，老版本升级到新版本。false，当前已是最新版本
      */

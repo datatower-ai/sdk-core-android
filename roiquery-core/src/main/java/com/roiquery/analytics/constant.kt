@@ -35,6 +35,7 @@ internal object Constant {
     const val EVENT_INFO_DEBUG       = "#debug"
     const val EVENT_INFO_TIME        = "#event_time"
     const val EVENT_INFO_NAME        = "#event_name"
+    const val EVENT_INFO_TYPE        = "#event_type"
     const val EVENT_INFO_SYN         = "#event_syn"
     const val EVENT_INFO_PROPERTIES  = "properties"
 
@@ -46,6 +47,7 @@ internal object Constant {
     const val COMMON_PROPERTY_FIREBASE_IID        = "#firebase_iid"
     const val COMMON_PROPERTY_APPSFLYER_ID        = "#appsflyer_id"
     const val COMMON_PROPERTY_KOCHAVA_ID          = "#kochava_id"
+    const val COMMON_PROPERTY_ROIQUERY_ID         = "#roiquery_id"
     const val COMMON_PROPERTY_MCC                 = "#mcc"
     const val COMMON_PROPERTY_MNC                 = "#mnc"
     const val COMMON_PROPERTY_OS_COUNTRY          = "#os_country"
@@ -75,13 +77,6 @@ internal object Constant {
 
     const val ENGAGEMENT_PROPERTY_IS_FOREGROUND    = "is_foreground"
 
-
-    const val USER_PROPERTIES_PROPERTY_KEY         = "property_key"
-    const val USER_PROPERTIES_PROPERTY_VALUE       = "property_value"
-
-    const val APP_QUALITY_INFO                     = "quality_info"
-
-
     //preset event name about Analytics
     const val PRESET_EVENT_TAG = "@.#"
     const val PRESET_EVENT_APP_FIRST_OPEN  = PRESET_EVENT_TAG + "app_first_open"
@@ -94,6 +89,13 @@ internal object Constant {
     const val PRESET_EVENT_USER_PROPERTIES = PRESET_EVENT_TAG + "user_properties"
     const val PRESET_EVENT_APP_QUALITY     = PRESET_EVENT_TAG + "app_quality"
 
+    const val EVENT_TYPE_TRACK = "track"
+    const val EVENT_TYPE_USER_ADD = "user_add"
+    const val EVENT_TYPE_USER_SET = "user_set"
+    const val EVENT_TYPE_USER_SET_ONCE = "user_set_once"
+    const val EVENT_TYPE_USER_UNSET = "user_unset"
+    const val EVENT_TYPE_USER_APPEND = "user_append"
+    const val EVENT_TYPE_USER_DEL = "user_delete"
 
     //engagement interval time
     const val APP_ENGAGEMENT_INTERVAL_TIME_INT = 5 * 60 * 1000 // 5min
@@ -106,18 +108,6 @@ internal object Constant {
     // sdk switch，cloudConfig to config
     const val ENABLE_ANALYTICS_SDK_KEY = "enable_analytics_sdk"
 
-    val BASE_EVENT_NAME: ArrayList<String> = object : ArrayList<String>() {
-        init {
-            add(PRESET_EVENT_APP_FIRST_OPEN)
-            add(PRESET_EVENT_APP_OPEN)
-            add(PRESET_EVENT_APP_ATTRIBUTE)
-            add(PRESET_EVENT_APP_ENGAGEMENT)
-            add(PRESET_EVENT_APP_CLOSE)
-            add(PRESET_EVENT_PAGE_OPEN)
-            add(PRESET_EVENT_PAGE_CLOSE)
-            add(PRESET_EVENT_USER_PROPERTIES)
-        }
-    }
 
 }
 
