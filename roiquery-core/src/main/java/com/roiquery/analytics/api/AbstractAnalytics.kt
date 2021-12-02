@@ -435,12 +435,11 @@ abstract class AbstractAnalytics : IAnalytics {
         }
     }
 
-    private fun checkAttribute(entrance: String) :Boolean{
+    private fun checkAttribute() :Boolean{
         mDataAdapter?.attributedCount?.let {
-            return if (it > 6){
+            return if (it > 4){
                 false
             } else {
-                LogUtils.d("checkAttribute: $entrance", it)
                 mDataAdapter?.attributedCount = it + 1
                 true
             }
@@ -451,11 +450,10 @@ abstract class AbstractAnalytics : IAnalytics {
 
     private fun startAppAttribute() {
         try {
-            getAppAttribute("startAppAttribute")
+            getAppAttribute()
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
             trackAppAttributeEvent(
-                "startAppAttribute Exception",
                 ReferrerDetails(null),
                 "Exception: " + e.message.toString()
             )
@@ -466,7 +464,7 @@ abstract class AbstractAnalytics : IAnalytics {
     /**
      * 获取 app 归因属性
      */
-    private fun getAppAttribute(entrance: String) {
+    private fun getAppAttribute() {
 //        if (!checkAttribute(entrance)) return
         val referrerClient: InstallReferrerClient? = InstallReferrerClient.newBuilder(mContext).build()
         referrerClient?.startConnection(object : InstallReferrerStateListener {
@@ -476,10 +474,9 @@ abstract class AbstractAnalytics : IAnalytics {
                     when (responseCode) {
                         InstallReferrerClient.InstallReferrerResponse.OK -> {
                             // Connection established.
-                            trackAppAttributeEvent("onInstallReferrerSetupFinished $responseCode",referrerClient.installReferrer, "")
+                            trackAppAttributeEvent(referrerClient.installReferrer, "")
                         }
                         else -> trackAppAttributeEvent(
-                            "onInstallReferrerSetupFinished $responseCode",
                             ReferrerDetails(null),
                             "responseCode:$responseCode"
                         )
@@ -488,7 +485,6 @@ abstract class AbstractAnalytics : IAnalytics {
                     referrerClient.endConnection()
                 } catch (e: Exception) {
                     trackAppAttributeEvent(
-                        "onInstallReferrerSetupFinished Exception",
                         ReferrerDetails(null),
                         "responseCode:$responseCode" + ",Exception: " + e.message.toString()
                     )
@@ -501,14 +497,12 @@ abstract class AbstractAnalytics : IAnalytics {
                 // Google Play by calling the startConnection() method.
                 try {
                     trackAppAttributeEvent(
-                        "onInstallReferrerServiceDisconnected",
                         ReferrerDetails(null),
                         "onInstallReferrerServiceDisconnected"
                     )
                     referrerClient.endConnection()
                 } catch (e: Exception) {
                     trackAppAttributeEvent(
-                        "onInstallReferrerServiceDisconnected Exception",
                         ReferrerDetails(null),
                         "onInstallReferrerServiceDisconnected,Exception: " + e.message.toString()
                     )
@@ -521,8 +515,8 @@ abstract class AbstractAnalytics : IAnalytics {
     /**
      * 采集 app 归因属性事件
      */
-    private fun trackAppAttributeEvent(entrance: String,response: ReferrerDetails, failedReason: String) {
-        if (!checkAttribute(entrance)) return
+    private fun trackAppAttributeEvent(response: ReferrerDetails, failedReason: String) {
+        if (!checkAttribute()) return
         val isOK = failedReason.isBlank()
         trackNormal(
             Constant.PRESET_EVENT_APP_ATTRIBUTE,
