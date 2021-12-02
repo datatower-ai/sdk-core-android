@@ -18,6 +18,8 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpPOSTResourceRemoteRepository
 import com.roiquery.analytics.utils.*
 import com.roiquery.cloudconfig.ROIQueryCloudConfig
+import com.roiquery.quality.ROIQueryErrorParams
+import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONObject
 import org.qiyi.basecore.taskmanager.TM
 import org.qiyi.basecore.taskmanager.TickTask
@@ -119,6 +121,7 @@ abstract class AbstractAnalytics : IAnalytics {
         properties: JSONObject? = null
     ) {
         try {
+            if (eventName.isNullOrEmpty()) return
             val realEventName = assertEvent(eventName, properties)
             if(TextUtils.isEmpty(realEventName)) return
             //设置事件的基本信息
@@ -168,7 +171,7 @@ abstract class AbstractAnalytics : IAnalytics {
     }
 
     fun trackQualityEvent(qualityInfo: String) {
-
+        ROIQueryQualityHelper.instance.reportQualityMessage(ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL, qualityInfo)
     }
 
     /**
@@ -183,6 +186,8 @@ abstract class AbstractAnalytics : IAnalytics {
     fun updateEventInfo(key: String, value: String) {
         mEventInfo?.put(key, value)
     }
+
+    fun getEventInfo() = mEventInfo
 
     /**
      * 获取并配置 事件通用属性
@@ -215,6 +220,8 @@ abstract class AbstractAnalytics : IAnalytics {
         mCommonProperties?.put(key, value)
     }
 
+
+    fun getCommonProperties() = mCommonProperties
 
     /**
      * 事件校验

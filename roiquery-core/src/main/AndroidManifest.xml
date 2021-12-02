@@ -12,9 +12,6 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:node="remove"
         tools:ignore="ProtectedPermissions" />
 
-    <!--Detect boot to invalidate TrueTime-->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
     <application
         android:usesCleartextTraffic="true"
         >

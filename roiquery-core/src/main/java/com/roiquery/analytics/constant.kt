@@ -17,6 +17,7 @@ internal object Constant {
     val CLOUD_CONFIG_URL = "$ANALYTICS_BASE_URL/remote/configurator"
 //    const val CLOUD_CONFIG_URL = "http://test.roiquery.com/remote/configurator"
 
+    const val ERROR_REPORT_URL="https://debug.roiquery.com/report"
     //ntp server url
     const val NTP_TIME_OUT_M = 31428
 

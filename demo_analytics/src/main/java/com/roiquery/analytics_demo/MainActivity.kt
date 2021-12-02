@@ -5,10 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.infinum.dbinspector.DbInspector
-import com.roiquery.analytics.utils.LogUtils
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,11 +20,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, UserSetTest::class.java))
         }
 
-
         findViewById<View>(R.id.button_db_view).setOnClickListener {
             DbInspector.show()
         }
-
 
     }
 
