@@ -1,4 +1,4 @@
-package com.roiquery.erro.report
+package com.roiquery.quality
 
 import androidx.annotation.StringDef
 import java.lang.annotation.Retention
@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy
  * description:
  * version：1.0
  */
-object ROIQueryErrorParams {
+internal object ROIQueryErrorParams {
 
     /**
      * 数据库插入失败
@@ -43,6 +43,21 @@ object ROIQueryErrorParams {
      * 未知错误
      */
     const val UNKNOWN_TYPE = "unknown_type"
+
+    /**
+     * 上报接口访问失败
+     */
+    const val REPORT_ERROR_ON_FAIL = "report_error_on_fail"
+
+    /**
+     * 上报接口访问成功，但业务失败
+     */
+    const val REPORT_ERROR_ON_RESPONSE = "report_error_on_response"
+
+    /**
+     * 事件记录线程池错误
+     */
+    const val TRACK_TASK_MANAGER_ERROR = "track_task_manager_error"
 
 
     @StringDef(
