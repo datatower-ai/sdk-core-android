@@ -379,6 +379,7 @@ public final class DataUtils {
                 dest.put(key, String.valueOf(value));
             }
         } catch (Exception ex) {
+            // 此处报错并不会导致事件上报终止，可能会导致事件属性不全
             LogUtils.printStackTrace(ex);
         }
     }

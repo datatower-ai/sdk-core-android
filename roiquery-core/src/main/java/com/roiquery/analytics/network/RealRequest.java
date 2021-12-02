@@ -185,7 +185,6 @@ class RealRequest {
         RealResponse response = new RealResponse();
         response.exception = e;
         response.errorMsg = e.getMessage();
-        LogUtils.i(TAG, response.toString());
         return response;
     }
 }

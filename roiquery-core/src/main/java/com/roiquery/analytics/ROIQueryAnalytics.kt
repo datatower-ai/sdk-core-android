@@ -319,5 +319,9 @@ open class ROIQueryAnalytics {
                 }
         }
 
+        internal fun getEventInfo() = AnalyticsImp.getInstance(mContext).getEventInfo()
+
+        internal fun getCommonProperties() = AnalyticsImp.getInstance(mContext).getCommonProperties()
+
     }
 }

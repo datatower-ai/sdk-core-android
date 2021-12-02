@@ -2,12 +2,13 @@ package com.roiquery.analytics.api
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.annotation.Nullable
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.LogUtils
+import com.roiquery.quality.ROIQueryErrorParams
+import com.roiquery.quality.ROIQueryQualityHelper
 
 import org.json.JSONObject
 
@@ -73,13 +74,13 @@ class AnalyticsImp : AbstractAnalytics {
     override var enableSDK: Boolean?
         get() = enableTrack == true && enableUpload == true
         set(value) {
-            if(value == false && enableSDK == true){
+            if (value == false && enableSDK == true) {
                 LogUtils.e("Analytics SDK is disable")
                 enableTrack = false
                 enableUpload = false
                 configLog(false)
             }
-            if(value == true && enableSDK == false){
+            if (value == true && enableSDK == false) {
                 enableTrack = true
                 enableUpload = true
                 configLog()
@@ -121,25 +122,42 @@ class AnalyticsImp : AbstractAnalytics {
     fun track(eventName: String?, properties: Map<String, Any?>?) {
         try {
             if (!ROIQueryAnalytics.isSDKEnable()) return
-            track(eventName, JSONObject(properties ?: mutableMapOf<String,Any>()))
+            val jsonObject = try {
+                JSONObject(properties ?: mutableMapOf<String, Any>())
+            } catch (e: Exception) {
+                ROIQueryQualityHelper.instance.reportQualityMessage(
+                    ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL,
+                    "event name: $eventName" + e.stackTraceToString()
+                );
+                return
+            }
+            track(eventName, jsonObject)
         } catch (e: Exception) {
-            LogUtils.printStackTrace(e)
         }
+
     }
 
-    override fun track(eventName: String?,  properties: JSONObject?) {
-        if (!ROIQueryAnalytics.isSDKEnable()) return
-
+    override fun track(eventName: String?, properties: JSONObject?) {
+        if (!ROIQueryAnalytics.isSDKEnable()) {
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.SDK_INIT_ERROR,
+                "SDK is unable, event name: $eventName "
+            );
+            return
+        }
         mTrackTaskManager?.let {
-            it.execute {
-                try {
-                    if (eventName != null) {
-                        trackEvent(eventName, properties)
-                    }
-                } catch (e: Exception) {
-                    LogUtils.printStackTrace(e)
+            try {
+                it.execute {
+                    trackEvent(eventName, properties)
                 }
+            } catch (e: Exception) {
+                LogUtils.printStackTrace(e)
+                ROIQueryQualityHelper.instance.reportQualityMessage(
+                    ROIQueryErrorParams.TRACK_TASK_MANAGER_ERROR,
+                    "SDK is unable, event name: $eventName "
+                );
             }
+
         }
     }
 
@@ -173,7 +191,7 @@ class AnalyticsImp : AbstractAnalytics {
     }
 
     override fun setUserProperties(properties: JSONObject?) {
-        if (properties != null){
+        if (properties != null) {
             val superPropertiesIterator: Iterator<String> = properties.keys()
             while (superPropertiesIterator.hasNext()) {
                 val key = superPropertiesIterator.next()

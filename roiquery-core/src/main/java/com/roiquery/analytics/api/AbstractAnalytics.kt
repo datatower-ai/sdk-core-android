@@ -11,7 +11,6 @@ import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
-import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.AnalyticsManager
@@ -19,12 +18,13 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpPOSTResourceRemoteRepository
 import com.roiquery.analytics.utils.*
 import com.roiquery.cloudconfig.ROIQueryCloudConfig
+import com.roiquery.quality.ROIQueryErrorParams
+import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONObject
 import org.qiyi.basecore.taskmanager.TM
 import org.qiyi.basecore.taskmanager.TickTask
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledThreadPoolExecutor
 
 
 abstract class AbstractAnalytics : IAnalytics {
@@ -116,10 +116,11 @@ abstract class AbstractAnalytics : IAnalytics {
 
 
     protected fun trackEvent(
-        eventName: String,
+        eventName: String?,
         properties: JSONObject? = null
     ) {
         try {
+            if (eventName.isNullOrEmpty()) return
             val realEventName = assertEvent(eventName, properties)
             if(TextUtils.isEmpty(realEventName)) return
             //设置事件的基本信息
@@ -163,12 +164,12 @@ abstract class AbstractAnalytics : IAnalytics {
 
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
-            trackQualityEvent("trackEvent&&$eventName&& ${e.message}")
+            trackQualityEvent(e.stackTraceToString())
         }
     }
 
     fun trackQualityEvent(qualityInfo: String) {
-
+        ROIQueryQualityHelper.instance.reportQualityMessage(ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL, qualityInfo)
     }
 
     /**
@@ -183,6 +184,8 @@ abstract class AbstractAnalytics : IAnalytics {
     fun updateEventInfo(key: String, value: String) {
         mEventInfo?.put(key, value)
     }
+
+    fun getEventInfo() = mEventInfo
 
     /**
      * 获取并配置 事件通用属性
@@ -215,6 +218,8 @@ abstract class AbstractAnalytics : IAnalytics {
         mCommonProperties?.put(key, value)
     }
 
+
+    fun getCommonProperties() = mCommonProperties
 
     /**
      * 事件校验
@@ -379,8 +384,6 @@ abstract class AbstractAnalytics : IAnalytics {
                 override fun onOAIDGetError(exception: java.lang.Exception) {
                     // 获取OAID失败
                     LogUtils.printStackTrace(exception)
-                    trackQualityEvent("getOAID&& ${exception.message}")
-
                 }
             })
         } catch (e: Exception) {

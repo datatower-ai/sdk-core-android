@@ -2,23 +2,20 @@ package com.roiquery.analytics.core
 
 import android.content.Context
 import android.os.*
-import android.text.TextUtils
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.ROIQueryAnalytics
-import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.data.DataParams
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
-import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
+import com.roiquery.quality.ROIQueryErrorParams
+import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONArray
 
 import org.json.JSONObject
 import kotlin.collections.HashMap
-import kotlin.math.abs
 
 
 /**
@@ -43,6 +40,9 @@ class AnalyticsManager private constructor(
                 if (isEventRepetitive(eventJson.getJSONObject(Constant.EVENT_BODY))) return
                 //插入数据库
                 val insertedCount = mDateAdapter.addJSON(eventJson)
+
+                qualityReport(insertedCount)
+
                 checkAppAttributeInsertState(insertedCount,name)
                 val msg =
                     if (insertedCount < 0) " Failed to insert the event " else " the event: $name  has been inserted to db，count = $insertedCount  "
@@ -65,6 +65,16 @@ class AnalyticsManager private constructor(
             }
         } catch (e: Exception) {
             LogUtils.i(TAG, "enqueueEventMessage error:$e")
+            ROIQueryQualityHelper.instance.reportQualityMessage(ROIQueryErrorParams.UNKNOWN_TYPE, "event name: $name ," + e.stackTraceToString())
+        }
+    }
+
+    private fun qualityReport(insertedCount: Int) {
+        if (insertedCount == DataParams.DB_INSERT_EXCEPTION) {
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.DATA_INSERT_ERROR,
+                insertedCount.toString()
+            )
         }
     }
 
@@ -184,7 +194,7 @@ class AnalyticsManager private constructor(
      * 更新事件时间
      */
     private fun updateEventTime(eventsData: String):String{
-        val resule = JSONArray()
+        val result = JSONArray()
         val data = JSONArray(eventsData)
         for(i in 0 until data.length()){
             data.getJSONObject(i)?.let {
@@ -201,19 +211,19 @@ class AnalyticsManager private constructor(
                                 val realFirstOpenTime = firstOpenTime + ((mDateAdapter?.timeOffset?.toLong() ?: 0L))
                                 getJSONObject(Constant.EVENT_INFO_PROPERTIES).put(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,realFirstOpenTime.toString())
                             }
-                            resule.put(this)
+                            result.put(this)
                         }
 
                     }else {
-                        resule.put(it.getJSONObject(Constant.EVENT_BODY))
+                        result.put(it.getJSONObject(Constant.EVENT_BODY))
                     }
                 }else {//原来的旧数据
-                    resule.put(it)
+                    result.put(it)
                 }
             }
         }
 
-        return resule.toString()
+        return result.toString()
     }
     /**
      * 数据上报到服务器
@@ -273,6 +283,10 @@ class AnalyticsManager private constructor(
                 HttpCallback.JsonCallback() {
                 override fun onFailure(code: Int, errorMessage: String?) {
                     LogUtils.d(TAG, errorMessage)
+                    ROIQueryQualityHelper.instance.reportQualityMessage(
+                        ROIQueryErrorParams.REPORT_ERROR_ON_FAIL,
+                        errorMessage
+                    )
                 }
 
                 override fun onResponse(response: JSONObject?) {
@@ -284,6 +298,13 @@ class AnalyticsManager private constructor(
                         LogUtils.d(TAG, "db left count = $leftCount")
                         //避免事件积压，成功后再次上报
                         flush(2000L)
+                    }else {
+                        val msg = "error code: ${response?.getString(ResponseDataKey.KEY_CODE)}, msg: ${response?.getString(ResponseDataKey.KEY_MSG)}"
+                        LogUtils.d(TAG, msg)
+                        ROIQueryQualityHelper.instance.reportQualityMessage(
+                            ROIQueryErrorParams.REPORT_ERROR_ON_RESPONSE,
+                            msg
+                        )
                     }
                 }
 
@@ -344,6 +365,7 @@ class AnalyticsManager private constructor(
                         }
                     }
                 } catch (e: RuntimeException) {
+                    ROIQueryQualityHelper.instance.reportQualityMessage(ROIQueryErrorParams.UNKNOWN_TYPE,e.stackTraceToString())
                     LogUtils.i(
                         TAG,
                         "Worker threw an unhandled exception",
