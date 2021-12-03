@@ -3,46 +3,39 @@ pipeline{
     environment {
         GRADLE_HOME = "$JENKINS_HOME/.local/softwares/gradle7"
         PATH = "$GRADLE_HOME/bin:$HOME/.cargo/bin:$PATH"
+        SLACK_CHANNEL='roiquery-sdks'
     }
 
-    stages{
-      stage('Git'){
-      steps{
-       cleanWs()
-                  git branch: 'master', credentialsId: 'ROIQuery-SDK-gitlab-user', url: 'git@gitlab.com:nodetower/roiquery-sdk/android/core.git'
-      }
-
-        }
-
-        stage('params'){
-            steps{
-                script{
-                    properties(
-                        [gitLabConnection(gitLabConnection: 'default', jobCredentialId: ''),
-                        [$class: 'RebuildSettings', autoRebuild: false, rebuildDisabled: false],
-                        parameters([string(defaultValue: 'defalut', description: '请输入aar 版本名称(eg: 1.0.25):', name: 'version_name'),
-                        string(defaultValue: '0', description: '请输入版本号:', name: 'version_code')]),
-                        throttleJobProperty(categories: [], limitOneJobWithMatchingParams: false, maxConcurrentPerNode: 0,
-                        maxConcurrentTotal: 0, paramsToUseForLimit: '', throttleEnabled: false, throttleOption: 'project')])
+    parameters {
+                    string defaultValue: '99.99.99', description: '请输入aar 版本名称(eg: 1.0.25):', name: 'version_name', trim: true
+                    string defaultValue: '1000', description: '请输入aar版本号:', name: 'version_code', trim: true
                 }
 
-            }
-
-        }
-
+    stages{
         stage("upload maven"){
           steps{
-              withCredentials([sshUserPrivateKey(credentialsId: 'ROIQuery-SDK-gitlab-user', keyFileVariable: '')]) {
-                      withGradle {
-                            script{
-                                   sh '''chmod +x upload-release-aar.sh
-                                    ./upload-release-aar.sh ${version_name} ${version_code} 1'''
-                            } 
+                script{
+                      withCredentials([sshUserPrivateKey(credentialsId: 'a222bbc0-adb9-49f4-84e4-28d6a90b0fa0', keyFileVariable: '', usernameVariable: 'xiaosailing@nodetower.com')]) {
+                                sh '''#!/bin/bash
+                                sh ./upload-release-aar.sh ${version_name} ${version_code} 1'''
+                            }
                       }
-              }
+
 
                 }
 
+        }
+    }
+
+    post{
+        success{
+                slackSend channel: "${SLACK_CHANNEL}", color: 'good', message: "maven publish success,version is *${version_name}*"
+        }
+        failure{
+              slackSend channel: "${SLACK_CHANNEL}", color: 'danger', message: "build failure - ${env.JOB_NAME} <${env.BUILD_URL}|#${env.BUILD_NUMBER}>"
+        }
+        aborted{
+             slackSend channel: "${SLACK_CHANNEL}", color: 'warning', message: "build aborted - ${env.JOB_NAME} <${env.BUILD_URL}|#${env.BUILD_NUMBER}>"
         }
     }
 
