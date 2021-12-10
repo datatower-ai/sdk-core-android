@@ -59,6 +59,10 @@ object EventUtils {
                 dataAdapter?.fiid
             )//Firebase的app_instance_id
             put(
+                Constant.COMMON_PROPERTY_FCM_TOKEN,
+                dataAdapter?.fcmToken
+            )//firebase cloud message
+            put(
                 Constant.COMMON_PROPERTY_APPSFLYER_ID,
                 dataAdapter?.afid
             )//appsflyer_id

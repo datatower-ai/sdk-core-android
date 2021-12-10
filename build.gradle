@@ -6,7 +6,7 @@ buildscript {
     // 0 本地
     // 1 maven-snapshot
     // 2 maven-releases
-    ext.dependence_type = "2"
+    ext.dependence_type = "0"
 
     ext.kotlin_version = "1.6.0"
     repositories {
@@ -27,12 +27,13 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://www.jitpack.io' }
-        maven { url "https://dl.bintray.com/infinum/android" }
+
         maven(){
             def maven_url =  dependence_type == "1" ? "http://localhost:8081/repository/maven-releases/"
                     : "https://repo-public.en2joy.com/repository/maven-releases/"
             url = maven_url
         }
+        maven { url "https://dl.bintray.com/infinum/android" }
     }
 }
 

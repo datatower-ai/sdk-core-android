@@ -128,6 +128,16 @@ class EventDateAdapter private constructor(
 
 
     /**
+     *  firebase fcm_token
+     *
+     * @return fcm_token
+     */
+    var fcmToken: String
+        get() = getStringConfig(DataParams.CONFIG_FCM_TOKEN)
+        set(value) = setStringConfig(DataParams.CONFIG_FCM_TOKEN,value)
+
+
+    /**
      *  AppsFlyers id
      *
      * @return afid
