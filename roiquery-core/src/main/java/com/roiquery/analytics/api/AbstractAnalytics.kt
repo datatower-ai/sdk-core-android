@@ -385,7 +385,6 @@ abstract class AbstractAnalytics : IAnalytics {
                 override fun onOAIDGetError(exception: java.lang.Exception) {
                     // 获取OAID失败
                     LogUtils.printStackTrace(exception)
-                    trackQualityEvent("getOAID&& ${exception.message}")
                 }
             })
         } catch (e: Exception) {
