@@ -17,9 +17,9 @@ import javax.crypto.spec.SecretKeySpec;
  * */
 public class AESCoder {
 
-    public static final String KEY_ALGORITHM = "AES/GCM/NoPadding";
+    public static final String KEY_ALGORITHM = "AES";
 
-    public static final String CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";
+    public static final String CIPHER_ALGORITHM = "AES/GCM/NoPadding";
 
     /**
      * 解密数据

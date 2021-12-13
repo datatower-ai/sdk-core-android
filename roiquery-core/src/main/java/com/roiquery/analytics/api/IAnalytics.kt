@@ -74,6 +74,11 @@ interface IAnalytics {
      */
     var fiid: String?
 
+     /**
+     * 设置当前用户Firebase Cloud Message Token
+     */
+    var fcmToken: String?
+
 
     /**
      * 设置当前AppsFlyers id

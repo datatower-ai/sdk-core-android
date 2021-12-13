@@ -209,6 +209,18 @@ open class ROIQueryAnalytics {
             AnalyticsImp.getInstance(mContext).fiid = id
         }
 
+
+
+        /**
+         * 设置 Firebase Cloud Message Token
+         * @param token Firebase Cloud Message Token
+         */
+        @JvmStatic
+        fun setFCMToken(token: String?) {
+            AnalyticsImp.getInstance(mContext).fcmToken = token
+        }
+
+
         /**
          * 设置 AppsFlyer id
          * @param id appsflyer id

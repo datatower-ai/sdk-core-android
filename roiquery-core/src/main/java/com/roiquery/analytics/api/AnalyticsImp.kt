@@ -59,6 +59,15 @@ class AnalyticsImp : AbstractAnalytics {
                 updateCommonProperties(Constant.COMMON_PROPERTY_FIREBASE_IID, value)
             }
         }
+
+    override var fcmToken: String?
+        get() = EventDateAdapter.getInstance()?.fcmToken
+        set(value) {
+            if (value != null) {
+                EventDateAdapter.getInstance()?.fcmToken = value
+                updateCommonProperties(Constant.COMMON_PROPERTY_FCM_TOKEN, value)
+            }
+        }
     override var afid: String?
         get() = EventDateAdapter.getInstance()?.afid
         set(value) {
