@@ -76,9 +76,9 @@ mavenAarByType(){
         exit
     fi
   cd ..
-  if [ $type == 1 ]; then
+  if [ "$type" == 1 ]; then
     git commit  conf.gradle -m "update ${aar_type} versionName ${aar_version_name}, versionCode ${aar_version_code}"
-    git tag "${aar_type}"/${aar_version_name}
+    git tag "${aar_type}"/"${aar_version_name}"
   fi
 
   if [  $? -ne 0 ]; then
@@ -93,7 +93,7 @@ aar_version_code=$2
 type=$3
 echo $0 === $1 ==== $2 == $3
 modifyDependenceType
-if [ $type == 1 ]; then
+if [ "$type" == 1 ]; then
   git pull origin master
 fi
 
@@ -101,7 +101,7 @@ if [  $? -ne 0 ]; then
     exit
 fi
 mavenAarByType core
-if [ $type == 1 ]; then
+if [ "$type" == 1 ]; then
   git push origin master
   git push --tags
 fi
