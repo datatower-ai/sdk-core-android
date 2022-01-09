@@ -4,6 +4,7 @@ pipeline{
         GRADLE_HOME = "$JENKINS_HOME/.local/softwares/gradle7"
         PATH = "$GRADLE_HOME/bin:$HOME/.cargo/bin:$PATH"
         SLACK_CHANNEL='roiquery-sdks'
+        PROJECT_NAME='roiquery-core'
     }
 
     parameters {
@@ -17,7 +18,7 @@ pipeline{
                 script{
                       withCredentials([sshUserPrivateKey(credentialsId: 'a222bbc0-adb9-49f4-84e4-28d6a90b0fa0', keyFileVariable: '', usernameVariable: 'xiaosailing@nodetower.com')]) {
                                 sh '''#!/bin/bash
-                                sh ./upload-release-aar.sh ${version_name} ${version_code} 1'''
+                                sh ./upload-release-aar.sh ${version_name} ${version_code} 1 ${PROJECT_NAME}'''
                             }
                       }
 
@@ -25,26 +26,29 @@ pipeline{
                 }
 
         }
-    }
 
-    stages{
         stage("Archive the artifacts"){
           steps{
-                // archiveArtifacts artifacts: 'roiquery-core/build/outputs/mapping/*', followSymlinks: false
-                archive excludes: 'mapping/${version_name}/', includes: 'roiquery-core/build/outputs/mapping/*'
+              script{
+                echo "${PROJECT_NAME}"
+                archiveArtifacts artifacts: "${PROJECT_NAME}/build/outputs/mapping/*/*.txt", followSymlinks: true
+              }
                 }
         }
     }
 
-    post{
+     post{
         success{
-                slackSend channel: "${SLACK_CHANNEL}", color: 'good', message: "maven publish success,version is *${version_name}*"
+            echo "success"
+            slackSend channel: "${SLACK_CHANNEL}", color: 'good', message: "maven publish success,version is *${version_name}*"
         }
         failure{
-              slackSend channel: "${SLACK_CHANNEL}", color: 'danger', message: "build failure - ${env.JOB_NAME} <${env.BUILD_URL}|#${env.BUILD_NUMBER}>"
+            echo "failure"
+            slackSend channel: "${SLACK_CHANNEL}", color: 'danger', message: "build failure - ${env.JOB_NAME} <${env.BUILD_URL}|#${env.BUILD_NUMBER}>"
         }
         aborted{
-             slackSend channel: "${SLACK_CHANNEL}", color: 'warning', message: "build aborted - ${env.JOB_NAME} <${env.BUILD_URL}|#${env.BUILD_NUMBER}>"
+            echo "aborted"
+            slackSend channel: "${SLACK_CHANNEL}", color: 'warning', message: "build aborted - ${env.JOB_NAME} <${env.BUILD_URL}|#${env.BUILD_NUMBER}>"
         }
     }
 

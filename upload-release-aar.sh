@@ -61,7 +61,7 @@ modifyVersionCode(){
 
 
 mavenAarByType(){
-  aar_type=$1
+  aar_type=$(echo  ${project_name} | awk -F "-"  '{print $2}')
   echo ---------------------${aar_type}  start --------------------------
 
   modifyVersionName "${aar_version_name}"  "${aar_type}"
@@ -87,19 +87,29 @@ mavenAarByType(){
   if [  $? -ne 0 ]; then
       exit
   fi
-
+}
+copyMappingFile(){
+  parent_path=${project_name}/build/outputs/mapping/
+  if [ -d ${parent_path}release ];then
+    echo -------------------copyMappingFile------------------------
+    mkdir ${parent_path}${aar_version_name}
+    cp ${parent_path}release/* ${parent_path}${aar_version_name}
+    rm -rf ${parent_path}release
+  fi
   echo ---------------------${aar_type}  end --------------------------
 }
 
 aar_version_name=$1
 aar_version_code=$2
 type=$3
-echo $0 === $1 ==== $2 == $3
+project_name=$4
+echo $0 === $1 ==== $2 == $3 == $4
 modifyDependenceType
 if [  $? -ne 0 ]; then
     exit
 fi
 mavenAarByType core
+copyMappingFile
 if [ "$type" = 1 ]; then
   git push origin master
   git push --tags
