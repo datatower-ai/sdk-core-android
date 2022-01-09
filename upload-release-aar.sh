@@ -4,7 +4,6 @@
 
 modifyDependenceType(){
   #获取当前 maven 仓库的type
-  # shellcheck disable=SC2006
   dependence_type=$(cat -v ./build.gradle | grep ext.dependence_type |awk -F "=" '{print $2}')
 
 
@@ -12,7 +11,7 @@ modifyDependenceType(){
   if [ $dependence_type != "\"2\"" ]; then
     sed -i.bak "s/ext.dependence_type.*=.*$dependence_type/ext.dependence_type = \"2\"/g" build.gradle
     rm -rf build.gradle.bak
-    if [ $type == 1 ]; then
+    if [ $type = 1 ]; then
       git commit build.gradle -m "update maven type"
     fi
     if [ $? -ne 0 ]; then
@@ -71,12 +70,16 @@ mavenAarByType(){
     # shellcheck disable=SC2164
   cd roiquery-"${aar_type}"
   gradle clean
-  gradle publish
+  if [ $type = 0 ]; then
+      gradle assembleRelease
+  else
+    gradle publish
+  fi
     if [  $? -ne 0 ]; then
         exit
     fi
   cd ..
-  if [ "$type" == 1 ]; then
+  if [ "$type" = 1 ]; then
     git commit  conf.gradle -m "update ${aar_type} versionName ${aar_version_name}, versionCode ${aar_version_code}"
     git tag "${aar_type}"/"${aar_version_name}"
   fi
@@ -93,15 +96,11 @@ aar_version_code=$2
 type=$3
 echo $0 === $1 ==== $2 == $3
 modifyDependenceType
-if [ "$type" == 1 ]; then
-  git pull origin master
-fi
-
 if [  $? -ne 0 ]; then
     exit
 fi
 mavenAarByType core
-if [ "$type" == 1 ]; then
+if [ "$type" = 1 ]; then
   git push origin master
   git push --tags
 fi

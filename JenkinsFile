@@ -27,6 +27,15 @@ pipeline{
         }
     }
 
+    stages{
+        stage("Archive the artifacts"){
+          steps{
+                // archiveArtifacts artifacts: 'roiquery-core/build/outputs/mapping/*', followSymlinks: false
+                archive excludes: 'mapping/${version_name}/', includes: 'roiquery-core/build/outputs/mapping/*'
+                }
+        }
+    }
+
     post{
         success{
                 slackSend channel: "${SLACK_CHANNEL}", color: 'good', message: "maven publish success,version is *${version_name}*"
