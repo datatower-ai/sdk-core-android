@@ -109,6 +109,7 @@ internal object Constant {
     // sdk switch，cloudConfig to config
     const val ENABLE_ANALYTICS_SDK_KEY = "enable_analytics_sdk"
 
+    const val TIME_OFFSET_DEFAULT_VALUE="0"
 
 }
 

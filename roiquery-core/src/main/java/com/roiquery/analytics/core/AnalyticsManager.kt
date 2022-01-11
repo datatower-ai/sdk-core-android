@@ -254,7 +254,7 @@ class AnalyticsManager private constructor(
         var event  = ""
 
         //如果未进行时间同步，发空参数进行时间同步
-        if (mDateAdapter.timeOffset.isEmpty()){
+        if (Constant.TIME_OFFSET_DEFAULT_VALUE == mDateAdapter.timeOffset){
             LogUtils.d(TAG, "time do not calibrate yet")
             lastId = ""
             event = "{}"
