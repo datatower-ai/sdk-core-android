@@ -42,7 +42,7 @@ pipeline{
      post{
         success{
             echo "success"
-            slackSend channel: "${SLACK_CHANNEL}", color: 'good', message: "maven publish success,version is *${version_name}*"
+            slackSend channel: "${SLACK_CHANNEL}", color: 'good', message: "maven publish success,version is *${version_name}* --${env.JOB_NAME} <${env.BUILD_URL}|#${env.BUILD_NUMBER}>"
         }
         failure{
             echo "failure"
