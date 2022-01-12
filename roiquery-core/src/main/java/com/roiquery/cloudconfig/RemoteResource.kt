@@ -44,7 +44,7 @@ class RemoteResource<T : Any> @PublishedApi internal constructor(
      */
     fun setDefaultConfig(resource: T) {
         if (key.isEmpty()) {
-            key = AESCoder.initkey()
+            key = AESCoder.initKey()
         }
         resourceLocalRepository.storeDefault(format.toRepository(resource, key))
     }
@@ -106,7 +106,7 @@ class RemoteResource<T : Any> @PublishedApi internal constructor(
 
     private fun fetchAndSave(success: (() -> Unit)? = null, error: ((Throwable) -> Unit)? = null) {
         resourceRemoteRepository.fetch({
-            key = AESCoder.initkey()
+            key = AESCoder.initKey()
             setKey.invoke(Base64.encodeToString(key, Base64.NO_WRAP))
             resourceLocalRepository.storeFetched(
                 ByteArrayInputStream(
