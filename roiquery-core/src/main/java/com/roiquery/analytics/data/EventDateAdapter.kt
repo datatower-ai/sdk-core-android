@@ -2,6 +2,7 @@ package com.roiquery.analytics.data
 
 import android.content.Context
 import android.text.TextUtils
+import com.roiquery.analytics.Constant
 import com.roiquery.analytics.data.db.EventDataOperation
 import org.json.JSONObject
 
@@ -90,7 +91,7 @@ class EventDateAdapter private constructor(
     var timeOffset: String
         get() {
             val timeLocalOffset = getStringConfig(DataParams.TIME_SERVER_LOCAL_OFFSET)
-            return if (TextUtils.isEmpty(timeLocalOffset)) "0" else timeLocalOffset
+            return if (TextUtils.isEmpty(timeLocalOffset)) Constant.TIME_OFFSET_DEFAULT_VALUE else timeLocalOffset
         }
         set(value) = setStringConfig(DataParams.TIME_SERVER_LOCAL_OFFSET,value)
 

@@ -355,14 +355,16 @@ abstract class AbstractAnalytics : IAnalytics {
         }
     }
 
-    open fun isTimeCalibrated() = !(mDataAdapter?.timeOffset).isNullOrEmpty()
+    open fun isTimeCalibrated() = Constant.TIME_OFFSET_DEFAULT_VALUE != mDataAdapter?.timeOffset
 
     /**
      * 校准时间.
      * @param timestamp 当前时间戳
      */
     open fun calibrateTime(timestamp: Long) {
-        mDataAdapter?.timeOffset = (timestamp - System.currentTimeMillis()).toString()
+        if (timestamp!=0L){
+            mDataAdapter?.timeOffset = (timestamp - System.currentTimeMillis()).toString()
+        }
     }
 
 
