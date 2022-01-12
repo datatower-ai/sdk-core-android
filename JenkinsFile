@@ -18,6 +18,8 @@ pipeline{
                 script{
                       withCredentials([sshUserPrivateKey(credentialsId: 'a222bbc0-adb9-49f4-84e4-28d6a90b0fa0', keyFileVariable: '', usernameVariable: 'xiaosailing@nodetower.com')]) {
                                 sh '''#!/bin/bash
+                                git config --global user.name "jenkins"
+                                git config --global user.email "xiaosailing@nodetower.com"
                                 sh ./upload-release-aar.sh ${version_name} ${version_code} 1 ${PROJECT_NAME}'''
                             }
                       }
