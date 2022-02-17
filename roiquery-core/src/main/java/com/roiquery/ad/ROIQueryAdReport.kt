@@ -348,6 +348,7 @@ open class ROIQueryAdReport {
          * @param id 广告最小单元id
          * @param type 广告类型
          * @param platform 广告平台
+         * @param adgroupName 广告组名称
          * @param adgroupType 广告组类别
          * @param location 广告位
          * @param seq 系列行为标识
@@ -366,6 +367,7 @@ open class ROIQueryAdReport {
             id: String,
             type: AdType,
             platform: String,
+            adgroupName: String,
             adgroupType: String,
             location: String,
             seq: String,
@@ -378,7 +380,7 @@ open class ROIQueryAdReport {
             properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportPaid(id, type.value, platform, adgroupType, location, seq, mediation.value, mediationId, value, currency, precision, country, properties, entrance)
+            .reportPaid(id, type.value, platform, adgroupName, adgroupType, location, seq, mediation.value, mediationId, value, currency, precision, country, properties, entrance)
 
         /**
          * 上报 访问广告链接，离开当前app(页面)
@@ -427,8 +429,9 @@ open class ROIQueryAdReport {
             mediation: Int,
             networkName: String,
             networkPlacementId: String,
+            adgroupName: String,
             adgroupType: String
-        ) = AdPlatformUtils.getPlatform(mediation, networkName, networkPlacementId, adgroupType)
+        ) = AdPlatformUtils.getPlatform(mediation, networkName, networkPlacementId, adgroupName, adgroupType)
 
     }
 }

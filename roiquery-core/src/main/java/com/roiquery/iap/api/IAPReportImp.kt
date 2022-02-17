@@ -9,16 +9,13 @@ import com.roiquery.iap.ROIQueryIAPReport
 
 class IAPReportImp : IIapReport {
 
-    // TODO: 2021/11/30  mContext 无用
-    private var mContext: Context? = null
-
     override fun reportEntrance(
         order: String,
         sku: String,
         price: Double,
         currency: String,
         seq: String,
-        entrance: String?
+        placement: String?
     ) {
         iapTrack(
             eventName = Constant.EVENT_IAP_ENTRANCE,
@@ -27,7 +24,7 @@ class IAPReportImp : IIapReport {
             price = price,
             currency = currency,
             seq = seq,
-            entrance = entrance
+            placement = placement
         )
     }
 
@@ -37,7 +34,7 @@ class IAPReportImp : IIapReport {
         price: Double,
         currency: String,
         seq: String,
-        entrance: String?
+        placement: String?
     ) {
         iapTrack(
             eventName = Constant.EVENT_IAP_TO_PURCHASE,
@@ -46,7 +43,7 @@ class IAPReportImp : IIapReport {
             price = price,
             currency = currency,
             seq = seq,
-            entrance = entrance
+            placement = placement
         )
     }
 
@@ -56,7 +53,7 @@ class IAPReportImp : IIapReport {
         price: Double,
         currency: String,
         seq: String,
-        entrance: String?
+        placement: String?
     ) {
         iapTrack(
             eventName = Constant.EVENT_IAP_PURCHASED,
@@ -65,7 +62,7 @@ class IAPReportImp : IIapReport {
             price = price,
             currency = currency,
             seq = seq,
-            entrance = entrance
+            placement = placement
         )
     }
 
@@ -76,7 +73,7 @@ class IAPReportImp : IIapReport {
         currency: String,
         seq: String,
         code: String,
-        entrance: String?,
+        placement: String?,
         msg: String?
     ) {
         iapTrack(
@@ -86,7 +83,7 @@ class IAPReportImp : IIapReport {
             price = price,
             currency = currency,
             seq = seq,
-            code, entrance, msg
+            code, placement, msg
         )
     }
 
@@ -98,13 +95,13 @@ class IAPReportImp : IIapReport {
         currency: String,
         seq: String,
         code: String? = null,
-        entrance: String? = null,
+        placement: String? = null,
         msg: String? = null
     ) {
         if (!ROIQueryIAPReport.isSDKEnable()) return
         ROIQueryAnalytics.track(
             eventName, generateAdReportMap(
-                order,sku, price, currency,seq, code, entrance, msg
+                order,sku, price, currency,seq, code, placement, msg
             )
         )
     }
@@ -116,7 +113,7 @@ class IAPReportImp : IIapReport {
         currency: String,
         seq: String,
         code: String? = null,
-        entrance: String?,
+        placement: String?,
         msg: String?
     ) = mutableMapOf<String,Any>().apply {
 
@@ -128,8 +125,8 @@ class IAPReportImp : IIapReport {
         code?.let {
             put(Constant.PROPERTY_IAP_CODE, it)
         }
-        entrance?.let {
-            put(Constant.PROPERTY_IAP_ENTRANCE, it)
+        placement?.let {
+            put(Constant.PROPERTY_IAP_PLACEMENT, it)
         }
         msg?.let {
             put(Constant.PROPERTY_IAP_MSG, it)
