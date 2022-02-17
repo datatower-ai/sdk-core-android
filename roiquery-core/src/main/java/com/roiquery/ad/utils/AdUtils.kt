@@ -9,13 +9,17 @@ import com.roiquery.cloudconfig.utils.StringUtils
 object AdPlatformUtils {
 
     private const val ADMOB_ADID_PREFIX = "ca-app-pub-"
-    private const val ADMOB_PLATFORM_GOOGLE = "admob_native"
-    private const val ADMOB_PLATFORM_PANGLE = "pangle"
-    private const val ADMOB_PLATFORM_IRONSOURCE = "ironsource"
-    private const val ADMOB_PLATFORM_MOPUB = "marketplace"
-    private const val ADMOB_PLATFORM_UNITY_ADS = "unity"
-    private const val ADMOB_PLATFORM_FACEBOOK = "facebook"
-    private const val ADMOB_PLATFORM_UNDISCLOSED = "undisclosed"
+    private const val MOPUB_PLATFORM_GOOGLE = "admob_native"
+    private const val MOPUB_PLATFORM_PANGLE = "pangle"
+    private const val MOPUB_PLATFORM_IRONSOURCE = "ironsource"
+    private const val MOPUB_PLATFORM_MOPUB = "marketplace"
+    private const val MOPUB_PLATFORM_UNITY_ADS = "unity"
+    private const val MOPUB_PLATFORM_FACEBOOK = "facebook"
+    private const val MOPUB_PLATFORM_UNDISCLOSED = "undisclosed"
+
+    private const val MOPUB_ADGROUP_NAME_BIGO = "Bigo"
+    private const val MOPUB_ADGROUP_TYPE_BIGO = "network"
+
 
     fun getId(mediationAdId: String, networkPlacementId: String, adgroupType: String): String {
         if (isMarketPlace(networkPlacementId, adgroupType)) {
@@ -28,37 +32,45 @@ object AdPlatformUtils {
         mediation: Int,
         networkName: String,
         networkPlacementId: String,
+        adgroupName: String,
         adgroupType: String
     ) =
         when (mediation) {
             AdMediation.MOPUB.value -> getMopubPlatform(
                 networkName,
                 networkPlacementId,
+                adgroupName,
                 adgroupType
             )
             else -> AdPlatform.IDLE
         }
 
     private fun isMarketPlace(network: String, adgroupType: String) =
-        (StringUtils.isEmpty(network) || network == "null" || network == "NULL") && adgroupType == ADMOB_PLATFORM_MOPUB
+        (StringUtils.isEmpty(network) || network == "null" || network == "NULL") && adgroupType == MOPUB_PLATFORM_MOPUB
+
+    private fun isBigo(adgroupName: String,adgroupType: String) = adgroupType == MOPUB_ADGROUP_TYPE_BIGO && adgroupName == MOPUB_ADGROUP_NAME_BIGO
 
     private fun getMopubPlatform(
         networkName: String,
         networkPlacementId: String,
-        adgroupType: String
+        adgroupName: String,
+        adgroupType: String,
     ): AdPlatform {
         if (isMarketPlace(networkName, adgroupType)) {
             return AdPlatform.MOPUB
         }
+        if (isBigo(adgroupName,adgroupType)){
+            return AdPlatform.BIGO
+        }
         return when (networkName) {
-            ADMOB_PLATFORM_GOOGLE -> if (networkPlacementId.startsWith(ADMOB_ADID_PREFIX)) AdPlatform.ADMOB else AdPlatform.ADX
-            ADMOB_PLATFORM_PANGLE -> AdPlatform.PANGLE
-            ADMOB_PLATFORM_IRONSOURCE -> AdPlatform.IRONSOURCE
-            ADMOB_PLATFORM_MOPUB -> AdPlatform.MOPUB
-            ADMOB_PLATFORM_UNITY_ADS -> AdPlatform.UNITY_ADS
-            ADMOB_PLATFORM_FACEBOOK -> AdPlatform.FACEBOOK
-            ADMOB_PLATFORM_UNDISCLOSED -> AdPlatform.UNDISCLOSED
-            else -> if (adgroupType == ADMOB_PLATFORM_MOPUB) AdPlatform.MOPUB else AdPlatform.IDLE
+            MOPUB_PLATFORM_GOOGLE -> if (networkPlacementId.startsWith(ADMOB_ADID_PREFIX)) AdPlatform.ADMOB else AdPlatform.ADX
+            MOPUB_PLATFORM_PANGLE -> AdPlatform.PANGLE
+            MOPUB_PLATFORM_IRONSOURCE -> AdPlatform.IRONSOURCE
+            MOPUB_PLATFORM_MOPUB -> AdPlatform.MOPUB
+            MOPUB_PLATFORM_UNITY_ADS -> AdPlatform.UNITY_ADS
+            MOPUB_PLATFORM_FACEBOOK -> AdPlatform.FACEBOOK
+            MOPUB_PLATFORM_UNDISCLOSED -> AdPlatform.UNDISCLOSED
+            else -> if (adgroupType == MOPUB_PLATFORM_MOPUB) AdPlatform.MOPUB else AdPlatform.IDLE
         }
     }
 }

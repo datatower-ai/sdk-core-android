@@ -132,19 +132,21 @@ class MainActivity : AppCompatActivity() {
                 )
             }
             findViewById<View>(R.id.button_track_paid_mediation).setOnClickListener {
-//                ROIQueryAdReport.reportPaid(
-//                    "12435",
-//                    AdType.REWARDED_INTERSTITIAL,
-//                    "unity",
-//                    "home",
-//                    seq,
-//                    AdMediation.MOPUB,
-//                    "32432545",
-//                    "5000",
-//                    "usd",
-//                    "sdf",
-//                    "USA"
-//                )
+                ROIQueryAdReport.reportPaid(
+                    "12435",
+                    AdType.REWARDED_INTERSTITIAL,
+                    "custom_native",
+                    "Bigo",
+                    "network",
+                    "home",
+                    seq,
+                    AdMediation.MOPUB,
+                    "32432545",
+                    "5000",
+                    "usd",
+                    "sdf",
+                    "USA"
+                )
             }
 
             findViewById<View>(R.id.button_track_conversion_click).setOnClickListener {
