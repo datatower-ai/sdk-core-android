@@ -25,7 +25,11 @@
 -keep class com.roiquery.iap.ROIQueryIAPReport{*;}
 -keep class com.roiquery.iap.ROIQueryIAPReport$Companion{*;}
 
+-keep class com.roiquery.ias.ROIQueryIasReport{*;}
+-keep class com.roiquery.ias.ROIQueryIasReport$Companion{*;}
+
 -keeppackagenames com.roiquery.iap
 -keeppackagenames com.roiquery.ad
 -keeppackagenames com.roiquery.analytics
 -keeppackagenames com.roiquery.cloudconfig
+-keeppackagenames com.roiquery.ias
