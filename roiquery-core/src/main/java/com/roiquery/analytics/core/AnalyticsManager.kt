@@ -68,7 +68,7 @@ class AnalyticsManager private constructor(
     }
 
     private fun qualityReport(insertedCount: Int) {
-        if (insertedCount == DataParams.DB_INSERT_EXCEPTION) {
+        if (insertedCount < 0 ) {
             ROIQueryQualityHelper.instance.reportQualityMessage(
                 ROIQueryErrorParams.DATA_INSERT_ERROR,
                 insertedCount.toString()
