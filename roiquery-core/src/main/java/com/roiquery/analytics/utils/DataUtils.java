@@ -411,6 +411,20 @@ public final class DataUtils {
         }
     }
 
+    public static JSONObject clearJSONObjectKey(final JSONObject source) throws JSONException{
+        JSONObject object = new JSONObject();
+        Iterator<String> sourceIterator = source.keys();
+        while (sourceIterator.hasNext()) {
+            String key = sourceIterator.next();
+            Object value = source.get(key);
+            if (key.contains("#")) {
+                key = key.replace("#","");
+            }
+            object.put(key,value);
+        }
+        return object;
+    }
+
     public static JSONObject formatJSONObject(JSONObject jsonObject, TimeZone timeZone) {
         JSONObject result = new JSONObject();
         Iterator<String> iterator = jsonObject.keys();

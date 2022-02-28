@@ -441,6 +441,25 @@ abstract class AbstractAnalytics : IAnalytics {
         } else {
             trackNormal(Constant.PRESET_EVENT_APP_OPEN)
         }
+
+        userSetForCommonProperties()
+    }
+
+    private fun userSetForCommonProperties() {
+        val commonProperties = DataUtils.clearJSONObjectKey(JSONObject(getCommonProperties()).apply {
+            remove(Constant.COMMON_PROPERTY_EVENT_SESSION)
+        })
+
+        val eventInfo = DataUtils.clearJSONObjectKey(JSONObject(getEventInfo()).apply {
+            remove(Constant.EVENT_INFO_PKG)
+            remove(Constant.EVENT_INFO_APP_ID)
+            remove(Constant.EVENT_INFO_DEBUG)
+        })
+        DataUtils.mergeJSONObject( eventInfo,commonProperties, null)
+        trackUser(
+            Constant.EVENT_TYPE_USER_SET_ONCE,
+            commonProperties
+        )
     }
 
     private fun checkAttribute() :Boolean{
