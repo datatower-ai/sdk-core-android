@@ -8,12 +8,16 @@ package com.roiquery.ias
  */
 open class ROIQueryIasReport {
     companion object {
+        @JvmStatic
+        @JvmOverloads
         fun reportToShow(iasSeq: String, iasEntrance: String?, iasPlacement: String) {
             ROIQueryIasReportImp.trackIasShowEvent(
                 ROIQueryIasConfig.Builder(iasSeq, iasPlacement).iasEntrance(iasEntrance).build()
             )
         }
 
+        @JvmStatic
+        @JvmOverloads
         fun reportShowSuccess(iasSeq: String, iasEntrance: String?, iasPlacement: String) {
             ROIQueryIasReportImp.trackIasShowSuccessEvent(
                 ROIQueryIasConfig.Builder(
@@ -23,6 +27,8 @@ open class ROIQueryIasReport {
             )
         }
 
+        @JvmStatic
+        @JvmOverloads
         fun reportShowFail(
             iasSeq: String,
             iasEntrance: String? = "",
@@ -39,6 +45,8 @@ open class ROIQueryIasReport {
 
         }
 
+        @JvmStatic
+        @JvmOverloads
         fun reportSubscribe(
             iasSeq: String,
             iasEntrance: String? = "",
@@ -57,6 +65,8 @@ open class ROIQueryIasReport {
             )
         }
 
+        @JvmStatic
+        @JvmOverloads
         fun reportSubscribeSuccess(
             iasSeq: String,
             iasEntrance: String? = "",
@@ -77,6 +87,8 @@ open class ROIQueryIasReport {
 
         }
 
+        @JvmStatic
+        @JvmOverloads
         fun reportSubscribeFail(
             iasSeq: String,
             iasEntrance: String? = "",
