@@ -48,6 +48,200 @@ object EventUtils {
             }
     }
 
+    fun getCommonPropertiesForUserSet(context: Context, dataAdapter: EventDateAdapter?) =
+        mutableMapOf<String, Any?>().apply {
+
+            dataAdapter?.accountId?.let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.EVENT_INFO_ACID,
+                        it
+                    )
+                }
+            }
+
+            dataAdapter?.gaid?.let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.EVENT_INFO_GAID,
+                        it
+                    )
+                }
+            }
+
+            dataAdapter?.oaid?.let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.EVENT_INFO_OAID,
+                        it
+                    )
+                }
+            }
+
+            dataAdapter?.fiid?.let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.COMMON_PROPERTY_FIREBASE_IID,
+                        it
+                    )
+                }
+            }
+            dataAdapter?.fcmToken?.let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.COMMON_PROPERTY_FCM_TOKEN,
+                        it
+                    )
+                }
+            }
+            dataAdapter?.afid?.let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.COMMON_PROPERTY_APPSFLYER_ID,
+                        it
+                    )
+                }
+            }
+            dataAdapter?.koid?.let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.COMMON_PROPERTY_KOCHAVA_ID,
+                        it
+                    )
+                }
+            }
+            DeviceUtils.getROIQueryID(dataAdapter).let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.COMMON_PROPERTY_ROIQUERY_ID,
+                        it
+                    )
+                }
+            }
+
+            DeviceUtils.getMcc(context).let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.COMMON_PROPERTY_MCC,
+                        it
+                    )
+                }
+            }
+
+            DeviceUtils.getMnc(context).let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.COMMON_PROPERTY_MNC,
+                        it
+                    )
+                }
+            }
+
+            DeviceUtils.getLocalCountry(context).let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.COMMON_PROPERTY_OS_COUNTRY,
+                        it
+                    )
+                }
+            }
+
+            DeviceUtils.getLocaleLanguage().let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.COMMON_PROPERTY_OS_LANG,
+                        it
+                    )
+                }
+            }
+
+            AppInfoUtils.getAppVersionCode(context).let {
+                if (it > 0) {
+                    put(
+                        Constant.COMMON_PROPERTY_APP_VERSION_CODE,
+                        it
+                    )
+                }
+            }
+
+            AppInfoUtils.getAppVersionName(context).let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.COMMON_PROPERTY_APP_VERSION_NAME,
+                        it
+                    )
+                }
+            }
+
+            put(
+                Constant.COMMON_PROPERTY_OS,
+                Constant.SDK_TYPE_ANDROID
+            )
+
+            DeviceUtils.oS.let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.COMMON_PROPERTY_OS_VERSION,
+                        it
+                    )
+                }
+            }
+
+
+            DeviceUtils.manufacturer.let {
+                if (it.isNotEmpty()) {
+                    if (it.isNotEmpty()) {
+                        put(
+                            Constant.COMMON_PROPERTY_DEVICE_MANUFACTURER,
+                            it
+                        )
+                    }
+                }
+            }
+
+            DeviceUtils.brand.let {
+                if (it.isNotEmpty()) {
+                    if (it.isNotEmpty()) {
+                        put(
+                            Constant.COMMON_PROPERTY_DEVICE_BRAND,
+                            it
+                        )
+                    }
+                }
+            }
+
+
+            DeviceUtils.model.let {
+                if (it.isNotEmpty()) {
+                    if (it.isNotEmpty()) {
+                        put(
+                            Constant.COMMON_PROPERTY_DEVICE_MODEL,
+                            it
+                        )
+                    }
+                }
+            }
+
+
+            val size = DeviceUtils.getDeviceSize(context)
+            if( size[0] > 0){
+                put(
+                    Constant.COMMON_PROPERTY_SCREEN_HEIGHT,
+                    size[0]
+                )//屏幕高度
+            }
+
+            if( size[1] > 0){
+                put(
+                    Constant.COMMON_PROPERTY_SCREEN_WIDTH,
+                    size[1]
+                )
+            }
+
+        }
+
+
+
     fun getCommonProperties(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
             put(
