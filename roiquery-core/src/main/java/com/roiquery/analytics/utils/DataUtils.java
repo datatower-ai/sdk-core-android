@@ -411,7 +411,7 @@ public final class DataUtils {
         }
     }
 
-    public static JSONObject clearJSONObjectKey(final JSONObject source) throws JSONException{
+    public static JSONObject clearPresetKeys(final JSONObject source) throws JSONException{
         JSONObject object = new JSONObject();
         Iterator<String> sourceIterator = source.keys();
         while (sourceIterator.hasNext()) {
@@ -424,6 +424,7 @@ public final class DataUtils {
         }
         return object;
     }
+
 
     public static JSONObject formatJSONObject(JSONObject jsonObject, TimeZone timeZone) {
         JSONObject result = new JSONObject();

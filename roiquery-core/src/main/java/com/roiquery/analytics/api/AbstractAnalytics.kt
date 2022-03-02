@@ -123,7 +123,7 @@ abstract class AbstractAnalytics : IAnalytics {
         try {
             if (eventName.isNullOrEmpty()) return
             val realEventName = assertEvent(eventName, properties)
-            if(TextUtils.isEmpty(realEventName)) return
+            if (TextUtils.isEmpty(realEventName)) return
             //设置事件的基本信息
             val eventInfo = JSONObject(mEventInfo).apply {
                 put(Constant.EVENT_INFO_TIME, getRealTime().toString())
@@ -149,11 +149,17 @@ abstract class AbstractAnalytics : IAnalytics {
                     }
                 }
             }
-            //设置事件属性
-            val eventProperties = JSONObject(mCommonProperties).apply {
-                //合并用户自定义属性和通用属性
-                DataUtils.mergeJSONObject(properties, this,null)
+
+            //事件属性, 常规事件与用户属性类型区分
+            val eventProperties = if (eventType == Constant.EVENT_TYPE_TRACK) {
+                JSONObject(mCommonProperties).apply {
+                    //合并用户自定义属性和通用属性
+                    DataUtils.mergeJSONObject(properties, this, null)
+                }
+            } else {
+                properties
             }
+
             //设置事件属性
             eventInfo.put(Constant.EVENT_INFO_PROPERTIES, eventProperties)
 
@@ -170,8 +176,11 @@ abstract class AbstractAnalytics : IAnalytics {
         }
     }
 
-    fun trackQualityEvent(qualityInfo: String) {
-        ROIQueryQualityHelper.instance.reportQualityMessage(ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL, qualityInfo)
+    private fun trackQualityEvent(qualityInfo: String) {
+        ROIQueryQualityHelper.instance.reportQualityMessage(
+            ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL,
+            qualityInfo
+        )
     }
 
     /**
@@ -180,7 +189,7 @@ abstract class AbstractAnalytics : IAnalytics {
      * @return
      */
     protected open fun initEventInfo() {
-        mEventInfo = EventUtils.getEventInfo(mContext!!,mDataAdapter)
+        mEventInfo = EventUtils.getEventInfo(mContext!!, mDataAdapter)
     }
 
     fun updateEventInfo(key: String, value: String) {
@@ -198,7 +207,7 @@ abstract class AbstractAnalytics : IAnalytics {
         if (ProcessUtils.isMainProcess(mContext as Application?)) {
             mDataAdapter?.eventSession = DataUtils.getSession()
         }
-        mCommonProperties = EventUtils.getCommonProperties(mContext!!,mDataAdapter);
+        mCommonProperties = EventUtils.getCommonProperties(mContext!!, mDataAdapter);
         mConfigOptions.let { config ->
             if (config?.mCommonProperties != null) {
                 val iterator = config.mCommonProperties!!.keys()
@@ -234,7 +243,7 @@ abstract class AbstractAnalytics : IAnalytics {
         var realEventName = eventName
         if (eventName.startsWith(Constant.PRESET_EVENT_TAG)) {//预置事件
             realEventName = eventName.replace(Constant.PRESET_EVENT_TAG, "")
-        } else if(!EventUtils.isValidEventName(eventName)){
+        } else if (!EventUtils.isValidEventName(eventName)) {
             realEventName = ""
         }
         //校验属性名、属性值
@@ -362,7 +371,7 @@ abstract class AbstractAnalytics : IAnalytics {
      * @param timestamp 当前时间戳
      */
     open fun calibrateTime(timestamp: Long) {
-        if (timestamp!=0L){
+        if (timestamp != 0L) {
             mDataAdapter?.timeOffset = (timestamp - System.currentTimeMillis()).toString()
         }
     }
@@ -446,25 +455,36 @@ abstract class AbstractAnalytics : IAnalytics {
     }
 
     private fun userSetForCommonProperties() {
-        val commonProperties = DataUtils.clearJSONObjectKey(JSONObject(getCommonProperties()).apply {
-            remove(Constant.COMMON_PROPERTY_EVENT_SESSION)
-        })
 
-        val eventInfo = DataUtils.clearJSONObjectKey(JSONObject(getEventInfo()).apply {
-            remove(Constant.EVENT_INFO_PKG)
-            remove(Constant.EVENT_INFO_APP_ID)
-            remove(Constant.EVENT_INFO_DEBUG)
-        })
-        DataUtils.mergeJSONObject( eventInfo,commonProperties, null)
+        val commonProperties = JSONObject(EventUtils.getCommonPropertiesForUserSet(mContext!!, mDataAdapter)).apply {
+            //接入 SDK 的类型可能是 Android 或 Unity ，因此这里需动态获取
+            getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_TYPE)?.toString()?.let {
+                if(it.isNotEmpty()){
+                    put(
+                        Constant.COMMON_PROPERTY_SDK_TYPE,
+                        it
+                    )
+                }
+            }
+            //SDK 版本
+            getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_VERSION)?.toString()?.let {
+                if(it.isNotEmpty()){
+                    put(
+                        Constant.COMMON_PROPERTY_SDK_VERSION,
+                        it
+                    )
+                }
+            }
+        }
         trackUser(
             Constant.EVENT_TYPE_USER_SET_ONCE,
-            commonProperties
+            DataUtils.clearPresetKeys(commonProperties)
         )
     }
 
-    private fun checkAttribute() :Boolean{
+    private fun checkAttribute(): Boolean {
         mDataAdapter?.attributedCount?.let {
-            return if (it > 4){
+            return if (it > 4) {
                 false
             } else {
                 mDataAdapter?.attributedCount = it + 1
@@ -493,7 +513,8 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun getAppAttribute() {
 //        if (!checkAttribute(entrance)) return
-        val referrerClient: InstallReferrerClient? = InstallReferrerClient.newBuilder(mContext).build()
+        val referrerClient: InstallReferrerClient? =
+            InstallReferrerClient.newBuilder(mContext).build()
         referrerClient?.startConnection(object : InstallReferrerStateListener {
 
             override fun onInstallReferrerSetupFinished(responseCode: Int) {
@@ -589,9 +610,11 @@ abstract class AbstractAnalytics : IAnalytics {
     /**
      * 如果超过六分钟，则可能 app_engagement 上报有中断，重新触发
      */
-    fun checkAppEngagementEvent(){
+    fun checkAppEngagementEvent() {
         if (!mDataAdapter?.lastEngagementTime.isNullOrEmpty() &&
-        getRealTime() - (mDataAdapter?.lastEngagementTime?.toLong() ?: 0L) > Constant.APP_ENGAGEMENT_INTERVAL_TIME_LONG + 60 * 1000L){
+            getRealTime() - (mDataAdapter?.lastEngagementTime?.toLong()
+                ?: 0L) > Constant.APP_ENGAGEMENT_INTERVAL_TIME_LONG + 60 * 1000L
+        ) {
             trackAppEngagementEvent()
         }
     }
@@ -618,7 +641,7 @@ abstract class AbstractAnalytics : IAnalytics {
     }
 
 
-   inner class EngagementTask(name: String?) : TickTask(name) {
+    inner class EngagementTask(name: String?) : TickTask(name) {
 
         override fun onTick(loopTime: Int) {
             trackNormal(
