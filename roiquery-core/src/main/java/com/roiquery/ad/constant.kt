@@ -53,13 +53,14 @@ enum class AdType(val value: Int) {
     NATIVE(2),
     REWARDED(3),
     REWARDED_INTERSTITIAL(4),
-    APP_OPEN(5)
+    APP_OPEN(5),
+    MREC(6),
 }
 
 enum class AdMediation(val value: Int){
     IDLE(-1),
     MOPUB(0),
-    IRONSOURCE(1)
+    MAX(1)
 }
 
 enum class AdPlatform(val value: Int){
@@ -81,5 +82,6 @@ enum class AdPlatform(val value: Int){
      VUNGLE(13),
      ADX(14),
      COMBO(15),
-     BIGO(16)
+     BIGO(16),
+
 }

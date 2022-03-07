@@ -304,6 +304,52 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
 
     }
 
+    override fun reportPaid(
+        id: String,
+        type: Int,
+        platform: Int,
+        location: String,
+        seq: String,
+        mediation: Int,
+        mediationId: String,
+        value: String,
+        precision: String,
+        country: String,
+        properties: MutableMap<String, Any>?
+    ) {
+        LogUtils.d(
+            "reportPaid",
+            "id: $id,\n" +
+                    "        type: $type,\n" +
+                    "        platform: $platform,\n" +
+                    "        location: $location,\n" +
+                    "        seq: $seq,\n" +
+                    "        mediation: $mediation,\n" +
+                    "        mediationId: $mediationId,\n" +
+                    "        value: $value,\n" +
+                    "        country: $country,\n" +
+                    "        precision: $precision,\n"
+
+        )
+        val property = updateAdEventProperty(id, type, platform, location, seq, properties)?.apply {
+            this.value = value
+            this.precision = precision
+            this.country = country
+            this.mediation = mediation
+            this.mediationId = mediationId
+        }
+        adTrack(
+            AdReportConstant.EVENT_AD_PAID,
+            generateAdReportJson(seq).apply {
+                put(AdReportConstant.PROPERTY_AD_MEDIAITON, property?.mediation)
+                put(AdReportConstant.PROPERTY_AD_MEDIAITON_ID, property?.mediationId)
+                put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, property?.value)
+                put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE, property?.precision)
+                put(AdReportConstant.PROPERTY_AD_COUNTRY, property?.country)
+            }
+        )
+    }
+
 
     override fun reportReturnApp() {
         val property = getLeftApplicationEventProperty()?.apply {
@@ -324,7 +370,6 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
             }
         )
     }
-
 
 
     private fun adTrack(
@@ -400,7 +445,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         location: String,
         seq: String,
         properties: MutableMap<String, Any>?,
-        entrance: String?
+        entrance: String? = ""
     ): AdEventProperty? {
         try {
             checkSeqError(seq)
@@ -421,9 +466,11 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
             if (platform != AdPlatform.IDLE.value){
                 it.adPlatform = platform
             }
+            if (location.isNotEmpty()) {
+                it.location = location
+            }
             it.seq = seq
             it.properties = properties
-            it.location = location
             it.entrance = entrance ?: ""
         }
         return mSequenessMap[seq]

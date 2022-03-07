@@ -382,6 +382,38 @@ open class ROIQueryAdReport {
         ) = AdReportImp.getInstance()
             .reportPaid(id, type.value, platform, adgroupName, adgroupType, location, seq, mediation.value, mediationId, value, currency, precision, country, properties, entrance)
 
+
+
+        /**
+         * 上报 广告展示价值，用于聚合广告平台MAX
+         *
+         * @param id 广告最小单元id
+         * @param type 广告类型
+         * @param platform 广告平台
+         * @param location 广告位
+         * @param seq 系列行为标识
+         * @param mediation 聚合平台
+         * @param mediationId 聚合平台广告id
+         * @param value 价值
+         * @param precision 精确度
+         * @param country 国家
+         * @param properties 额外事件属性
+         */
+        fun reportPaid(
+            id: String,
+            type: AdType,
+            platform: AdPlatform,
+            location: String,
+            seq: String,
+            mediation: AdMediation,
+            mediationId: String,
+            value: String,
+            precision: String,
+            country: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
+        ) = AdReportImp.getInstance()
+            .reportPaid(id,type.value,platform.value,location,seq,mediation.value,mediationId,value,precision, country, properties)
+
         /**
          * 上报 访问广告链接，离开当前app(页面)
          *
