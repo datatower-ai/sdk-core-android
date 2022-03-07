@@ -226,14 +226,14 @@ object EventUtils {
             val size = DeviceUtils.getDeviceSize(context)
             if( size[0] > 0){
                 put(
-                    Constant.COMMON_PROPERTY_SCREEN_HEIGHT,
+                    Constant.COMMON_PROPERTY_SCREEN_WIDTH,
                     size[0]
                 )//屏幕高度
             }
 
             if( size[1] > 0){
                 put(
-                    Constant.COMMON_PROPERTY_SCREEN_WIDTH,
+                    Constant.COMMON_PROPERTY_SCREEN_HEIGHT,
                     size[1]
                 )
             }
@@ -322,11 +322,11 @@ object EventUtils {
             )//设备型号,用户设备的型号，如 iPhone 8 等
             val size = DeviceUtils.getDeviceSize(context)
             put(
-                Constant.COMMON_PROPERTY_SCREEN_HEIGHT,
+                Constant.COMMON_PROPERTY_SCREEN_WIDTH,
                 size[0]
             )//屏幕高度
             put(
-                Constant.COMMON_PROPERTY_SCREEN_WIDTH,
+                Constant.COMMON_PROPERTY_SCREEN_HEIGHT,
                 size[1]
             )//屏幕宽度
         }
