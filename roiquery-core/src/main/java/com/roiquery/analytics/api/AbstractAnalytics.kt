@@ -11,6 +11,7 @@ import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
+import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.AnalyticsManager
@@ -407,20 +408,19 @@ abstract class AbstractAnalytics : IAnalytics {
      * gaid 获取，异步
      */
     private fun getGAID() {
-        LogUtils.d("getGAID", "start")
-        GaidHelper.getAdInfo(
-            mContext?.applicationContext,
-            object : GaidHelper.GaidListener {
-                override fun onSuccess(info: GaidHelper.AdIdInfo) {
-                    mDataAdapter?.gaid = info.adId
-                    updateEventInfo(Constant.EVENT_INFO_GAID, info.adId)
-                    LogUtils.d("getGAID", "onSuccess")
-                }
+        ThreadUtils.getSinglePool().submit {
+            try {
+                LogUtils.d("getGAID", "start")
+                val info = AdvertisingIdClient.getAdvertisingIdInfo(mContext!!)
+                val id = info.id ?: ""
+                mDataAdapter?.gaid = id
+                updateEventInfo(Constant.EVENT_INFO_GAID, id)
+                LogUtils.d("getGAID", "onSuccess：$id")
+            }catch (exception: Exception){
+                LogUtils.d("getGAID", "onException:" + exception.message.toString())
+            }
 
-                override fun onException(exception: java.lang.Exception) {
-                    LogUtils.d("getGAID", "onException:" + exception.message.toString())
-                }
-            })
+        }
     }
 
     /**
