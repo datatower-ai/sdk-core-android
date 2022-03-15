@@ -60,7 +60,8 @@ enum class AdType(val value: Int) {
 enum class AdMediation(val value: Int){
     IDLE(-1),
     MOPUB(0),
-    MAX(1)
+    MAX(1),
+    HISAVANA(2)
 }
 
 enum class AdPlatform(val value: Int){
@@ -83,5 +84,6 @@ enum class AdPlatform(val value: Int){
      ADX(14),
      COMBO(15),
      BIGO(16),
+    HISAVANA(17)
 
 }
