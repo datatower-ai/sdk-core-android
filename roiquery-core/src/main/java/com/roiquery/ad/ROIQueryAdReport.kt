@@ -399,6 +399,8 @@ open class ROIQueryAdReport {
          * @param country 国家
          * @param properties 额外事件属性
          */
+        @JvmOverloads
+        @JvmStatic
         fun reportPaid(
             id: String,
             type: AdType,
