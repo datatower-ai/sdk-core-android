@@ -6,7 +6,7 @@ buildscript {
     // 0 本地
     // 1 maven-snapshot
     // 2 maven-releases
-    ext.dependence_type = "2"
+    ext.dependence_type = "0"
 
     ext.kotlin_version = "1.6.10"
     repositories {
