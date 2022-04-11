@@ -99,10 +99,12 @@ open class ROIQueryAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
+            errorCode: Int,
+            errorMessage: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
             entrance: String? = ""
         ) = AdReportImp.getInstance()
-            .reportShowFailed(id, type.value, platform.value, location, seq, properties, entrance)
+            .reportShowFailed(id, type.value, platform.value, location, seq, errorCode,errorMessage,properties,entrance)
 
 
 

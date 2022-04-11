@@ -7,6 +7,8 @@ import android.os.SystemClock
 import android.text.TextUtils
 import com.roiquery.ad.AdPlatform
 import com.roiquery.ad.AdReportConstant
+import com.roiquery.ad.AdReportConstant.PROPERTY_AD_SHOW_ERROR_CODE
+import com.roiquery.ad.AdReportConstant.PROPERTY_AD_SHOW_ERROR_MESSAGE
 import com.roiquery.ad.AdType
 import com.roiquery.ad.utils.AdEventProperty
 import com.roiquery.ad.utils.AdPlatformUtils
@@ -82,10 +84,16 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         platform: Int,
         location: String,
         seq: String,
+        errorCode: Int,
+        errorMessage: String,
         properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
+        val propertiesWithErrorInfo = properties ?: mutableMapOf()
+        propertiesWithErrorInfo[PROPERTY_AD_SHOW_ERROR_CODE] = errorCode
+        propertiesWithErrorInfo[PROPERTY_AD_SHOW_ERROR_MESSAGE] = errorMessage
+
+        updateAdEventProperty(id, type, platform, location, seq, propertiesWithErrorInfo,entrance)?.apply {
             showTS = SystemClock.elapsedRealtime()
         }
         adTrack(

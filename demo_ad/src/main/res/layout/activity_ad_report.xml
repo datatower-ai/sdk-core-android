@@ -38,6 +38,15 @@
             android:layout_height="wrap_content"
             android:text="show"
             />
+
+        <Button
+            android:id="@+id/button_track_show_failed"
+            android:layout_width="wrap_content"
+            android:textAllCaps="false"
+            android:layout_margin="2dp"
+            android:layout_height="wrap_content"
+            android:text="show failed"
+            />
         <Button
             android:id="@+id/button_track_impression"
             android:layout_width="wrap_content"

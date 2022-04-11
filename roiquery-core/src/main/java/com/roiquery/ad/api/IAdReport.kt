@@ -74,8 +74,9 @@ package com.roiquery.ad.api
       * @param platform 广告平台
       * @param location 广告位
       * @param seq 系列行为标识
+      * @param errorCode 错误码
+      * @param errorMessage 错误信息
       * @param properties 额外事件属性
-      * @param entrance 广告入口
       */
      fun reportShowFailed(
          id: String,
@@ -83,6 +84,8 @@ package com.roiquery.ad.api
          platform: Int,
          location: String,
          seq: String,
+         errorCode: Int,
+         errorMessage: String,
          properties: MutableMap<String, Any>? = mutableMapOf(),
          entrance: String? = ""
      )

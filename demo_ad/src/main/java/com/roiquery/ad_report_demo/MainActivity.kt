@@ -64,6 +64,19 @@ class MainActivity : AppCompatActivity() {
                 seq
             )
         }
+
+        findViewById<View>(R.id.button_track_show_failed).setOnClickListener {
+            ROIQueryAdReport.reportShowFailed(
+                "",
+                AdType.REWARDED_INTERSTITIAL,
+                AdPlatform.ADX,
+                "car",
+                seq,
+                12,
+                "network"
+            )
+        }
+
         findViewById<View>(R.id.button_track_impression).setOnClickListener {
             ROIQueryAdReport.reportImpression(
                 "4",

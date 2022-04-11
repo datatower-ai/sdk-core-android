@@ -36,6 +36,10 @@ internal object AdReportConstant {
     const val PROPERTY_AD_CURRENCY_CODE = "ad_currency"
     const val PROPERTY_AD_PRECISION_TYPE = "ad_precision"
     const val PROPERTY_AD_COUNTRY = "ad_country"
+
+    const val PROPERTY_AD_SHOW_ERROR_CODE = "ad_error_code"
+    const val PROPERTY_AD_SHOW_ERROR_MESSAGE = "ad_error_message"
+
 }
 
 interface AD_CONVERSION_SOURCE {
