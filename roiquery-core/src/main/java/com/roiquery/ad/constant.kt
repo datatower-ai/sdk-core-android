@@ -57,33 +57,33 @@ enum class AdType(val value: Int) {
     MREC(6),
 }
 
-enum class AdMediation(val value: Int){
+enum class AdMediation(val value: Int) {
     IDLE(-1),
     MOPUB(0),
     MAX(1),
     HISAVANA(2)
 }
 
-enum class AdPlatform(val value: Int){
-     UNDISCLOSED(-2),
-     IDLE(-1),
-     ADMOB(0),
-     MOPUB(1),
-     ADCOLONY(2),
-     APPLOVIN(3),
-     CHARTBOOST(4),
-     FACEBOOK(5),
-     INMOBI(6),
-     IRONSOURCE(7),
-     PANGLE(8),
-     SNAP_AUDIENCE_NETWORK(9),
-     TAPJOY(10),
-     UNITY_ADS (11),
-     VERIZON_MEDIA(12),
-     VUNGLE(13),
-     ADX(14),
-     COMBO(15),
-     BIGO(16),
-    HISAVANA(17)
-
+enum class AdPlatform(val value: Int) {
+    UNDISCLOSED(-2),
+    IDLE(-1),
+    ADMOB(0),
+    MOPUB(1),
+    ADCOLONY(2),
+    APPLOVIN(3),
+    CHARTBOOST(4),
+    FACEBOOK(5),
+    INMOBI(6),
+    IRONSOURCE(7),
+    PANGLE(8),
+    SNAP_AUDIENCE_NETWORK(9),
+    TAPJOY(10),
+    UNITY_ADS(11),
+    VERIZON_MEDIA(12),
+    VUNGLE(13),
+    ADX(14),
+    COMBO(15),
+    BIGO(16),
+    HISAVANA(17),
+    APPLOVIN_EXCHANGE(18)
 }
