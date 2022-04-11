@@ -76,6 +76,24 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         )
     }
 
+    override fun reportShowFailed(
+        id: String,
+        type: Int,
+        platform: Int,
+        location: String,
+        seq: String,
+        properties: MutableMap<String, Any>?,
+        entrance: String?
+    ) {
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
+            showTS = SystemClock.elapsedRealtime()
+        }
+        adTrack(
+            AdReportConstant.EVENT_AD_SHOW_FAILED,
+            generateAdReportJson(seq)
+        )
+    }
+
     override fun reportImpression(
         id: String,
         type: Int,

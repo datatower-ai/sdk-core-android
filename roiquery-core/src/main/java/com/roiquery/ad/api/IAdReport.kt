@@ -65,6 +65,28 @@ package com.roiquery.ad.api
         properties: MutableMap<String, Any>? = mutableMapOf(),
         entrance: String? = ""
     )
+
+     /**
+      * 上报 广告展示失败
+      *
+      * @param id 广告最小单元id
+      * @param type 广告类型
+      * @param platform 广告平台
+      * @param location 广告位
+      * @param seq 系列行为标识
+      * @param properties 额外事件属性
+      * @param entrance 广告入口
+      */
+     fun reportShowFailed(
+         id: String,
+         type: Int,
+         platform: Int,
+         location: String,
+         seq: String,
+         properties: MutableMap<String, Any>? = mutableMapOf(),
+         entrance: String? = ""
+     )
+
      /**
       * 上报 广告曝光
       *

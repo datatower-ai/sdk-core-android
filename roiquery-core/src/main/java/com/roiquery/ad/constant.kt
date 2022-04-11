@@ -8,6 +8,7 @@ internal object AdReportConstant {
     const val EVENT_AD_ENTRANCE = PRESET_EVENT_TAG + "ad_entrance"
     const val EVENT_AD_TO_SHOW = PRESET_EVENT_TAG + "ad_to_show"
     const val EVENT_AD_SHOW = PRESET_EVENT_TAG + "ad_show"
+    const val EVENT_AD_SHOW_FAILED = PRESET_EVENT_TAG + "ad_show_failed"
     const val EVENT_AD_IMPRESSION = PRESET_EVENT_TAG + "ad_impression"
     const val EVENT_AD_OPEN = PRESET_EVENT_TAG + "ad_open"
     const val EVENT_AD_CLOSE = PRESET_EVENT_TAG + "ad_close"
