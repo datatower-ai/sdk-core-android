@@ -64,6 +64,7 @@ internal object Constant {
     const val COMMON_PROPERTY_DEVICE_MODEL        = "#device_model"
     const val COMMON_PROPERTY_SCREEN_HEIGHT       = "#screen_height"
     const val COMMON_PROPERTY_SCREEN_WIDTH        = "#screen_width"
+    const val ENGAGEMENT_PROPERTY_IS_FOREGROUND   = "#is_foreground"
 
 
     const val ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME             = "first_open_time"
@@ -76,7 +77,6 @@ internal object Constant {
     const val ATTRIBUTE_PROPERTY_USER_AGENT                  =  "user_agent"
 
 
-    const val ENGAGEMENT_PROPERTY_IS_FOREGROUND    = "is_foreground"
 
     //preset event name about Analytics
     const val PRESET_EVENT_TAG = "@.#"
@@ -89,6 +89,7 @@ internal object Constant {
     const val PRESET_EVENT_PAGE_CLOSE      = PRESET_EVENT_TAG + "page_close"
     const val PRESET_EVENT_USER_PROPERTIES = PRESET_EVENT_TAG + "user_properties"
     const val PRESET_EVENT_APP_QUALITY     = PRESET_EVENT_TAG + "app_quality"
+    const val PRESET_EVENT_APP_STATE_CHANGED     = PRESET_EVENT_TAG + "app_state_changed"
 
     const val EVENT_TYPE_TRACK = "track"
     const val EVENT_TYPE_USER_ADD = "user_add"

@@ -310,6 +310,7 @@ open class ROIQueryAnalytics {
                 if (!isSDKEnable()) return
                 checkNotNull(mContext) { "Call ROIQuery.initSDK first" }
                 EventDateAdapter.getInstance()?.isAppForeground = true
+                AnalyticsImp.getInstance(mContext).trackAppStateChanged()
                 AnalyticsImp.getInstance(mContext).checkAppEngagementEvent()
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppForeground()
@@ -328,6 +329,7 @@ open class ROIQueryAnalytics {
                 if (!isSDKEnable()) return
                 checkNotNull(mContext) { "Call ROIQuerySDK.init first" }
                 EventDateAdapter.getInstance()?.isAppForeground = false
+                AnalyticsImp.getInstance(mContext).trackAppStateChanged()
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppBackground()
                 }

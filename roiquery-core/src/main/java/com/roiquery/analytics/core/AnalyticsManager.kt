@@ -265,10 +265,10 @@ class AnalyticsManager private constructor(
              event = updateEventTime(eventsData!![1])
         }
 
-        LogUtils.json(
-            TAG,
-            event
-        )
+//        LogUtils.json(
+//            TAG,
+//            event
+//        )
 
         //http 请求
         RequestHelper.Builder(

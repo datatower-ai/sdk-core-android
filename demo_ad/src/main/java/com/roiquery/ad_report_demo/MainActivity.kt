@@ -3,6 +3,7 @@ package com.roiquery.ad_report_demo
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.roiquery.ad.AdMediation
@@ -27,16 +28,18 @@ class MainActivity : AppCompatActivity() {
             val p = mutableMapOf<String,Any>()
             p["sd1"] = false
             p["sd2"] = 2.09
-            ROIQueryAdReport.reportEntrance(
-                "",
-                AdType.REWARDED_INTERSTITIAL,
-                AdPlatform.ADX,
-                "home",
-                seq,
-                p,
-                "main"
-            )
 
+            Handler().postDelayed({
+                ROIQueryAdReport.reportEntrance(
+                    "",
+                    AdType.REWARDED_INTERSTITIAL,
+                    AdPlatform.ADX,
+                    "home",
+                    seq,
+                    p,
+                    "main"
+                )
+            },2000)
 
 
         }
@@ -45,15 +48,19 @@ class MainActivity : AppCompatActivity() {
             val p = mutableMapOf<String,Any>()
             p["sd3"] = "p3"
             p["sd4"] = "p4"
-            ROIQueryAdReport.reportToShow(
-                "",
-                AdType.REWARDED_INTERSTITIAL,
-                AdPlatform.ADX,
-                "user",
-                seq,
-                p,
-                "main"
-            )
+            Handler().postDelayed({
+                ROIQueryAdReport.reportToShow(
+                    "",
+                    AdType.REWARDED_INTERSTITIAL,
+                    AdPlatform.ADX,
+                    "user",
+                    seq,
+                    p,
+                    "main"
+                )
+            },2000)
+
+
         }
         findViewById<View>(R.id.button_track_show).setOnClickListener {
             ROIQueryAdReport.reportShow(

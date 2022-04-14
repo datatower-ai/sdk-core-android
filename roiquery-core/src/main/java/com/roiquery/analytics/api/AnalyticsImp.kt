@@ -219,6 +219,10 @@ class AnalyticsImp : AbstractAnalytics {
         trackUser(Constant.EVENT_TYPE_USER_ADD, properties)
     }
 
+    fun trackAppStateChanged(){
+        trackNormal(Constant.PRESET_EVENT_APP_STATE_CHANGED)
+    }
+
     fun userUnset(vararg properties: String?){
         val props = JSONObject()
         for (s in properties) {
