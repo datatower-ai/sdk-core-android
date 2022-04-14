@@ -86,8 +86,8 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun initLocalData() {
         mDataAdapter = EventDateAdapter.getInstance(mContext!!, mContext!!.packageName)
-        mDataAdapter?.timeOffset = ""
-        mDataAdapter?.lastEngagementTime = ""
+        mDataAdapter?.timeOffset = Constant.TIME_OFFSET_DEFAULT_VALUE
+        mDataAdapter?.lastEngagementTime = Constant.TIME_OFFSET_DEFAULT_VALUE
     }
 
     /**
