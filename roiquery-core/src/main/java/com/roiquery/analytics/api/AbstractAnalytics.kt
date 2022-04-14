@@ -154,6 +154,11 @@ abstract class AbstractAnalytics : IAnalytics {
             //事件属性, 常规事件与用户属性类型区分
             val eventProperties = if (eventType == Constant.EVENT_TYPE_TRACK) {
                 JSONObject(mCommonProperties).apply {
+
+                    //应用是否在前台, 需要动态添加
+                    put(Constant.ENGAGEMENT_PROPERTY_IS_FOREGROUND,
+                        mDataAdapter?.isAppForeground
+                    )
                     //合并用户自定义属性和通用属性
                     DataUtils.mergeJSONObject(properties, this, null)
                 }
@@ -396,7 +401,7 @@ abstract class AbstractAnalytics : IAnalytics {
 
                 override fun onOAIDGetError(exception: java.lang.Exception) {
                     // 获取OAID失败
-                    LogUtils.printStackTrace(exception)
+                    LogUtils.d(exception)
                 }
             })
         } catch (e: Exception) {
@@ -645,13 +650,7 @@ abstract class AbstractAnalytics : IAnalytics {
 
         override fun onTick(loopTime: Int) {
             trackNormal(
-                Constant.PRESET_EVENT_APP_ENGAGEMENT,
-                PropertyBuilder.newInstance()
-                    .append(
-                        Constant.ENGAGEMENT_PROPERTY_IS_FOREGROUND,
-                        mDataAdapter?.isAppForeground.toString()
-                    )
-                    .toJSONObject()
+                Constant.PRESET_EVENT_APP_ENGAGEMENT
             )
             mDataAdapter?.lastEngagementTime = getRealTime().toString()
             //补发，以免异常情况获取不到 app_attribute 事件
