@@ -12,6 +12,7 @@ object RemoteConfig : RemoteConfigContext {
     /**
      * 初始化 remote resource.
      */
+    // TODO: ANR
     fun <T: Any> initRemoteResource(resourceClass: Class<T>, init: RemoteResource<T>.() -> Unit) {
         val remoteResource = RemoteResource(resourceClass.kotlin, logger).initialize(init)
         resourcesNames[resourceClass] = remoteResource.resourceName

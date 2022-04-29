@@ -83,6 +83,7 @@ public class AESCoder {
      *
      * @return byte[] 二进制密钥
      */
+    // TODO: 2022/4/27 ANR
     public static byte[] initKey() throws Exception {
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         PBEKeySpec spec = new PBEKeySpec(pass, salt, PASSWORD_ITERATIONS, KEY_LENGTH);

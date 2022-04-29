@@ -516,6 +516,7 @@ abstract class AbstractAnalytics : IAnalytics {
     /**
      * 获取 app 归因属性
      */
+//     TODO: ANR
     private fun getAppAttribute() {
 //        if (!checkAttribute(entrance)) return
         val referrerClient: InstallReferrerClient? =

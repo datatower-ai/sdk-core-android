@@ -1,7 +1,8 @@
 package com.roiquery.analytics.data.db
 
 
-import android.content.*
+import android.content.ContentValues
+import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
@@ -10,6 +11,10 @@ import android.net.Uri
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.data.DataParams
 import com.roiquery.analytics.utils.LogUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 
 class DbHelper(context: Context?) :
@@ -65,8 +70,15 @@ class DbHelper(context: Context?) :
         }
         var deletedCounts = 0
          try {
-             val database: SQLiteDatabase = writableDatabase
-             deletedCounts = database.delete(DataParams.TABLE_EVENTS, selection, selectionArgs)
+             deletedCounts = runBlocking {
+                 withContext(Dispatchers.IO) {
+                     writableDatabase.delete(
+                         DataParams.TABLE_EVENTS,
+                         selection,
+                         selectionArgs
+                     )
+                 }
+             }
          } catch (e: SQLiteException) {
              isDbWritable = false
              LogUtils.printStackTrace(e)
@@ -75,20 +87,27 @@ class DbHelper(context: Context?) :
     }
 
 
-     fun insert(values: ContentValues?): Long {
+      fun insert(values: ContentValues?): Long {
         // 不处理 values = null 或者 values 为空的情况
         if (!isDbWritable || values == null || values.size() == 0) {
             return DataParams.DB_INSERT_ERROR
         }
         try {
-            return insertEvent(values)
+            return runBlocking {
+                coroutineScope {
+                    insertEvent(values)
+                }
+            }
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
         return DataParams.DB_INSERT_ERROR
     }
 
-    private fun insertEvent(values: ContentValues): Long {
+    private suspend fun insertEvent(values: ContentValues): Long {
+        if (!values.containsKey(DataParams.KEY_DATA) || !values.containsKey(DataParams.KEY_CREATED_AT)) {
+            return DataParams.DB_INSERT_ERROR
+        }
         val database: SQLiteDatabase
         try {
             database = writableDatabase
@@ -97,10 +116,9 @@ class DbHelper(context: Context?) :
             LogUtils.printStackTrace(e)
             return DataParams.DB_INSERT_ERROR
         }
-        if (!values.containsKey(DataParams.KEY_DATA) || !values.containsKey(DataParams.KEY_CREATED_AT)) {
-            return DataParams.DB_INSERT_ERROR
+        return withContext(Dispatchers.IO) {
+            database.insert(DataParams.TABLE_EVENTS, "_id", values)
         }
-        return database.insert(DataParams.TABLE_EVENTS, "_id", values)
     }
 
      fun insertConfig(values: ContentValues): Long {
@@ -116,21 +134,36 @@ class DbHelper(context: Context?) :
                  DataParams.KEY_CONFIG_VALUE
              )) {
              DataParams.DB_INSERT_ERROR
-        }else database.insert(DataParams.TABLE_CONFIGS, DataParams.KEY_CONFIG_NAME, values)
+        } else runBlocking {
+             withContext(Dispatchers.IO) {
+                 database.insert(DataParams.TABLE_CONFIGS, DataParams.KEY_CONFIG_NAME, values)
+             }
+         }
     }
 
-     fun updateConfig(name:String,values: ContentValues): Int {
-        val database: SQLiteDatabase
-        try {
-            database = writableDatabase
-        } catch (e: SQLiteException) {
-            isDbWritable = false
-            LogUtils.printStackTrace(e)
-            return DataParams.DB_UPDATE_CONFIG_ERROR
+     fun updateConfig(name: String, values: ContentValues): Int {
+        return if (!values.containsKey(DataParams.KEY_CONFIG_VALUE)) {
+            DataParams.DB_UPDATE_CONFIG_ERROR
+        } else {
+            var database: SQLiteDatabase?
+            try {
+                database = writableDatabase
+                runBlocking {
+                    coroutineScope{
+                        database.update(
+                            DataParams.TABLE_CONFIGS,
+                            values,
+                            DataParams.KEY_CONFIG_NAME + "=?",
+                            arrayOf(name)
+                        )
+                    }
+                }
+            } catch (e: SQLiteException) {
+                isDbWritable = false
+                LogUtils.printStackTrace(e)
+                return DataParams.DB_UPDATE_CONFIG_ERROR
+            }
         }
-         return if (!values.containsKey(DataParams.KEY_CONFIG_VALUE)) {
-             DataParams.DB_UPDATE_CONFIG_ERROR
-        }else database.update(DataParams.TABLE_CONFIGS, values, DataParams.KEY_CONFIG_NAME + "=?",arrayOf(name))
     }
 
 
@@ -162,8 +195,20 @@ class DbHelper(context: Context?) :
     ): Cursor? {
         var cursor: Cursor? = null
         try {
-            cursor = writableDatabase
-                .query(tableName, projection, selection, selectionArgs, null, null, sortOrder)
+            cursor = runBlocking {
+                withContext(Dispatchers.IO) {
+                    writableDatabase
+                        .query(
+                            tableName,
+                            projection,
+                            selection,
+                            selectionArgs,
+                            null,
+                            null,
+                            sortOrder
+                        )
+                }
+            }
         } catch (e: SQLiteException) {
             isDbWritable = false
             LogUtils.printStackTrace(e)
