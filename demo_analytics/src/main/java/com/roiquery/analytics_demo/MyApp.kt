@@ -1,9 +1,10 @@
 package com.roiquery.analytics_demo
 
 import android.app.Application
+import android.content.Intent
 import com.jraska.console.Console
-import com.roiquery.analytics.ROIQueryChannel
 import com.roiquery.analytics.ROIQuery
+import com.roiquery.analytics.ROIQueryChannel
 import com.roiquery.analytics.utils.LogUtils
 
 
