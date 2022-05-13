@@ -2,10 +2,12 @@ package com.roiquery.analytics.utils
 
 import android.app.ActivityManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Process
 import android.text.TextUtils
+import android.webkit.WebSettings
 
 
 object AppInfoUtils {
@@ -149,5 +151,62 @@ object AppInfoUtils {
         return null
     }
 
+    fun getAppVersionName(context: Context, pkg: String): String{
+        var vn = ""
+        try {
+            val packageManager: PackageManager = context.applicationContext.packageManager
+            val info = packageManager.getPackageInfo(pkg, 0)
+            vn = info.versionName
+        }catch (e: Exception){
 
+        }
+        return vn
+    }
+
+
+    fun getAppVersionCode(context: Context, pkg: String): Int {
+        var vc = 1
+        try {
+            val packageManager: PackageManager = context.applicationContext.packageManager
+            val info = packageManager.getPackageInfo(pkg, 0)
+            vc = info.versionCode
+        }catch (e: Exception){
+
+        }
+        return vc
+    }
+
+    /**
+     * 桌面应用
+     *
+     * @param context
+     * @return
+     */
+    fun getLauncherPackageName(context: Context): String? {
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_HOME)
+        val res = context.packageManager.resolveActivity(intent, 0) ?: return "\$unknown"
+        return if (res.activityInfo == null) {
+            "\$unknown"
+        } else res.activityInfo.packageName
+    }
+
+     fun getDefaultUserAgent(context: Context): String? {
+        var ua: String? = null
+        try {
+            ua = System.getProperty("http.agent")
+            if (TextUtils.isEmpty(ua)) {
+                val localMethod =
+                    WebSettings::class.java.getDeclaredMethod(
+                        "getDefaultUserAgent", *arrayOf<Class<*>>(
+                            Context::class.java
+                        )
+                    )
+                ua = localMethod.invoke(WebSettings::class.java, *arrayOf<Any>(context)) as String
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return if (TextUtils.isEmpty(ua)) "" else ua
+    }
 }

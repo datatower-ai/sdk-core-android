@@ -47,7 +47,6 @@ abstract class AbstractAnalytics : IAnalytics {
     //本地数据适配器，包括sp、db的操作
     private var mDataAdapter: EventDateAdapter? = null
 
-    private var mUserAgent = ""
 
     private var mFirstOpenTime = ""
 
@@ -71,7 +70,6 @@ abstract class AbstractAnalytics : IAnalytics {
             initProperties()
             initCloudConfig()
             initAppLifecycleListener()
-            getUserAgentByUIThread()
             trackPresetEvent()
             getGAID()
             getOAID()
@@ -156,7 +154,8 @@ abstract class AbstractAnalytics : IAnalytics {
                 JSONObject(mCommonProperties).apply {
 
                     //应用是否在前台, 需要动态添加
-                    put(Constant.ENGAGEMENT_PROPERTY_IS_FOREGROUND,
+                    put(
+                        Constant.ENGAGEMENT_PROPERTY_IS_FOREGROUND,
                         mDataAdapter?.isAppForeground
                     )
                     //合并用户自定义属性和通用属性
@@ -421,7 +420,7 @@ abstract class AbstractAnalytics : IAnalytics {
                 mDataAdapter?.gaid = id
                 updateEventInfo(Constant.EVENT_INFO_GAID, id)
                 LogUtils.d("getGAID", "onSuccess：$id")
-            }catch (exception: Exception){
+            } catch (exception: Exception) {
                 LogUtils.d("getGAID", "onException:" + exception.message.toString())
             }
 
@@ -461,28 +460,34 @@ abstract class AbstractAnalytics : IAnalytics {
 
     private fun userSetForCommonProperties() {
 
-        val commonProperties = JSONObject(EventUtils.getCommonPropertiesForUserSet(mContext!!, mDataAdapter)).apply {
-            //接入 SDK 的类型可能是 Android 或 Unity ，因此这里需动态获取
-            getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_TYPE)?.toString()?.let {
-                if(it.isNotEmpty()){
-                    put(
-                        Constant.COMMON_PROPERTY_SDK_TYPE,
-                        it
-                    )
+        val commonProperties =
+            JSONObject(EventUtils.getCommonPropertiesForUserSet(mContext!!, mDataAdapter)).apply {
+                //接入 SDK 的类型可能是 Android 或 Unity ，因此这里需动态获取
+                getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_TYPE)?.toString()?.let {
+                    if (it.isNotEmpty()) {
+                        put(
+                            Constant.COMMON_PROPERTY_SDK_TYPE,
+                            it
+                        )
+                    }
+                }
+                //SDK 版本
+                getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_VERSION)?.toString()?.let {
+                    if (it.isNotEmpty()) {
+                        put(
+                            Constant.COMMON_PROPERTY_SDK_VERSION,
+                            it
+                        )
+                    }
                 }
             }
-            //SDK 版本
-            getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_VERSION)?.toString()?.let {
-                if(it.isNotEmpty()){
-                    put(
-                        Constant.COMMON_PROPERTY_SDK_VERSION,
-                        it
-                    )
-                }
-            }
-        }
         trackUser(
             Constant.EVENT_TYPE_USER_SET_ONCE,
+            DataUtils.clearPresetKeys(commonProperties)
+        )
+
+        LogUtils.d(
+            "userSetForCommonProperties",
             DataUtils.clearPresetKeys(commonProperties)
         )
     }
@@ -601,7 +606,7 @@ abstract class AbstractAnalytics : IAnalytics {
                         )
                         put(
                             Constant.ATTRIBUTE_PROPERTY_USER_AGENT,
-                            mUserAgent
+                            AppInfoUtils.getDefaultUserAgent( mContext!!) ?: ""
                         )
                         if (!isOK) {
                             put(
@@ -635,16 +640,16 @@ abstract class AbstractAnalytics : IAnalytics {
             .postAsync()
     }
 
-    /**
-     * 获取浏览器user_agent
-     */
-    private fun getUserAgentByUIThread() {
-        ThreadUtils.runOnUiThread {
-            mContext?.let {
-                mUserAgent = NetworkUtils.getUserAgent(it)
-            }
-        }
-    }
+//    /**
+//     * 获取浏览器user_agent
+//     */
+//    private fun getUserAgentByUIThread() {
+//        ThreadUtils.runOnUiThread {
+//            mContext?.let {
+//                mUserAgent = NetworkUtils.getUserAgent(it)
+//            }
+//        }
+//    }
 
 
     inner class EngagementTask(name: String?) : TickTask(name) {
