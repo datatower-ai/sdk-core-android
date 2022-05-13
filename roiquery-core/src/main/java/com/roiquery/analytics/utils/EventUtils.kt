@@ -1,14 +1,16 @@
 package com.roiquery.analytics.utils
 
 import android.content.Context
+import android.os.Build
 import android.text.TextUtils
+import com.google.android.a.c
 import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.data.EventDateAdapter
-import org.json.JSONObject
 import org.json.JSONArray
 import org.json.JSONException
+import org.json.JSONObject
 import java.util.*
 import java.util.regex.Pattern
 
@@ -17,8 +19,8 @@ object EventUtils {
     private val KEY_PATTERN =
         Pattern.compile("^[a-zA-Z][a-zA-Z\\d_]{0,49}$", Pattern.CASE_INSENSITIVE)
 
-     fun getEventInfo(context: Context,dataAdapter: EventDateAdapter?)
-         = mutableMapOf<String, Any?>().apply {
+    fun getEventInfo(context: Context, dataAdapter: EventDateAdapter?) =
+        mutableMapOf<String, Any?>().apply {
             put(
                 Constant.EVENT_INFO_DID,
                 DeviceUtils.getAndroidID(context)
@@ -46,7 +48,128 @@ object EventUtils {
             if (AbstractAnalytics.mConfigOptions?.mEnabledDebug == true) {
                 put(Constant.EVENT_INFO_DEBUG, true)
             }
-    }
+        }
+
+    private fun getSystemPropertiesForUserSet(context: Context) =
+        mutableMapOf<String, Any?>().apply {
+            put(
+                Constant.USER_PROPERTY_SYSTEM_GP_VERSION_CODE,
+                AppInfoUtils.getAppVersionCode(context, "com.android.vending")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_GP_VERSION_NAME,
+                AppInfoUtils.getAppVersionName(context, "com.android.vending")
+            )
+            put(Constant.USER_PROPERTY_SYSTEM_DIMS_SIZE, DensityUtils.getScreenSize(context))
+            put(Constant.USER_PROPERTY_SYSTEM_DIMS_X_DP, DensityUtils.getScreenWidthWithDp(context))
+            put(
+                Constant.USER_PROPERTY_SYSTEM_DIMS_Y_DP,
+                DensityUtils.getScreenHeightWithDp(context)
+            )
+            put(Constant.USER_PROPERTY_SYSTEM_DIMS_X_PX, DensityUtils.getScreenWidth(context))
+            put(Constant.USER_PROPERTY_SYSTEM_DIMS_Y_PX, DensityUtils.getScreenHeight(context))
+            put(Constant.USER_PROPERTY_SYSTEM_DIMS_D_DPI, DensityUtils.getDensityDpi(context))
+
+            put(Constant.USER_PROPERTY_SYSTEM_BP_RO_ARCH, CommandUtils.getProperty("ro.arch"))
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_RO_CHIPNAME,
+                CommandUtils.getProperty("ro.chipname")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_RO_DALVIK_VM_NATIVE_BRIDGE,
+                CommandUtils.getProperty("ro.dalvik.vm.native.bridge")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_PERSIST_SYS_NATIVEBRIDGE,
+                CommandUtils.getProperty("persist.sys.nativebridge")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_RO_ENABLE_NATIVE_BRIDGE_EXEC,
+                CommandUtils.getProperty("ro.enable.native.bridge.exec")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_DALVIK_VM_ISA_X86_FEATURES,
+                CommandUtils.getProperty("dalvik.vm.isa.x86.features")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_DALVIK_VM_ISA_X86_VARIANT,
+                CommandUtils.getProperty("dalvik.vm.isa.x86.variant")
+            )
+            put(Constant.USER_PROPERTY_SYSTEM_BP_RO_ZYGOTE, CommandUtils.getProperty("ro.zygote"))
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_RO_ALLOW_MOCK_LOCATION,
+                CommandUtils.getProperty("ro.allow.mock.location")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_RO_DALVIK_VM_ISA_ARM,
+                CommandUtils.getProperty("ro.dalvik.vm.isa.arm")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_DALVIK_VM_ISA_ARM_FEATURES,
+                CommandUtils.getProperty("dalvik.vm.isa.arm.features")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_DALVIK_VM_ISA_ARM_VARIANT,
+                CommandUtils.getProperty("dalvik.vm.isa.arm.variant")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_DALVIK_VM_ISA_ARM64_FEATURES,
+                CommandUtils.getProperty("dalvik.vm.isa.arm64.features")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_DALVIK_VM_ISA_ARM64_VARIANT,
+                CommandUtils.getProperty("dalvik.vm.isa.arm64.variant")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_VZW_OS_ROOTED,
+                CommandUtils.getProperty("vzw.os.rooted")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_RO_BUILD_USER,
+                CommandUtils.getProperty("ro.build.user")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_RO_KERNEL_QEMU,
+                CommandUtils.getProperty("ro.kernel.qemu")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_RO_HARDWARE,
+                CommandUtils.getProperty("ro.hardware")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_RO_PRODUCT_CPU_ABI,
+                CommandUtils.getProperty("ro.product.cpu.abi")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_RO_PRODUCT_CPU_ABILIST,
+                CommandUtils.getProperty("ro.product.cpu.abilist")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_PRODUCT_CPU_ABILIST32,
+                CommandUtils.getProperty("ro.product.cpu.abilist32")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_PRODUCT_CPU_ABILIST64,
+                CommandUtils.getProperty("ro.product.cpu.abilist64")
+            )
+            put(
+                Constant.USER_PROPERTY_SYSTEM_BP_BUILD_DISPLAY_ID,
+                CommandUtils.getProperty("ro.build.display.id")
+            )
+
+            put(
+                Constant.USER_PROPERTY_SYSTEM_LAUNCHER_PKG,
+                AppInfoUtils.getLauncherPackageName(context)
+            )
+
+            put(Constant.USER_PROPERTY_SYSTEM_OS_SDK_VERSION, Build.VERSION.SDK_INT)
+
+            put(Constant.USER_PROPERTY_SYSTEM_DATA_FOLDER_USED, DataUtils.dataFolderUsed())
+
+            put(Constant.USER_PROPERTY_SYSTEM_DEVICE_SENSOR, DataUtils.getSensor(context))
+
+
+        }
 
     fun getCommonPropertiesForUserSet(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
@@ -224,22 +347,29 @@ object EventUtils {
 
 
             val size = DeviceUtils.getDeviceSize(context)
-            if( size[0] > 0){
+            if (size[0] > 0) {
                 put(
                     Constant.COMMON_PROPERTY_SCREEN_WIDTH,
                     size[0]
                 )//屏幕高度
             }
 
-            if( size[1] > 0){
+            if (size[1] > 0) {
                 put(
                     Constant.COMMON_PROPERTY_SCREEN_HEIGHT,
                     size[1]
                 )
             }
 
-        }
+            put(Constant.COMMON_PROPERTY_DEVICE_DISPLAY, Build.DISPLAY)
+            put(Constant.COMMON_PROPERTY_DEVICE_PRODUCT, Build.PRODUCT)
+            put(Constant.COMMON_PROPERTY_DEVICE_DEVICE, Build.DEVICE)
+            put(Constant.COMMON_PROPERTY_MEMORY_USED, MemoryUtils.getMemoryUsed(context))
+            put(Constant.COMMON_PROPERTY_STORAGE_USED, MemoryUtils.getStorageUsed(context))
+            put(Constant.COMMON_PROPERTY_USER_AGENT, AppInfoUtils.getDefaultUserAgent(context))
 
+            putAll(getSystemPropertiesForUserSet(context))
+        }
 
 
     fun getCommonProperties(context: Context, dataAdapter: EventDateAdapter?) =
@@ -329,6 +459,12 @@ object EventUtils {
                 Constant.COMMON_PROPERTY_SCREEN_HEIGHT,
                 size[1]
             )//屏幕宽度
+
+            put(Constant.COMMON_PROPERTY_DEVICE_DISPLAY, Build.DISPLAY)
+            put(Constant.COMMON_PROPERTY_DEVICE_PRODUCT, Build.PRODUCT)
+            put(Constant.COMMON_PROPERTY_DEVICE_DEVICE, Build.DEVICE)
+            put(Constant.COMMON_PROPERTY_MEMORY_USED, MemoryUtils.getMemoryUsed(context))
+            put(Constant.COMMON_PROPERTY_STORAGE_USED, MemoryUtils.getStorageUsed(context))
         }
 
     fun isValidEventName(name: String): Boolean {

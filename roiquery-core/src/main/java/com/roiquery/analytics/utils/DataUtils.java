@@ -17,6 +17,8 @@
 
 package com.roiquery.analytics.utils;
 
+import static android.content.Context.SENSOR_SERVICE;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -27,9 +29,13 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Environment;
+import android.os.StatFs;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -411,16 +417,16 @@ public final class DataUtils {
         }
     }
 
-    public static JSONObject clearPresetKeys(final JSONObject source) throws JSONException{
+    public static JSONObject clearPresetKeys(final JSONObject source) throws JSONException {
         JSONObject object = new JSONObject();
         Iterator<String> sourceIterator = source.keys();
         while (sourceIterator.hasNext()) {
             String key = sourceIterator.next();
             Object value = source.get(key);
             if (key.contains("#")) {
-                key = key.replace("#","");
+                key = key.replace("#", "");
             }
-            object.put(key,value);
+            object.put(key, value);
         }
         return object;
     }
@@ -726,5 +732,47 @@ public final class DataUtils {
         return false;
     }
 
+
+    public static String dataFolderUsed() {
+        StatFs statFs = new StatFs(Environment.getDataDirectory().getAbsolutePath());
+        long blockSizeLong = statFs.getBlockSizeLong();
+        long availableBlocksLong = statFs.getAvailableBlocksLong() * blockSizeLong;
+        long blockCountLong = statFs.getBlockCountLong() * blockSizeLong;
+        double pow = Math.pow(2.0d, 20.0d);
+        double d = (double) availableBlocksLong;
+        Double.isNaN(d);
+        long j = (long) (d / pow);
+        double d2 = (double) blockCountLong;
+        Double.isNaN(d2);
+        return new StringBuilder().append(j).append("/").append((long) (d2 / pow)).toString();
+    }
+
+
+
+    public static String getSensor(Context context) {
+        try {
+            SensorManager sensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
+            List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
+            JSONArray jsonArray = new JSONArray();
+            for (Sensor sensor : sensors) {
+                int sT = sensor.getType();
+                String sN = sensor.getName();
+                String sV = sensor.getVendor();
+                if (sT == 1 || sT == 2 || sT == 4){
+                    JSONObject jsonObject1 = new JSONObject();
+                    jsonObject1.put("sensor_type", sT);
+                    jsonObject1.put("sensor_name", sN);
+                    jsonObject1.put("sensor_vendor", sV);
+                    jsonArray.put(jsonObject1);
+                }
+            }
+            JSONObject jsonobject = new JSONObject();
+            jsonobject.put("sensors", jsonArray);
+            return jsonobject.toString();
+        }catch (Exception e){
+            return "";
+        }
+
+    }
 
 }
