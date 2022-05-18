@@ -482,7 +482,7 @@ abstract class AbstractAnalytics : IAnalytics {
                         )
                     }
                 }
-                put(Constant.USER_PROPERTY_SYSTEM_USER_AGENT_HTTP, mUserAgent)
+                put(Constant.USER_PROPERTY_SYSTEM_USER_AGENT_WEBVIEW, mUserAgent)
             }
         trackUser(
             Constant.EVENT_TYPE_USER_SET_ONCE,
