@@ -168,6 +168,22 @@ object EventUtils {
 
             put(Constant.USER_PROPERTY_SYSTEM_DEVICE_SENSOR, DataUtils.getSensor(context))
 
+//            const val USER_PROPERTY_SYSTEM_BUILD_INCREMENTAL   = "build_incremental"
+//            const val USER_PROPERTY_SYSTEM_BUILD_SDK           = "build_sdk"
+//            const val USER_PROPERTY_SYSTEM_USER_AGENT_HTTP     = "user_agent_http"
+//            const val USER_PROPERTY_SYSTEM_BUILD_HOST          = "build_host"
+//            const val USER_PROPERTY_SYSTEM_BUILD_FRINGERPRINT  = "build_fringerprint"
+//            const val USER_PROPERTY_SYSTEM_BASEBAND            = "baseband"
+//            const val USER_PROPERTY_SYSTEM_BUILD_BOARD         = "build_board"
+//            const val USER_PROPERTY_SYSTEM_BUILD_ID            = "build_id"
+            put(Constant.USER_PROPERTY_SYSTEM_BUILD_INCREMENTAL, Build.VERSION.INCREMENTAL)
+            put(Constant.USER_PROPERTY_SYSTEM_BUILD_SDK, Build.VERSION.SDK)
+
+            put(Constant.USER_PROPERTY_SYSTEM_BUILD_HOST, Build.HOST)
+            put(Constant.USER_PROPERTY_SYSTEM_BUILD_FINGERPRINT, Build.FINGERPRINT)
+            put(Constant.USER_PROPERTY_SYSTEM_BASEBAND, CommandUtils.getProperty("gsm.version.baseband"))
+            put(Constant.USER_PROPERTY_SYSTEM_BUILD_BOARD, Build.BOARD)
+            put(Constant.USER_PROPERTY_SYSTEM_BUILD_ID, Build.ID)
 
         }
 

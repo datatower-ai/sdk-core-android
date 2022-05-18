@@ -47,6 +47,7 @@ abstract class AbstractAnalytics : IAnalytics {
     //本地数据适配器，包括sp、db的操作
     private var mDataAdapter: EventDateAdapter? = null
 
+    private var mUserAgent = ""
 
     private var mFirstOpenTime = ""
 
@@ -70,6 +71,7 @@ abstract class AbstractAnalytics : IAnalytics {
             initProperties()
             initCloudConfig()
             initAppLifecycleListener()
+            getUserAgentByUIThread()
             trackPresetEvent()
             getGAID()
             getOAID()
@@ -480,6 +482,7 @@ abstract class AbstractAnalytics : IAnalytics {
                         )
                     }
                 }
+                put(Constant.USER_PROPERTY_SYSTEM_USER_AGENT_HTTP, mUserAgent)
             }
         trackUser(
             Constant.EVENT_TYPE_USER_SET_ONCE,
@@ -606,7 +609,7 @@ abstract class AbstractAnalytics : IAnalytics {
                         )
                         put(
                             Constant.ATTRIBUTE_PROPERTY_USER_AGENT,
-                            AppInfoUtils.getDefaultUserAgent( mContext!!) ?: ""
+                            mUserAgent
                         )
                         if (!isOK) {
                             put(
@@ -640,16 +643,16 @@ abstract class AbstractAnalytics : IAnalytics {
             .postAsync()
     }
 
-//    /**
-//     * 获取浏览器user_agent
-//     */
-//    private fun getUserAgentByUIThread() {
-//        ThreadUtils.runOnUiThread {
-//            mContext?.let {
-//                mUserAgent = NetworkUtils.getUserAgent(it)
-//            }
-//        }
-//    }
+    /**
+     * 获取浏览器user_agent
+     */
+    private fun getUserAgentByUIThread() {
+        ThreadUtils.runOnUiThread {
+            mContext?.let {
+                mUserAgent = NetworkUtils.getUserAgent(it)
+            }
+        }
+    }
 
 
     inner class EngagementTask(name: String?) : TickTask(name) {

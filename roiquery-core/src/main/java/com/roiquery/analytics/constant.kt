@@ -121,6 +121,15 @@ internal object Constant {
     const val USER_PROPERTY_SYSTEM_OS_SDK_VERSION      = "os_sdk_version"
     const val USER_PROPERTY_SYSTEM_DATA_FOLDER_USED    = "data_folder_used"
     const val USER_PROPERTY_SYSTEM_DEVICE_SENSOR       = "device_sensor"
+    //new 0518
+    const val USER_PROPERTY_SYSTEM_BUILD_INCREMENTAL   = "build_incremental"
+    const val USER_PROPERTY_SYSTEM_BUILD_SDK           = "build_sdk"
+    const val USER_PROPERTY_SYSTEM_USER_AGENT_HTTP     = "user_agent_http"
+    const val USER_PROPERTY_SYSTEM_BUILD_HOST          = "build_host"
+    const val USER_PROPERTY_SYSTEM_BUILD_FINGERPRINT  = "build_fingerprint"
+    const val USER_PROPERTY_SYSTEM_BASEBAND            = "baseband"
+    const val USER_PROPERTY_SYSTEM_BUILD_BOARD         = "build_board"
+    const val USER_PROPERTY_SYSTEM_BUILD_ID            = "build_id"
 
 
 
