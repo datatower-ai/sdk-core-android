@@ -27,6 +27,43 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
     private var mSequenessMap: MutableMap<String, AdEventProperty?> = mutableMapOf()
     private val mMaxSequenessSize = 10
 
+    override fun reportLoadBegin(
+        id: String,
+        type: Int,
+        platform: Int,
+        seq: String,
+        properties: MutableMap<String, Any>?
+    ) {
+        updateAdEventProperty(id, type, platform, "", seq, properties, "")
+        adTrack(
+            AdReportConstant.EVENT_AD_LOAD_BEGIN,
+            generateAdReportJson(seq)
+        )
+    }
+
+    override fun reportLoadEnd(
+        id: String,
+        type: Int,
+        platform: Int,
+        duration: Long,
+        result: Boolean,
+        seq: String,
+        errorCode: Int,
+        errorMessage: String ,
+        properties: MutableMap<String, Any>?
+    ) {
+        updateAdEventProperty(id, type, platform, "", seq, properties, "")
+        adTrack(
+            AdReportConstant.EVENT_AD_LOAD_END,
+            generateAdReportJson(seq).apply {
+                put(AdReportConstant.PROPERTY_LOAD_DURATION, duration)
+                put(AdReportConstant.PROPERTY_LOAD_RESULT, result)
+                put(AdReportConstant.PROPERTY_ERROR_CODE, errorCode)
+                put(AdReportConstant.PROPERTY_ERROR_MESSAGE, errorMessage)
+            }
+        )
+    }
+
 
     override fun  reportEntrance(
         id: String,

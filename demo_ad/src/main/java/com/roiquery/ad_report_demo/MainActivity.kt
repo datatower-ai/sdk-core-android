@@ -6,11 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.roiquery.ad.AdMediation
-import com.roiquery.ad.AdPlatform
-import com.roiquery.ad.AdType
+import com.roiquery.ad.*
 
-import com.roiquery.ad.ROIQueryAdReport
 import com.roiquery.ad.utils.UUIDUtils
 import com.roiquery.analytics.ROIQueryAnalytics
 
@@ -23,21 +20,49 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_ad_report)
 
         val seq = UUIDUtils.generateUUID()
+
+        val p1 = mutableMapOf<String,Any>().apply {
+            put("ad_mediation", 3)
+            put("ad_mediation_id", "combo-123")
+        }
+
+        ROIQueryAdReport.reportLoadBegin(
+            "",
+            AdType.REWARDED_INTERSTITIAL,
+            AdPlatform.ADX,
+            "home",
+            p1
+        )
+
+
         findViewById<View>(R.id.button_track_entrance).setOnClickListener {
             ROIQueryAnalytics.setAppsFlyerId("shafdjfkajd")
-            val p = mutableMapOf<String,Any>()
-            p["sd1"] = false
-            p["sd2"] = 2.09
+            val p = mutableMapOf<String,Any>().apply {
+                put("ad_mediation", 3)
+                put("ad_mediation_id", "combo-123")
+            }
 
             Handler().postDelayed({
-                ROIQueryAdReport.reportEntrance(
+//                ROIQueryAdReport.reportEntrance(
+//                    "",
+//                    AdType.REWARDED_INTERSTITIAL,
+//                    AdPlatform.ADX,
+//                    "home",
+//                    seq,
+//                    p,
+//                    "main"
+//                )
+
+                ROIQueryAdReport.reportLoadEnd(
                     "",
                     AdType.REWARDED_INTERSTITIAL,
                     AdPlatform.ADX,
-                    "home",
+                    2000,
+                    true,
                     seq,
-                    p,
-                    "main"
+                    0,
+                    "",
+                    p
                 )
             },2000)
 

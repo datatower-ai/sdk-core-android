@@ -2,7 +2,28 @@ package com.roiquery.ad.api
 
  interface IAdReport {
 
-    /**
+     fun reportLoadBegin(
+         id: String,
+         type: Int,
+         platform: Int,
+         seq: String,
+         properties: MutableMap<String, Any>? = mutableMapOf(),
+     )
+
+     fun reportLoadEnd(
+         id: String,
+         type: Int,
+         platform: Int,
+         duration: Long,
+         result: Boolean,
+         seq: String,
+         errorCode: Int = 0,
+         errorMessage: String = "",
+         properties: MutableMap<String, Any>? = mutableMapOf(),
+     )
+
+
+     /**
      * 上报 广告入口
      *
      * @param id 广告最小单元id
