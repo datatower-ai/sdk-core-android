@@ -8,6 +8,57 @@ open class ROIQueryAdReport {
     companion object {
 
 
+
+        /**
+         * 上报 广告开始加载
+         *
+         * @param id 广告最小单元id
+         * @param type 广告类型
+         * @param platform 广告平台
+         * @param seq 系列行为标识
+         * @param properties 额外事件属性
+         * @param entrance 广告入口
+         */
+        @JvmOverloads
+        @JvmStatic
+        fun reportLoadBegin(
+            id: String,
+            type: AdType,
+            platform: AdPlatform,
+            seq: String,
+            properties: MutableMap<String, Any>? = mutableMapOf(),
+        ) = AdReportImp.getInstance()
+            .reportLoadBegin(id, type.value, platform.value,  seq, properties)
+
+
+
+
+        /**
+         * 上报 广告结束加载
+         *
+         * @param id 广告最小单元id
+         * @param type 广告类型
+         * @param platform 广告平台
+         * @param duration 广告加载时长
+         * @param result 广告加载结果
+         * @param seq 系列行为标识
+         * @param properties 额外事件属性
+         */
+        @JvmOverloads
+        @JvmStatic
+        fun reportLoadEnd(
+            id: String,
+            type: AdType,
+            platform: AdPlatform,
+            duration: Long,
+            result: Boolean,
+            seq: String,
+            errorCode: Int = 0,
+            errorMessage: String = "",
+            properties: MutableMap<String, Any>? = mutableMapOf(),
+        ) = AdReportImp.getInstance()
+            .reportLoadEnd(id, type.value, platform.value, duration, result, seq,errorCode, errorMessage, properties)
+
         /**
          * 上报 广告入口
          *

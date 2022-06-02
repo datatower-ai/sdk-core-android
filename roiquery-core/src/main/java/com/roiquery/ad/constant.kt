@@ -6,6 +6,8 @@ internal object AdReportConstant {
     //预置事件名称
     private const val PRESET_EVENT_TAG = "@.#"
     const val EVENT_AD_ENTRANCE = PRESET_EVENT_TAG + "ad_entrance"
+    const val EVENT_AD_LOAD_BEGIN = PRESET_EVENT_TAG + "ad_load_begin"
+    const val EVENT_AD_LOAD_END = PRESET_EVENT_TAG + "ad_load_end"
     const val EVENT_AD_TO_SHOW = PRESET_EVENT_TAG + "ad_to_show"
     const val EVENT_AD_SHOW = PRESET_EVENT_TAG + "ad_show"
     const val EVENT_AD_SHOW_FAILED = PRESET_EVENT_TAG + "ad_show_failed"
@@ -39,6 +41,10 @@ internal object AdReportConstant {
 
     const val PROPERTY_AD_SHOW_ERROR_CODE = "ad_error_code"
     const val PROPERTY_AD_SHOW_ERROR_MESSAGE = "ad_error_message"
+    const val PROPERTY_LOAD_RESULT = "load_result"
+    const val PROPERTY_LOAD_DURATION = "load_duration"
+    const val PROPERTY_ERROR_CODE = "error_code"
+    const val PROPERTY_ERROR_MESSAGE = "error_message"
 
 }
 
@@ -66,7 +72,8 @@ enum class AdMediation(val value: Int) {
     IDLE(-1),
     MOPUB(0),
     MAX(1),
-    HISAVANA(2)
+    HISAVANA(2),
+    COMBO(3)
 }
 
 enum class AdPlatform(val value: Int) {
