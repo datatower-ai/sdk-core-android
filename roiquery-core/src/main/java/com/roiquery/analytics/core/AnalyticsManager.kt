@@ -257,7 +257,7 @@ class AnalyticsManager private constructor(
         if (Constant.TIME_OFFSET_DEFAULT_VALUE == mDateAdapter.timeOffset){
             LogUtils.d(TAG, "time do not calibrate yet")
             lastId = ""
-            event = "{}"
+            event = "[{}]"
         }else {
             //列表最后一条数据的id，删除时根据此id <= 进行删除
              lastId = eventsData!![0]

@@ -66,7 +66,10 @@ internal object ROIQueryErrorParams {
         SDK_INIT_ERROR,
         TRACK_PROPERTIES_KEY_NULL,
         OAID_ERROR,
-        UNKNOWN_TYPE
+        UNKNOWN_TYPE,
+        REPORT_ERROR_ON_FAIL,
+        REPORT_ERROR_ON_RESPONSE,
+        TRACK_TASK_MANAGER_ERROR
     )
     @Retention(
         RetentionPolicy.SOURCE
