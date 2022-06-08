@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.roiquery.ad.AdMediation;
 import com.roiquery.ad.AdPlatform;
 import com.roiquery.ad.AdType;
 import com.roiquery.ad.ROIQueryAdReport;
@@ -129,6 +130,10 @@ public class MainActivity2 extends AppCompatActivity {
                 )
         );
         findViewById(R.id.button_track_paid).setOnClickListener(v -> {
+            HashMap<String, Object> pro = new HashMap<>();
+            pro.put("ad_mediation_id", "sdkfjskldjfks");
+            pro.put("ad_mediation", 3);
+
             ROIQueryAdReport.reportPaid("",
                     AdType.BANNER,
                     AdPlatform.MOPUB,
@@ -136,23 +141,25 @@ public class MainActivity2 extends AppCompatActivity {
                     seq,
                     "5000",
                     "01",
-                    "1");
+                    "1",
+                        pro
+                    );
 
-            ROIQueryAdReport.reportPaid("",
-                    AdType.BANNER,
-                    AdPlatform.MOPUB,
-                    "home",
-                    seq,
-                    "5001",
-                    "01",
-                    "1");
-            ROIQueryAdReport.reportRewarded(
-                    "",
-                    AdType.BANNER,
-                    AdPlatform.MOPUB,
-                    "home",
-                    seq
-            );
+//            ROIQueryAdReport.reportPaid("",
+//                    AdType.BANNER,
+//                    AdPlatform.MOPUB,
+//                    "home",
+//                    seq,
+//                    "5001",
+//                    "01",
+//                    "1");
+//            ROIQueryAdReport.reportRewarded(
+//                    "",
+//                    AdType.BANNER,
+//                    AdPlatform.MOPUB,
+//                    "home",
+//                    seq
+//            );
 
         });
 
