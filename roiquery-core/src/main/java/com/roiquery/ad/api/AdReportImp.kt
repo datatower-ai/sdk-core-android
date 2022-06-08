@@ -293,12 +293,12 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         adTrack(
             AdReportConstant.EVENT_AD_PAID,
             generateAdReportJson(seq).apply {
-                put(AdReportConstant.PROPERTY_AD_MEDIAITON, property?.mediation)
-                put(AdReportConstant.PROPERTY_AD_MEDIAITON_ID, property?.mediationId)
-                put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, property?.value)
-                put(AdReportConstant.PROPERTY_AD_CURRENCY_CODE, property?.currency)
-                put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE, property?.precision)
-                put(AdReportConstant.PROPERTY_AD_COUNTRY, property?.country)
+                put(AdReportConstant.PROPERTY_AD_MEDIAITON, if(properties?.containsKey(AdReportConstant.PROPERTY_AD_MEDIAITON) == true) properties[AdReportConstant.PROPERTY_AD_MEDIAITON] else property?.mediation)
+                put(AdReportConstant.PROPERTY_AD_MEDIAITON_ID, if(properties?.containsKey(AdReportConstant.PROPERTY_AD_MEDIAITON_ID) == true) properties[AdReportConstant.PROPERTY_AD_MEDIAITON_ID] else property?.mediationId)
+                put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, if(properties?.containsKey(AdReportConstant.PROPERTY_AD_VALUE_MICROS) == true) properties[AdReportConstant.PROPERTY_AD_VALUE_MICROS] else property?.value)
+                put(AdReportConstant.PROPERTY_AD_CURRENCY_CODE, if(properties?.containsKey(AdReportConstant.PROPERTY_AD_CURRENCY_CODE) == true) properties[AdReportConstant.PROPERTY_AD_CURRENCY_CODE] else property?.currency)
+                put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE,if(properties?.containsKey(AdReportConstant.PROPERTY_AD_PRECISION_TYPE) == true) properties[AdReportConstant.PROPERTY_AD_PRECISION_TYPE] else property?.precision)
+                put(AdReportConstant.PROPERTY_AD_COUNTRY,if(properties?.containsKey(AdReportConstant.PROPERTY_AD_COUNTRY) == true) properties[AdReportConstant.PROPERTY_AD_COUNTRY] else property?.country)
             }
         )
     }
