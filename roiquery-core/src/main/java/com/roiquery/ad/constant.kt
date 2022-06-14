@@ -97,5 +97,6 @@ enum class AdPlatform(val value: Int) {
     COMBO(15),
     BIGO(16),
     HISAVANA(17),
-    APPLOVIN_EXCHANGE(18)
+    APPLOVIN_EXCHANGE(18),
+    LOVINJOYADS(33)
 }
