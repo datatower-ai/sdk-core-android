@@ -5,6 +5,7 @@ package com.roiquery.ad_report_demo;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,12 @@ public class MainActivity2 extends AppCompatActivity {
 
         String seq = ROIQueryAdReport.generateUUID();
         String seq2 = ROIQueryAdReport.generateUUID();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ROIQueryAnalytics.setAccountId("login_1");
+            }
+        },2000);
 
         findViewById(R.id.button_track_entrance).setOnClickListener(v -> {
             HashMap<String, Object> pro = new HashMap<>();

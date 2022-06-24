@@ -257,7 +257,7 @@ open class ROIQueryAnalytics {
                 HttpMethod.POST_ASYNC,
                 Constant.EVENT_REPORT_URL
             )
-                .jsonData("{}")
+                .jsonData("[{}]")
                 .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
                 .callback(object : HttpCallback.TimeCallback() {
                     override fun onFailure(code: Int, errorMessage: String?) {
@@ -281,7 +281,7 @@ open class ROIQueryAnalytics {
                 HttpMethod.POST_SYNC,
                 Constant.EVENT_REPORT_URL
             )
-                .jsonData("{}")
+                .jsonData("[{}]")
                 .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
                 .executeSync()?.let {
                     return it.date
