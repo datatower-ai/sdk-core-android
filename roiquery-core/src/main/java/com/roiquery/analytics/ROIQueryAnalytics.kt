@@ -253,22 +253,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun getServerTimeAsync(serverTimeListener: ServerTimeListener?) {
-            RequestHelper.Builder(
-                HttpMethod.POST_ASYNC,
-                Constant.EVENT_REPORT_URL
-            )
-                .jsonData("[{}]")
-                .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
-                .callback(object : HttpCallback.TimeCallback() {
-                    override fun onFailure(code: Int, errorMessage: String?) {
-                        serverTimeListener?.onFinished(0L,errorMessage ?: "onFailure")
-                    }
-
-                    override fun onResponse(response: Long) {
-                        serverTimeListener?.onFinished(response,"ok")
-                    }
-                })
-                .execute()
+            AnalyticsImp.getInstance(mContext).getServerTimeAsync(serverTimeListener)
         }
 
         /**
@@ -276,17 +261,8 @@ open class ROIQueryAnalytics {
          * @return
          */
         @JvmStatic
-        fun getServerTimeSync():Long {
-            RequestHelper.Builder(
-                HttpMethod.POST_SYNC,
-                Constant.EVENT_REPORT_URL
-            )
-                .jsonData("[{}]")
-                .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
-                .executeSync()?.let {
-                    return it.date
-                }
-            return 0L
+        fun getServerTimeSync(): Long {
+            return AnalyticsImp.getInstance(mContext).getServerTimeSync()
         }
 
         /******************** internal *******************/

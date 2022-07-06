@@ -10,12 +10,15 @@ import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
+import com.roiquery.analytics.utils.TimeCalibration
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
+import kotlinx.coroutines.*
 import org.json.JSONArray
 
 import org.json.JSONObject
 import kotlin.collections.HashMap
+import kotlin.coroutines.CoroutineContext
 
 
 /**
@@ -24,12 +27,13 @@ import kotlin.collections.HashMap
 class AnalyticsManager private constructor(
     var mContext: Context,
 //    var mAnalyticsDataAPI: AnalyticsImp
-) {
+):CoroutineScope {
     private val mWorker: Worker = Worker()
     private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
     private var mLastEventName: String? = null
     private var mLastEventTime: Long? = null
     private var mLastEventJson: JSONObject? = null
+    override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
 
 
     fun enqueueEventMessage(name: String, eventJson: JSONObject) {
@@ -191,18 +195,20 @@ class AnalyticsManager private constructor(
     /**
      * 更新事件时间
      */
-    private fun updateEventTime(eventsData: String):String{
+    private suspend fun updateEventTime(eventsData: String):String{
         val result = JSONArray()
         val data = JSONArray(eventsData)
-        for(i in 0 until data.length()){
+        val length = data.length()
+        for(i in 0 until length){
             data.getJSONObject(i)?.let {
                 if (it.has(Constant.EVENT_TIME_CALIBRATED) && it.has(Constant.EVENT_BODY)) {
                     //如果事件是在时间同步之前发生的，需要校准
                     if (!it.getBoolean(Constant.EVENT_TIME_CALIBRATED)) {
                         it.getJSONObject(Constant.EVENT_BODY).apply {
-                            val time =  getString(Constant.EVENT_INFO_TIME).toLong()
-                            val realTime = time + ((mDateAdapter?.timeOffset?.toLong() ?: 0L))
-                            put(Constant.EVENT_INFO_TIME,realTime.toString())
+                            TimeCalibration.instance.getVerifyTimeAsync().apply {
+                                put(Constant.EVENT_INFO_TIME, this)
+                                put(Constant.EVENT_TIME_CALIBRATED, this!=TimeCalibration.TIME_NOT_VERIFY_VALUE)
+                            }
                             //app_attribute 事件特殊处理first_open_time
                             if ((Constant.PRESET_EVENT_TAG + getString(Constant.EVENT_INFO_NAME)) == Constant.PRESET_EVENT_APP_ATTRIBUTE){
                                 val firstOpenTime = getJSONObject(Constant.EVENT_INFO_PROPERTIES).getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME).toLong()
@@ -211,7 +217,6 @@ class AnalyticsManager private constructor(
                             }
                             result.put(this)
                         }
-
                     }else {
                         result.put(it.getJSONObject(Constant.EVENT_BODY))
                     }
@@ -254,16 +259,18 @@ class AnalyticsManager private constructor(
         var event  = ""
 
         //如果未进行时间同步，发空参数进行时间同步
-        if (Constant.TIME_OFFSET_DEFAULT_VALUE == mDateAdapter.timeOffset){
-            LogUtils.d(TAG, "time do not calibrate yet")
-            lastId = ""
-            event = "[{}]"
-        }else {
-            //列表最后一条数据的id，删除时根据此id <= 进行删除
-             lastId = eventsData!![0]
-            //事件主体，json格式
-             event = updateEventTime(eventsData!![1])
-        }
+        launch {
+            if (TimeCalibration.TIME_NOT_VERIFY_VALUE == TimeCalibration.instance.getVerifyTimeAsync()){
+                LogUtils.d(TAG, "time do not calibrate yet")
+                lastId = ""
+                event = "[{}]"
+            }else {
+                //列表最后一条数据的id，删除时根据此id <= 进行删除
+                lastId = eventsData!![0]
+                //事件主体，json格式
+                event = updateEventTime(eventsData!![1])
+            }
+
 
 //        LogUtils.json(
 //            TAG,
@@ -310,6 +317,7 @@ class AnalyticsManager private constructor(
                     mDateAdapter.enableUpload = true
                 }
             }).execute()
+        }
     }
 
     private inner class Worker {

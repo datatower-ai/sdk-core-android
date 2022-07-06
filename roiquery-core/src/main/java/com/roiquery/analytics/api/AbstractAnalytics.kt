@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
@@ -21,14 +22,18 @@ import com.roiquery.analytics.utils.*
 import com.roiquery.cloudconfig.ROIQueryCloudConfig
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
+import kotlinx.coroutines.*
 import org.json.JSONObject
 import org.qiyi.basecore.taskmanager.TM
 import org.qiyi.basecore.taskmanager.TickTask
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.coroutines.CoroutineContext
 
 
-abstract class AbstractAnalytics : IAnalytics {
+abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
+
+    override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
 
     private var mContext: Context? = null
 
@@ -115,7 +120,6 @@ abstract class AbstractAnalytics : IAnalytics {
         mAnalyticsManager = AnalyticsManager.getInstance(context)
     }
 
-
     protected fun trackEvent(
         eventName: String?,
         eventType: String,
@@ -125,58 +129,63 @@ abstract class AbstractAnalytics : IAnalytics {
             if (eventName.isNullOrEmpty()) return
             val realEventName = assertEvent(eventName, properties)
             if (TextUtils.isEmpty(realEventName)) return
-            //设置事件的基本信息
-            val eventInfo = JSONObject(mEventInfo).apply {
-                put(Constant.EVENT_INFO_TIME, getRealTime().toString())
-                put(Constant.EVENT_INFO_NAME, realEventName)
-                put(Constant.EVENT_INFO_TYPE, eventType)
-                put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
-                //向 app_attribute 增加 first_open_time 属性
-                if (Constant.PRESET_EVENT_APP_FIRST_OPEN == eventName) {
-                    getString(Constant.EVENT_INFO_TIME).apply {
-                        mFirstOpenTime = this
-                        mDataAdapter?.firstOpenTime = this
+            launch(Dispatchers.Default) {
+                //设置事件的基本信息
+                val eventInfo = JSONObject(mEventInfo).apply {
+                    TimeCalibration.instance.getVerifyTimeAsync().apply {
+                        put(Constant.EVENT_INFO_TIME, this)
+                        put(Constant.EVENT_TIME_CALIBRATED, this!=TimeCalibration.TIME_NOT_VERIFY_VALUE)
+                    }
+                    put(Constant.EVENT_INFO_NAME, realEventName)
+                    put(Constant.EVENT_INFO_TYPE, eventType)
+                    put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
+                    //向 app_attribute 增加 first_open_time 属性
+                    if (Constant.PRESET_EVENT_APP_FIRST_OPEN == eventName) {
+                        getString(Constant.EVENT_INFO_TIME).apply {
+                            mFirstOpenTime = this
+                            mDataAdapter?.firstOpenTime = this
+                        }
+                    }
+                    if (Constant.PRESET_EVENT_APP_ATTRIBUTE == eventName) {
+                        if (properties?.has(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == false
+                            || properties?.getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME)
+                                ?.isEmpty() == true
+                        ) {
+                            properties.put(
+                                Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
+                                if (mFirstOpenTime != "") mFirstOpenTime else mDataAdapter?.firstOpenTime
+                            )
+                        }
                     }
                 }
-                if (Constant.PRESET_EVENT_APP_ATTRIBUTE == eventName) {
-                    if (properties?.has(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == false
-                        || properties?.getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME)
-                            ?.isEmpty() == true
-                    ) {
-                        properties.put(
-                            Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
-                            if (mFirstOpenTime != "") mFirstOpenTime else mDataAdapter?.firstOpenTime
+
+                //事件属性, 常规事件与用户属性类型区分
+                val eventProperties = if (eventType == Constant.EVENT_TYPE_TRACK) {
+                    JSONObject(mCommonProperties).apply {
+
+                        //应用是否在前台, 需要动态添加
+                        put(
+                            Constant.ENGAGEMENT_PROPERTY_IS_FOREGROUND,
+                            mDataAdapter?.isAppForeground
                         )
+                        //合并用户自定义属性和通用属性
+                        DataUtils.mergeJSONObject(properties, this, null)
                     }
+                } else {
+                    properties
                 }
-            }
 
-            //事件属性, 常规事件与用户属性类型区分
-            val eventProperties = if (eventType == Constant.EVENT_TYPE_TRACK) {
-                JSONObject(mCommonProperties).apply {
+                //设置事件属性
+                eventInfo.put(Constant.EVENT_INFO_PROPERTIES, eventProperties)
 
-                    //应用是否在前台, 需要动态添加
-                    put(
-                        Constant.ENGAGEMENT_PROPERTY_IS_FOREGROUND,
-                        mDataAdapter?.isAppForeground
-                    )
-                    //合并用户自定义属性和通用属性
-                    DataUtils.mergeJSONObject(properties, this, null)
+                val data = JSONObject().apply {
+                    put(Constant.EVENT_BODY, eventInfo)
                 }
-            } else {
-                properties
+
+                mAnalyticsManager?.enqueueEventMessage(realEventName, data)
+
+
             }
-
-            //设置事件属性
-            eventInfo.put(Constant.EVENT_INFO_PROPERTIES, eventProperties)
-
-            val data = JSONObject().apply {
-                put(Constant.EVENT_BODY, eventInfo)
-                put(Constant.EVENT_TIME_CALIBRATED, isTimeCalibrated())
-            }
-
-            mAnalyticsManager?.enqueueEventMessage(realEventName, data)
-
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
             trackQualityEvent("trackEvent&&$eventName&& ${e.message}")

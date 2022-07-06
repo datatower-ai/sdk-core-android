@@ -96,7 +96,6 @@ class RealRequest {
             if (writer != null) {
                 try {
                     writer.close();
-                    writer = null;
                 } catch (IOException e) {
                     LogUtils.printStackTrace(e);
                 }

@@ -6,6 +6,9 @@ import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.network.HttpCallback
+import com.roiquery.analytics.network.HttpMethod
+import com.roiquery.analytics.network.RequestHelper
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
@@ -183,6 +186,38 @@ class AnalyticsImp : AbstractAnalytics {
                  );
              }
          }
+    }
+
+    fun getServerTimeAsync(serverTimeListener: ServerTimeListener?){
+        RequestHelper.Builder(
+            HttpMethod.POST_ASYNC,
+            Constant.EVENT_REPORT_URL
+        )
+            .jsonData("[{}]")
+            .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
+            .callback(object : HttpCallback.TimeCallback() {
+                override fun onFailure(code: Int, errorMessage: String?) {
+                    serverTimeListener?.onFinished(0L,errorMessage ?: "onFailure")
+                }
+
+                override fun onResponse(response: Long) {
+                    serverTimeListener?.onFinished(response,"ok")
+                }
+            })
+            .execute()
+    }
+
+    fun getServerTimeSync():Long {
+        RequestHelper.Builder(
+            HttpMethod.POST_SYNC,
+            Constant.EVENT_REPORT_URL
+        )
+            .jsonData("[{}]")
+            .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
+            .executeSync()?.let {
+                return it.date
+            }
+        return 0L
     }
 
 
