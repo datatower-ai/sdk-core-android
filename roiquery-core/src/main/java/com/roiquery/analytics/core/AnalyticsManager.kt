@@ -207,7 +207,6 @@ class AnalyticsManager private constructor(
                         it.getJSONObject(Constant.EVENT_BODY).apply {
                             TimeCalibration.instance.getVerifyTimeAsync().apply {
                                 put(Constant.EVENT_INFO_TIME, this)
-                                put(Constant.EVENT_TIME_CALIBRATED, this!=TimeCalibration.TIME_NOT_VERIFY_VALUE)
                             }
                             //app_attribute 事件特殊处理first_open_time
                             if ((Constant.PRESET_EVENT_TAG + getString(Constant.EVENT_INFO_NAME)) == Constant.PRESET_EVENT_APP_ATTRIBUTE){

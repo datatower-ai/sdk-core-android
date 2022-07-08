@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
@@ -22,7 +21,10 @@ import com.roiquery.analytics.utils.*
 import com.roiquery.cloudconfig.ROIQueryCloudConfig
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.qiyi.basecore.taskmanager.TM
 import org.qiyi.basecore.taskmanager.TickTask
@@ -54,7 +56,7 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
 
     private var mUserAgent = ""
 
-    private var mFirstOpenTime = ""
+    private var mFirstOpenTime:String = TAG_FIRST_TIME_DEFAULT_VALUE
 
     companion object {
         const val TAG = "AnalyticsApi"
@@ -64,6 +66,8 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
 
         // SDK 配置是否初始化
         var mSDKConfigInit = false
+
+        private const val TAG_FIRST_TIME_DEFAULT_VALUE =  0L.toString()
     }
 
 
@@ -129,32 +133,33 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
             if (eventName.isNullOrEmpty()) return
             val realEventName = assertEvent(eventName, properties)
             if (TextUtils.isEmpty(realEventName)) return
+            var isTimeVerify: Boolean
             launch(Dispatchers.Default) {
                 //设置事件的基本信息
                 val eventInfo = JSONObject(mEventInfo).apply {
                     TimeCalibration.instance.getVerifyTimeAsync().apply {
-                        put(Constant.EVENT_INFO_TIME, this)
-                        put(Constant.EVENT_TIME_CALIBRATED, this!=TimeCalibration.TIME_NOT_VERIFY_VALUE)
-                    }
-                    put(Constant.EVENT_INFO_NAME, realEventName)
-                    put(Constant.EVENT_INFO_TYPE, eventType)
-                    put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
-                    //向 app_attribute 增加 first_open_time 属性
-                    if (Constant.PRESET_EVENT_APP_FIRST_OPEN == eventName) {
-                        getString(Constant.EVENT_INFO_TIME).apply {
-                            mFirstOpenTime = this
-                            mDataAdapter?.firstOpenTime = this
+                        isTimeVerify = this!=TimeCalibration.TIME_NOT_VERIFY_VALUE
+                        put(Constant.EVENT_INFO_TIME, this.toString())
+                        put(Constant.EVENT_INFO_NAME, realEventName)
+                        put(Constant.EVENT_INFO_TYPE, eventType)
+                        put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
+                        //向 app_attribute 增加 first_open_time 属性
+                        if (Constant.PRESET_EVENT_APP_FIRST_OPEN == eventName) {
+                            getString(Constant.EVENT_INFO_TIME).apply {
+                                mFirstOpenTime = this
+                                mDataAdapter?.firstOpenTime = this
+                            }
                         }
-                    }
-                    if (Constant.PRESET_EVENT_APP_ATTRIBUTE == eventName) {
-                        if (properties?.has(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == false
-                            || properties?.getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME)
-                                ?.isEmpty() == true
-                        ) {
-                            properties.put(
-                                Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
-                                if (mFirstOpenTime != "") mFirstOpenTime else mDataAdapter?.firstOpenTime
-                            )
+                        if (Constant.PRESET_EVENT_APP_ATTRIBUTE == eventName) {
+                            if (properties?.has(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == false
+                                || properties?.getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME)
+                                    ?.isEmpty() == true
+                            ) {
+                                properties.put(
+                                    Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
+                                    if (mFirstOpenTime != TAG_FIRST_TIME_DEFAULT_VALUE) mFirstOpenTime else mDataAdapter?.firstOpenTime
+                                )
+                            }
                         }
                     }
                 }
@@ -180,6 +185,7 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
 
                 val data = JSONObject().apply {
                     put(Constant.EVENT_BODY, eventInfo)
+                    put(Constant.EVENT_TIME_CALIBRATED,isTimeVerify)
                 }
 
                 mAnalyticsManager?.enqueueEventMessage(realEventName, data)
