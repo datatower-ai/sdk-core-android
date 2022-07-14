@@ -239,6 +239,10 @@ open class ROIQueryAnalytics {
             AnalyticsImp.getInstance(mContext).koid = id
         }
 
+        @JvmStatic
+        fun setDeveloperOwnedIdScope(id: String?) {
+            AnalyticsImp.getInstance(mContext).developerOwenId = id
+        }
 
         /**
          * 获取当前时间，如果没有校准，则返回系统时间
