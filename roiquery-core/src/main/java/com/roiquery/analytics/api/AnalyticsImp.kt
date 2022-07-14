@@ -103,6 +103,18 @@ class AnalyticsImp : AbstractAnalytics {
             }
         }
 
+    override var developerOwenId: String?
+        get() = EventDateAdapter.getInstance()?.developerOwenId
+        set(value) {
+            if (value != null) {
+                EventDateAdapter.getInstance()?.developerOwenId = value
+                updateCommonProperties(Constant.COMMON_PROPERTY_DEVELOPER_OWNED_ID, value)
+                userSetOnce(JSONObject().apply {
+                    put(Constant.COMMON_PROPERTY_DEVELOPER_OWNED_ID.replace("#",""), value)
+                })
+            }
+        }
+
     override var enableSDK: Boolean?
         get() = enableTrack == true && enableUpload == true
         set(value) {

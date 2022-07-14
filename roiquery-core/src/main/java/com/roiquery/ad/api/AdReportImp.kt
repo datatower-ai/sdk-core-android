@@ -16,7 +16,7 @@ import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.AppLifecycleHelper.OnAppStatusListener
 import com.roiquery.analytics.utils.LogUtils
-import com.roiquery.analytics.utils.VariableTransform
+import com.roiquery.analytics.utils.transJSONObject2Map
 import org.json.JSONObject
 
 class AdReportImp private constructor(context: Context?) : IAdReport {
@@ -439,7 +439,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         eventName: String,
         properties: JSONObject?,
     ) {
-        ROIQueryAnalytics.track(eventName, VariableTransform.transJSONObject2Map(properties))
+        ROIQueryAnalytics.track(eventName, properties?.transJSONObject2Map())
     }
 
     private fun generateAdReportJson(seq: String) =
