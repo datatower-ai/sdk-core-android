@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
@@ -56,7 +57,6 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
 
     private var mUserAgent = ""
 
-    private var mFirstOpenTime:String = TAG_FIRST_TIME_DEFAULT_VALUE
 
     companion object {
         const val TAG = "AnalyticsApi"
@@ -67,7 +67,6 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
         // SDK 配置是否初始化
         var mSDKConfigInit = false
 
-        private const val TAG_FIRST_TIME_DEFAULT_VALUE =  0L.toString()
     }
 
 
@@ -77,6 +76,7 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
             initConfig(mContext!!.packageName)
             initLocalData()
             initTracker(mContext!!)
+            initTime()
             initProperties()
             initCloudConfig()
             initAppLifecycleListener()
@@ -88,6 +88,14 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
+    }
+
+    /**
+     * Init time
+     * 初始化网络时间，保存至内存中
+     */
+    private fun initTime() {
+        TimeCalibration.instance.getReferenceTime()
     }
 
     /**
@@ -134,33 +142,18 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
             val realEventName = assertEvent(eventName, properties)
             if (TextUtils.isEmpty(realEventName)) return
             var isTimeVerify: Boolean
+
+            Log.e("new-test------$realEventName","before initial eventInfo")
             launch(Dispatchers.Default) {
                 //设置事件的基本信息
                 val eventInfo = JSONObject(mEventInfo).apply {
                     TimeCalibration.instance.getVerifyTimeAsync().apply {
                         isTimeVerify = this!=TimeCalibration.TIME_NOT_VERIFY_VALUE
-                        put(Constant.EVENT_INFO_TIME, this.toString())
+                        // 如果时间已校准，则 保存当前时间，否则保存当前时间的系统休眠时间差用做上报时时间校准依据
+                        put(Constant.EVENT_INFO_TIME, if (isTimeVerify) this else TimeCalibration.instance.getSystemHibernateTimeGap())
                         put(Constant.EVENT_INFO_NAME, realEventName)
                         put(Constant.EVENT_INFO_TYPE, eventType)
                         put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
-                        //向 app_attribute 增加 first_open_time 属性
-                        if (Constant.PRESET_EVENT_APP_FIRST_OPEN == eventName) {
-                            getString(Constant.EVENT_INFO_TIME).apply {
-                                mFirstOpenTime = this
-                                mDataAdapter?.firstOpenTime = this
-                            }
-                        }
-                        if (Constant.PRESET_EVENT_APP_ATTRIBUTE == eventName) {
-                            if (properties?.has(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == false
-                                || properties?.getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME)
-                                    ?.isEmpty() == true
-                            ) {
-                                properties.put(
-                                    Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
-                                    if (mFirstOpenTime != TAG_FIRST_TIME_DEFAULT_VALUE) mFirstOpenTime else mDataAdapter?.firstOpenTime
-                                )
-                            }
-                        }
                     }
                 }
 
@@ -183,6 +176,7 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
                 //设置事件属性
                 eventInfo.put(Constant.EVENT_INFO_PROPERTIES, eventProperties)
 
+                //将事件时间是否校准的结果保存至事件信息中，以供上报时校准时间使用
                 val data = JSONObject().apply {
                     put(Constant.EVENT_BODY, eventInfo)
                     put(Constant.EVENT_TIME_CALIBRATED,isTimeVerify)
@@ -630,6 +624,12 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
                             put(
                                 Constant.ATTRIBUTE_PROPERTY_FAILED_REASON,
                                 failedReason
+                            )
+                        }
+                        mDataAdapter?.firstOpenTime?.let {
+                            put(
+                                Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
+                                it
                             )
                         }
                     }

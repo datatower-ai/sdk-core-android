@@ -1,7 +1,10 @@
 package com.roiquery.analytics.core
 
 import android.content.Context
-import android.os.*
+import android.os.Handler
+import android.os.HandlerThread
+import android.os.Looper
+import android.os.Message
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.data.DataParams
 import com.roiquery.analytics.data.EventDateAdapter
@@ -13,11 +16,12 @@ import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
 import com.roiquery.analytics.utils.TimeCalibration
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.json.JSONArray
-
 import org.json.JSONObject
-import kotlin.collections.HashMap
 import kotlin.coroutines.CoroutineContext
 
 
@@ -258,25 +262,35 @@ class AnalyticsManager private constructor(
         var event  = ""
 
         //如果未进行时间同步，发空参数进行时间同步
-        launch {
-            if (TimeCalibration.TIME_NOT_VERIFY_VALUE == TimeCalibration.instance.getVerifyTimeAsync()){
-                LogUtils.d(TAG, "time do not calibrate yet")
-                lastId = ""
-                event = "[{}]"
-            }else {
-                //列表最后一条数据的id，删除时根据此id <= 进行删除
-                lastId = eventsData!![0]
+        if (TimeCalibration.TIME_NOT_VERIFY_VALUE == TimeCalibration.instance.getVerifyTimeAsync()) {
+            LogUtils.d(TAG, "time do not calibrate yet")
+            lastId = ""
+            event = "[{}]"
+            uploadDataToNet(event, lastId, mDateAdapter)
+        } else {
+            //列表最后一条数据的id，删除时根据此id <= 进行删除
+            lastId = eventsData!![0]
+            launch(Dispatchers.IO) {
                 //事件主体，json格式
-                event = updateEventTime(eventsData!![1])
+                EventInfoCheckHelper.instance.correctEventTime(eventsData!![1]) { info, reInsertData ->
+                    launch(Dispatchers.Main) {
+                        if (info.isNotEmpty()){
+                            //http 请求
+                            uploadDataToNet(info, lastId, mDateAdapter, reInsertData)
+                        }
+                    }
+                }
             }
 
+        }
+    }
 
-//        LogUtils.json(
-//            TAG,
-//            event
-//        )
-
-        //http 请求
+    private fun uploadDataToNet(
+        event: String,
+        lastId: String,
+        mDateAdapter: EventDateAdapter
+        , reInsertData: JSONArray? =null
+    ) {
         RequestHelper.Builder(
             HttpMethod.POST_ASYNC,
             Constant.EVENT_REPORT_URL
@@ -298,12 +312,18 @@ class AnalyticsManager private constructor(
                     LogUtils.json("$TAG upload event result  ", response)
                     if (response?.getInt(ResponseDataKey.KEY_CODE) == 0) {
                         //上报成功后删除本地数据
-                        val leftCount = if(lastId.isEmpty()) -1 else mDateAdapter.cleanupEvents(lastId)
+                        val leftCount =
+                            if (lastId.isEmpty()) -1 else mDateAdapter.cleanupEvents(lastId)
                         LogUtils.d(TAG, "db left count = $leftCount")
+
+                        reEnqueueEventMessage(reInsertData)
                         //避免事件积压，成功后再次上报
                         flush(2000L)
-                    }else {
-                        val msg = "error code: ${response?.getString(ResponseDataKey.KEY_CODE)}, msg: ${response?.getString(ResponseDataKey.KEY_MSG)}"
+                    } else {
+                        val msg =
+                            "error code: ${response?.getString(ResponseDataKey.KEY_CODE)}, msg: ${
+                                response?.getString(ResponseDataKey.KEY_MSG)
+                            }"
                         LogUtils.d(TAG, msg)
                         ROIQueryQualityHelper.instance.reportQualityMessage(
                             ROIQueryErrorParams.REPORT_ERROR_ON_RESPONSE,
@@ -316,6 +336,15 @@ class AnalyticsManager private constructor(
                     mDateAdapter.enableUpload = true
                 }
             }).execute()
+    }
+
+    private fun reEnqueueEventMessage(data: JSONArray?) {
+        data?.let {
+            launch(Dispatchers.IO){
+                for (i in 0 until data.length()){
+                    mDateAdapter?.addJSON(data.optJSONObject(i))
+                }
+            }
         }
     }
 

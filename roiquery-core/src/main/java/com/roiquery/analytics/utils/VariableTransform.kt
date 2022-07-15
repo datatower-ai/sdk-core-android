@@ -1,6 +1,7 @@
 package com.roiquery.analytics.utils
 
 import org.json.JSONObject
+import java.lang.NumberFormatException
 
 /**
  * author: xiaosailing
@@ -8,23 +9,34 @@ import org.json.JSONObject
  * description:变量转换工具类
  * version：1.0
  */
- object VariableTransform {
 
-
-    /**
-     * 将json object转换为Map
-     *
-     * @param jsonObject
-     * @return
-     */
-    internal fun transJSONObject2Map(jsonObject: JSONObject?):Map<String,Any>{
-        var map = HashMap<String,Any>()
-        val keys = jsonObject?.keys()
-        var key:String
-        while (keys?.hasNext() == true){
-            key=keys.next()
-            map[key]=jsonObject.get(key)
+/**
+ * 将json object转换为Map
+ *
+ * @param jsonObject
+ * @return
+ */
+internal fun JSONObject?.transJSONObject2Map() = run {
+    val map = HashMap<String, Any>()
+    this?.let {
+        val keys = this.keys()
+        var key: String
+        while (keys.hasNext()) {
+            key = keys.next()
+            map[key] = this.get(key)
         }
-        return map
     }
+    map
+}
+
+internal fun String?.transToLong()= run {
+    var value = 0L
+    this?.let {
+        try {
+            value = this.toLong()
+        }catch (e:NumberFormatException){
+
+        }
+    }
+    value
 }

@@ -5,6 +5,7 @@ import android.text.TextUtils
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.data.db.EventDataOperation
 import org.json.JSONObject
+import java.lang.NumberFormatException
 
 
 class EventDateAdapter private constructor(
@@ -65,9 +66,9 @@ class EventDateAdapter private constructor(
      *
      * @return acountId
      */
-    var firstOpenTime: String
-        get() = getStringConfig(DataParams.CONFIG_FIRST_OPEN_TIME)
-        set(value) = setStringConfig(DataParams.CONFIG_FIRST_OPEN_TIME,value)
+    var firstOpenTime: Long
+        get() = getLongConfig(DataParams.CONFIG_FIRST_OPEN_TIME)
+        set(value) = setLongConfig(DataParams.CONFIG_FIRST_OPEN_TIME,value)
 
     /**
      *  acountId,自有用户系统id
@@ -161,6 +162,14 @@ class EventDateAdapter private constructor(
         get() = getStringConfig(DataParams.CONFIG_KOCHAVA_ID)
         set(value) = setStringConfig(DataParams.CONFIG_KOCHAVA_ID,value)
 
+    /**
+     *  developerOwen id
+     *
+     * @return developerOwenId
+     */
+    var developerOwenId: String
+        get() = getStringConfig(DataParams.CONFIG_DEVELOPER_OWNED_ID)
+        set(value) = setStringConfig(DataParams.CONFIG_DEVELOPER_OWNED_ID,value)
     /**
      *  oaid
      *
@@ -271,6 +280,22 @@ class EventDateAdapter private constructor(
             key,
             value
         )
+    }
+
+    private fun getLongConfig(key: String):Long {
+        val value = mOperation?.queryConfig(key)
+        var longValue = 0L
+        try {
+            if (value != null && value.isNotEmpty() && value != "null") {
+                longValue = value.toLong()
+            }
+        } catch (e: NumberFormatException) {
+        }
+        return longValue
+    }
+
+    private fun setLongConfig(key:String,value: Long){
+        mOperation?.insertConfig(key,value.toString())
     }
 
     companion object {
