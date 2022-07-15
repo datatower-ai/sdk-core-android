@@ -92,10 +92,9 @@ interface IAnalytics {
     var koid: String?
 
     /**
-     * Developer owen id
      * 设置谷歌开发者拥有的应用集ID
      */
-    var developerOwenId: String?
+    var appSetId: String?
     /**
      * 是否禁用SDK
      */

@@ -7,14 +7,8 @@ import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.api.ServerTimeListener
 import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.core.AnalyticsManager
 import com.roiquery.analytics.data.EventDateAdapter
-import com.roiquery.analytics.network.HttpCallback
-import com.roiquery.analytics.network.HttpMethod
-import com.roiquery.analytics.network.RealResponse
-import com.roiquery.analytics.network.RequestHelper
 import com.roiquery.analytics.utils.AppLifecycleHelper
-import com.roiquery.analytics.utils.DeviceUtils
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.cloudconfig.ROIQueryCloudConfig
 
@@ -240,8 +234,8 @@ open class ROIQueryAnalytics {
         }
 
         @JvmStatic
-        fun setDeveloperOwnedIdScope(id: String?) {
-            AnalyticsImp.getInstance(mContext).developerOwenId = id
+        fun setAppSetId(id: String?) {
+            AnalyticsImp.getInstance(mContext).appSetId = id
         }
 
         /**
