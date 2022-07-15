@@ -143,7 +143,6 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
             if (TextUtils.isEmpty(realEventName)) return
             var isTimeVerify: Boolean
 
-            Log.e("new-test------$realEventName","before initial eventInfo")
             launch(Dispatchers.Default) {
                 //设置事件的基本信息
                 val eventInfo = JSONObject(mEventInfo).apply {
