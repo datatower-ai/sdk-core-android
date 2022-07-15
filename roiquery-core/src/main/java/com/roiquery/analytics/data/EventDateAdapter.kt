@@ -163,13 +163,13 @@ class EventDateAdapter private constructor(
         set(value) = setStringConfig(DataParams.CONFIG_KOCHAVA_ID,value)
 
     /**
-     *  developerOwen id
+     *  appSet id
      *
-     * @return developerOwenId
+     * @return appSetId
      */
-    var developerOwenId: String
-        get() = getStringConfig(DataParams.CONFIG_DEVELOPER_OWNED_ID)
-        set(value) = setStringConfig(DataParams.CONFIG_DEVELOPER_OWNED_ID,value)
+    var appSetId: String
+        get() = getStringConfig(DataParams.CONFIG_APP_SET_ID)
+        set(value) = setStringConfig(DataParams.CONFIG_APP_SET_ID,value)
     /**
      *  oaid
      *

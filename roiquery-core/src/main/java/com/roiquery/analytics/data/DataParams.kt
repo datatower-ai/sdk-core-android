@@ -138,7 +138,7 @@ class DataParams private constructor(packageName: String) {
         const val CONFIG_FCM_TOKEN = "fcm_token"
         const val CONFIG_APPSFLYER_ID = "appsflyer_id"
         const val CONFIG_KOCHAVA_ID = "kochava_id"
-        const val CONFIG_DEVELOPER_OWNED_ID = "developer_owned_id"
+        const val CONFIG_APP_SET_ID = "app_set_id"
         const val CONFIG_ACCOUNT_ID = "account_id"
         const val CONFIG_ENABLE_UPLOADS = "enable_upload"
         const val CONFIG_ENABLE_TRACK = "enable_track"

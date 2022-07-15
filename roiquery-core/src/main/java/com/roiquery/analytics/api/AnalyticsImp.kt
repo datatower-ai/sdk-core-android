@@ -103,14 +103,14 @@ class AnalyticsImp : AbstractAnalytics {
             }
         }
 
-    override var developerOwenId: String?
-        get() = EventDateAdapter.getInstance()?.developerOwenId
+    override var appSetId: String?
+        get() = EventDateAdapter.getInstance()?.appSetId
         set(value) {
             if (value != null) {
-                EventDateAdapter.getInstance()?.developerOwenId = value
-                updateCommonProperties(Constant.COMMON_PROPERTY_DEVELOPER_OWNED_ID, value)
+                EventDateAdapter.getInstance()?.appSetId = value
+                updateCommonProperties(Constant.COMMON_PROPERTY_APP_SET_ID, value)
                 userSetOnce(JSONObject().apply {
-                    put(Constant.COMMON_PROPERTY_DEVELOPER_OWNED_ID.replace("#",""), value)
+                    put(Constant.COMMON_PROPERTY_APP_SET_ID.replace("#",""), value)
                 })
             }
         }

@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity() {
         }
         findViewById<View>(R.id.button_track_to_show).setOnClickListener {
             ROIQueryAnalytics.setKochavaId("sdf23r243r")
+            ROIQueryAnalytics.setAppSetId("121388-0329-4")
             val p = mutableMapOf<String,Any>()
             p["sd3"] = "p3"
             p["sd4"] = "p4"
