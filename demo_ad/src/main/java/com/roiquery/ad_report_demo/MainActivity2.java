@@ -36,6 +36,12 @@ public class MainActivity2 extends AppCompatActivity {
             }
         },2000);
 
+        ROIQueryAnalytics.setAppSetId("app_set_id_123456");
+        ROIQueryAnalytics.setAppsFlyerId("af_id_123456");
+        ROIQueryAnalytics.setFirebaseAppInstanceId("fiid_123456");
+        ROIQueryAnalytics.setKochavaId("ko_id_123456");
+        ROIQueryAnalytics.setFCMToken("fcm_token_123456");
+
         findViewById(R.id.button_track_entrance).setOnClickListener(v -> {
             HashMap<String, Object> pro = new HashMap<>();
             pro.put("test_property_3", false);

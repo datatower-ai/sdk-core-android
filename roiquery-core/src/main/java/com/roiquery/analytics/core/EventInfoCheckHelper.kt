@@ -131,7 +131,6 @@ class EventInfoCheckHelper private constructor() {
         })
     }
 
-    //attribute事件的状态, 0 未插入，1 未上传，2 正在上传, 3 已上传
     private fun checkAttributeInsertStatus(eventName: String){
         if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE){
             EventDateAdapter.getInstance()?.isAttributeInsert = true

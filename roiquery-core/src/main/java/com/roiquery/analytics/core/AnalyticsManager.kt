@@ -6,6 +6,7 @@ import android.os.HandlerThread
 import android.os.Looper
 import android.os.Message
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.ROIQueryAnalytics.Companion.flush
 import com.roiquery.analytics.data.DataParams
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
@@ -31,7 +32,7 @@ import kotlin.coroutines.CoroutineContext
 class AnalyticsManager private constructor(
     var mContext: Context,
 //    var mAnalyticsDataAPI: AnalyticsImp
-):CoroutineScope {
+) : CoroutineScope {
     private val mWorker: Worker = Worker()
     private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
     private var mLastEventName: String? = null
@@ -52,7 +53,7 @@ class AnalyticsManager private constructor(
                 qualityReport(insertedCount)
                 val msg =
                     if (insertedCount < 0) " Failed to insert the event " else " the event: $name  has been inserted to db，count = $insertedCount  "
-//                LogUtils.json(TAG + msg, eventJson.toString())
+                LogUtils.json(TAG + msg, eventJson.toString())
                 //发送上报的message
                 Message.obtain().apply {
                     //上报标志
@@ -71,12 +72,15 @@ class AnalyticsManager private constructor(
             }
         } catch (e: Exception) {
             LogUtils.i(TAG, "enqueueEventMessage error:$e")
-            ROIQueryQualityHelper.instance.reportQualityMessage(ROIQueryErrorParams.UNKNOWN_TYPE, "event name: $name ," + e.stackTraceToString())
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.UNKNOWN_TYPE,
+                "event name: $name ," + e.stackTraceToString()
+            )
         }
     }
 
     private fun qualityReport(insertedCount: Int) {
-        if (insertedCount < 0 ) {
+        if (insertedCount < 0) {
             ROIQueryQualityHelper.instance.reportQualityMessage(
                 ROIQueryErrorParams.DATA_INSERT_ERROR,
                 insertedCount.toString()
@@ -199,11 +203,11 @@ class AnalyticsManager private constructor(
     /**
      * 更新事件时间
      */
-    private suspend fun updateEventTime(eventsData: String):String{
+    private suspend fun updateEventTime(eventsData: String): String {
         val result = JSONArray()
         val data = JSONArray(eventsData)
         val length = data.length()
-        for(i in 0 until length){
+        for (i in 0 until length) {
             data.getJSONObject(i)?.let {
                 if (it.has(Constant.EVENT_TIME_CALIBRATED) && it.has(Constant.EVENT_BODY)) {
                     //如果事件是在时间同步之前发生的，需要校准
@@ -213,17 +217,23 @@ class AnalyticsManager private constructor(
                                 put(Constant.EVENT_INFO_TIME, this)
                             }
                             //app_attribute 事件特殊处理first_open_time
-                            if ((Constant.PRESET_EVENT_TAG + getString(Constant.EVENT_INFO_NAME)) == Constant.PRESET_EVENT_APP_ATTRIBUTE){
-                                val firstOpenTime = getJSONObject(Constant.EVENT_INFO_PROPERTIES).getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME).toLong()
-                                val realFirstOpenTime = firstOpenTime + ((mDateAdapter?.timeOffset?.toLong() ?: 0L))
-                                getJSONObject(Constant.EVENT_INFO_PROPERTIES).put(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,realFirstOpenTime.toString())
+                            if ((Constant.PRESET_EVENT_TAG + getString(Constant.EVENT_INFO_NAME)) == Constant.PRESET_EVENT_APP_ATTRIBUTE) {
+                                val firstOpenTime =
+                                    getJSONObject(Constant.EVENT_INFO_PROPERTIES).getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME)
+                                        .toLong()
+                                val realFirstOpenTime =
+                                    firstOpenTime + ((mDateAdapter?.timeOffset?.toLong() ?: 0L))
+                                getJSONObject(Constant.EVENT_INFO_PROPERTIES).put(
+                                    Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
+                                    realFirstOpenTime.toString()
+                                )
                             }
                             result.put(this)
                         }
-                    }else {
+                    } else {
                         result.put(it.getJSONObject(Constant.EVENT_BODY))
                     }
-                }else {//原来的旧数据
+                } else {//原来的旧数据
                     result.put(it)
                 }
             }
@@ -231,6 +241,7 @@ class AnalyticsManager private constructor(
 
         return result.toString()
     }
+
     /**
      * 数据上报到服务器
      */
@@ -256,33 +267,29 @@ class AnalyticsManager private constructor(
             return
         }
 
-        //列表最后一条数据的id，删除时根据此id <= 进行删除
-        var lastId = ""
-        //事件主体，json格式
-        var event  = ""
-
         //如果未进行时间同步，发空参数进行时间同步
         if (TimeCalibration.TIME_NOT_VERIFY_VALUE == TimeCalibration.instance.getVerifyTimeAsync()) {
             LogUtils.d(TAG, "time do not calibrate yet")
-//            lastId = ""
-//            event = "[{}]"
-//            uploadDataToNet(event, lastId, mDateAdapter)
             mDateAdapter.enableUpload = true
             return
-        } else {
-            //列表最后一条数据的id，删除时根据此id <= 进行删除
-            lastId = eventsData!![0]
-            launch(Dispatchers.IO) {
-                //事件主体，json格式
-                EventInfoCheckHelper.instance.correctEventTime(eventsData!![1]) { info, reInsertData ->
-                    launch(Dispatchers.Main) {
-                        if (info.isNotEmpty()){
-                            //http 请求
-                            uploadDataToNet(info, lastId, mDateAdapter, reInsertData)
-                        }
+        }
+
+        //列表最后一条数据的id，删除时根据此id <= 进行删除
+        val lastId = eventsData!![0]
+        launch(Dispatchers.IO) {
+            //事件主体，json格式
+            EventInfoCheckHelper.instance.correctEventTime(eventsData!![1]) { info, reInsertData ->
+                launch(Dispatchers.Main) {
+                    if (info.isNotEmpty()) {
+                        mDateAdapter.enableUpload = false
+                        //http 请求
+                        uploadDataToNet(info, lastId, mDateAdapter, reInsertData)
+                    } else {
+                        mDateAdapter.enableUpload = true
                     }
                 }
             }
+
 
         }
     }
@@ -290,8 +297,7 @@ class AnalyticsManager private constructor(
     private fun uploadDataToNet(
         event: String,
         lastId: String,
-        mDateAdapter: EventDateAdapter
-        , reInsertData: JSONArray? =null
+        mDateAdapter: EventDateAdapter, reInsertData: JSONArray? = null
     ) {
         RequestHelper.Builder(
             HttpMethod.POST_ASYNC,
@@ -342,8 +348,8 @@ class AnalyticsManager private constructor(
 
     private fun reEnqueueEventMessage(data: JSONArray?) {
         data?.let {
-            launch(Dispatchers.IO){
-                for (i in 0 until data.length()){
+            launch(Dispatchers.IO) {
+                for (i in 0 until data.length()) {
                     mDateAdapter?.addJSON(data.optJSONObject(i))
                 }
             }
@@ -401,7 +407,10 @@ class AnalyticsManager private constructor(
                         }
                     }
                 } catch (e: RuntimeException) {
-                    ROIQueryQualityHelper.instance.reportQualityMessage(ROIQueryErrorParams.UNKNOWN_TYPE,e.stackTraceToString())
+                    ROIQueryQualityHelper.instance.reportQualityMessage(
+                        ROIQueryErrorParams.UNKNOWN_TYPE,
+                        e.stackTraceToString()
+                    )
                     LogUtils.i(
                         TAG,
                         "Worker threw an unhandled exception",

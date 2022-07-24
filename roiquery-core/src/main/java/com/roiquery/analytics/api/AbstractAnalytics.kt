@@ -624,10 +624,6 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
                             Constant.ATTRIBUTE_PROPERTY_CNL,
                             mConfigOptions?.mChannel ?: ""
                         )
-                        put(
-                            Constant.ATTRIBUTE_PROPERTY_USER_AGENT,
-                            mDataAdapter?.uaWebview ?: ""
-                        )
                         if (!isOK) {
                             put(
                                 Constant.ATTRIBUTE_PROPERTY_FAILED_REASON,
