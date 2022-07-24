@@ -188,6 +188,16 @@ class EventDateAdapter private constructor(
         get() = getStringConfig(DataParams.CONFIG_GAID)
         set(value) = setStringConfig(DataParams.CONFIG_GAID,value)
 
+
+    /**
+     *  uaWebview
+     *
+     * @return uaWebview
+     */
+    var uaWebview: String
+        get() = getStringConfig(DataParams.USER_AGENT_WEBVIEW)
+        set(value) = setStringConfig(DataParams.USER_AGENT_WEBVIEW,value)
+
     /**
      * 是否上报数据，默认是
      */
@@ -220,6 +230,12 @@ class EventDateAdapter private constructor(
         get() = getIntConfig(DataParams.CONFIG_ATTRIBUTE_COUNT,0)
         set(value) = setIntConfig(DataParams.CONFIG_ATTRIBUTE_COUNT,value)
 
+    /**
+     * attribute 事件的插入数据库状态
+     */
+    var isAttributeInsert: Boolean
+        get() = getBooleanConfig(DataParams.CONFIG_ATTRIBUTE_UPLOAD_STATUS)
+        set(value) = setBooleanConfig(DataParams.CONFIG_ATTRIBUTE_UPLOAD_STATUS,value)
 
     /**
      * app 是否在后台

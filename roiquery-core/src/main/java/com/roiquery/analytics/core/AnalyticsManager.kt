@@ -52,7 +52,7 @@ class AnalyticsManager private constructor(
                 qualityReport(insertedCount)
                 val msg =
                     if (insertedCount < 0) " Failed to insert the event " else " the event: $name  has been inserted to db，count = $insertedCount  "
-                LogUtils.json(TAG + msg, eventJson.toString())
+//                LogUtils.json(TAG + msg, eventJson.toString())
                 //发送上报的message
                 Message.obtain().apply {
                     //上报标志
@@ -264,9 +264,11 @@ class AnalyticsManager private constructor(
         //如果未进行时间同步，发空参数进行时间同步
         if (TimeCalibration.TIME_NOT_VERIFY_VALUE == TimeCalibration.instance.getVerifyTimeAsync()) {
             LogUtils.d(TAG, "time do not calibrate yet")
-            lastId = ""
-            event = "[{}]"
-            uploadDataToNet(event, lastId, mDateAdapter)
+//            lastId = ""
+//            event = "[{}]"
+//            uploadDataToNet(event, lastId, mDateAdapter)
+            mDateAdapter.enableUpload = true
+            return
         } else {
             //列表最后一条数据的id，删除时根据此id <= 进行删除
             lastId = eventsData!![0]
@@ -308,8 +310,8 @@ class AnalyticsManager private constructor(
                 }
 
                 override fun onResponse(response: JSONObject?) {
-                    LogUtils.d("$TAG upload event url  ", Constant.EVENT_REPORT_URL)
-                    LogUtils.json("$TAG upload event result  ", response)
+                    LogUtils.json("$TAG upload event data ", event)
+                    LogUtils.json("$TAG upload event result ", response)
                     if (response?.getInt(ResponseDataKey.KEY_CODE) == 0) {
                         //上报成功后删除本地数据
                         val leftCount =

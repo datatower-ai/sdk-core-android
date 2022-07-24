@@ -47,8 +47,8 @@ class AnalyticsImp : AbstractAnalytics {
             if (value != null) {
                 EventDateAdapter.getInstance()?.accountId = value
                 updateEventInfo(Constant.EVENT_INFO_ACID, value)
-                userSetOnce(JSONObject().apply {
-                    put(Constant.EVENT_INFO_ACID.replace("#",""), value)
+                userSet(JSONObject().apply {
+                    put(Constant.USER_PROPERTY_LATEST_ACID, value)
                 })
             }
         }
@@ -63,8 +63,8 @@ class AnalyticsImp : AbstractAnalytics {
             if (value != null) {
                 EventDateAdapter.getInstance()?.fiid = value
                 updateCommonProperties(Constant.COMMON_PROPERTY_FIREBASE_IID, value)
-                userSetOnce(JSONObject().apply {
-                    put(Constant.COMMON_PROPERTY_FIREBASE_IID.replace("#",""), value)
+                userSet(JSONObject().apply {
+                    put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, value)
                 })
             }
         }
@@ -75,8 +75,8 @@ class AnalyticsImp : AbstractAnalytics {
             if (value != null) {
                 EventDateAdapter.getInstance()?.fcmToken = value
                 updateCommonProperties(Constant.COMMON_PROPERTY_FCM_TOKEN, value)
-                userSetOnce(JSONObject().apply {
-                    put(Constant.COMMON_PROPERTY_FCM_TOKEN.replace("#",""), value)
+                userSet(JSONObject().apply {
+                    put(Constant.USER_PROPERTY_LATEST_FCM_TOKEN, value)
                 })
             }
         }
@@ -86,8 +86,8 @@ class AnalyticsImp : AbstractAnalytics {
             if (value != null) {
                 EventDateAdapter.getInstance()?.afid = value
                 updateCommonProperties(Constant.COMMON_PROPERTY_APPSFLYER_ID, value)
-                userSetOnce(JSONObject().apply {
-                    put(Constant.COMMON_PROPERTY_APPSFLYER_ID.replace("#",""), value)
+                userSet(JSONObject().apply {
+                    put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, value)
                 })
             }
         }
@@ -97,8 +97,8 @@ class AnalyticsImp : AbstractAnalytics {
             if (value != null) {
                 EventDateAdapter.getInstance()?.koid = value
                 updateCommonProperties(Constant.COMMON_PROPERTY_KOCHAVA_ID, value)
-                userSetOnce(JSONObject().apply {
-                    put(Constant.COMMON_PROPERTY_KOCHAVA_ID.replace("#",""), value)
+                userSet(JSONObject().apply {
+                    put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, value)
                 })
             }
         }
@@ -109,8 +109,8 @@ class AnalyticsImp : AbstractAnalytics {
             if (value != null) {
                 EventDateAdapter.getInstance()?.appSetId = value
                 updateCommonProperties(Constant.COMMON_PROPERTY_APP_SET_ID, value)
-                userSetOnce(JSONObject().apply {
-                    put(Constant.COMMON_PROPERTY_APP_SET_ID.replace("#",""), value)
+                userSet(JSONObject().apply {
+                    put(Constant.USER_PROPERTY_LATEST_APP_SET_ID, value)
                 })
             }
         }

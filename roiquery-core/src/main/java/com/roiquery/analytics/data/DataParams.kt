@@ -145,10 +145,12 @@ class DataParams private constructor(packageName: String) {
         const val CONFIG_FIRST_OPEN = "first_open"
         const val CONFIG_ATTRIBUTE = "app_attribute"
         const val CONFIG_ATTRIBUTE_COUNT = "app_attribute_count"
+        const val CONFIG_ATTRIBUTE_UPLOAD_STATUS = "app_attribute_upload_status"
         const val CONFIG_IS_FOREGROUND = "is_foreground"
         const val CLOUD_CONFIG_AES_KEY = "cloud_config_aes_key"
         const val TIME_SERVER_LOCAL_OFFSET = "time_server_local_offset"
         const val LAST_APP_ENGAGEMENT_TIME = "last_app_engagement_time"
+        const val USER_AGENT_WEBVIEW = "user_agent_webview"
 
 
 

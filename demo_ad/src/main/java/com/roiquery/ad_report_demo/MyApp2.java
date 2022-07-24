@@ -22,7 +22,8 @@ public class MyApp2 extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ROIQuery.initSDK(this,"rq_unity_demo", ROIQueryChannel.GP,true);
+        //rq_unity_demo
+        ROIQuery.initSDK(this,"rq_nocard", ROIQueryChannel.GP,true);
         AppsFlyerLib.getInstance().getAppsFlyerUID(this);
 
         ROIQueryCloudConfig.fetch(new ConfigFetchListener() {

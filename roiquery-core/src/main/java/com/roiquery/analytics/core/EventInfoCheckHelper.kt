@@ -1,7 +1,9 @@
 package com.roiquery.analytics.core
 
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.TimeCalibration
 import com.roiquery.analytics.utils.transToLong
 import org.json.JSONArray
@@ -21,7 +23,7 @@ class EventInfoCheckHelper private constructor() {
         }
     }
 
-    fun correctEventTime(data: String,correctFinish:(info:String,reInsertData:JSONArray)->Unit) {
+    fun correctEventTime(data: String, correctFinish:(info:String,reInsertData:JSONArray)->Unit) {
 
         val reInsertData = JSONArray()
         try {
@@ -101,6 +103,7 @@ class EventInfoCheckHelper private constructor() {
         reInsertData: JSONArray,
         eventBodyInfo: JSONObject
     ):Boolean {
+        checkAttributeInsertStatus(eventName)
         if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE && eventInfo.optLong(
                 Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME
             ) == 0L
@@ -123,6 +126,18 @@ class EventInfoCheckHelper private constructor() {
 
     private fun saveFirstOpenTime(firstOpenTime: Long) {
         EventDateAdapter.getInstance()?.firstOpenTime = firstOpenTime
+        ROIQueryAnalytics.userSetOnce(JSONObject().apply {
+            put(Constant.USER_PROPERTY_ACTIVE_EVENT_TIME, firstOpenTime.toString())
+        })
     }
 
+    //attribute事件的状态, 0 未插入，1 未上传，2 正在上传, 3 已上传
+    private fun checkAttributeInsertStatus(eventName: String){
+        if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE){
+            EventDateAdapter.getInstance()?.isAttributeInsert = true
+            LogUtils.d("AttributeInsertStatus","true")
+        }
+    }
+
+    fun needTrackAttribute() = EventDateAdapter.getInstance()?.isAttributeInsert  == false
 }
