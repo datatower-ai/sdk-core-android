@@ -14,8 +14,12 @@ import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.Constant.COMMON_PROPERTY_USER_AGENT_WEBVIEW
+import com.roiquery.analytics.ROIQueryAnalytics.Companion.mContext
+import com.roiquery.analytics.api.AbstractAnalytics.Companion.mConfigOptions
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.AnalyticsManager
+import com.roiquery.analytics.core.EventInfoCheckHelper
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpPOSTResourceRemoteRepository
 import com.roiquery.analytics.utils.*
@@ -54,8 +58,6 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
 
     //本地数据适配器，包括sp、db的操作
     private var mDataAdapter: EventDateAdapter? = null
-
-    private var mUserAgent = ""
 
 
     companion object {
@@ -178,7 +180,7 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
                 //将事件时间是否校准的结果保存至事件信息中，以供上报时校准时间使用
                 val data = JSONObject().apply {
                     put(Constant.EVENT_BODY, eventInfo)
-                    put(Constant.EVENT_TIME_CALIBRATED,isTimeVerify)
+                    put(Constant.EVENT_TIME_CALIBRATED, isTimeVerify)
                 }
 
                 mAnalyticsManager?.enqueueEventMessage(realEventName, data)
@@ -222,7 +224,7 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
         if (ProcessUtils.isMainProcess(mContext as Application?)) {
             mDataAdapter?.eventSession = DataUtils.getSession()
         }
-        mCommonProperties = EventUtils.getCommonProperties(mContext!!, mDataAdapter);
+        mCommonProperties = EventUtils.getCommonProperties(mContext!!, mDataAdapter)
         mConfigOptions.let { config ->
             if (config?.mCommonProperties != null) {
                 val iterator = config.mCommonProperties!!.keys()
@@ -405,6 +407,9 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
                 override fun onOAIDGetComplete(oaid: String) {
                     // 不同厂商的OAID格式是不一样的，可进行MD5、SHA1之类的哈希运算统一
                     mDataAdapter?.oaid = oaid
+                    trackUser(Constant.EVENT_TYPE_USER_SET,JSONObject().apply {
+                        put(Constant.USER_PROPERTY_LATEST_OAID,oaid)
+                    })
                     updateEventInfo(Constant.EVENT_INFO_OAID, oaid)
                 }
 
@@ -428,6 +433,9 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
                 val info = AdvertisingIdClient.getAdvertisingIdInfo(mContext!!)
                 val id = info.id ?: ""
                 mDataAdapter?.gaid = id
+                trackUser(Constant.EVENT_TYPE_USER_SET,JSONObject().apply {
+                    put(Constant.USER_PROPERTY_LATEST_GAID, id)
+                })
                 updateEventInfo(Constant.EVENT_INFO_GAID, id)
                 LogUtils.d("getGAID", "onSuccess：$id")
             } catch (exception: Exception) {
@@ -465,56 +473,59 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
             trackNormal(Constant.PRESET_EVENT_APP_OPEN)
         }
 
-        userSetForCommonProperties()
+        setLatestUserProperties()
+
+        setActiveUserProperties()
+
+        setSystemUserProperties()
     }
 
-    private fun userSetForCommonProperties() {
+    private fun setSystemUserProperties() {
+        trackUser(
+            Constant.EVENT_TYPE_USER_SET_ONCE,
+            JSONObject(EventUtils.getSystemPropertiesForUserSet(mContext!!,mDataAdapter))
+        )
+    }
 
-        val commonProperties =
-            JSONObject(EventUtils.getCommonPropertiesForUserSet(mContext!!, mDataAdapter)).apply {
-                //接入 SDK 的类型可能是 Android 或 Unity ，因此这里需动态获取
-                getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_TYPE)?.toString()?.let {
-                    if (it.isNotEmpty()) {
-                        put(
-                            Constant.COMMON_PROPERTY_SDK_TYPE,
-                            it
-                        )
-                    }
-                }
-                //SDK 版本
-                getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_VERSION)?.toString()?.let {
-                    if (it.isNotEmpty()) {
-                        put(
-                            Constant.COMMON_PROPERTY_SDK_VERSION,
-                            it
-                        )
-                    }
-                }
-                put(Constant.USER_PROPERTY_SYSTEM_USER_AGENT_WEBVIEW, mUserAgent)
+    private fun setLatestUserProperties() {
+        trackUser(
+            Constant.EVENT_TYPE_USER_SET,
+            JSONObject(EventUtils.getLatestUserProperties(mContext!!, mDataAdapter))
+        )
+    }
+
+    private fun setActiveUserProperties() {
+        val activeUserProperties =
+            JSONObject(EventUtils.getActiveUserProperties(mContext!!, mDataAdapter)).apply {
+               updateSdkVersionProperty(this)
             }
         trackUser(
             Constant.EVENT_TYPE_USER_SET_ONCE,
-            DataUtils.clearPresetKeys(commonProperties)
-        )
-
-        LogUtils.d(
-            "userSetForCommonProperties",
-            DataUtils.clearPresetKeys(commonProperties)
+            activeUserProperties
         )
     }
 
-    private fun checkAttribute(): Boolean {
-        mDataAdapter?.attributedCount?.let {
-            return if (it > 4) {
-                false
-            } else {
-                mDataAdapter?.attributedCount = it + 1
-                true
+    private fun updateSdkVersionProperty(jsonObject: JSONObject){
+        //接入 SDK 的类型可能是 Android 或 Unity ，因此这里需动态获取
+        getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_TYPE)?.toString()?.let {
+            if (it.isNotEmpty()) {
+                jsonObject.put(
+                    Constant.USER_PROPERTY_ACTIVE_SDK_TYPE,
+                    it
+                )
             }
         }
-        return false
-
+        //SDK 版本
+        getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_VERSION)?.toString()?.let {
+            if (it.isNotEmpty()) {
+                jsonObject.put(
+                    Constant.USER_PROPERTY_ACTIVE_SDK_VERSION,
+                    it
+                )
+            }
+        }
     }
+
 
     private fun startAppAttribute() {
         try {
@@ -534,7 +545,6 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
      */
 //     TODO: ANR
     private fun getAppAttribute() {
-//        if (!checkAttribute(entrance)) return
         val referrerClient: InstallReferrerClient? =
             InstallReferrerClient.newBuilder(mContext).build()
         referrerClient?.startConnection(object : InstallReferrerStateListener {
@@ -586,7 +596,6 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
      * 采集 app 归因属性事件
      */
     private fun trackAppAttributeEvent(response: ReferrerDetails, failedReason: String) {
-        if (!checkAttribute()) return
         val isOK = failedReason.isBlank()
         trackNormal(
             Constant.PRESET_EVENT_APP_ATTRIBUTE,
@@ -614,10 +623,6 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
                         put(
                             Constant.ATTRIBUTE_PROPERTY_CNL,
                             mConfigOptions?.mChannel ?: ""
-                        )
-                        put(
-                            Constant.ATTRIBUTE_PROPERTY_USER_AGENT,
-                            mUserAgent
                         )
                         if (!isOK) {
                             put(
@@ -663,7 +668,8 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
     private fun getUserAgentByUIThread() {
         ThreadUtils.runOnUiThread {
             mContext?.let {
-                mUserAgent = NetworkUtils.getUserAgent(it)
+                mDataAdapter?.uaWebview = NetworkUtils.getUserAgent(it)
+                updateCommonProperties(COMMON_PROPERTY_USER_AGENT_WEBVIEW, mDataAdapter?.uaWebview ?: "")
             }
         }
     }
@@ -677,7 +683,9 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
             )
             mDataAdapter?.lastEngagementTime = getRealTime().toString()
             //补发，以免异常情况获取不到 app_attribute 事件
-            startAppAttribute()
+            if (EventInfoCheckHelper.instance.needTrackAttribute()) {
+                startAppAttribute()
+            }
         }
 
     }

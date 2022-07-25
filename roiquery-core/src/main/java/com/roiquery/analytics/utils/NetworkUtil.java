@@ -51,7 +51,35 @@ public final class NetworkUtil {
         NETWORK_NO
     }
 
+    public static String getNetworkTypeString(Context context) {
+        NetworkType networkType = getNetworkType(context);
+        if (networkType == NetworkType.NETWORK_ETHERNET) {
+            return "e";
+        }
+        if (networkType == NetworkType.NETWORK_WIFI) {
+            return "wifi";
+        }
+        if (networkType == NetworkType.NETWORK_5G) {
+            return "5g";
+        }
+        if (networkType == NetworkType.NETWORK_4G) {
+            return "4g";
+        }
+        if (networkType == NetworkType.NETWORK_3G) {
+            return "3g";
+        }
+        if (networkType == NetworkType.NETWORK_2G) {
+            return "2g";
+        }
+        if (networkType == NetworkType.NETWORK_UNKNOWN) {
+            return "unknown_network";
+        }
+        if (networkType == NetworkType.NETWORK_NO) {
+            return "none_network";
+        }
 
+        return "";
+    }
 
     /**
      * Return type of network.

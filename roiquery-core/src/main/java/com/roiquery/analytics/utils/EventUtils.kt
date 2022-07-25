@@ -3,7 +3,6 @@ package com.roiquery.analytics.utils
 import android.content.Context
 import android.os.Build
 import android.text.TextUtils
-import com.google.android.a.c
 import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AbstractAnalytics
@@ -50,7 +49,7 @@ object EventUtils {
             }
         }
 
-    private fun getSystemPropertiesForUserSet(context: Context) =
+     fun getSystemPropertiesForUserSet(context: Context,dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
             put(
                 Constant.USER_PROPERTY_SYSTEM_GP_VERSION_CODE,
@@ -168,14 +167,10 @@ object EventUtils {
 
             put(Constant.USER_PROPERTY_SYSTEM_DEVICE_SENSOR, DataUtils.getSensor(context))
 
-//            const val USER_PROPERTY_SYSTEM_BUILD_INCREMENTAL   = "build_incremental"
-//            const val USER_PROPERTY_SYSTEM_BUILD_SDK           = "build_sdk"
-//            const val USER_PROPERTY_SYSTEM_USER_AGENT_HTTP     = "user_agent_http"
-//            const val USER_PROPERTY_SYSTEM_BUILD_HOST          = "build_host"
-//            const val USER_PROPERTY_SYSTEM_BUILD_FRINGERPRINT  = "build_fringerprint"
-//            const val USER_PROPERTY_SYSTEM_BASEBAND            = "baseband"
-//            const val USER_PROPERTY_SYSTEM_BUILD_BOARD         = "build_board"
-//            const val USER_PROPERTY_SYSTEM_BUILD_ID            = "build_id"
+            put(Constant.USER_PROPERTY_SYSTEM_DEVICE_DISPLAY, Build.DISPLAY)
+            put(Constant.USER_PROPERTY_SYSTEM_DEVICE_PRODUCT, Build.PRODUCT)
+            put(Constant.USER_PROPERTY_SYSTEM_DEVICE_BRAND,   Build.BRAND)
+            put(Constant.USER_PROPERTY_SYSTEM_DEVICE_DEVICE, Build.DEVICE)
             put(Constant.USER_PROPERTY_SYSTEM_BUILD_INCREMENTAL, Build.VERSION.INCREMENTAL)
             put(Constant.USER_PROPERTY_SYSTEM_BUILD_SDK, Build.VERSION.SDK)
 
@@ -184,10 +179,100 @@ object EventUtils {
             put(Constant.USER_PROPERTY_SYSTEM_BASEBAND, CommandUtils.getProperty("gsm.version.baseband"))
             put(Constant.USER_PROPERTY_SYSTEM_BUILD_BOARD, Build.BOARD)
             put(Constant.USER_PROPERTY_SYSTEM_BUILD_ID, Build.ID)
+            put(Constant.USER_PROPERTY_SYSTEM_USER_AGENT_WEBVIEW, dataAdapter?.uaWebview)
+
 
         }
 
-    fun getCommonPropertiesForUserSet(context: Context, dataAdapter: EventDateAdapter?) =
+
+    fun getLatestUserProperties(context: Context, dataAdapter: EventDateAdapter?) =
+        mutableMapOf<String, Any?>().apply {
+            put(Constant.USER_PROPERTY_LATEST_INSTANCE_ID, dataAdapter?.rqid)
+            put(Constant.USER_PROPERTY_LATEST_ACID, dataAdapter?.accountId)
+            put(Constant.USER_PROPERTY_LATEST_DID, DeviceUtils.getAndroidID(context))
+            put(Constant.USER_PROPERTY_LATEST_APP_SET_ID, dataAdapter?.appSetId)
+            put(Constant.USER_PROPERTY_LATEST_GAID, dataAdapter?.gaid)
+            put(Constant.USER_PROPERTY_LATEST_OAID, dataAdapter?.oaid)
+            put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, dataAdapter?.fiid)
+            put(Constant.USER_PROPERTY_LATEST_FCM_TOKEN, dataAdapter?.fcmToken)
+            put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, dataAdapter?.afid)
+            put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, dataAdapter?.koid)
+        }
+
+    fun getActiveUserProperties(context: Context, dataAdapter: EventDateAdapter?) =  mutableMapOf<String, Any?>().apply {
+        put(Constant.USER_PROPERTY_ACTIVE_MCC, DeviceUtils.getMcc(context))
+        put(Constant.USER_PROPERTY_ACTIVE_MNC, DeviceUtils.getMnc(context))
+        put(
+            Constant.USER_PROPERTY_ACTIVE_OS_COUNTRY,
+            DeviceUtils.getLocalCountry(context)
+        )//系统国家
+        put(
+            Constant.USER_PROPERTY_ACTIVE_OS_LANG,
+            DeviceUtils.getLocaleLanguage()
+        )//系统语言
+        put(
+            Constant.USER_PROPERTY_ACTIVE_PKG,
+            context.packageName
+        )//包名
+        put(
+            Constant.USER_PROPERTY_ACTIVE_APP_VERSION_CODE,
+            AppInfoUtils.getAppVersionCode(context)
+        )//应用版本号
+        put(
+            Constant.USER_PROPERTY_ACTIVE_APP_VERSION_NAME,
+            AppInfoUtils.getAppVersionName(context)
+        )//应用版本名
+        put(
+            Constant.USER_PROPERTY_ACTIVE_OS,
+            Constant.SDK_TYPE_ANDROID
+        )//如 Android、iOS 等
+        put(
+            Constant.USER_PROPERTY_ACTIVE_OS_VERSION,
+            DeviceUtils.oS
+        )//操作系统版本,iOS 11.2.2、Android 8.0.0 等
+        put(
+            Constant.USER_PROPERTY_ACTIVE_DEVICE_MANUFACTURER,
+            DeviceUtils.manufacturer
+        )//用户设备的制造商，如 Apple，vivo 等
+        put(
+            Constant.USER_PROPERTY_ACTIVE_DEVICE_BRAND,
+            DeviceUtils.brand
+        )//设备品牌,如 Galaxy、Pixel
+        put(
+            Constant.USER_PROPERTY_ACTIVE_DEVICE_MODEL,
+            DeviceUtils.model
+        )//设备型号,用户设备的型号，如 iPhone 8 等
+        val size = DeviceUtils.getDeviceSize(context)
+        put(
+            Constant.USER_PROPERTY_ACTIVE_SCREEN_WIDTH,
+            size[0]
+        )//屏幕宽度
+        put(
+            Constant.USER_PROPERTY_ACTIVE_SCREEN_HEIGHT,
+            size[1]
+        )//屏幕高度
+
+        put(Constant.USER_PROPERTY_ACTIVE_DIMS_X, DensityUtils.getScreenWidth(context))
+        put(Constant.USER_PROPERTY_ACTIVE_DIMS_Y, DensityUtils.getScreenHeight(context))
+        put(Constant.USER_PROPERTY_ACTIVE_DIMS_DPI, DensityUtils.getDensityDpi(context))
+
+        put(Constant.USER_PROPERTY_ACTIVE_MEMORY_USED, MemoryUtils.getMemoryUsed(context))
+        put(Constant.USER_PROPERTY_ACTIVE_STORAGE_USED, MemoryUtils.getStorageUsed(context))
+
+        put(Constant.USER_PROPERTY_ACTIVE_NETWORK_TYPE, NetworkUtil.getNetworkTypeString(context))
+        put(Constant.USER_PROPERTY_ACTIVE_SIMULATOR, EmulatorDetector.isEmulator())
+
+        put(Constant.USER_PROPERTY_ACTIVE_USER_AGENT, AppInfoUtils.getDefaultUserAgent(context))
+
+        dataAdapter?.uaWebview?.let {
+            if (it.isNotEmpty()) {
+                put(Constant.USER_PROPERTY_USER_AGENT_WEBVIEW, it)
+            }
+        }
+
+    }
+
+    fun getPropertiesForUserSetOnce(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
 
             dataAdapter?.accountId?.let {
@@ -377,14 +462,13 @@ object EventUtils {
                 )
             }
 
-            put(Constant.COMMON_PROPERTY_DEVICE_DISPLAY, Build.DISPLAY)
-            put(Constant.COMMON_PROPERTY_DEVICE_PRODUCT, Build.PRODUCT)
-            put(Constant.COMMON_PROPERTY_DEVICE_DEVICE, Build.DEVICE)
+//            put(Constant.COMMON_PROPERTY_DEVICE_DISPLAY, Build.DISPLAY)
+//            put(Constant.COMMON_PROPERTY_DEVICE_PRODUCT, Build.PRODUCT)
+//            put(Constant.COMMON_PROPERTY_DEVICE_DEVICE, Build.DEVICE)
             put(Constant.COMMON_PROPERTY_MEMORY_USED, MemoryUtils.getMemoryUsed(context))
             put(Constant.COMMON_PROPERTY_STORAGE_USED, MemoryUtils.getStorageUsed(context))
             put(Constant.COMMON_PROPERTY_USER_AGENT, AppInfoUtils.getDefaultUserAgent(context))
 
-            putAll(getSystemPropertiesForUserSet(context))
         }
 
 
@@ -414,6 +498,11 @@ object EventUtils {
                 Constant.COMMON_PROPERTY_ROIQUERY_ID,
                 DeviceUtils.getROIQueryID(dataAdapter)
             )//roiquery_id
+            //
+            put(
+                Constant.COMMON_PROPERTY_APP_SET_ID,
+                dataAdapter?.appSetId
+            )//app set id
             put(
                 Constant.COMMON_PROPERTY_MCC,
                 DeviceUtils.getMcc(context)
@@ -476,11 +565,21 @@ object EventUtils {
                 size[1]
             )//屏幕宽度
 
-            put(Constant.COMMON_PROPERTY_DEVICE_DISPLAY, Build.DISPLAY)
-            put(Constant.COMMON_PROPERTY_DEVICE_PRODUCT, Build.PRODUCT)
-            put(Constant.COMMON_PROPERTY_DEVICE_DEVICE, Build.DEVICE)
+//            put(Constant.COMMON_PROPERTY_DEVICE_DISPLAY, Build.DISPLAY)
+//            put(Constant.COMMON_PROPERTY_DEVICE_PRODUCT, Build.PRODUCT)
+//            put(Constant.COMMON_PROPERTY_DEVICE_DEVICE, Build.DEVICE)
             put(Constant.COMMON_PROPERTY_MEMORY_USED, MemoryUtils.getMemoryUsed(context))
             put(Constant.COMMON_PROPERTY_STORAGE_USED, MemoryUtils.getStorageUsed(context))
+            put(Constant.COMMON_PROPERTY_DIMS_X, DensityUtils.getScreenWidth(context))
+            put(Constant.COMMON_PROPERTY_DIMS_Y, DensityUtils.getScreenHeight(context))
+            put(Constant.COMMON_PROPERTY_DIMS_DPI, DensityUtils.getDensityDpi(context))
+
+            put(Constant.COMMON_PROPERTY_NETWORK_TYPE, NetworkUtil.getNetworkTypeString(context))
+            put(Constant.COMMON_PROPERTY_SIMULATOR, EmulatorDetector.isEmulator())
+
+            put(Constant.COMMON_PROPERTY_USER_AGENT, AppInfoUtils.getDefaultUserAgent(context))
+            put(Constant.COMMON_PROPERTY_USER_AGENT_WEBVIEW, dataAdapter?.uaWebview)
+
         }
 
     fun isValidEventName(name: String): Boolean {
