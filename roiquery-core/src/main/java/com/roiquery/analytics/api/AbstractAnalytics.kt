@@ -477,7 +477,7 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
 
         setActiveUserProperties()
 
-        setSystemUserProperties()
+//        setSystemUserProperties()
     }
 
     private fun setSystemUserProperties() {

@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryAnalytics.Companion.flush
 import com.roiquery.analytics.data.DataParams
@@ -63,7 +64,7 @@ class AnalyticsManager private constructor(
                         || insertedCount == DataParams.DB_OUT_OF_MEMORY_ERROR
                         || insertedCount > 100
                     ) {
-                        mWorker.runMessage(this)
+                        mWorker.runMessageOnce(this,1000L)
                     } else {
                         //不立即上报，有时间间隔
                         mWorker.runMessageOnce(this, 2000L)
@@ -271,6 +272,7 @@ class AnalyticsManager private constructor(
         if (TimeCalibration.TIME_NOT_VERIFY_VALUE == TimeCalibration.instance.getVerifyTimeAsync()) {
             LogUtils.d(TAG, "time do not calibrate yet")
             mDateAdapter.enableUpload = true
+            TimeCalibration.instance.getReferenceTime()
             return
         }
 
@@ -322,7 +324,7 @@ class AnalyticsManager private constructor(
                         //上报成功后删除本地数据
                         val leftCount =
                             if (lastId.isEmpty()) -1 else mDateAdapter.cleanupEvents(lastId)
-                        LogUtils.d(TAG, "db left count = $leftCount")
+                        LogUtils.d(TAG, "lastId = $lastId, db left count = $leftCount")
 
                         reEnqueueEventMessage(reInsertData)
                         //避免事件积压，成功后再次上报
