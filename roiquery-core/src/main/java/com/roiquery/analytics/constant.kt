@@ -8,9 +8,9 @@ internal object Constant {
     const val LOG_TAG = "ROIQuery"
 
     //ROIQuery base url
-//    private val ANALYTICS_BASE_URL = if ("0" == BuildConfig.LINK_SITE)"http://35.238.73.110" else "https://api.roiquery.com"
+    private val ANALYTICS_BASE_URL = if ("0" == BuildConfig.LINK_SITE)"http://35.238.73.110" else "https://api.roiquery.com"
 
-    private const val ANALYTICS_BASE_URL = "https://test.roiquery.com"
+//    private const val ANALYTICS_BASE_URL = "https://test.roiquery.com"
     //upload url
     val EVENT_REPORT_URL = "$ANALYTICS_BASE_URL/report"
     // cloudConfig url
