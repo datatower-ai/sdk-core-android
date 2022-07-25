@@ -22,7 +22,7 @@ android {
             proguardFiles file('../proguard-rules/common-rules.pro')
             proguardFiles file('../proguard-rules/core-proguard-rules.pro')
             buildConfigField "String", "VERSION_NAME", "\"$rootProject.ext.core.coreVersionName\""
-            buildConfigField "String", "LINK_SITE", "\"$appFormalLinkSite\""
+            buildConfigField "String", "LINK_SITE", "\"$appLinkSite\""
         }
         debug {
             minifyEnabled true
