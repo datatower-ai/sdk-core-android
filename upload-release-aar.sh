@@ -76,23 +76,23 @@ mavenAarByType(){
     # shellcheck disable=SC2164
   cd roiquery-"${aar_type}"
   gradle clean
-#  if [ $type = 0 ]; then
-#      gradle assembleRelease
-#  else
-#    gradle publish
-#  fi
-#    if [  $? -ne 0 ]; then
-#        exit
-#    fi
-#  cd ..
-#  if [ "$type" = 1 ]; then
-#    git commit  conf.gradle -m "update ${aar_type} versionName ${aar_version_name}, versionCode ${aar_version_code}"
-#    git tag "${aar_type}"/"${aar_version_name}"
-#  fi
-#
-#  if [  $? -ne 0 ]; then
-#      exit
-#  fi
+  if [ $type = 0 ]; then
+      gradle assembleRelease
+  else
+    gradle publish
+  fi
+    if [  $? -ne 0 ]; then
+        exit
+    fi
+  cd ..
+  if [ "$type" = 1 ]; then
+    git commit  conf.gradle -m "update ${aar_type} versionName ${aar_version_name}, versionCode ${aar_version_code}"
+    git tag "${aar_type}"/"${aar_version_name}"
+  fi
+
+  if [  $? -ne 0 ]; then
+      exit
+  fi
 }
 copyMappingFile(){
   parent_path=${project_name}/build/outputs/mapping/
