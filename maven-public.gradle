@@ -1,0 +1,108 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+task generateSourcesJar(type: Jar) {
+    from android.sourceSets.main.java.source
+    classifier 'sources'
+}
+
+ext {
+    PUBLISH_GROUP_ID = 'com.lovinjoy'
+    PUBLISH_ARTIFACT_ID = 'datatowerai-core'
+    PUBLISH_VERSION = VERSION
+    println "$PUBLISH_VERSION"
+}
+ext["signing.keyId"] = ''
+ext["signing.password"] = ''
+ext["signing.secretKeyRingFile"] = ''
+ext["ossrhUsername"] = ''
+ext["ossrhPassword"] = ''
+
+File secretPropsFile = project.rootProject.file('local.properties')
+if (secretPropsFile.exists()) {
+    println "Found secret props file, loading props"
+    Properties p = new Properties()
+    p.load(new FileInputStream(secretPropsFile))
+    p.each { name, value ->
+        ext[name] = value
+    }
+} else {
+    println "No props file, loading env vars"
+}
+
+//https://s01.oss.sonatype.org
+afterEvaluate {
+    publishing {
+        publications {
+            Production(MavenPublication) {
+                from components.release
+                // The coordinates of the library, being set from variables that
+                // we'll set up in a moment
+                groupId = PUBLISH_GROUP_ID
+                artifactId = PUBLISH_ARTIFACT_ID
+                version = PUBLISH_VERSION
+
+                // Two artifacts, the `aar` and the sources
+//                artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+                artifact generateSourcesJar
+
+                // Self-explanatory metadata for the most part
+                pom {
+                    name = PUBLISH_ARTIFACT_ID
+                    description = 'maven for data tower'
+                    // If your project has a dedicated site, use its URL here
+                    url = 'https://github.com/lovinjoy/datatower.ai-core-android'
+                    licenses {
+                        license {
+                            //协议类型，一般默认Apache License2.0的话不用改：
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'lovinjoy'
+                            name = 'lovinjoy'
+                            email = 'develop@nodetower.com'
+                        }
+                    }
+                    // Version control info, if you're using GitHub, follow the format as seen here
+                    scm {
+                        //修改成你的Git地址：
+                        connection = 'scm:git:github.com/lovinjoy/datatower.ai-core-android.git'
+                        developerConnection = 'scm:git:ssh://github.com/lovinjoy/datatower.ai-core-android.git'
+                        //分支地址：
+                        url = 'https://github.com/lovinjoy/datatower.ai-core-android/tree/main'
+                    }
+                }
+            }
+        }
+        repositories {
+            // The repository to publish to, Sonatype/MavenCentral
+            maven {
+                // This is an arbitrary name, you may also use "mavencentral" or
+                // any other name that's descriptive for you
+                name = "mavenCentral"
+
+                def releasesRepoUrl = "https://s01.oss.sonatype.org/content/repositories/releases/"
+                def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                // You only need this if you want to publish snapshots, otherwise just set the URL
+                // to the release repo directly
+                url = PUBLISH_VERSION.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                println "version: $PUBLISH_VERSION"
+                println "ossrhUsername: $ossrhUsername"
+                println "ossrhPassword: $PUBLISH_VERSION"
+
+                // The username and password we've fetched earlier
+                credentials {
+                    username ossrhUsername
+                    password ossrhPassword
+                }
+            }
+        }
+    }
+    signing {
+        sign publishing.publications
+    }
+}
+
