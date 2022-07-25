@@ -60,4 +60,8 @@ ext {
     DEPENDENCE_TYPE = dependence_type
 }
 
-apply from: "../maven-publish.gradle"
+if ("$appLinkSite" == "2") {
+    apply from: "../maven-public.gradle"
+} else {
+    apply from: "../maven-publish.gradle"
+}

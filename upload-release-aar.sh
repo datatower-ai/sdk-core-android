@@ -1,15 +1,21 @@
 #!/bin/bash
 
+modifyMavenType(){
+  app_link_site=$(cat -v ./gradle.properties  | grep appLinkSite |awk -F "=" '{print $2}')
+  echo ${app_link_site}
+  sed -i.bak "s/appLinkSite.*=.*${app_link_site}/appLinkSite = ${mavenType}/g" gradle.properties
+  rm -rf gradle.properties.bak
+}
 
 
 modifyDependenceType(){
   #获取当前 maven 仓库的type
-  dependence_type=$(cat -v ./build.gradle | grep ext.dependence_type |awk -F "=" '{print $2}')
-
+  dependence_type=$(cat -v ./build.gradle | grep dependence_type |awk -F "=" '{print $2}')
+  echo ${dependence_type}
 
   # 修改maven 仓库为远程模式
   if [ $dependence_type != "\"2\"" ]; then
-    sed -i.bak "s/ext.dependence_type.*=.*$dependence_type/ext.dependence_type = \"2\"/g" build.gradle
+    sed -i.bak "s/dependence_type.*=.*$dependence_type/dependence_type = \"2\"/g" build.gradle
     rm -rf build.gradle.bak
     if [ $type = 1 ]; then
       git commit build.gradle -m "update maven type"
@@ -102,8 +108,14 @@ copyMappingFile(){
 aar_version_name=$1
 aar_version_code=$2
 type=$3
-project_name=$4
-echo $0 === $1 ==== $2 == $3 == $4
+project_name=roiquery-core
+mavenType=$4
+echo "aar_version_name:"${aar_version_name}
+echo "aar_version_code"${aar_version_code}
+echo "type:"${type}
+echo "mavenType:"${mavenType}
+
+modifyMavenType
 modifyDependenceType
 if [  $? -ne 0 ]; then
     exit
