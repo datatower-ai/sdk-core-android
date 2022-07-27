@@ -112,7 +112,7 @@ class EventInfoCheckHelper private constructor() {
                 reInsertData.put(eventBodyInfo)
                 return false
             } else {
-                eventInfo.put(
+                eventInfo.getJSONObject(Constant.EVENT_INFO_PROPERTIES).put(
                     Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
                     EventDateAdapter.getInstance()?.firstOpenTime.toString()
                 )
@@ -138,5 +138,4 @@ class EventInfoCheckHelper private constructor() {
         }
     }
 
-    fun needTrackAttribute() = EventDateAdapter.getInstance()?.isAttributeInsert  == false
 }

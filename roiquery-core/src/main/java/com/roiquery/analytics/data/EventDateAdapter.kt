@@ -234,8 +234,8 @@ class EventDateAdapter private constructor(
      * attribute 事件的插入数据库状态
      */
     var isAttributeInsert: Boolean
-        get() = getBooleanConfig(DataParams.CONFIG_ATTRIBUTE_UPLOAD_STATUS)
-        set(value) = setBooleanConfig(DataParams.CONFIG_ATTRIBUTE_UPLOAD_STATUS,value)
+        get() = getBooleanConfig(DataParams.CONFIG_ATTRIBUTE_UPLOAD_STATUS,false)
+        set(value) = setBooleanConfig(DataParams.CONFIG_ATTRIBUTE_UPLOAD_STATUS, value)
 
     /**
      * app 是否在后台

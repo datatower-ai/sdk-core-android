@@ -87,6 +87,7 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
             getGAID()
             getOAID()
             mSDKConfigInit = true
+            LogUtils.d("ROIQuery","init succeed")
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
@@ -457,27 +458,25 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
             )
             return
         }
-        trackAppOpenEvent()
-        startAppAttribute()
+        if (mDataAdapter?.isFirstOpen == true) {
+            trackAppOpenEvent(true)
+            mDataAdapter?.isFirstOpen = false
+        } else {
+            trackAppOpenEvent(false)
+        }
         trackAppEngagementEvent()
+        setLatestUserProperties()
+        setActiveUserProperties()
+
+//        setSystemUserProperties()
     }
+
 
     /**
      * 采集app 启动事件
      */
-    private fun trackAppOpenEvent() {
-        if (mDataAdapter?.isFirstOpen == true) {
-            trackNormal(Constant.PRESET_EVENT_APP_FIRST_OPEN)
-            mDataAdapter?.isFirstOpen = false
-        } else {
-            trackNormal(Constant.PRESET_EVENT_APP_OPEN)
-        }
-
-        setLatestUserProperties()
-
-        setActiveUserProperties()
-
-//        setSystemUserProperties()
+    private fun trackAppOpenEvent(isFirstOpen: Boolean) {
+        trackNormal(if (isFirstOpen) Constant.PRESET_EVENT_APP_FIRST_OPEN else Constant.PRESET_EVENT_APP_OPEN)
     }
 
     private fun setSystemUserProperties() {
@@ -528,6 +527,7 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
 
 
     private fun startAppAttribute() {
+        if(mDataAdapter?.isAttributeInsert == true) return
         try {
             getAppAttribute()
         } catch (e: Exception) {
@@ -537,7 +537,6 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
                 "Exception: " + e.message.toString()
             )
         }
-
     }
 
     /**
@@ -545,8 +544,7 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
      */
 //     TODO: ANR
     private fun getAppAttribute() {
-        val referrerClient: InstallReferrerClient? =
-            InstallReferrerClient.newBuilder(mContext).build()
+        val referrerClient: InstallReferrerClient? = InstallReferrerClient.newBuilder(mContext).build()
         referrerClient?.startConnection(object : InstallReferrerStateListener {
 
             override fun onInstallReferrerSetupFinished(responseCode: Int) {
@@ -683,10 +681,10 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
             )
             mDataAdapter?.lastEngagementTime = getRealTime().toString()
             //补发，以免异常情况获取不到 app_attribute 事件
-            if (EventInfoCheckHelper.instance.needTrackAttribute()) {
-                startAppAttribute()
-            }
+            startAppAttribute()
         }
 
     }
+
+
 }

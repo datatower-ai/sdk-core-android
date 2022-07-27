@@ -252,8 +252,8 @@ object EventUtils {
             size[1]
         )//屏幕高度
 
-        put(Constant.USER_PROPERTY_ACTIVE_DIMS_X, DensityUtils.getScreenWidth(context))
-        put(Constant.USER_PROPERTY_ACTIVE_DIMS_Y, DensityUtils.getScreenHeight(context))
+//        put(Constant.USER_PROPERTY_ACTIVE_DIMS_X, DensityUtils.getScreenWidth(context))
+//        put(Constant.USER_PROPERTY_ACTIVE_DIMS_Y, DensityUtils.getScreenHeight(context))
         put(Constant.USER_PROPERTY_ACTIVE_DIMS_DPI, DensityUtils.getDensityDpi(context))
 
         put(Constant.USER_PROPERTY_ACTIVE_MEMORY_USED, MemoryUtils.getMemoryUsed(context))
@@ -570,8 +570,8 @@ object EventUtils {
 //            put(Constant.COMMON_PROPERTY_DEVICE_DEVICE, Build.DEVICE)
             put(Constant.COMMON_PROPERTY_MEMORY_USED, MemoryUtils.getMemoryUsed(context))
             put(Constant.COMMON_PROPERTY_STORAGE_USED, MemoryUtils.getStorageUsed(context))
-            put(Constant.COMMON_PROPERTY_DIMS_X, DensityUtils.getScreenWidth(context))
-            put(Constant.COMMON_PROPERTY_DIMS_Y, DensityUtils.getScreenHeight(context))
+//            put(Constant.COMMON_PROPERTY_DIMS_X, DensityUtils.getScreenWidth(context))
+//            put(Constant.COMMON_PROPERTY_DIMS_Y, DensityUtils.getScreenHeight(context))
             put(Constant.COMMON_PROPERTY_DIMS_DPI, DensityUtils.getDensityDpi(context))
 
             put(Constant.COMMON_PROPERTY_NETWORK_TYPE, NetworkUtil.getNetworkTypeString(context))
