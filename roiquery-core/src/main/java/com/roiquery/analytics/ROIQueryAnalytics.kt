@@ -179,10 +179,10 @@ open class ROIQueryAnalytics {
         fun flush() = AnalyticsImp.getInstance(mContext).flush()
 
         /**
-         * 获取ROIQuery ID
+         * 获取 DataTower instance id
          */
         @JvmStatic
-        fun getROIQueryId() =
+        fun getInstanceId() =
             AnalyticsImp.getInstance(mContext).rqid
 
         /**

@@ -170,6 +170,7 @@ class AnalyticsManager private constructor(
                 || tagName == Constant.PRESET_EVENT_APP_FIRST_OPEN
                 || tagName == Constant.PRESET_EVENT_APP_ATTRIBUTE
                 || tagName == Constant.PRESET_EVENT_APP_CLOSE
+                || tagName == Constant.PRESET_EVENT_APP_STATE_CHANGED
     }
 
     /**
