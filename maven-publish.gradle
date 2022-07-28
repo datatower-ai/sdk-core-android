@@ -26,7 +26,7 @@ afterEvaluate {
             // 定义一个 maven 仓库
             maven {
 
-                url = DEPENDENCE_TYPE == "1" ? SNAPSHOT_REPOSITORY_URL :(DEPENDENCE_TYPE == "2"? RELEASE_REPOSITORY_URL :"")
+                url = RELEASE_REPOSITORY_URL
                 // 仓库用户名密码
                 credentials {
                     username = "admin"
