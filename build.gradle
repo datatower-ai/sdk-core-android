@@ -7,7 +7,7 @@ buildscript {
         // 0 本地
         // 1 maven-snapshot
         // 2 maven-releases
-        dependence_type = "0"
+        dependence_type = "1"
         kotlin_version = "1.6.10"
         dokka_version = '1.4.10.2'
     }
@@ -32,9 +32,7 @@ allprojects {
         maven { url 'https://www.jitpack.io' }
 
         maven(){
-            def maven_url =  dependence_type == "1" ? "http://localhost:8081/repository/maven-releases/"
-                    : "https://repo-public.en2joy.com/repository/maven-releases/"
-            url = maven_url
+            url = "https://repo-public.en2joy.com/repository/maven-releases/"
         }
     }
 }

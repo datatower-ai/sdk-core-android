@@ -10,13 +10,13 @@ modifyMavenType(){
 
 modifyDependenceType(){
   #获取当前 maven 仓库的type
-  dependence_type=$(cat -v ./build.gradle | grep dependence_type |awk -F "=" '{print $2}')
-  echo ${dependence_type}
+  dependence_type=$(cat -v ./build.gradle| grep "dependence_type\s*=\s*\"[0-9]\"" |awk -F "=" '{print $2}')
+  echo "dependence_type\s*=\s*${dependence_type}"
 
   # 修改maven 仓库为远程模式
   if [ $dependence_type != "\"2\"" ]; then
-    sed -i.bak "s/dependence_type.*=.*$dependence_type/dependence_type = \"2\"/g" build.gradle
-    rm -rf build.gradle.bak
+    sed -i.bak -n "s/dependence_type\s*=\s*\"${dependence_type}\"/dependence_type = \"2\"/g" build.gradle
+    rm -rf build.gradle.bak=
     if [ $type = 1 ]; then
       git commit build.gradle -m "update maven type"
     fi
@@ -115,7 +115,7 @@ echo "aar_version_code"${aar_version_code}
 echo "type:"${type}
 echo "mavenType:"${mavenType}
 
-modifyMavenType
+#modifyMavenType
 modifyDependenceType
 if [  $? -ne 0 ]; then
     exit
