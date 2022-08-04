@@ -115,8 +115,8 @@ echo "aar_version_code"${aar_version_code}
 echo "type:"${type}
 echo "mavenType:"${mavenType}
 
-#modifyMavenType
-modifyDependenceType
+modifyMavenType
+#modifyDependenceType
 if [  $? -ne 0 ]; then
     exit
 fi
