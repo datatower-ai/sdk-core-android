@@ -23,9 +23,7 @@ class EventInfoCheckHelper private constructor() {
         }
     }
 
-    fun correctEventTime(data: String, correctFinish:(info:String,reInsertData:JSONArray)->Unit) {
-
-        val reInsertData = JSONArray()
+    fun correctEventTime(data: String, correctFinish:(info:String)->Unit) {
         try {
 
             val jsonArray = JSONArray(data)
@@ -38,29 +36,28 @@ class EventInfoCheckHelper private constructor() {
             for (index in 0 until length) {
                 jsonArray.getJSONObject(index)?.let { it ->
                     if (isNewFormatData(it)) {
-                        correctNewFormatData(it, reInsertData, correctedEventInfo)
+                        correctNewFormatData(it,  correctedEventInfo)
                     } else {
                         correctedEventInfo.put(it)
                     }
                 }
             }
 
-            correctFinish.invoke(correctedEventInfo.toString(),reInsertData)
+            correctFinish.invoke(correctedEventInfo.toString())
 
         } catch (e: JSONException) {
-            correctFinish.invoke("",reInsertData)
+            correctFinish.invoke("")
         }
     }
 
-    private fun correctNewFormatData(
+    private  fun correctNewFormatData(
         jsonEventBody: JSONObject,
-        reInsertData: JSONArray,
         correctedEventInfo: JSONArray
     ) {
         jsonEventBody.optJSONObject(Constant.EVENT_BODY)?.let { eventInfo ->
             val presetEventName = eventNameForPreset(eventInfo)
 
-            if (!correctAttributeFirstOpenTimeInfo(presetEventName, eventInfo, reInsertData,jsonEventBody)) return
+            if (!correctAttributeFirstOpenTimeInfo(presetEventName, eventInfo)) return
 
             val infoTime = eventInfo.optLong(Constant.EVENT_INFO_TIME)
 
@@ -80,9 +77,7 @@ class EventInfoCheckHelper private constructor() {
 
                     correctedEventInfo.put(eventInfo)
 
-                } else {
-                    reInsertData.put(jsonEventBody)
-                }
+                } else {}
             } else {
                 eventInfo.put(Constant.EVENT_INFO_TIME,infoTime.toString())
 
@@ -99,9 +94,7 @@ class EventInfoCheckHelper private constructor() {
 
     private fun correctAttributeFirstOpenTimeInfo(
         eventName: String,
-        eventInfo: JSONObject,
-        reInsertData: JSONArray,
-        eventBodyInfo: JSONObject
+        eventInfo: JSONObject
     ):Boolean {
         checkAttributeInsertStatus(eventName)
         if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE && eventInfo.optLong(
@@ -109,7 +102,6 @@ class EventInfoCheckHelper private constructor() {
             ) == 0L
         ) {
             if (EventDateAdapter.getInstance()?.firstOpenTime == 0L) {
-                reInsertData.put(eventBodyInfo)
                 return false
             } else {
                 eventInfo.getJSONObject(Constant.EVENT_INFO_PROPERTIES).put(

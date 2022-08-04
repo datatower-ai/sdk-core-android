@@ -47,44 +47,6 @@ object TimeUtils {
         return formatString
     }
 
-    /**
-     * format Date 输出文本格式
-     * patten 默认使用 YYYY_MM_DD_HH_MM_SS_SSS
-     * 例：2019-04-12 11:22:00.408
-     * Locale 默认使用 Default
-     *
-     * @param date 日期
-     * @return 日期展示字符串
-     */
-    fun formatDate(date: Date?): String {
-        return formatDate(date, YYYY_MM_DD_HH_MM_SS_SSS)
-    }
-
-    /**
-     * format Date 输出文本格式
-     * Locale 默认使用 Default
-     *
-     * @param date 日期
-     * @param patten 时间展示模板
-     * @return 日期展示字符串
-     */
-    @JvmStatic
-    fun formatDate(date: Date?, patten: String?): String {
-        return formatDate(date, patten, Locale.getDefault())
-    }
-
-    /**
-     * format Date 输出文本格式
-     * patten 默认使用 YYYY_MM_DD_HH_MM_SS_SSS
-     * 例：2019-04-12 11:22:00.408
-     *
-     * @param date 日期
-     * @param locale 位置
-     * @return 日期展示字符串
-     */
-    fun formatDate(date: Date?, locale: Locale?): String {
-        return formatDate(date, YYYY_MM_DD_HH_MM_SS_SSS, locale)
-    }
 
     /**
      * format Date 输出文本格式
@@ -94,11 +56,8 @@ object TimeUtils {
      * @param locale 位置
      * @return 日期展示字符串
      */
-    fun formatDate(date: Date?, patten: String?, locale: Locale?): String {
-        var patten = patten
-        if (TextUtils.isEmpty(patten)) {
-            patten = YYYY_MM_DD_HH_MM_SS_SSS
-        }
+    @JvmOverloads
+    fun formatDate(date: Date, patten: String? = YYYY_MM_DD_HH_MM_SS_SSS, locale: Locale? = Locale.getDefault()): String {
         var formatString = ""
         val simpleDateFormat: SimpleDateFormat = getDateFormat(patten, locale)
             ?: return formatString
@@ -162,7 +121,7 @@ object TimeUtils {
                 val key = iterator.next()
                 val value = jsonObject[key]
                 if (value is Date) {
-                    jsonObject.put(key, formatDate(value as Date, Locale.CHINA))
+                    jsonObject.put(key, formatDate(date = value, locale = Locale.CHINA))
                 }
             }
         } catch (e: JSONException) {

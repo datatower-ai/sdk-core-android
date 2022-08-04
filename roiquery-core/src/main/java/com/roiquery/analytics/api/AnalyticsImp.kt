@@ -16,11 +16,7 @@ import org.json.JSONException
 
 import org.json.JSONObject
 
-class AnalyticsImp : AbstractAnalytics {
-
-    internal constructor(
-        context: Context?
-    ) : super(context)
+class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(context) {
 
 
     override var maxCacheSize: Long?
@@ -170,7 +166,7 @@ class AnalyticsImp : AbstractAnalytics {
             ROIQueryQualityHelper.instance.reportQualityMessage(
                 ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL,
                 "event name: $eventName" + e.stackTraceToString()
-            );
+            )
             return
         }
 
@@ -195,7 +191,7 @@ class AnalyticsImp : AbstractAnalytics {
                  ROIQueryQualityHelper.instance.reportQualityMessage(
                      ROIQueryErrorParams.TRACK_TASK_MANAGER_ERROR,
                      "event name: $eventName "
-                 );
+                 )
              }
          }
     }
