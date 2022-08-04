@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
@@ -15,11 +14,9 @@ import com.github.gzuliyujiang.oaid.IGetter
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.COMMON_PROPERTY_USER_AGENT_WEBVIEW
-import com.roiquery.analytics.ROIQueryAnalytics.Companion.mContext
-import com.roiquery.analytics.api.AbstractAnalytics.Companion.mConfigOptions
+import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.AnalyticsManager
-import com.roiquery.analytics.core.EventInfoCheckHelper
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpPOSTResourceRemoteRepository
 import com.roiquery.analytics.utils.*
@@ -38,7 +35,7 @@ import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext
 
 
-abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
+abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScope {
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
 
@@ -72,7 +69,7 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
     }
 
 
-    constructor(context: Context?) {
+    init {
         try {
             mContext = context
             initConfig(mContext!!.packageName)
@@ -155,7 +152,7 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
                         put(Constant.EVENT_INFO_TIME, if (isTimeVerify) this else TimeCalibration.instance.getSystemHibernateTimeGap())
                         put(Constant.EVENT_INFO_NAME, realEventName)
                         put(Constant.EVENT_INFO_TYPE, eventType)
-                        put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
+                        put(EVENT_INFO_SYN, DataUtils.getUUID())
                     }
                 }
 
@@ -184,7 +181,11 @@ abstract class AbstractAnalytics : IAnalytics , CoroutineScope {
                     put(Constant.EVENT_TIME_CALIBRATED, isTimeVerify)
                 }
 
-                mAnalyticsManager?.enqueueEventMessage(realEventName, data)
+                mAnalyticsManager?.enqueueEventMessage(
+                    realEventName, data, eventInfo.optString(
+                        EVENT_INFO_SYN
+                    )
+                )
 
 
             }

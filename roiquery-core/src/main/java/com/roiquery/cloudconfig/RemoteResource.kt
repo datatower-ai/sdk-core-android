@@ -23,7 +23,7 @@ class RemoteResource<T : Any> @PublishedApi internal constructor(
     private val resourceClass: KClass<T>,
     private val logger: ((String) -> Unit)? = null
 ) : RemoteResourceContext {
-    var resourceName: String = resourceClass.java.simpleName.toLowerCase(Locale.getDefault())
+    var resourceName: String = resourceClass.java.simpleName.lowercase(Locale.getDefault())
     lateinit var resourceLocalRepository: ResourceLocalRepository
     lateinit var resourceRemoteRepository: ResourceRemoteRepository
     lateinit var key: ByteArray
@@ -106,7 +106,9 @@ class RemoteResource<T : Any> @PublishedApi internal constructor(
 
     private fun fetchAndSave(success: (() -> Unit)? = null, error: ((Throwable) -> Unit)? = null) {
         resourceRemoteRepository.fetch({
-            key = AESCoder.initKey()
+            if (key.isEmpty()){
+                key = AESCoder.initKey()
+            }
             setKey.invoke(Base64.encodeToString(key, Base64.NO_WRAP))
             resourceLocalRepository.storeFetched(
                 ByteArrayInputStream(

@@ -157,13 +157,16 @@ class DataParams private constructor(packageName: String) {
         /* 数据库状态 */
         const val DB_INSERT_SUCCEED = 0
         const val DB_UPDATE_ERROR = -1
-        const val DB_OUT_OF_MEMORY_ERROR = -2
+        const val DB_OUT_OF_ROW_ERROR = -2
         const val DB_INSERT_EXCEPTION = -3
         const val DB_INSERT_ERROR = -3L
         const val DB_UPDATE_CONFIG_ERROR = -4
+        const val DB_INSERT_DATA_REPEAT = -5
         const val VALUE = "value"
         const val GZIP_DATA_EVENT = "1"
         const val GZIP_DATA_ENCRYPT = "9"
+
+        const val CONFIG_MAX_ROWS = 500
 
         /* 删除所有数据 */
         const val DB_DELETE_ALL = "DB_DELETE_ALL"

@@ -7,7 +7,7 @@ import android.os.Looper
 import android.os.Message
 import android.util.Log
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.ROIQueryAnalytics.Companion.flush
+import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.data.DataParams
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
@@ -24,6 +24,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.HashMap
 import kotlin.coroutines.CoroutineContext
 
 
@@ -42,34 +44,37 @@ class AnalyticsManager private constructor(
     override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
 
 
-    fun enqueueEventMessage(name: String, eventJson: JSONObject) {
+    fun enqueueEventMessage(name: String, eventJson: JSONObject,eventSyn:String) {
         try {
             if (mDateAdapter == null) return
             synchronized(mDateAdapter) {
-                //是否数据重复
-                if (isEventRepetitive(eventJson.getJSONObject(Constant.EVENT_BODY))) return
-                //插入数据库
-                val insertedCount = mDateAdapter.addJSON(eventJson)
+                launch {
+                    //是否数据重复
+                    if (isEventRepetitive(eventJson.getJSONObject(Constant.EVENT_BODY))) return@launch
+                    //插入数据库
+                    val insertedCount = mDateAdapter.addJSON(eventJson, eventSyn)
 
-                qualityReport(insertedCount)
-                val msg =
-                    if (insertedCount < 0) " Failed to insert the event " else " the event: $name  has been inserted to db，count = $insertedCount  "
-//                LogUtils.json(TAG + msg, eventJson.toString())
-                //发送上报的message
-                Message.obtain().apply {
-                    //上报标志
-                    this.what = FLUSH_QUEUE
-                    // 立即发送：有特殊事件需要立即上报、库存已满（无法插入）、超过允许本地缓存日志的最大条目数
-                    if (isNeedFlushImmediately(name)
-                        || insertedCount == DataParams.DB_OUT_OF_MEMORY_ERROR
-                        || insertedCount > 100
-                    ) {
-                        mWorker.runMessageOnce(this,1000L)
-                    } else {
-                        //不立即上报，有时间间隔
-                        mWorker.runMessageOnce(this, 2000L)
+                    qualityReport(insertedCount)
+                    val msg =
+                        if (insertedCount < 0) " Failed to insert the event " else " the event: $name  has been inserted to db，count = $insertedCount  "
+                LogUtils.json(TAG + msg, eventJson.toString())
+                    //发送上报的message
+                    Message.obtain().apply {
+                        //上报标志
+                        this.what = FLUSH_QUEUE
+                        // 立即发送：有特殊事件需要立即上报、库存已满（无法插入）、超过允许本地缓存日志的最大条目数
+                        if (isNeedFlushImmediately(name)
+                            || insertedCount == DataParams.DB_OUT_OF_ROW_ERROR
+                            || insertedCount > 100
+                        ) {
+                            mWorker.runMessageOnce(this, 1000L)
+                        } else {
+                            //不立即上报，有时间间隔
+                            mWorker.runMessageOnce(this, 2000L)
+                        }
                     }
                 }
+
             }
         } catch (e: Exception) {
             LogUtils.i(TAG, "enqueueEventMessage error:$e")
@@ -100,14 +105,6 @@ class AnalyticsManager private constructor(
         }
     }
 
-    /**
-     * app_attribute 事件采集情况
-     */
-//    private fun checkAppAttributeInsertState(insertCount: Int, eventName: String) {
-//        if (insertCount > 0 && Constant.PRESET_EVENT_TAG + eventName ==  Constant.PRESET_EVENT_APP_ATTRIBUTE) {
-//            mDateAdapter?.isAttributed = true
-//        }
-//    }
 
     /**
      * 重复数据校验
@@ -202,47 +199,6 @@ class AnalyticsManager private constructor(
         return true
     }
 
-    /**
-     * 更新事件时间
-     */
-    private suspend fun updateEventTime(eventsData: String): String {
-        val result = JSONArray()
-        val data = JSONArray(eventsData)
-        val length = data.length()
-        for (i in 0 until length) {
-            data.getJSONObject(i)?.let {
-                if (it.has(Constant.EVENT_TIME_CALIBRATED) && it.has(Constant.EVENT_BODY)) {
-                    //如果事件是在时间同步之前发生的，需要校准
-                    if (!it.getBoolean(Constant.EVENT_TIME_CALIBRATED)) {
-                        it.getJSONObject(Constant.EVENT_BODY).apply {
-                            TimeCalibration.instance.getVerifyTimeAsync().apply {
-                                put(Constant.EVENT_INFO_TIME, this)
-                            }
-                            //app_attribute 事件特殊处理first_open_time
-                            if ((Constant.PRESET_EVENT_TAG + getString(Constant.EVENT_INFO_NAME)) == Constant.PRESET_EVENT_APP_ATTRIBUTE) {
-                                val firstOpenTime =
-                                    getJSONObject(Constant.EVENT_INFO_PROPERTIES).getString(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME)
-                                        .toLong()
-                                val realFirstOpenTime =
-                                    firstOpenTime + ((mDateAdapter?.timeOffset?.toLong() ?: 0L))
-                                getJSONObject(Constant.EVENT_INFO_PROPERTIES).put(
-                                    Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
-                                    realFirstOpenTime.toString()
-                                )
-                            }
-                            result.put(this)
-                        }
-                    } else {
-                        result.put(it.getJSONObject(Constant.EVENT_BODY))
-                    }
-                } else {//原来的旧数据
-                    result.put(it)
-                }
-            }
-        }
-
-        return result.toString()
-    }
 
     /**
      * 数据上报到服务器
@@ -256,7 +212,7 @@ class AnalyticsManager private constructor(
             return
         }
         //读取数据库数据
-        var eventsData: Array<String>?
+        var eventsData:String?
         synchronized(mDateAdapter) {
             eventsData = mDateAdapter.generateDataString(
                 Constant.EVENT_REPORT_SIZE
@@ -276,31 +232,27 @@ class AnalyticsManager private constructor(
             TimeCalibration.instance.getReferenceTime()
             return
         }
-
-        //列表最后一条数据的id，删除时根据此id <= 进行删除
-        val lastId = eventsData!![0]
         launch(Dispatchers.IO) {
             //事件主体，json格式
-            EventInfoCheckHelper.instance.correctEventTime(eventsData!![1]) { info, reInsertData ->
-                launch(Dispatchers.Main) {
-                    if (info.isNotEmpty()) {
-                        mDateAdapter.enableUpload = false
-                        //http 请求
-                        uploadDataToNet(info, lastId, mDateAdapter, reInsertData)
-                    } else {
-                        mDateAdapter.enableUpload = true
+            eventsData?.let {
+                EventInfoCheckHelper.instance.correctEventTime(it) { info ->
+                    launch(Dispatchers.Main) {
+                        if (info.isNotEmpty()) {
+                            mDateAdapter.enableUpload = false
+                            //http 请求
+                            uploadDataToNet(info,  mDateAdapter)
+                        } else {
+                            mDateAdapter.enableUpload = true
+                        }
                     }
                 }
             }
-
-
         }
     }
 
     private fun uploadDataToNet(
         event: String,
-        lastId: String,
-        mDateAdapter: EventDateAdapter, reInsertData: JSONArray? = null
+        mDateAdapter: EventDateAdapter
     ) {
         RequestHelper.Builder(
             HttpMethod.POST_ASYNC,
@@ -322,12 +274,9 @@ class AnalyticsManager private constructor(
                     LogUtils.json("$TAG upload event data ", event)
                     LogUtils.json("$TAG upload event result ", response)
                     if (response?.getInt(ResponseDataKey.KEY_CODE) == 0) {
-                        //上报成功后删除本地数据
-                        val leftCount =
-                            if (lastId.isEmpty()) -1 else mDateAdapter.cleanupEvents(lastId)
-                        LogUtils.d(TAG, "lastId = $lastId, db left count = $leftCount")
 
-                        reEnqueueEventMessage(reInsertData)
+                        deleteEventAfterReport(event, mDateAdapter)
+
                         //避免事件积压，成功后再次上报
                         flush(2000L)
                     } else {
@@ -349,12 +298,16 @@ class AnalyticsManager private constructor(
             }).execute()
     }
 
-    private fun reEnqueueEventMessage(data: JSONArray?) {
-        data?.let {
-            launch(Dispatchers.IO) {
-                for (i in 0 until data.length()) {
-                    mDateAdapter?.addJSON(data.optJSONObject(i))
-                }
+    private fun deleteEventAfterReport(
+        event: String,
+        mDateAdapter: EventDateAdapter
+    ) {
+        //上报成功后删除本地数据
+        val jsonArray = JSONArray(event)
+        val length = jsonArray.length()
+        for (i in 0 until length) {
+            jsonArray.optJSONObject(i)?.let {
+                mDateAdapter.cleanupEvents(it.optString(EVENT_INFO_SYN))
             }
         }
     }

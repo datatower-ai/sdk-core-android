@@ -7,9 +7,10 @@ buildscript {
         // 0 本地
         // 1 maven-snapshot
         // 2 maven-releases
-        dependence_type = "1"
+        dependence_type = "0"
         kotlin_version = "1.6.10"
         dokka_version = '1.4.10.2'
+        room_version = '2.4.2'
     }
     ext.kotlin_version = "1.6.10"
     repositories {
@@ -36,7 +37,7 @@ allprojects {
         }
     }
 }
-
+\
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
