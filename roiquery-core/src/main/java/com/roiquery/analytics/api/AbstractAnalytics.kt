@@ -15,6 +15,7 @@ import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.COMMON_PROPERTY_USER_AGENT_WEBVIEW
 import com.roiquery.analytics.Constant.EVENT_INFO_SYN
+import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.AnalyticsManager
 import com.roiquery.analytics.data.EventDateAdapter
@@ -86,6 +87,12 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
             mSDKConfigInit = true
             LogUtils.d("ROIQuery","init succeed")
         } catch (e: Exception) {
+            if (!ROIQueryAnalytics.isSDKInitSuccess()) {
+                ROIQueryQualityHelper.instance.reportQualityMessage(
+                    ROIQueryErrorParams.SDK_INIT_ERROR,
+                    "SDK  init error "
+                )
+            }
             LogUtils.printStackTrace(e)
         }
     }
@@ -105,6 +112,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
         mDataAdapter = EventDateAdapter.getInstance(mContext!!, mContext!!.packageName)
         mDataAdapter?.timeOffset = Constant.TIME_OFFSET_DEFAULT_VALUE
         mDataAdapter?.lastEngagementTime = Constant.TIME_OFFSET_DEFAULT_VALUE
+        mDataAdapter?.enableUpload = true
     }
 
     /**

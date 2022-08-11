@@ -219,7 +219,7 @@ class AnalyticsManager private constructor(
             )
         }
 
-        if (eventsData == null) {
+        if (eventsData == null||JSONArray(eventsData).length()==0) {
             LogUtils.d(TAG, "db count = 0，disable upload")
             mDateAdapter.enableUpload = true
             return

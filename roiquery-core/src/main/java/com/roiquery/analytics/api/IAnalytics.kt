@@ -95,10 +95,7 @@ interface IAnalytics {
      * 设置谷歌开发者拥有的应用集ID
      */
     var appSetId: String?
-    /**
-     * 是否禁用SDK
-     */
-    var enableSDK: Boolean?
+
 
     /**
      * 是否允许采集开启数据采集

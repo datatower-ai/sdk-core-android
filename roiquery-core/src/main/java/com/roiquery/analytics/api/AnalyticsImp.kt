@@ -111,22 +111,6 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
             }
         }
 
-    override var enableSDK: Boolean?
-        get() = enableTrack == true && enableUpload == true
-        set(value) {
-            if (value == false && enableSDK == true) {
-                LogUtils.e("Analytics SDK is disable")
-                enableTrack = false
-                enableUpload = false
-                configLog(false)
-            }
-            if (value == true && enableSDK == false) {
-                enableTrack = true
-                enableUpload = true
-                configLog()
-            }
-        }
-
 
     override var enableTrack: Boolean?
         get() = EventDateAdapter.getInstance()?.enableTrack == true
@@ -173,13 +157,6 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
     }
 
      private fun trackInternal(eventName: String?, eventType: String, properties: JSONObject?) {
-         if (!ROIQueryAnalytics.isSDKEnable()) {
-             ROIQueryQualityHelper.instance.reportQualityMessage(
-                 ROIQueryErrorParams.SDK_INIT_ERROR,
-                 "SDK is unable, event name: $eventName "
-             )
-             return
-         }
 
          mTrackTaskManager?.let {
              try {

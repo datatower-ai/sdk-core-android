@@ -2,7 +2,6 @@ package com.roiquery.analytics
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.roiquery.analytics.Constant.ENABLE_ANALYTICS_SDK_KEY
 import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.api.ServerTimeListener
@@ -10,7 +9,6 @@ import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.AppLifecycleHelper
 import com.roiquery.analytics.utils.LogUtils
-import com.roiquery.cloudconfig.ROIQueryCloudConfig
 
 import org.json.JSONObject
 import java.lang.Exception
@@ -281,7 +279,7 @@ open class ROIQueryAnalytics {
          */
         internal fun onAppForeground() {
             try {
-                if (!isSDKEnable()) return
+                if (!isSDKInitSuccess()) return
                 checkNotNull(mContext) { "Call ROIQuery.initSDK first" }
                 EventDateAdapter.getInstance()?.isAppForeground = true
                 AnalyticsImp.getInstance(mContext).trackAppStateChanged()
@@ -300,7 +298,7 @@ open class ROIQueryAnalytics {
          */
         internal fun onAppBackground() {
             try {
-                if (!isSDKEnable()) return
+                if (!isSDKInitSuccess()) return
                 checkNotNull(mContext) { "Call ROIQuerySDK.init first" }
                 EventDateAdapter.getInstance()?.isAppForeground = false
                 AnalyticsImp.getInstance(mContext).trackAppStateChanged()
@@ -317,7 +315,7 @@ open class ROIQueryAnalytics {
 
         internal fun getContext(): Context? {
             return try {
-                if (!isSDKEnable()) return null
+                if (!isSDKInitSuccess()) return null
                 checkNotNull(mContext) { "Call ROIQuerySDK.init first" }
                 mContext as Context
             } catch (e: Exception) {
@@ -328,21 +326,14 @@ open class ROIQueryAnalytics {
 
 
         internal fun addAppStatusListener(listener: AppLifecycleHelper.OnAppStatusListener?) {
-            if (!isSDKEnable()) return
+            if (!isSDKInitSuccess()) return
             mAppLifecycleListeners.add(listener)
         }
 
         /**
-         * sdk 是否可用，默认可用，由cloud config 控制
+         * sdk 是否初始化成功
          */
-        internal fun isSDKEnable(): Boolean {
-            return if (!AbstractAnalytics.mSDKConfigInit) true
-            else
-                ROIQueryCloudConfig.getBoolean(ENABLE_ANALYTICS_SDK_KEY, true).apply {
-                    //switch
-                    AnalyticsImp.getInstance(mContext).enableSDK = this
-                }
-        }
+        internal fun isSDKInitSuccess(): Boolean = AbstractAnalytics.mSDKConfigInit
 
         internal fun getEventInfo() = AnalyticsImp.getInstance(mContext).getEventInfo()
 
