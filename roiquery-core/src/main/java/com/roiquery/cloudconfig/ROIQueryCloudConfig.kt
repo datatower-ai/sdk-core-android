@@ -11,7 +11,7 @@ class ROIQueryCloudConfig {
         private val mRemoteAppConfig by lazy { remoteConfig<String>() }
         private var mIsInitialized = false
         private var mCache: JSONObject? = null
-        internal var mLogger: ((String) -> Unit)? = null
+        private var mLogger: ((String) -> Unit)? = null
 
 
         fun init(

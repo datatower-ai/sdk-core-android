@@ -3,33 +3,33 @@ package com.roiquery.analytics.data
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import android.text.TextUtils
+import com.roiquery.analytics.ROIQueryCoroutineScope
 import com.roiquery.analytics.data.room.ROIQueryAnalyticsDB
 import com.roiquery.analytics.data.room.bean.Configs
 import com.roiquery.analytics.data.room.bean.Events
 import com.roiquery.analytics.utils.LogUtils
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 
 internal class EventDataOperation(
     mContext: Context
-) : CoroutineScope {
+) : ROIQueryCoroutineScope() {
     var TAG = "EventDataOperation"
     private var analyticsDB: ROIQueryAnalyticsDB? =
         ROIQueryAnalyticsDB.getInstance(context = mContext)
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + Job()
 
     /**
      * 保存数据
      * 插入成功 返回true 失败返回 false
      */
     suspend fun insertData(jsonObject: JSONObject?, eventSyn: String) =
-        coroutineScope {
-            suspendCoroutine<Int> {
+        suspendCoroutine<Int> {
+            scope.launch {
                 try {
                     launch {
                         if (!deleteDataWhenOverMaxRows())
@@ -66,14 +66,16 @@ internal class EventDataOperation(
      */
     fun insertConfig(name: String, value: String?) {
         try {
-            runBlocking {
+            scope.launch {
                 value?.let { notEmptyValue ->
                     analyticsDB?.getConfigDao()?.let {
                         val isExist = it.existsValue(name) > 0
-                        if (isExist) {
-                            it.update(name = name, value = notEmptyValue)
-                        } else {
-                            it.insert(Configs(name = name, value = value))
+                        withContext(Dispatchers.Default) {
+                            if (isExist) {
+                                it.update(name = name, value = notEmptyValue)
+                            } else {
+                                it.insert(Configs(name = name, value = value))
+                            }
                         }
                     }
                 }
@@ -95,12 +97,12 @@ internal class EventDataOperation(
     /**
      * 查询数据
      */
-    suspend fun queryData(limit: Int) = coroutineScope {
+    suspend fun queryData(limit: Int) =
         suspendCoroutine<String> {
             val jsonData = StringBuilder()
             val suffix = ","
             jsonData.append("[")
-            launch {
+            scope.launch {
                 try {
                     val queryEventData = analyticsDB?.getEventsDao()?.queryEventData(limit)
                     queryEventData?.let { it ->
@@ -118,7 +120,7 @@ internal class EventDataOperation(
                 }
             }
         }
-    }
+
 
 
     /**
@@ -167,9 +169,9 @@ internal class EventDataOperation(
      *
      * @return 正常返回 0
      */
-    private suspend fun deleteDataWhenOverMaxRows() = coroutineScope {
+    private suspend fun deleteDataWhenOverMaxRows() =
         suspendCoroutine<Boolean> {
-            launch {
+            scope.launch {
                 if (queryDataCount() >= DataParams.CONFIG_MAX_ROWS) {
                     LogUtils.i(
                         TAG,
@@ -189,10 +191,10 @@ internal class EventDataOperation(
                 }
             }
         }
-    }
+
 
     fun deleteAllEventData() {
-        launch {
+        scope.launch {
             analyticsDB?.getEventsDao()?.clearTable()
         }
     }

@@ -1,12 +1,17 @@
 package com.roiquery.cloudconfig
 
 import android.util.Base64
+import com.roiquery.analytics.ROIQueryCoroutineScope
+import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.cloudconfig.core.RemoteResourceContext
 import com.roiquery.cloudconfig.core.ResourceLocalRepository
 import com.roiquery.cloudconfig.core.ResourceMapper
 import com.roiquery.cloudconfig.core.ResourceRemoteRepository
 import com.roiquery.cloudconfig.mappers.TextResourceMapper
 import com.roiquery.cloudconfig.utils.AESCoder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayInputStream
 import java.util.*
 import kotlin.reflect.KClass
@@ -22,7 +27,7 @@ import kotlin.reflect.KClass
 class RemoteResource<T : Any> @PublishedApi internal constructor(
     private val resourceClass: KClass<T>,
     private val logger: ((String) -> Unit)? = null
-) : RemoteResourceContext {
+) : RemoteResourceContext, ROIQueryCoroutineScope() {
     var resourceName: String = resourceClass.java.simpleName.lowercase(Locale.getDefault())
     lateinit var resourceLocalRepository: ResourceLocalRepository
     lateinit var resourceRemoteRepository: ResourceRemoteRepository
@@ -43,10 +48,12 @@ class RemoteResource<T : Any> @PublishedApi internal constructor(
      * @param resource config that will be stored as default value
      */
     fun setDefaultConfig(resource: T) {
-        if (key.isEmpty()) {
-            key = AESCoder.initKey()
+        scope.launch {
+            if (key.isEmpty()) {
+                key = AESCoder.initKey()
+            }
+            resourceLocalRepository.storeDefault(format.toRepository(resource, key))
         }
-        resourceLocalRepository.storeDefault(format.toRepository(resource, key))
     }
 
     /**
@@ -106,20 +113,27 @@ class RemoteResource<T : Any> @PublishedApi internal constructor(
 
     private fun fetchAndSave(success: (() -> Unit)? = null, error: ((Throwable) -> Unit)? = null) {
         resourceRemoteRepository.fetch({
-            if (key.isEmpty()){
-                key = AESCoder.initKey()
-            }
-            setKey.invoke(Base64.encodeToString(key, Base64.NO_WRAP))
-            resourceLocalRepository.storeFetched(
-                ByteArrayInputStream(
-                    AESCoder.encrypt(
-                        it.toByteArray(),
-                        key
+            scope.launch {
+                if (key.isEmpty()) {
+                    key = AESCoder.initKey()
+                }
+                setKey.invoke(Base64.encodeToString(key, Base64.NO_WRAP))
+                withContext(Dispatchers.IO){
+                    resourceLocalRepository.storeFetched(
+                        ByteArrayInputStream(
+                            AESCoder.encrypt(
+                                it.toByteArray(),
+                                key
+                            )
+                        )
                     )
-                )
-            )
-            resourceLocalRepository.activate()
-            success?.invoke()
+                    resourceLocalRepository.activate()
+                }
+
+                withContext(Dispatchers.Main){
+                    success?.invoke()
+                }
+            }
         }, {
             logger?.invoke("Error fetching remote config: ${it.message}")
             error?.invoke(it)

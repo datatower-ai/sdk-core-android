@@ -1,7 +1,6 @@
 package com.roiquery.cloudconfig.mappers
 
 import com.roiquery.cloudconfig.core.ResourceMapper
-import com.roiquery.cloudconfig.utils.AESCoder
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 

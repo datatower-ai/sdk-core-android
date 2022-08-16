@@ -32,7 +32,9 @@ internal object Constant {
     const val EVENT_INFO_DEBUG       = "debug"
     const val EVENT_INFO_TIME        = "event_time"
     const val EVENT_INFO_NAME        = "event_name"
+    const val PRE_EVENT_INFO_NAME        = "#event_name"
     const val EVENT_INFO_TYPE        = "event_type"
+    const val PRE_EVENT_INFO_SYN     = "#event_syn"
     const val EVENT_INFO_SYN         = "event_syn"
     const val EVENT_INFO_PROPERTIES  = "properties"
 
