@@ -5,9 +5,10 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
 import android.os.Message
-import android.util.Log
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.EVENT_INFO_SYN
+import com.roiquery.analytics.Constant.PRE_EVENT_INFO_SYN
+import com.roiquery.analytics.ROIQueryCoroutineScope
 import com.roiquery.analytics.data.DataParams
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
@@ -18,15 +19,11 @@ import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
 import com.roiquery.analytics.utils.TimeCalibration
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
-import java.util.*
 import kotlin.collections.HashMap
-import kotlin.coroutines.CoroutineContext
 
 
 /**
@@ -35,22 +32,16 @@ import kotlin.coroutines.CoroutineContext
 class AnalyticsManager private constructor(
     var mContext: Context,
 //    var mAnalyticsDataAPI: AnalyticsImp
-) : CoroutineScope {
+) : ROIQueryCoroutineScope() {
     private val mWorker: Worker = Worker()
     private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
-    private var mLastEventName: String? = null
-    private var mLastEventTime: Long? = null
-    private var mLastEventJson: JSONObject? = null
-    override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
 
 
     fun enqueueEventMessage(name: String, eventJson: JSONObject,eventSyn:String) {
         try {
             if (mDateAdapter == null) return
             synchronized(mDateAdapter) {
-                launch {
-                    //是否数据重复
-                    if (isEventRepetitive(eventJson.getJSONObject(Constant.EVENT_BODY))) return@launch
+                scope.launch {
                     //插入数据库
                     val insertedCount = mDateAdapter.addJSON(eventJson, eventSyn)
 
@@ -103,59 +94,6 @@ class AnalyticsManager private constructor(
             if (timeDelayMills == 0L) mWorker.runMessage(this)
             else mWorker.runMessageOnce(this, timeDelayMills)
         }
-    }
-
-
-    /**
-     * 重复数据校验
-     */
-    private fun isEventRepetitive(
-        eventJson: JSONObject
-    ): Boolean {
-        var isRepetitive = false
-        val eventName = eventJson.getString(Constant.EVENT_INFO_NAME)
-        val eventTime = eventJson.getString(Constant.EVENT_INFO_TIME).toLong()
-        if (mLastEventName == null) {
-            isRepetitive = false
-        } else if (mLastEventName == eventName && eventTime - mLastEventTime!! < 1000) {
-            if (mLastEventJson != null) {
-                val currentKeys = mutableListOf<String>().apply {
-                    eventJson.getJSONObject(Constant.EVENT_INFO_PROPERTIES).keys().forEach {
-                        if (!it.startsWith("#")) {
-                            this.add(it)
-                        }
-                    }
-                }
-                val lastKeys = mutableListOf<String>().apply {
-                    mLastEventJson!!.getJSONObject(Constant.EVENT_INFO_PROPERTIES).keys().forEach {
-                        if (!it.startsWith("#")) {
-                            this.add(it)
-                        }
-                    }
-                }
-                //same key
-                if (currentKeys.size == lastKeys.size && currentKeys.containsAll(lastKeys)) {
-                    isRepetitive = true
-                    for (key in currentKeys) {
-                        //if the values do not equals, that means different event
-                        if (!mLastEventJson!!.getJSONObject(Constant.EVENT_INFO_PROPERTIES)
-                                .getString(key)
-                                .equals(
-                                    eventJson.getJSONObject(Constant.EVENT_INFO_PROPERTIES)
-                                        .getString(key)
-                                )
-                        ) {
-                            isRepetitive = false
-                            break
-                        }
-                    }
-                }
-            }
-        }
-        mLastEventName = eventName
-        mLastEventTime = eventTime
-        mLastEventJson = eventJson
-        return isRepetitive
     }
 
     /**
@@ -232,7 +170,7 @@ class AnalyticsManager private constructor(
             TimeCalibration.instance.getReferenceTime()
             return
         }
-        launch(Dispatchers.IO) {
+        scope.launch(Dispatchers.IO) {
             //事件主体，json格式
             eventsData?.let {
                 EventInfoCheckHelper.instance.correctEventTime(it) { info ->
@@ -303,12 +241,22 @@ class AnalyticsManager private constructor(
         mDateAdapter: EventDateAdapter
     ) {
         //上报成功后删除本地数据
-        val jsonArray = JSONArray(event)
-        val length = jsonArray.length()
-        for (i in 0 until length) {
-            jsonArray.optJSONObject(i)?.let {
-                mDateAdapter.cleanupEvents(it.optString(EVENT_INFO_SYN))
+        try {
+            val jsonArray = JSONArray(event)
+            val length = jsonArray.length()
+            for (i in 0 until length) {
+                jsonArray.optJSONObject(i)?.let {
+                    if (it.optString(EVENT_INFO_SYN).isNotEmpty()){
+                        mDateAdapter.cleanupEvents(it.optString(EVENT_INFO_SYN))
+                    }else{
+                        mDateAdapter.cleanupEvents(it.optString(PRE_EVENT_INFO_SYN))
+                    }
+                }
             }
+        } catch (e: Exception) {
+            // 保证数据不会重复上传
+            mDateAdapter.deleteAllEvents()
+        } finally {
         }
     }
 

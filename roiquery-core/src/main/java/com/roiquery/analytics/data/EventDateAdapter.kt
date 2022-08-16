@@ -3,9 +3,9 @@ package com.roiquery.analytics.data
 import android.content.Context
 import android.text.TextUtils
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.ROIQueryCoroutineScope
 import kotlinx.coroutines.*
 import org.json.JSONObject
-import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -13,11 +13,9 @@ import kotlin.coroutines.suspendCoroutine
 class EventDateAdapter private constructor(
     context: Context,
     packageName: String,
-): CoroutineScope  {
+): ROIQueryCoroutineScope()  {
     private val mDbParams: DataParams? = DataParams.getInstance(packageName)
     private var mOperation: EventDataOperation? = EventDataOperation(context.applicationContext)
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + Job()
     /**
      * Adds a JSON string representing an event with properties or a person record
      * to the SQLiteDatabase.
@@ -28,7 +26,7 @@ class EventDateAdapter private constructor(
      */
     suspend fun addJSON(j: JSONObject?, eventSyn: String)= coroutineScope {
         suspendCoroutine<Int> {
-            launch {
+            scope.launch {
                 val code = mOperation?.insertData(j, eventSyn)!!
                 it.resume(
                     if (code == DataParams.DB_INSERT_SUCCEED) {
@@ -54,7 +52,7 @@ class EventDateAdapter private constructor(
      * @return the number of rows in the table
      */
     fun cleanupEvents(eventSyn: String?) {
-        launch {
+        scope.launch {
             eventSyn?.let { mOperation?.deleteEventByEventSyn(it) }
         }
     }
@@ -75,6 +73,7 @@ class EventDateAdapter private constructor(
      * @return acountId
      */
     var firstOpenTime: Long
+        // TODO: runBlocking 不建议用在代码中，只用于测试，后续优化
         get() = runBlocking{ getLongConfig(DataParams.CONFIG_FIRST_OPEN_TIME) }
         set(value) = setLongConfig(DataParams.CONFIG_FIRST_OPEN_TIME,value)
 

@@ -32,9 +32,11 @@ val MIGRATION_1_2 = object : Migration(1,2){
                 while (cursor.moveToNext()) {
                     val data = cursor.getString(cursor.getColumnIndex(DataParams.KEY_DATA))
                     val id = cursor.getString(cursor.getColumnIndex("_id"))
-                    val eventSyn =
-                        JSONObject(data).optJSONObject(Constant.EVENT_BODY)
-                            ?.optString(Constant.EVENT_INFO_SYN)
+                    val eventSyn = JSONObject(data).optJSONObject(Constant.EVENT_BODY)?.let { eventBody->
+                        eventBody.optString(Constant.EVENT_INFO_SYN).ifEmpty {
+                            eventBody.optString(Constant.PRE_EVENT_INFO_SYN)
+                        }
+                    }
                     database.execSQL("update events set event_syn= $eventSyn where _id =$id")
                 }
             }

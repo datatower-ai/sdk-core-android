@@ -5,7 +5,6 @@ import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.TimeCalibration
-import com.roiquery.analytics.utils.transToLong
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -89,7 +88,11 @@ class EventInfoCheckHelper private constructor() {
     }
 
     private fun eventNameForPreset(eventInfo: JSONObject) =
-        "${Constant.PRESET_EVENT_TAG}${eventInfo.getString(Constant.EVENT_INFO_NAME)}"
+        "${Constant.PRESET_EVENT_TAG}${
+            if (eventInfo.optString(Constant.PRE_EVENT_INFO_NAME).isNotEmpty()) eventInfo.optString(
+                Constant.PRE_EVENT_INFO_NAME
+            ) else eventInfo.getString(Constant.EVENT_INFO_NAME)
+        }"
 
 
     private fun correctAttributeFirstOpenTimeInfo(

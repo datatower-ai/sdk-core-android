@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
@@ -673,9 +674,11 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
      * 获取浏览器user_agent
      */
     private fun getUserAgentByUIThread() {
-        ThreadUtils.runOnUiThread {
+        launch (Dispatchers.Default){
             mContext?.let {
-                mDataAdapter?.uaWebview = NetworkUtils.getUserAgent(it)
+                if (mDataAdapter?.uaWebview?.isEmpty() == true){
+                    mDataAdapter?.uaWebview = NetworkUtils.getUserAgent(it)
+                }
                 updateCommonProperties(COMMON_PROPERTY_USER_AGENT_WEBVIEW, mDataAdapter?.uaWebview ?: "")
             }
         }
