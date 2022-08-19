@@ -52,7 +52,7 @@ class EventDateAdapter private constructor(
      * @return the number of rows in the table
      */
     fun cleanupEvents(eventSyn: String?) {
-        scope.launch {
+        scope.launch(Dispatchers.IO) {
             eventSyn?.let { mOperation?.deleteEventByEventSyn(it) }
         }
     }
