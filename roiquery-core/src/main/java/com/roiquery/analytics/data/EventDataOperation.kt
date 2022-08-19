@@ -70,7 +70,7 @@ internal class EventDataOperation(
                 value?.let { notEmptyValue ->
                     analyticsDB?.getConfigDao()?.let {
                         val isExist = it.existsValue(name) > 0
-                        withContext(Dispatchers.Default) {
+                        withContext(Dispatchers.IO) {
                             if (isExist) {
                                 it.update(name = name, value = notEmptyValue)
                             } else {
@@ -102,7 +102,7 @@ internal class EventDataOperation(
             val jsonData = StringBuilder()
             val suffix = ","
             jsonData.append("[")
-            scope.launch {
+            scope.launch(Dispatchers.IO) {
                 try {
                     val queryEventData = analyticsDB?.getEventsDao()?.queryEventData(limit)
                     queryEventData?.let { it ->
@@ -171,7 +171,7 @@ internal class EventDataOperation(
      */
     private suspend fun deleteDataWhenOverMaxRows() =
         suspendCoroutine<Boolean> {
-            scope.launch {
+            scope.launch(Dispatchers.IO) {
                 if (queryDataCount() >= DataParams.CONFIG_MAX_ROWS) {
                     LogUtils.i(
                         TAG,
@@ -194,7 +194,7 @@ internal class EventDataOperation(
 
 
     fun deleteAllEventData() {
-        scope.launch {
+        scope.launch(Dispatchers.IO) {
             analyticsDB?.getEventsDao()?.clearTable()
         }
     }
