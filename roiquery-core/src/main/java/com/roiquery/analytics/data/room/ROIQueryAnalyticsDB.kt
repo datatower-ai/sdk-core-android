@@ -1,6 +1,8 @@
 package com.roiquery.analytics.data.room
 
+import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -9,6 +11,8 @@ import com.roiquery.analytics.data.room.bean.Configs
 import com.roiquery.analytics.data.room.bean.Events
 import com.roiquery.analytics.data.room.dao.ConfigsDao
 import com.roiquery.analytics.data.room.dao.EventInfoDao
+import com.roiquery.analytics.utils.AppInfoUtils
+import com.roiquery.analytics.utils.ProcessUtils
 
 /**
  * author: xiaosailing
@@ -28,7 +32,10 @@ abstract class ROIQueryAnalyticsDB : RoomDatabase() {
     companion object {
         @Volatile
         private var instance: ROIQueryAnalyticsDB? = null
-        fun getInstance(context: Context): ROIQueryAnalyticsDB {
+        fun getInstance(context: Context): ROIQueryAnalyticsDB? {
+            if (ProcessUtils.isMainProcess(context as Application?)){
+                return null
+            }
             return instance ?: synchronized(this) {
                 instance ?: buildDatabase(context).also { instance = it }
             }
