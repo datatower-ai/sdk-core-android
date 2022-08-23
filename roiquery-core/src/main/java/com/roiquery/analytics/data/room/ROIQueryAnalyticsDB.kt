@@ -33,15 +33,15 @@ abstract class ROIQueryAnalyticsDB : RoomDatabase() {
         @Volatile
         private var instance: ROIQueryAnalyticsDB? = null
         fun getInstance(context: Context): ROIQueryAnalyticsDB? {
-            if (ProcessUtils.isMainProcess(context as Application?)){
-                return null
-            }
             return instance ?: synchronized(this) {
                 instance ?: buildDatabase(context).also { instance = it }
             }
         }
 
-        private fun buildDatabase(context: Context): ROIQueryAnalyticsDB {
+        private fun buildDatabase(context: Context): ROIQueryAnalyticsDB? {
+            if (!ProcessUtils.isMainProcess(context as Application?)){
+                return null
+            }
             return Room.databaseBuilder(
                 context,
                 ROIQueryAnalyticsDB::class.java,
