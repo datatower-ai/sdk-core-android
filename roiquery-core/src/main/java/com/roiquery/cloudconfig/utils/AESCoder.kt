@@ -68,7 +68,7 @@ internal object AESCoder : ROIQueryCoroutineScope() {
         if (ivBytes == null) {
             cipher.init(mode, key)
             val params = cipher.parameters
-            ivBytes = params.getParameterSpec(IvParameterSpec::class.java).iv
+            ivBytes = params?.getParameterSpec(IvParameterSpec::class.java)?.iv
         } else {
             cipher.init(mode, key, IvParameterSpec(ivBytes))
         }

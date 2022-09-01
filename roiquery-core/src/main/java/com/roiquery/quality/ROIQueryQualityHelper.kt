@@ -27,42 +27,48 @@ internal class ROIQueryQualityHelper private constructor() {
         @ROIQueryErrorParams.ROIQueryErrorType errorType: String,
         errorMsg: String?
     ) {
+        try {
+            RequestHelper.Builder(
+                HttpMethod.POST_ASYNC,
+                Constant.ERROR_REPORT_URL
+            )
+                .jsonData(getJsonData(errorType, errorMsg))
+                .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
+                .callback(object :
+                    HttpCallback.JsonCallback() {
+                    override fun onFailure(code: Int, errorMessage: String?) {
+                        LogUtils.d("ROIQueryQuality onFailure",errorMessage)
+                    }
 
-        RequestHelper.Builder(
-            HttpMethod.POST_ASYNC,
-            Constant.ERROR_REPORT_URL
-        )
-            .jsonData(getJsonData(errorType, errorMsg))
-            .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
-            .callback(object :
-                HttpCallback.JsonCallback() {
-                override fun onFailure(code: Int, errorMessage: String?) {
-                    LogUtils.d("ROIQueryQuality onFailure",errorMessage)
-                }
+                    override fun onResponse(response: JSONObject?) {
+                        LogUtils.d("ROIQueryQuality onResponse",response.toString())
+                    }
 
-                override fun onResponse(response: JSONObject?) {
-                    LogUtils.d("ROIQueryQuality onResponse",response.toString())
-                }
-
-                override fun onAfter() {
-                }
-            }).execute()
+                    override fun onAfter() {
+                    }
+                }).execute()
+        } catch (e: Exception) {
+        }
     }
     
     private fun getJsonData(@ROIQueryErrorParams.ROIQueryErrorType errorType: String, errorMsg: String?): String{
-        if (mEventInfo == null) {
-            mEventInfo = ROIQueryAnalytics.getEventInfo()
+        try {
+            if (mEventInfo == null) {
+                mEventInfo = ROIQueryAnalytics.getEventInfo()
+            }
+            if (mCommonProperties == null) {
+                mCommonProperties = ROIQueryAnalytics.getCommonProperties()
+            }
+            val info = JSONObject(mEventInfo).apply {
+                put(ERROR_TYPE, errorType)
+                put("properties",JSONObject(mCommonProperties).apply {
+                    put(ERROR_MESSAGE, errorMsg)
+                })
+            }
+            return info.toString()
+        } catch (e: Exception) {
         }
-        if (mCommonProperties == null) {
-            mCommonProperties = ROIQueryAnalytics.getCommonProperties()
-        }
-        val info = JSONObject(mEventInfo).apply {
-            put(ERROR_TYPE, errorType)
-            put("properties",JSONObject(mCommonProperties).apply {
-                put(ERROR_MESSAGE, errorMsg)
-            })
-        }
-        return info.toString()
+        return JSONObject().toString()
     }
 
 
