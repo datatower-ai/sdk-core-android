@@ -489,12 +489,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
         trackNormal(if (isFirstOpen) Constant.PRESET_EVENT_APP_FIRST_OPEN else Constant.PRESET_EVENT_APP_OPEN)
     }
 
-    private fun setSystemUserProperties() {
-        trackUser(
-            Constant.EVENT_TYPE_USER_SET_ONCE,
-            JSONObject(EventUtils.getSystemPropertiesForUserSet(mContext!!,mDataAdapter))
-        )
-    }
 
     private fun setLatestUserProperties() {
         trackUser(
