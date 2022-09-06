@@ -8,6 +8,8 @@ import com.roiquery.analytics.data.room.ROIQueryAnalyticsDB
 import com.roiquery.analytics.data.room.bean.Configs
 import com.roiquery.analytics.data.room.bean.Events
 import com.roiquery.analytics.utils.LogUtils
+import com.roiquery.quality.ROIQueryErrorParams
+import com.roiquery.quality.ROIQueryQualityHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -54,7 +56,8 @@ internal class EventDataOperation(
                     }
 
                 } catch (e: Exception) {
-                    LogUtils.printStackTrace(e)
+                    deleteTheOldestData(DataParams.CONFIG_MAX_ROWS / 2)
+                    reportRoomDatabaseError(e.message)
                     it.resume(DataParams.DB_INSERT_EXCEPTION)
                 }
             }
@@ -82,7 +85,7 @@ internal class EventDataOperation(
             }
 
         } catch (e: Exception) {
-            LogUtils.printStackTrace(e)
+            reportRoomDatabaseError(e.message)
         }
     }
 
@@ -90,7 +93,14 @@ internal class EventDataOperation(
     /**
      * 查询配置
      */
-    suspend fun queryConfig(name: String) = analyticsDB?.getConfigDao()?.queryValueByName(name)
+    suspend fun queryConfig(name: String):String? {
+        try {
+         return  analyticsDB?.getConfigDao()?.queryValueByName(name)
+        } catch (e: Exception) {
+            reportRoomDatabaseError(e.message)
+        }
+        return null
+    }
 
 
 
@@ -113,7 +123,7 @@ internal class EventDataOperation(
                         }
                     }
                 } catch (e: Exception) {
-                    e.printStackTrace()
+                    reportRoomDatabaseError(e.message)
                 } finally {
                     jsonData.append("]")
                     it.resume(jsonData.toString())
@@ -127,7 +137,17 @@ internal class EventDataOperation(
      * 查询数据条数
      * @return 条数
      */
-    suspend fun queryDataCount() = analyticsDB?.getEventsDao()?.dataCount() ?: 0
+    suspend fun queryDataCount() = suspendCoroutine<Int> {
+        try {
+            scope.launch (Dispatchers.IO){
+                it.resume(
+                    analyticsDB?.getEventsDao()?.dataCount() ?: 0
+                )
+            }
+        }catch (e:Exception){
+            reportRoomDatabaseError(e.message)
+        }
+    }
 
     /**
      * 删除数据
@@ -136,12 +156,18 @@ internal class EventDataOperation(
              try {
                  analyticsDB?.getEventsDao()?.deleteEventByEventSyn(eventSyn)
              } catch (ex: Exception) {
-                 LogUtils.printStackTrace(ex)
+                 reportRoomDatabaseError(ex.message)
              }
     }
 
 
-    private suspend fun deleteTheOldestData(num:Int)=analyticsDB?.getEventsDao()?.deleteTheOldestData(num)
+    private suspend fun deleteTheOldestData(num:Int) {
+        try {
+            analyticsDB?.getEventsDao()?.deleteTheOldestData(num)
+        } catch (e: Exception) {
+            reportRoomDatabaseError(e.message)
+        }
+    }
 
 
     private fun parseData(keyData: String): String {
@@ -159,7 +185,7 @@ internal class EventDataOperation(
                 }
             }
         } catch (ex: Exception) {
-            LogUtils.printStackTrace(ex)
+            reportRoomDatabaseError(ex.message)
         }
         return data
     }
@@ -181,6 +207,7 @@ internal class EventDataOperation(
                     try {
                         deleteTheOldestData(DataParams.CONFIG_MAX_ROWS / 2)
                     } catch (e: Exception) {
+                        reportRoomDatabaseError(e.message)
                         it.resume(false)
                     }
                     //数据库较满时，删除成功 it.resume(true)
@@ -194,8 +221,22 @@ internal class EventDataOperation(
 
 
     fun deleteAllEventData() {
-        scope.launch(Dispatchers.IO) {
-            analyticsDB?.getEventsDao()?.clearTable()
+        try {
+            scope.launch(Dispatchers.IO) {
+                analyticsDB?.getEventsDao()?.clearTable()
+            }
+        } catch (e: Exception) {
+            reportRoomDatabaseError(e.message)
+        }
+    }
+
+    private fun reportRoomDatabaseError(errorMsg:String?){
+        scope.launch (Dispatchers.Main){
+            try {
+                LogUtils.d(errorMsg)
+                ROIQueryQualityHelper.instance.reportQualityMessage(ROIQueryErrorParams.ROOM_DATABASE_ERROR,errorMsg)
+            } catch (e: Exception) {
+            }
         }
     }
 

@@ -59,6 +59,8 @@ internal object ROIQueryErrorParams {
      */
     const val TRACK_TASK_MANAGER_ERROR = "track_task_manager_error"
 
+    const val ROOM_DATABASE_ERROR = "room_database_error"
+
 
     @StringDef(
         DATA_INSERT_ERROR,
@@ -69,7 +71,8 @@ internal object ROIQueryErrorParams {
         UNKNOWN_TYPE,
         REPORT_ERROR_ON_FAIL,
         REPORT_ERROR_ON_RESPONSE,
-        TRACK_TASK_MANAGER_ERROR
+        TRACK_TASK_MANAGER_ERROR,
+        ROOM_DATABASE_ERROR
     )
     @Retention(
         RetentionPolicy.SOURCE
