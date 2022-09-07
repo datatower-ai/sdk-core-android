@@ -53,16 +53,7 @@ class AnalyticsManager private constructor(
                     Message.obtain().apply {
                         //上报标志
                         this.what = FLUSH_QUEUE
-                        // 立即发送：有特殊事件需要立即上报、库存已满（无法插入）、超过允许本地缓存日志的最大条目数
-                        if (isNeedFlushImmediately(name)
-                            || insertedCount == DataParams.DB_OUT_OF_ROW_ERROR
-                            || insertedCount > 100
-                        ) {
-                            mWorker.runMessageOnce(this, 1000L)
-                        } else {
-                            //不立即上报，有时间间隔
-                            mWorker.runMessageOnce(this, 2000L)
-                        }
+                        mWorker.runMessage(this)
                     }
                 }
 

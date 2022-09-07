@@ -1,7 +1,6 @@
 package com.roiquery.analytics.utils
 
 import android.content.Context
-import android.os.Build
 import android.text.TextUtils
 import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
@@ -92,7 +91,7 @@ object EventUtils {
             Constant.SDK_TYPE_ANDROID
         )//如 Android、iOS 等
         put(
-            Constant.USER_PROPERTY_ACTIVE_OS_VERSION,
+            Constant.USER_PROPERTY_ACTIVE_OS_VERSION_NAME,
             DeviceUtils.oS
         )//操作系统版本,iOS 11.2.2、Android 8.0.0 等
         put(
@@ -117,21 +116,14 @@ object EventUtils {
             size[1]
         )//屏幕高度
 
-//        put(Constant.USER_PROPERTY_ACTIVE_DIMS_X, DensityUtils.getScreenWidth(context))
-//        put(Constant.USER_PROPERTY_ACTIVE_DIMS_Y, DensityUtils.getScreenHeight(context))
         put(Constant.USER_PROPERTY_ACTIVE_DIMS_DPI, DensityUtils.getDensityDpi(context))
-
         put(Constant.USER_PROPERTY_ACTIVE_MEMORY_USED, MemoryUtils.getMemoryUsed(context))
         put(Constant.USER_PROPERTY_ACTIVE_STORAGE_USED, MemoryUtils.getStorageUsed(context))
-
         put(Constant.USER_PROPERTY_ACTIVE_NETWORK_TYPE, NetworkUtil.getNetworkTypeString(context))
         put(Constant.USER_PROPERTY_ACTIVE_SIMULATOR, EmulatorDetector.isEmulator())
-
-        put(Constant.USER_PROPERTY_ACTIVE_USER_AGENT, AppInfoUtils.getDefaultUserAgent(context))
-
         dataAdapter?.uaWebview?.let {
             if (it.isNotEmpty()) {
-                put(Constant.USER_PROPERTY_USER_AGENT_WEBVIEW, it)
+                put(Constant.USER_PROPERTY_ACTIVE_USER_AGENT, it)
             }
         }
 
@@ -205,7 +197,7 @@ object EventUtils {
                 Constant.SDK_TYPE_ANDROID
             )//如 Android、iOS 等
             put(
-                Constant.COMMON_PROPERTY_OS_VERSION,
+                Constant.COMMON_PROPERTY_OS_VERSION_NAME,
                 DeviceUtils.oS
             )//操作系统版本,iOS 11.2.2、Android 8.0.0 等
             put(
@@ -230,24 +222,21 @@ object EventUtils {
                 size[1]
             )//屏幕宽度
 
-//            put(Constant.COMMON_PROPERTY_DEVICE_DISPLAY, Build.DISPLAY)
-//            put(Constant.COMMON_PROPERTY_DEVICE_PRODUCT, Build.PRODUCT)
-//            put(Constant.COMMON_PROPERTY_DEVICE_DEVICE, Build.DEVICE)
             put(Constant.COMMON_PROPERTY_MEMORY_USED, MemoryUtils.getMemoryUsed(context))
             put(Constant.COMMON_PROPERTY_STORAGE_USED, MemoryUtils.getStorageUsed(context))
-//            put(Constant.COMMON_PROPERTY_DIMS_X, DensityUtils.getScreenWidth(context))
-//            put(Constant.COMMON_PROPERTY_DIMS_Y, DensityUtils.getScreenHeight(context))
             put(Constant.COMMON_PROPERTY_DIMS_DPI, DensityUtils.getDensityDpi(context))
 
             put(Constant.COMMON_PROPERTY_NETWORK_TYPE, NetworkUtil.getNetworkTypeString(context))
             put(Constant.COMMON_PROPERTY_SIMULATOR, EmulatorDetector.isEmulator())
 
-            put(Constant.COMMON_PROPERTY_USER_AGENT, AppInfoUtils.getDefaultUserAgent(context))
-            put(Constant.COMMON_PROPERTY_USER_AGENT_WEBVIEW, dataAdapter?.uaWebview)
+            put(Constant.COMMON_PROPERTY_USER_AGENT, dataAdapter?.uaWebview)
 
         }
 
     fun isValidEventName(name: String): Boolean {
+        if (name.startsWith(Constant.PRESET_EVENT_TAG)) {
+            LogUtils.e(" event name start with not allowed.")
+        }
         if (TextUtils.isEmpty(name)) {
             LogUtils.e("Empty event name is not allowed.")
             return false

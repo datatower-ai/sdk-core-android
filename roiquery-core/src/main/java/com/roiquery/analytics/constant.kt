@@ -5,7 +5,7 @@ internal object Constant {
     const val LOG_TAG = "ROIQuery"
 
     //ROIQuery base url
-    private val ANALYTICS_BASE_URL = if ("0" == BuildConfig.LINK_SITE) "https://test.roiquery.com" else ( if ("1" == BuildConfig.LINK_SITE)  "https://api.roiquery.com" else "https://apiex.roiquery.com")
+    private val ANALYTICS_BASE_URL = if ("0" == BuildConfig.LINK_SITE) "https://test.roiquery.com" else ( if ("1" == BuildConfig.LINK_SITE)  "https://report-inner.roiquery.com" else "https://report.roiquery.com")
 
 //    private const val ANALYTICS_BASE_URL = "https://test.roiquery.com"
     //upload url
@@ -32,9 +32,9 @@ internal object Constant {
     const val EVENT_INFO_DEBUG       = "#debug"
     const val EVENT_INFO_TIME        = "#event_time"
     const val EVENT_INFO_NAME        = "#event_name"
-    const val PRE_EVENT_INFO_NAME    = "#event_name"
+    const val PRE_EVENT_INFO_NAME    = "event_name"
     const val EVENT_INFO_TYPE        = "#event_type"
-    const val PRE_EVENT_INFO_SYN     = "#event_syn"
+    const val PRE_EVENT_INFO_SYN     = "event_syn"
     const val EVENT_INFO_SYN         = "#event_syn"
     const val EVENT_INFO_PROPERTIES  = "properties"
 
@@ -58,7 +58,8 @@ internal object Constant {
     const val COMMON_PROPERTY_SDK_TYPE            = "#sdk_type"
     const val COMMON_PROPERTY_SDK_VERSION         = "#sdk_version"
     const val COMMON_PROPERTY_OS                  = "#os"
-    const val COMMON_PROPERTY_OS_VERSION          = "#os_version"
+    const val COMMON_PROPERTY_OS_VERSION_NAME     = "#os_version_name"
+    const val COMMON_PROPERTY_OS_VERSION_CODE     = "#os_version_code"
     const val COMMON_PROPERTY_DEVICE_MANUFACTURER = "#device_manufacturer"
     const val COMMON_PROPERTY_DEVICE_BRAND        = "#device_brand"
     const val COMMON_PROPERTY_DIMS_DPI            = "#dims_dpi"
@@ -67,11 +68,10 @@ internal object Constant {
     const val COMMON_PROPERTY_MEMORY_USED         = "#memory_used"
     const val COMMON_PROPERTY_STORAGE_USED        = "#storage_used"
     const val COMMON_PROPERTY_USER_AGENT          = "#user_agent"
-    const val COMMON_PROPERTY_USER_AGENT_WEBVIEW  = "#user_agent_webview"
     const val COMMON_PROPERTY_DEVICE_MODEL        = "#device_model"
     const val COMMON_PROPERTY_SCREEN_HEIGHT       = "#screen_height"
     const val COMMON_PROPERTY_SCREEN_WIDTH        = "#screen_width"
-    const val ENGAGEMENT_PROPERTY_IS_FOREGROUND   = "#is_foreground"
+    const val COMMON_PROPERTY_IS_FOREGROUND       = "#is_foreground"
 
     //latest
     const val USER_PROPERTY_LATEST_INSTANCE_ID    = "#latest_instance_id"
@@ -84,6 +84,8 @@ internal object Constant {
     const val USER_PROPERTY_LATEST_FCM_TOKEN      = "#latest_fcm_token"
     const val USER_PROPERTY_LATEST_APPSFLYER_ID   = "#latest_appsflyer_id"
     const val USER_PROPERTY_LATEST_KOCHAVA_ID     = "#latest_kochava_id"
+    const val USER_PROPERTY_LATEST_APP_VERSION_CODE     = "#latest_app_version_code"
+    const val USER_PROPERTY_LATEST_APP_VERSION_NAME     = "#latest_app_version_name"
 
     //active
     const val USER_PROPERTY_ACTIVE_MCC                 = "#active_mcc"
@@ -97,25 +99,20 @@ internal object Constant {
     const val USER_PROPERTY_ACTIVE_SDK_TYPE            = "#active_sdk_type"
     const val USER_PROPERTY_ACTIVE_SDK_VERSION         = "#active_sdk_version"
     const val USER_PROPERTY_ACTIVE_OS                  = "#active_os"
-    const val USER_PROPERTY_ACTIVE_OS_VERSION          = "#active_os_version"
+    const val USER_PROPERTY_ACTIVE_OS_VERSION_NAME     = "#active_os_version_name"
+    const val USER_PROPERTY_ACTIVE_OS_VERSION_CODE     = "#active_os_version_code"
     const val USER_PROPERTY_ACTIVE_DEVICE_MANUFACTURER = "#active_device_manufacturer"
     const val USER_PROPERTY_ACTIVE_DEVICE_BRAND        = "#active_device_brand"
     const val USER_PROPERTY_ACTIVE_DEVICE_MODEL        = "#active_device_model"
     const val USER_PROPERTY_ACTIVE_SCREEN_HEIGHT       = "#active_screen_height"
     const val USER_PROPERTY_ACTIVE_SCREEN_WIDTH        = "#active_screen_width"
-//    const val USER_PROPERTY_ACTIVE_DIMS_X              = "active_dims_x"
-//    const val USER_PROPERTY_ACTIVE_DIMS_Y              = "active_dims_y"
     const val USER_PROPERTY_ACTIVE_DIMS_DPI            = "#active_dims_dpi"
     const val USER_PROPERTY_ACTIVE_MEMORY_USED         = "#active_memory_used"
     const val USER_PROPERTY_ACTIVE_STORAGE_USED        = "#active_storage_used"
     const val USER_PROPERTY_ACTIVE_NETWORK_TYPE        = "#active_network_type"
     const val USER_PROPERTY_ACTIVE_SIMULATOR           = "#active_simulator"
     const val USER_PROPERTY_ACTIVE_USER_AGENT          = "#active_user_agent"
-    const val USER_PROPERTY_USER_AGENT_WEBVIEW         = "#active_user_agent_webview"
-
-
-
-
+    const val USER_PROPERTY_ACTIVE_BUILD_DEVICE        = "#active_build_device"
 
     const val ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME             = "#first_open_time"
     const val ATTRIBUTE_PROPERTY_REFERRER_URL                = "#referrer_url"
@@ -127,39 +124,35 @@ internal object Constant {
 
 
     //preset event name about Analytics
-    const val PRESET_EVENT_TAG = "@.#"
-    const val PRESET_EVENT_APP_FIRST_OPEN  = PRESET_EVENT_TAG + "app_first_open"
-    const val PRESET_EVENT_APP_OPEN        = PRESET_EVENT_TAG + "app_open"
-    const val PRESET_EVENT_APP_ATTRIBUTE   = PRESET_EVENT_TAG + "app_attribute"
-    const val PRESET_EVENT_APP_ENGAGEMENT  = PRESET_EVENT_TAG + "app_engagement"
-    const val PRESET_EVENT_APP_CLOSE       = PRESET_EVENT_TAG + "app_close"
-    const val PRESET_EVENT_PAGE_OPEN       = PRESET_EVENT_TAG + "page_open"
-    const val PRESET_EVENT_PAGE_CLOSE      = PRESET_EVENT_TAG + "page_close"
-    const val PRESET_EVENT_USER_PROPERTIES = PRESET_EVENT_TAG + "user_properties"
-    const val PRESET_EVENT_APP_QUALITY     = PRESET_EVENT_TAG + "app_quality"
-    const val PRESET_EVENT_APP_STATE_CHANGED     = PRESET_EVENT_TAG + "app_state_changed"
+    const val PRESET_EVENT_TAG = "#"
+    const val EVENT_TYPE_TRACK = "track"
+    const val EVENT_TYPE_USER  = "user"
 
-    const val EVENT_TYPE_TRACK         = "track"
-    const val EVENT_TYPE_USER          = "user"
-    const val EVENT_TYPE_USER_ADD      = "#user_add"
-    const val EVENT_TYPE_USER_SET      = "#user_set"
-    const val EVENT_TYPE_USER_SET_ONCE = "#user_set_once"
-    const val EVENT_TYPE_USER_UNSET    = "#user_unset"
-    const val EVENT_TYPE_USER_APPEND   = "#user_append"
-    const val EVENT_TYPE_USER_DEL      = "#user_delete"
+    const val PRESET_EVENT_APP_FIRST_OPEN  = "#app_first_open"
+    const val PRESET_EVENT_APP_OPEN        = "#app_open"
+    const val PRESET_EVENT_APP_ATTRIBUTE   = "#app_attribute"
+    const val PRESET_EVENT_APP_ENGAGEMENT  = "#app_engagement"
+    const val PRESET_EVENT_APP_CLOSE       = "#app_close"
+    const val PRESET_EVENT_PAGE_OPEN       = "#page_open"
+    const val PRESET_EVENT_PAGE_CLOSE      = "#page_close"
+    const val PRESET_EVENT_USER_PROPERTIES = "#user_properties"
+    const val PRESET_EVENT_APP_QUALITY     = "#app_quality"
+    const val PRESET_EVENT_APP_STATE_CHANGED  =  "#app_state_changed"
+
+    const val PRESET_EVENT_USER_ADD      = "#user_add"
+    const val PRESET_EVENT_USER_SET      = "#user_set"
+    const val PRESET_EVENT_USER_SET_ONCE = "#user_set_once"
+    const val PRESET_EVENT_USER_UNSET    = "#user_unset"
+    const val PRESET_EVENT_USER_APPEND   = "#user_append"
+    const val PRESET_EVENT_USER_DEL      = "#user_delete"
 
     //engagement interval time
     const val APP_ENGAGEMENT_INTERVAL_TIME_INT = 5 * 60 * 1000 // 5min
     const val APP_ENGAGEMENT_INTERVAL_TIME_LONG = 5 * 60 * 1000L // 5min
 
     const val SDK_TYPE_ANDROID = "Android"
-    const val SDK_TYPE_UNITY   = "Unity"
-    const val SDK_TYPE_FLUTTER = "Flutter"
 
-    // sdk switch，cloudConfig to config
-    const val ENABLE_ANALYTICS_SDK_KEY = "enable_analytics_sdk"
-
-    const val TIME_OFFSET_DEFAULT_VALUE="0"
+    const val TIME_OFFSET_DEFAULT_VALUE = "0"
 
 }
 

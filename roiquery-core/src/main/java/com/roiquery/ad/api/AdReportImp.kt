@@ -12,6 +12,7 @@ import com.roiquery.ad.AdReportConstant.PROPERTY_AD_SHOW_ERROR_MESSAGE
 import com.roiquery.ad.AdType
 import com.roiquery.ad.utils.AdEventProperty
 import com.roiquery.ad.utils.AdPlatformUtils
+import com.roiquery.analytics.ROIQuery
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.AppLifecycleHelper.OnAppStatusListener
@@ -39,6 +40,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
             AdReportConstant.EVENT_AD_LOAD_BEGIN,
             generateAdReportJson(seq)
         )
+        ROIQuery.testInter()
     }
 
     override fun reportLoadEnd(

@@ -157,7 +157,6 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
     }
 
      private fun trackInternal(eventName: String?, eventType: String, properties: JSONObject?) {
-
          mTrackTaskManager?.let {
              try {
                  it.execute {
@@ -206,8 +205,8 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
     }
 
 
-    override fun trackUser(eventType: String,properties: JSONObject?) {
-        trackInternal(eventType, eventType, properties)
+    override fun trackUser(eventName: String, properties: JSONObject?) {
+        trackInternal(eventName, Constant.EVENT_TYPE_USER, properties)
     }
 
    override fun trackNormal(eventName: String?, properties: JSONObject?){
@@ -215,7 +214,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
     }
 
     fun trackNormal(eventName: String?, properties: Map<String, Any?>?){
-        trackInternal(eventName, Constant.EVENT_TYPE_TRACK,properties)
+        trackInternal(eventName, Constant.EVENT_TYPE_TRACK, properties)
     }
 
     fun trackAppClose(properties: Map<String, Any?>?) {
@@ -243,15 +242,15 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
     }
 
     fun userSet(properties: JSONObject?){
-        trackUser(Constant.EVENT_TYPE_USER_SET, properties)
+        trackUser(Constant.PRESET_EVENT_USER_SET, properties)
     }
 
     fun userSetOnce(properties: JSONObject?){
-        trackUser(Constant.EVENT_TYPE_USER_SET_ONCE, properties)
+        trackUser(Constant.PRESET_EVENT_USER_SET_ONCE, properties)
     }
 
     fun userAdd(properties: JSONObject?){
-        trackUser(Constant.EVENT_TYPE_USER_ADD, properties)
+        trackUser(Constant.PRESET_EVENT_USER_ADD, properties)
     }
 
     fun trackAppStateChanged(){
@@ -268,16 +267,16 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
             }
         }
         if (props.length() > 0) {
-            trackUser(Constant.EVENT_TYPE_USER_UNSET, props)
+            trackUser(Constant.PRESET_EVENT_USER_UNSET, props)
         }
     }
 
     fun userDelete(){
-        trackUser(Constant.EVENT_TYPE_USER_DEL, JSONObject())
+        trackUser(Constant.PRESET_EVENT_USER_DEL, JSONObject())
     }
 
     fun userAppend(properties: JSONObject?){
-        trackUser(Constant.EVENT_TYPE_USER_APPEND, properties)
+        trackUser(Constant.PRESET_EVENT_USER_APPEND, properties)
     }
 
 

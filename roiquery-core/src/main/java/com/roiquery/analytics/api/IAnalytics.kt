@@ -130,7 +130,7 @@ interface IAnalytics {
      * @param eventName 事件的名称
      * @param eventType 事件的类型
      */
-    fun trackUser(eventType: String, properties: JSONObject? = JSONObject())
+    fun trackUser(eventName: String, properties: JSONObject? = JSONObject())
 
 
     /**

@@ -98,7 +98,6 @@ class IAPReportImp : IIapReport {
         placement: String? = null,
         msg: String? = null
     ) {
-        if (!ROIQueryIAPReport.isSDKEnable()) return
         ROIQueryAnalytics.track(
             eventName, generateAdReportMap(
                 order,sku, price, currency,seq, code, placement, msg

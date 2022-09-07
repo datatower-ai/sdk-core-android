@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
@@ -14,7 +13,7 @@ import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.Constant.COMMON_PROPERTY_USER_AGENT_WEBVIEW
+import com.roiquery.analytics.Constant.COMMON_PROPERTY_USER_AGENT
 import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
@@ -144,12 +143,12 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     protected fun trackEvent(
         eventName: String?,
         eventType: String,
+        isPreset: Boolean,
         properties: JSONObject? = null
     ) {
         try {
             if (eventName.isNullOrEmpty()) return
             val realEventName = assertEvent(eventName, properties)
-            if (TextUtils.isEmpty(realEventName)) return
             var isTimeVerify: Boolean
 
             launch(Dispatchers.Default) {
@@ -171,7 +170,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
 
                         //应用是否在前台, 需要动态添加
                         put(
-                            Constant.ENGAGEMENT_PROPERTY_IS_FOREGROUND,
+                            Constant.COMMON_PROPERTY_IS_FOREGROUND,
                             mDataAdapter?.isAppForeground
                         )
                         //合并用户自定义属性和通用属性
@@ -418,7 +417,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                 override fun onOAIDGetComplete(oaid: String) {
                     // 不同厂商的OAID格式是不一样的，可进行MD5、SHA1之类的哈希运算统一
                     mDataAdapter?.oaid = oaid
-                    trackUser(Constant.EVENT_TYPE_USER_SET,JSONObject().apply {
+                    trackUser(Constant.PRESET_EVENT_USER_SET,JSONObject().apply {
                         put(Constant.USER_PROPERTY_LATEST_OAID,oaid)
                     })
                     updateEventInfo(Constant.EVENT_INFO_OAID, oaid)
@@ -444,7 +443,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                 val info = AdvertisingIdClient.getAdvertisingIdInfo(mContext!!)
                 val id = info.id ?: ""
                 mDataAdapter?.gaid = id
-                trackUser(Constant.EVENT_TYPE_USER_SET,JSONObject().apply {
+                trackUser(Constant.PRESET_EVENT_USER_SET,JSONObject().apply {
                     put(Constant.USER_PROPERTY_LATEST_GAID, id)
                 })
                 updateEventInfo(Constant.EVENT_INFO_GAID, id)
@@ -492,7 +491,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
 
     private fun setLatestUserProperties() {
         trackUser(
-            Constant.EVENT_TYPE_USER_SET,
+            Constant.PRESET_EVENT_USER_SET,
             JSONObject(EventUtils.getLatestUserProperties(mContext!!, mDataAdapter))
         )
     }
@@ -503,7 +502,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                updateSdkVersionProperty(this)
             }
         trackUser(
-            Constant.EVENT_TYPE_USER_SET_ONCE,
+            Constant.PRESET_EVENT_USER_SET_ONCE,
             activeUserProperties
         )
     }
@@ -673,7 +672,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                 if (mDataAdapter?.uaWebview?.isEmpty() == true){
                     mDataAdapter?.uaWebview = NetworkUtils.getUserAgent(it)
                 }
-                updateCommonProperties(COMMON_PROPERTY_USER_AGENT_WEBVIEW, mDataAdapter?.uaWebview ?: "")
+                updateCommonProperties(COMMON_PROPERTY_USER_AGENT, mDataAdapter?.uaWebview ?: "")
             }
         }
     }
