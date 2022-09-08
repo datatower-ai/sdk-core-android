@@ -43,9 +43,6 @@ class AnalyticsTestActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.button_track_ad_show).visibility= View.GONE
         findViewById<View>(R.id.button_track_ad_click).visibility= View.GONE
-        findViewById<View>(R.id.button_clear_log).setOnClickListener {
-            Console.clear()
-        }
 
         findViewById<View>(R.id.button_track_page_close).setOnClickListener {
             ROIQueryAnalytics.trackPageClose()

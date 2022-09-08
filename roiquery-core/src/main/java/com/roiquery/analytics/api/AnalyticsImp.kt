@@ -9,6 +9,7 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
+import com.roiquery.analytics.utils.EventUtils
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
@@ -143,9 +144,9 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
 
         }
 
-    private fun trackInternal(eventName: String?, eventType: String, properties: Map<String, Any?>?) {
+    private fun trackInternal(eventName: String?, eventType: String, isPreset: Boolean,properties: Map<String, Any?>?) {
         try {
-            trackInternal(eventName, eventType,JSONObject(properties ?: mutableMapOf<String,Any>()))
+            trackInternal(eventName, eventType, isPreset, JSONObject(properties ?: mutableMapOf<String,Any>()))
         } catch (e: Exception) {
             ROIQueryQualityHelper.instance.reportQualityMessage(
                 ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL,
@@ -153,14 +154,13 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
             )
             return
         }
-
     }
 
-     private fun trackInternal(eventName: String?, eventType: String, properties: JSONObject?) {
+    private fun trackInternal(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?) {
          mTrackTaskManager?.let {
              try {
                  it.execute {
-                     trackEvent(eventName,eventType, properties)
+                     trackEvent(eventName, eventType, isPreset, properties)
                  }
              } catch (e: Exception) {
                  LogUtils.printStackTrace(e)
@@ -169,8 +169,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
                      "event name: $eventName "
                  )
              }
-         }
-    }
+         } }
 
     fun getServerTimeAsync(serverTimeListener: ServerTimeListener?){
         RequestHelper.Builder(
@@ -204,41 +203,53 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
         return 0L
     }
 
-
     override fun trackUser(eventName: String, properties: JSONObject?) {
-        trackInternal(eventName, Constant.EVENT_TYPE_USER, properties)
+        trackInternal(eventName, Constant.EVENT_TYPE_USER,true, properties)
     }
 
-   override fun trackNormal(eventName: String?, properties: JSONObject?){
-       trackInternal(eventName, Constant.EVENT_TYPE_TRACK, properties)
+   override fun trackNormal(eventName: String?, isPreset: Boolean, properties: JSONObject?){
+       trackInternal(eventName, Constant.EVENT_TYPE_TRACK, isPreset, properties)
     }
 
-    fun trackNormal(eventName: String?, properties: Map<String, Any?>?){
-        trackInternal(eventName, Constant.EVENT_TYPE_TRACK, properties)
+    fun trackNormal(eventName: String?, isPreset: Boolean, properties: Map<String, Any?>?){
+        trackNormal(eventName, isPreset, JSONObject(properties ?: mutableMapOf<String,Any>()))
+    }
+
+    private fun trackNormalInternal(eventName: String?, properties: Map<String, Any?>?){
+        trackNormalInternal(eventName, JSONObject(properties ?: mutableMapOf<String,Any>()))
+    }
+
+    /**
+     * 用于 track 预置事件，会对传入的属性进行校验（事件名不需要）
+     *
+     * */
+    private fun trackNormalInternal(eventName: String?, properties: JSONObject? = JSONObject()){
+        if (!EventUtils.isValidProperty(properties)) return
+        trackNormal(eventName,true, properties)
     }
 
     fun trackAppClose(properties: Map<String, Any?>?) {
-        trackNormal(Constant.PRESET_EVENT_APP_CLOSE, properties)
+        trackNormalInternal(Constant.PRESET_EVENT_APP_CLOSE, properties)
     }
 
     override fun trackAppClose(properties: JSONObject?) {
-        trackNormal(Constant.PRESET_EVENT_APP_CLOSE, properties)
+        trackNormalInternal(Constant.PRESET_EVENT_APP_CLOSE, properties)
     }
 
     fun trackPageOpen(properties: Map<String, Any?>?) {
-        trackNormal(Constant.PRESET_EVENT_PAGE_OPEN,  properties)
+        trackNormalInternal(Constant.PRESET_EVENT_PAGE_OPEN,  properties)
     }
 
     override fun trackPageOpen(properties: JSONObject?) {
-        trackNormal(Constant.PRESET_EVENT_PAGE_OPEN, properties)
+        trackNormalInternal(Constant.PRESET_EVENT_PAGE_OPEN, properties)
     }
 
     fun trackPageClose(properties: Map<String, Any?>?) {
-        trackNormal(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
+        trackNormalInternal(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
     }
 
     override fun trackPageClose(properties: JSONObject?) {
-        trackNormal(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
+        trackNormalInternal(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
     }
 
     fun userSet(properties: JSONObject?){
@@ -254,7 +265,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
     }
 
     fun trackAppStateChanged(){
-        trackNormal(Constant.PRESET_EVENT_APP_STATE_CHANGED)
+        trackNormalInternal(Constant.PRESET_EVENT_APP_STATE_CHANGED)
     }
 
     fun userUnset(vararg properties: String?){

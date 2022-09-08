@@ -48,7 +48,7 @@ class AnalyticsManager private constructor(
                     qualityReport(insertedCount)
                     val msg =
                         if (insertedCount < 0) " Failed to insert the event " else " the event: $name  has been inserted to db，count = $insertedCount  "
-                LogUtils.json(TAG + msg, eventJson.toString())
+//                LogUtils.json(TAG + msg, eventJson.toString())
                     //发送上报的message
                     Message.obtain().apply {
                         //上报标志
@@ -115,7 +115,7 @@ class AnalyticsManager private constructor(
                 return false
             }
             if (mDateAdapter?.enableUpload == false) {
-                LogUtils.i(TAG, "A process is currently uploading，or upload is disable")
+                LogUtils.i(TAG, "A task is currently uploading，or upload is disable")
                 return false
             } else {
                 mDateAdapter?.enableUpload = false

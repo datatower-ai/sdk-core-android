@@ -35,7 +35,7 @@ open class ROIQueryAnalytics {
             eventName: String?,
             properties: Map<String, Any>? = mutableMapOf()
         ) =
-            AnalyticsImp.getInstance(mContext).trackNormal(eventName, properties)
+            AnalyticsImp.getInstance(mContext).trackNormal(eventName, false,properties)
 
 
         /**
@@ -46,7 +46,10 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun track(eventName: String?, properties: JSONObject?) =
-            AnalyticsImp.getInstance(mContext).trackNormal(eventName,properties)
+            AnalyticsImp.getInstance(mContext).trackNormal(eventName, false,properties)
+
+
+
 
 
         /**
@@ -272,6 +275,31 @@ open class ROIQueryAnalytics {
         internal fun init(context: Context?, configOptions: AnalyticsConfig?) {
             AnalyticsImp.init(context, configOptions)
         }
+
+        /**
+         * 调用 track 接口，追踪一个带有属性的事件
+         *
+         * @param eventName 事件的名称
+         * @param properties 事件属性
+         */
+        @JvmStatic
+        @JvmOverloads
+        internal fun trackInternal(
+            eventName: String?,
+            properties: Map<String, Any>? = mutableMapOf()
+        ) =
+            AnalyticsImp.getInstance(mContext).trackNormal(eventName, true, properties)
+
+
+        /**
+         * 调用 track 接口，追踪一个带有属性的事件
+         *
+         * @param eventName 事件的名称
+         * @param properties 事件属性
+         */
+        @JvmStatic
+        internal fun trackInternal(eventName: String?, properties: JSONObject?) =
+            AnalyticsImp.getInstance(mContext).trackNormal(eventName, true, properties)
 
         /**
          * app 进入前台

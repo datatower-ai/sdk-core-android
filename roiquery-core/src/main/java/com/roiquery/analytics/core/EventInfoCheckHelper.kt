@@ -69,7 +69,7 @@ class EventInfoCheckHelper private constructor() {
                         TimeCalibration.instance.getVerifyTimeAsyncByGapTime(infoTime)
                     eventInfo.put(
                         Constant.EVENT_INFO_TIME,
-                        verifyTimeAsyncByGapTime.toString()
+                        verifyTimeAsyncByGapTime
                     )
 
                     if (presetEventName == Constant.PRESET_EVENT_APP_FIRST_OPEN) saveFirstOpenTime(verifyTimeAsyncByGapTime)
@@ -78,7 +78,7 @@ class EventInfoCheckHelper private constructor() {
 
                 } else {}
             } else {
-                eventInfo.put(Constant.EVENT_INFO_TIME,infoTime.toString())
+                eventInfo.put(Constant.EVENT_INFO_TIME,infoTime)
 
                 if (presetEventName == Constant.PRESET_EVENT_APP_FIRST_OPEN) saveFirstOpenTime(infoTime)
 

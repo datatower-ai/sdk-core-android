@@ -1,5 +1,4 @@
-package com.roiquery.ad_report_demo;
-
+package com.roiquery.analytics_demo;
 
 
 import android.content.Intent;
@@ -10,17 +9,14 @@ import android.os.Handler;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-
-import com.roiquery.ad.AdMediation;
 import com.roiquery.ad.AdPlatform;
 import com.roiquery.ad.AdType;
 import com.roiquery.ad.ROIQueryAdReport;
-import com.roiquery.ad.utils.UUIDUtils;
 import com.roiquery.analytics.ROIQueryAnalytics;
 
 import java.util.HashMap;
 
-public class MainActivity2 extends AppCompatActivity {
+public class AdReportActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,20 +38,7 @@ public class MainActivity2 extends AppCompatActivity {
         ROIQueryAnalytics.setKochavaId("ko_id_123456");
         ROIQueryAnalytics.setFCMToken("fcm_token_123456");
 
-        findViewById(R.id.button_track_entrance).setOnClickListener(v -> {
-            HashMap<String, Object> pro = new HashMap<>();
-            pro.put("test_property_3", false);
-            pro.put("#test_property_4", 2.3);
-            ROIQueryAdReport.reportEntrance(
-                    "1",
-                    AdType.BANNER,
-                    AdPlatform.MOPUB,
-                    "home",
-                    seq,
-                    pro
-            );
 
-        });
 
         findViewById(R.id.button_track_to_show).setOnClickListener(v -> {
             ROIQueryAdReport.reportToShow(

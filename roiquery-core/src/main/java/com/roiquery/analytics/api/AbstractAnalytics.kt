@@ -148,7 +148,9 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     ) {
         try {
             if (eventName.isNullOrEmpty()) return
-            val realEventName = assertEvent(eventName, properties)
+
+            if (!isPreset && !assertEvent(eventName, properties)) return
+
             var isTimeVerify: Boolean
 
             launch(Dispatchers.Default) {
@@ -158,7 +160,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                         isTimeVerify = this!=TimeCalibration.TIME_NOT_VERIFY_VALUE
                         // 如果时间已校准，则 保存当前时间，否则保存当前时间的系统休眠时间差用做上报时时间校准依据
                         put(Constant.EVENT_INFO_TIME, if (isTimeVerify) this else TimeCalibration.instance.getSystemHibernateTimeGap())
-                        put(Constant.EVENT_INFO_NAME, realEventName)
+                        put(Constant.EVENT_INFO_NAME, eventName)
                         put(Constant.EVENT_INFO_TYPE, eventType)
                         put(EVENT_INFO_SYN, DataUtils.getUUID())
                     }
@@ -190,7 +192,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                 }
 
                 mAnalyticsManager?.enqueueEventMessage(
-                    realEventName, data, eventInfo.optString(
+                    eventName, data, eventInfo.optString(
                         EVENT_INFO_SYN
                     )
                 )
@@ -265,20 +267,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     private fun assertEvent(
         eventName: String,
         properties: JSONObject? = null
-    ): String {
-        //检验事件名
-        var realEventName = eventName
-        if (eventName.startsWith(Constant.PRESET_EVENT_TAG)) {//预置事件
-            realEventName = eventName.replace(Constant.PRESET_EVENT_TAG, "")
-        } else if (!EventUtils.isValidEventName(eventName)) {
-            realEventName = ""
-        }
-        //校验属性名、属性值
-        if (!EventUtils.isValidProperty(properties)) {
-            realEventName = ""
-        }
-        return realEventName
-    }
+    ) = EventUtils.isValidEventName(eventName) && EventUtils.isValidProperty(properties)
 
     /**
      * 初始化配置
@@ -485,7 +474,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
      * 采集app 启动事件
      */
     private fun trackAppOpenEvent(isFirstOpen: Boolean) {
-        trackNormal(if (isFirstOpen) Constant.PRESET_EVENT_APP_FIRST_OPEN else Constant.PRESET_EVENT_APP_OPEN)
+        trackNormal(if (isFirstOpen) Constant.PRESET_EVENT_APP_FIRST_OPEN else Constant.PRESET_EVENT_APP_OPEN,true)
     }
 
 
@@ -600,6 +589,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
         val isOK = failedReason.isBlank()
         trackNormal(
             Constant.PRESET_EVENT_APP_ATTRIBUTE,
+            true,
             PropertyBuilder.newInstance()
                 .append(
                     HashMap<String?, Any>().apply {
@@ -623,7 +613,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                         )
                         put(
                             Constant.ATTRIBUTE_PROPERTY_CNL,
-                            mConfigOptions?.mChannel ?: ""
+                            cnl
                         )
                         if (!isOK) {
                             put(
@@ -682,7 +672,8 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
 
         override fun onTick(loopTime: Int) {
             trackNormal(
-                Constant.PRESET_EVENT_APP_ENGAGEMENT
+                Constant.PRESET_EVENT_APP_ENGAGEMENT,
+                true
             )
             mDataAdapter?.lastEngagementTime = getRealTime().toString()
             //补发，以免异常情况获取不到 app_attribute 事件

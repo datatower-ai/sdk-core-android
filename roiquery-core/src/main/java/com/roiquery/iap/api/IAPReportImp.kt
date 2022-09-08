@@ -98,7 +98,7 @@ class IAPReportImp : IIapReport {
         placement: String? = null,
         msg: String? = null
     ) {
-        ROIQueryAnalytics.track(
+        ROIQueryAnalytics.trackInternal(
             eventName, generateAdReportMap(
                 order,sku, price, currency,seq, code, placement, msg
             )

@@ -533,17 +533,5 @@ open class ROIQueryAdReport {
         fun generateUUID() = UUIDUtils.generateUUID()
 
 
-        /**
-         * 获取聚合平台具体广告网络的广告单元
-         */
-        @JvmStatic
-        fun getPlatform(
-            mediation: Int,
-            networkName: String,
-            networkPlacementId: String,
-            adgroupName: String,
-            adgroupType: String
-        ) = AdPlatformUtils.getPlatform(mediation, networkName, networkPlacementId, adgroupName, adgroupType)
-
     }
 }

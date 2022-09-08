@@ -62,6 +62,7 @@ internal object Constant {
     const val COMMON_PROPERTY_OS_VERSION_CODE     = "#os_version_code"
     const val COMMON_PROPERTY_DEVICE_MANUFACTURER = "#device_manufacturer"
     const val COMMON_PROPERTY_DEVICE_BRAND        = "#device_brand"
+    const val COMMON_PROPERTY_BUILD_DEVICE        = "#build_device"
     const val COMMON_PROPERTY_DIMS_DPI            = "#dims_dpi"
     const val COMMON_PROPERTY_NETWORK_TYPE        = "#network_type"
     const val COMMON_PROPERTY_SIMULATOR           = "#simulator"

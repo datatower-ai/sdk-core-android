@@ -20,48 +20,40 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <Button
-        android:id="@+id/button_analytics_test"
+        android:id="@+id/button_analytics_core"
         android:layout_width="match_parent"
         android:textAllCaps="false"
         android:layout_margin="5dp"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:layout_height="wrap_content"
-        android:text="AnalyticsTest"
+        android:text="Core"
         />
     <Button
-        android:id="@+id/User_Operate"
+        android:id="@+id/button_ad_report"
         android:layout_width="match_parent"
         android:textAllCaps="false"
         android:layout_margin="5dp"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:layout_height="wrap_content"
-        android:text="User_Operate"
+        android:text="Ad Report"
         />
     <Button
-        android:id="@+id/button_db_view"
+        android:id="@+id/button_iap_report"
         android:layout_width="match_parent"
         android:textAllCaps="false"
         android:layout_margin="5dp"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:layout_height="wrap_content"
-        android:text="db_view"
+        android:text="IAP_Report"
+        />
+     <Button
+        android:id="@+id/button_ias_report"
+        android:layout_width="match_parent"
+        android:textAllCaps="false"
+        android:layout_margin="5dp"
+        android:textSize="16sp"
+        android:layout_height="wrap_content"
+        android:text="IAS_Report"
         />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <com.jraska.console.Console
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        <Button
-            android:id="@+id/button_clear_log"
-            android:layout_width="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:textAllCaps="false"
-            android:layout_margin="10dp"
-            android:layout_height="wrap_content"
-            android:text="clear log"
-            />
-    </RelativeLayout>
 </LinearLayout>

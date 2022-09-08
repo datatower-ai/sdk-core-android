@@ -13,7 +13,7 @@ internal class ROIQueryIasReportImp {
 
         fun trackIasShowEvent(iasConfig: ROIQueryIasConfig) {
             if (iasConfig.detectBaseProperties()) {
-                ROIQueryAnalytics.track(
+                ROIQueryAnalytics.trackInternal(
                     ROIQueryIasConstant.IAS_TO_SHOW_EVENT,
                     iasProperties(iasConfig)
                 )
@@ -23,7 +23,7 @@ internal class ROIQueryIasReportImp {
 
         fun trackIasShowSuccessEvent(iasConfig: ROIQueryIasConfig) {
             if (iasConfig.detectBaseProperties()) {
-                ROIQueryAnalytics.track(
+                ROIQueryAnalytics.trackInternal(
                     ROIQueryIasConstant.IAS_SHOW_SUCCESS_EVENT,
                     iasProperties(config = iasConfig)
                 )
@@ -32,7 +32,7 @@ internal class ROIQueryIasReportImp {
 
         fun trackIasShowFailEvent(iasConfig: ROIQueryIasConfig) {
             if (iasConfig.detectShowFailProperties()) {
-                ROIQueryAnalytics.track(
+                ROIQueryAnalytics.trackInternal(
                     ROIQueryIasConstant.IAS_SHOW_FAIL_EVENT,
                     iasProperties
                         (
@@ -44,7 +44,7 @@ internal class ROIQueryIasReportImp {
 
         fun trackIasSubEvent(iasConfig: ROIQueryIasConfig) {
             if (iasConfig.detectSubscribeProperties()) {
-                ROIQueryAnalytics.track(
+                ROIQueryAnalytics.trackInternal(
                     ROIQueryIasConstant.IAS_TO_SUBSCRIBE_EVENT,
                     iasProperties
                         (
@@ -56,7 +56,7 @@ internal class ROIQueryIasReportImp {
 
         fun trackIasSubSuccessEvent(iasConfig: ROIQueryIasConfig) {
             if (iasConfig.detectSubscribeSuccessProperties()) {
-                ROIQueryAnalytics.track(
+                ROIQueryAnalytics.trackInternal(
                     ROIQueryIasConstant.IAS_TO_SUBSCRIBE_SUCCESS_EVENT,
                     iasProperties
                         (
@@ -68,7 +68,7 @@ internal class ROIQueryIasReportImp {
 
         fun trackIasSubFailEvent(iasConfig: ROIQueryIasConfig) {
             if (iasConfig.detectSubscribeFailProperties()) {
-                ROIQueryAnalytics.track(
+                ROIQueryAnalytics.trackInternal(
                     ROIQueryIasConstant.IAS_TO_SUBSCRIBE_FAIL_EVENT,
                     iasProperties
                         (

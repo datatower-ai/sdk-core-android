@@ -1,6 +1,7 @@
 package com.roiquery.analytics.utils
 
 import android.content.Context
+import android.os.Build
 import android.text.TextUtils
 import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
@@ -15,7 +16,7 @@ import java.util.regex.Pattern
 object EventUtils {
     private const val TAG = "ROIQuery.EventUtils"
     private val KEY_PATTERN =
-        Pattern.compile("^[a-zA-Z][a-zA-Z\\d_]{0,49}$", Pattern.CASE_INSENSITIVE)
+        Pattern.compile("^[a-zA-Z][a-zA-Z\\d_#]{0,49}", Pattern.CASE_INSENSITIVE)
 
     fun getEventInfo(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
@@ -61,73 +62,87 @@ object EventUtils {
             put(Constant.USER_PROPERTY_LATEST_FCM_TOKEN, dataAdapter?.fcmToken)
             put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, dataAdapter?.afid)
             put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, dataAdapter?.koid)
+            put(Constant.USER_PROPERTY_LATEST_APP_VERSION_NAME, AppInfoUtils.getAppVersionName(context))
+            put(Constant.USER_PROPERTY_LATEST_APP_VERSION_CODE, AppInfoUtils.getAppVersionCode(context))
         }
 
-    fun getActiveUserProperties(context: Context, dataAdapter: EventDateAdapter?) =  mutableMapOf<String, Any?>().apply {
-        put(Constant.USER_PROPERTY_ACTIVE_MCC, DeviceUtils.getMcc(context))
-        put(Constant.USER_PROPERTY_ACTIVE_MNC, DeviceUtils.getMnc(context))
-        put(
-            Constant.USER_PROPERTY_ACTIVE_OS_COUNTRY,
-            DeviceUtils.getLocalCountry(context)
-        )//系统国家
-        put(
-            Constant.USER_PROPERTY_ACTIVE_OS_LANG,
-            DeviceUtils.getLocaleLanguage()
-        )//系统语言
-        put(
-            Constant.USER_PROPERTY_ACTIVE_PKG,
-            context.packageName
-        )//包名
-        put(
-            Constant.USER_PROPERTY_ACTIVE_APP_VERSION_CODE,
-            AppInfoUtils.getAppVersionCode(context)
-        )//应用版本号
-        put(
-            Constant.USER_PROPERTY_ACTIVE_APP_VERSION_NAME,
-            AppInfoUtils.getAppVersionName(context)
-        )//应用版本名
-        put(
-            Constant.USER_PROPERTY_ACTIVE_OS,
-            Constant.SDK_TYPE_ANDROID
-        )//如 Android、iOS 等
-        put(
-            Constant.USER_PROPERTY_ACTIVE_OS_VERSION_NAME,
-            DeviceUtils.oS
-        )//操作系统版本,iOS 11.2.2、Android 8.0.0 等
-        put(
-            Constant.USER_PROPERTY_ACTIVE_DEVICE_MANUFACTURER,
-            DeviceUtils.manufacturer
-        )//用户设备的制造商，如 Apple，vivo 等
-        put(
-            Constant.USER_PROPERTY_ACTIVE_DEVICE_BRAND,
-            DeviceUtils.brand
-        )//设备品牌,如 Galaxy、Pixel
-        put(
-            Constant.USER_PROPERTY_ACTIVE_DEVICE_MODEL,
-            DeviceUtils.model
-        )//设备型号,用户设备的型号，如 iPhone 8 等
-        val size = DeviceUtils.getDeviceSize(context)
-        put(
-            Constant.USER_PROPERTY_ACTIVE_SCREEN_WIDTH,
-            size[0]
-        )//屏幕宽度
-        put(
-            Constant.USER_PROPERTY_ACTIVE_SCREEN_HEIGHT,
-            size[1]
-        )//屏幕高度
+    fun getActiveUserProperties(context: Context, dataAdapter: EventDateAdapter?) =
+        mutableMapOf<String, Any?>().apply {
+            put(Constant.USER_PROPERTY_ACTIVE_MCC, DeviceUtils.getMcc(context))
+            put(Constant.USER_PROPERTY_ACTIVE_MNC, DeviceUtils.getMnc(context))
+            put(
+                Constant.USER_PROPERTY_ACTIVE_OS_COUNTRY,
+                DeviceUtils.getLocalCountry(context)
+            )//系统国家
+            put(
+                Constant.USER_PROPERTY_ACTIVE_OS_LANG,
+                DeviceUtils.getLocaleLanguage()
+            )//系统语言
+            put(
+                Constant.USER_PROPERTY_ACTIVE_PKG,
+                context.packageName
+            )//包名
+            put(
+                Constant.USER_PROPERTY_ACTIVE_APP_VERSION_CODE,
+                AppInfoUtils.getAppVersionCode(context)
+            )//应用版本号
+            put(
+                Constant.USER_PROPERTY_ACTIVE_APP_VERSION_NAME,
+                AppInfoUtils.getAppVersionName(context)
+            )//应用版本名
+            put(
+                Constant.USER_PROPERTY_ACTIVE_OS,
+                Constant.SDK_TYPE_ANDROID
+            )//如 Android、iOS 等
+            put(
+                Constant.USER_PROPERTY_ACTIVE_OS_VERSION_NAME,
+                DeviceUtils.oS
+            )//操作系统版本,iOS 11.2.2、Android 8.0.0 等
+            put(
+                Constant.USER_PROPERTY_ACTIVE_OS_VERSION_CODE,
+                Build.VERSION.SDK_INT
+            )
+            put(
+                Constant.USER_PROPERTY_ACTIVE_DEVICE_MANUFACTURER,
+                DeviceUtils.manufacturer
+            )//用户设备的制造商，如 Apple，vivo 等
+            put(
+                Constant.USER_PROPERTY_ACTIVE_DEVICE_BRAND,
+                DeviceUtils.brand
+            )//设备品牌,如 Galaxy、Pixel
+            put(
+                Constant.USER_PROPERTY_ACTIVE_BUILD_DEVICE,
+                Build.DEVICE
+            )
+            put(
+                Constant.USER_PROPERTY_ACTIVE_DEVICE_MODEL,
+                DeviceUtils.model
+            )//设备型号,用户设备的型号，如 iPhone 8 等
+            val size = DeviceUtils.getDeviceSize(context)
+            put(
+                Constant.USER_PROPERTY_ACTIVE_SCREEN_WIDTH,
+                size[0]
+            )//屏幕宽度
+            put(
+                Constant.USER_PROPERTY_ACTIVE_SCREEN_HEIGHT,
+                size[1]
+            )//屏幕高度
 
-        put(Constant.USER_PROPERTY_ACTIVE_DIMS_DPI, DensityUtils.getDensityDpi(context))
-        put(Constant.USER_PROPERTY_ACTIVE_MEMORY_USED, MemoryUtils.getMemoryUsed(context))
-        put(Constant.USER_PROPERTY_ACTIVE_STORAGE_USED, MemoryUtils.getStorageUsed(context))
-        put(Constant.USER_PROPERTY_ACTIVE_NETWORK_TYPE, NetworkUtil.getNetworkTypeString(context))
-        put(Constant.USER_PROPERTY_ACTIVE_SIMULATOR, EmulatorDetector.isEmulator())
-        dataAdapter?.uaWebview?.let {
-            if (it.isNotEmpty()) {
-                put(Constant.USER_PROPERTY_ACTIVE_USER_AGENT, it)
+            put(Constant.USER_PROPERTY_ACTIVE_DIMS_DPI, DensityUtils.getDensityDpi(context))
+            put(Constant.USER_PROPERTY_ACTIVE_MEMORY_USED, MemoryUtils.getMemoryUsed(context))
+            put(Constant.USER_PROPERTY_ACTIVE_STORAGE_USED, MemoryUtils.getStorageUsed(context))
+            put(
+                Constant.USER_PROPERTY_ACTIVE_NETWORK_TYPE,
+                NetworkUtil.getNetworkTypeString(context)
+            )
+            put(Constant.USER_PROPERTY_ACTIVE_SIMULATOR, EmulatorDetector.isEmulator())
+            dataAdapter?.uaWebview?.let {
+                if (it.isNotEmpty()) {
+                    put(Constant.USER_PROPERTY_ACTIVE_USER_AGENT, it)
+                }
             }
-        }
 
-    }
+        }
 
     fun getCommonProperties(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
@@ -199,7 +214,11 @@ object EventUtils {
             put(
                 Constant.COMMON_PROPERTY_OS_VERSION_NAME,
                 DeviceUtils.oS
-            )//操作系统版本,iOS 11.2.2、Android 8.0.0 等
+            )//操作系统版本名, Android 8.0.0 等
+            put(
+                Constant.COMMON_PROPERTY_OS_VERSION_CODE,
+                Build.VERSION.SDK_INT
+            )//操作系统版本号, 如 31
             put(
                 Constant.COMMON_PROPERTY_DEVICE_MANUFACTURER,
                 DeviceUtils.manufacturer
@@ -208,6 +227,10 @@ object EventUtils {
                 Constant.COMMON_PROPERTY_DEVICE_BRAND,
                 DeviceUtils.brand
             )//设备品牌,如 Galaxy、Pixel
+            put(
+                Constant.COMMON_PROPERTY_BUILD_DEVICE,
+                Build.DEVICE
+            )
             put(
                 Constant.COMMON_PROPERTY_DEVICE_MODEL,
                 DeviceUtils.model
@@ -234,16 +257,17 @@ object EventUtils {
         }
 
     fun isValidEventName(name: String): Boolean {
-        if (name.startsWith(Constant.PRESET_EVENT_TAG)) {
-            LogUtils.e(" event name start with not allowed.")
-        }
         if (TextUtils.isEmpty(name)) {
             LogUtils.e("Empty event name is not allowed.")
             return false
         }
+        if (hasPresetTag(name)) {
+            LogUtils.e(" event name [$name] start with # or $ is not allowed.")
+            return false
+        }
         if (!KEY_PATTERN.matcher(name).matches()) {
             LogUtils.e(
-                "event name[$name] is not valid. The property KEY must be string that starts with English letter, " +
+                "event name [$name] is not valid. The property KEY must be string that starts with English letter, " +
                         "and contains letter, number, and '_'. The max length of the property KEY is 50. "
             )
             return false
@@ -260,10 +284,14 @@ object EventUtils {
                     LogUtils.e(TAG, "Empty property name is not allowed.")
                     return false
                 }
+                if (hasPresetTag(key)) {
+                    LogUtils.e(" property name [$key] start with # or $ is not allowed.")
+                    return false
+                }
                 if (!KEY_PATTERN.matcher(key).matches()) {
                     LogUtils.e(
                         TAG,
-                        "Property name[$key] is not valid. The property KEY must be string that starts with English letter, " +
+                        "Property name [$key] is not valid. The property KEY must be string that starts with English letter, " +
                                 "and contains letter, number, and '_'. The max length of the property KEY is 50. "
                     )
                     return false
@@ -292,5 +320,7 @@ object EventUtils {
         }
         return true
     }
+
+    private fun hasPresetTag(key: String) = key.startsWith("#") || key.startsWith("$")
 
 }
