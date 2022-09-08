@@ -43,7 +43,5 @@ public class MyApp2 extends Application {
 
             }
         });
-
-
     }
 }

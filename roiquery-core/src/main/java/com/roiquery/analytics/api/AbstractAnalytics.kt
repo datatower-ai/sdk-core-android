@@ -587,6 +587,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
      */
     private fun trackAppAttributeEvent(response: ReferrerDetails, failedReason: String) {
         val isOK = failedReason.isBlank()
+        LogUtils.e("trackAppAttributeEvent",response.toString())
         trackNormal(
             Constant.PRESET_EVENT_APP_ATTRIBUTE,
             true,

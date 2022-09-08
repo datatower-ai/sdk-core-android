@@ -9,7 +9,7 @@ class MyApp : Application() {
     override fun onCreate() {
         super.onCreate()
         //init SDK
-        ROIQuery.initSDK(this,"dt_tests",ROIQueryChannel.GP,true)
+        ROIQuery.initSDK(this,"dt_test",ROIQueryChannel.GP,true)
     }
 
 }

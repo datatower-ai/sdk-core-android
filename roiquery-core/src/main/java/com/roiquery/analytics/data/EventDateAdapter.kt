@@ -230,14 +230,6 @@ class EventDateAdapter private constructor(
         set(value) = setBooleanConfig(DataParams.CONFIG_FIRST_OPEN,value)
 
 
-
-    /**
-     * 上报了attribute事件的个数
-     */
-    var attributedCount: Int
-        get() = runBlocking{ getIntConfig(DataParams.CONFIG_ATTRIBUTE_COUNT,0) }
-        set(value) = setIntConfig(DataParams.CONFIG_ATTRIBUTE_COUNT,value)
-
     /**
      * attribute 事件的插入数据库状态
      */
