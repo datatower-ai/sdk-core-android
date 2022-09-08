@@ -1,7 +1,6 @@
 package com.roiquery.analytics.data
 
 import android.content.Context
-import android.database.sqlite.SQLiteConstraintException
 import android.text.TextUtils
 import com.roiquery.analytics.ROIQueryCoroutineScope
 import com.roiquery.analytics.data.room.ROIQueryAnalyticsDB
@@ -10,6 +9,7 @@ import com.roiquery.analytics.data.room.bean.Events
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,6 +24,12 @@ internal class EventDataOperation(
     var TAG = "EventDataOperation"
     private var analyticsDB: ROIQueryAnalyticsDB? =
         ROIQueryAnalyticsDB.getInstance(context = mContext)
+    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+        run {
+            LogUtils.e(exception.message)
+           reportRoomDatabaseError(exception.message)
+        }
+    }
 
     /**
      * 保存数据
@@ -31,30 +37,24 @@ internal class EventDataOperation(
      */
     suspend fun insertData(jsonObject: JSONObject?, eventSyn: String) =
         suspendCoroutine<Int> {
-            scope.launch {
+            scope.launch(exceptionHandler) {
                 try {
                     launch {
                         if (!deleteDataWhenOverMaxRows())
                             it.resume(DataParams.DB_OUT_OF_ROW_ERROR)
-
                         withContext(Dispatchers.IO) {
-                            try {
-                                analyticsDB?.getEventsDao()?.insertEvent(
-                                    Events(
-                                        createdAt = System.currentTimeMillis(),
-                                        data =
-                                        jsonObject.toString() + "\t" + jsonObject.toString()
-                                            .hashCode(),
-                                        eventSyn = eventSyn
-                                    )
+                            analyticsDB?.getEventsDao()?.insertEvent(
+                                Events(
+                                    createdAt = System.currentTimeMillis(),
+                                    data =
+                                    jsonObject.toString() + "\t" + jsonObject.toString()
+                                        .hashCode(),
+                                    eventSyn = eventSyn
                                 )
-                                it.resume(DataParams.DB_INSERT_SUCCEED)
-                            } catch (e: SQLiteConstraintException) {
-                                it.resume(DataParams.DB_INSERT_DATA_REPEAT)
-                            }
+                            )
+                            it.resume(DataParams.DB_INSERT_SUCCEED)
                         }
                     }
-
                 } catch (e: Exception) {
                     deleteTheOldestData(DataParams.CONFIG_MAX_ROWS / 2)
                     reportRoomDatabaseError(e.message)
@@ -68,25 +68,21 @@ internal class EventDataOperation(
      * 保存配置
      */
     fun insertConfig(name: String, value: String?) {
-        try {
-            scope.launch {
-                value?.let { notEmptyValue ->
-                    analyticsDB?.getConfigDao()?.let {
-                        val isExist = it.existsValue(name) > 0
-                        withContext(Dispatchers.IO) {
-                            if (isExist) {
-                                it.update(name = name, value = notEmptyValue)
-                            } else {
-                                it.insert(Configs(name = name, value = value))
-                            }
+        scope.launch(exceptionHandler) {
+            value?.let { notEmptyValue ->
+                analyticsDB?.getConfigDao()?.let {
+                    val isExist = it.existsValue(name) > 0
+                    withContext(Dispatchers.IO) {
+                        if (isExist) {
+                            it.update(name = name, value = notEmptyValue)
+                        } else {
+                            it.insert(Configs(name = name, value = value))
                         }
                     }
                 }
             }
-
-        } catch (e: Exception) {
-            reportRoomDatabaseError(e.message)
         }
+
     }
 
 
@@ -138,26 +134,27 @@ internal class EventDataOperation(
      * @return 条数
      */
     suspend fun queryDataCount() = suspendCoroutine<Int> {
-        try {
-            scope.launch (Dispatchers.IO){
+        scope.launch(Dispatchers.IO) {
+            try {
                 it.resume(
                     analyticsDB?.getEventsDao()?.dataCount() ?: 0
                 )
+            } catch (e: Exception) {
+                reportRoomDatabaseError(e.message)
             }
-        }catch (e:Exception){
-            reportRoomDatabaseError(e.message)
         }
+
     }
 
     /**
      * 删除数据
      */
     suspend fun deleteEventByEventSyn(eventSyn: String) {
-             try {
-                 analyticsDB?.getEventsDao()?.deleteEventByEventSyn(eventSyn)
-             } catch (ex: Exception) {
-                 reportRoomDatabaseError(ex.message)
-             }
+        try {
+            analyticsDB?.getEventsDao()?.deleteEventByEventSyn(eventSyn)
+        } catch (ex: Exception) {
+            reportRoomDatabaseError(ex.message)
+        }
     }
 
 
@@ -201,7 +198,7 @@ internal class EventDataOperation(
                 if (queryDataCount() >= DataParams.CONFIG_MAX_ROWS) {
                     LogUtils.i(
                         TAG,
-                        "There is not enough space left on the device to store events, so will delete 100 oldest events"
+                        "There is not enough space left on the device to store events, so will delete ${DataParams.CONFIG_MAX_ROWS / 2} oldest events"
                     )
 
                     try {
@@ -221,24 +218,23 @@ internal class EventDataOperation(
 
 
     fun deleteAllEventData() {
-        try {
-            scope.launch(Dispatchers.IO) {
+        scope.launch(Dispatchers.IO) {
+            try {
                 analyticsDB?.getEventsDao()?.clearTable()
+            } catch (e: Exception) {
+                reportRoomDatabaseError(e.message)
             }
-        } catch (e: Exception) {
-            reportRoomDatabaseError(e.message)
         }
     }
 
     private fun reportRoomDatabaseError(errorMsg:String?){
         scope.launch (Dispatchers.Main){
             try {
-                LogUtils.d(errorMsg)
+                LogUtils.w(errorMsg)
                 ROIQueryQualityHelper.instance.reportQualityMessage(ROIQueryErrorParams.ROOM_DATABASE_ERROR,errorMsg)
             } catch (e: Exception) {
             }
         }
     }
-
 
 }
