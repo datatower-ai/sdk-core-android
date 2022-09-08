@@ -2,8 +2,9 @@ package com.roiquery.cloudconfig.utils
 
 import android.util.Base64
 import com.roiquery.analytics.ROIQueryCoroutineScope
-import com.roiquery.cloudconfig.utils.AESCoder.initKey
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.security.Key
 import javax.crypto.Cipher
 import javax.crypto.SecretKeyFactory
@@ -38,12 +39,15 @@ internal object AESCoder : ROIQueryCoroutineScope() {
      * @param key  密钥
      * @return byte[] 解密后的数据
      */
-    @Throws(Exception::class)
     fun decrypt(data: ByteArray?, key: ByteArray): ByteArray {
         // 欢迎密钥
         val cipher = createCipher(false, key)
         // 执行操作
-        return cipher.doFinal(data)
+        return try {
+            cipher?.doFinal(data) ?: "".toByteArray()
+        } catch (e: Exception) {
+            "".toByteArray()
+        }
     }
 
     /**
@@ -53,26 +57,33 @@ internal object AESCoder : ROIQueryCoroutineScope() {
      * @param key  密钥
      * @return byte[] 加密后的数据
      */
-    @Throws(Exception::class)
     fun encrypt(data: ByteArray?, key: ByteArray): ByteArray {
         val cipher = createCipher(true, key)
         // 执行操作
-        return cipher.doFinal(data)
+        return try {
+            cipher?.doFinal(data) ?: "".toByteArray()
+        } catch (e: Exception) {
+            "".toByteArray()
+        }
     }
 
-    @Throws(Exception::class)
-    private fun createCipher(encryptMode: Boolean, secret: ByteArray): Cipher {
-        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
-        val mode = if (encryptMode) Cipher.ENCRYPT_MODE else Cipher.DECRYPT_MODE
-        val key = toKey(secret)
-        if (ivBytes == null) {
-            cipher.init(mode, key)
-            val params = cipher.parameters
-            ivBytes = params?.getParameterSpec(IvParameterSpec::class.java)?.iv
-        } else {
-            cipher.init(mode, key, IvParameterSpec(ivBytes))
+
+    private fun createCipher(encryptMode: Boolean, secret: ByteArray): Cipher? {
+        try {
+            val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+            val mode = if (encryptMode) Cipher.ENCRYPT_MODE else Cipher.DECRYPT_MODE
+            val key = toKey(secret)
+            if (ivBytes == null) {
+                cipher.init(mode, key)
+                val params = cipher.parameters
+                ivBytes = params?.getParameterSpec(IvParameterSpec::class.java)?.iv
+            } else {
+                cipher.init(mode, key, IvParameterSpec(ivBytes))
+            }
+            return cipher
+        } catch (e: Exception) {
         }
-        return cipher
+        return null
     }
 
     /**
@@ -80,14 +91,17 @@ internal object AESCoder : ROIQueryCoroutineScope() {
      *
      * @return byte[] 二进制密钥
      */
-    @Throws(Exception::class)
-    suspend fun initKey() = suspendCoroutine<ByteArray> {
+    suspend fun initKey() : ByteArray = suspendCoroutine {
         scope.launch(Dispatchers.IO) {
-            val factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
-            val spec = PBEKeySpec(pass, salt, PASSWORD_ITERATIONS, KEY_LENGTH)
-            val secretKey = factory.generateSecret(spec)
-            val secret = SecretKeySpec(secretKey.encoded, KEY_ALGORITHM)
-            it.resume(secret.encoded)
+            try {
+                val factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
+                val spec = PBEKeySpec(pass, salt, PASSWORD_ITERATIONS, KEY_LENGTH)
+                val secretKey = factory.generateSecret(spec)
+                val secret = SecretKeySpec(secretKey.encoded, KEY_ALGORITHM)
+                it.resume(secret.encoded)
+            } catch (e: Exception) {
+                it.resume("".toByteArray())
+            }
         }
     }
 
