@@ -80,7 +80,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
             initProperties()
             initCloudConfig()
             initAppLifecycleListener()
-            getUserAgentByUIThread()
+//            getUserAgentByUIThread()
             trackPresetEvent()
             getGAID()
             getOAID()
@@ -587,7 +587,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
      */
     private fun trackAppAttributeEvent(response: ReferrerDetails, failedReason: String) {
         val isOK = failedReason.isBlank()
-        LogUtils.e("trackAppAttributeEvent",response.toString())
         trackNormal(
             Constant.PRESET_EVENT_APP_ATTRIBUTE,
             true,
@@ -636,12 +635,12 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
      * 如果超过六分钟，则可能 app_engagement 上报有中断，重新触发
      */
     fun checkAppEngagementEvent() {
-        if (!mDataAdapter?.lastEngagementTime.isNullOrEmpty() &&
-            getRealTime() - (mDataAdapter?.lastEngagementTime?.toLong()
-                ?: 0L) > Constant.APP_ENGAGEMENT_INTERVAL_TIME_LONG + 60 * 1000L
-        ) {
-            trackAppEngagementEvent()
-        }
+//        if (!mDataAdapter?.lastEngagementTime.isNullOrEmpty() &&
+//            getRealTime() - (mDataAdapter?.lastEngagementTime?.toLong()
+//                ?: 0L) > Constant.APP_ENGAGEMENT_INTERVAL_TIME_LONG + 60 * 1000L
+//        ) {
+//            trackAppEngagementEvent()
+//        }
     }
 
     /**

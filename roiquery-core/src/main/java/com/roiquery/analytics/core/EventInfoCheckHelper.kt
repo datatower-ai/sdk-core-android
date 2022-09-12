@@ -56,7 +56,7 @@ class EventInfoCheckHelper private constructor() {
         jsonEventBody.optJSONObject(Constant.EVENT_BODY)?.let { eventInfo ->
             val presetEventName = eventNameForPreset(eventInfo)
 
-            if (!correctAttributeFirstOpenTimeInfo(presetEventName, eventInfo) || !correctAttributeInsertStatus(presetEventName)) return
+            if (!correctAttributeFirstOpenTimeInfo(presetEventName, eventInfo)) return
 
             val infoTime = eventInfo.optLong(Constant.EVENT_INFO_TIME)
 
@@ -97,17 +97,6 @@ class EventInfoCheckHelper private constructor() {
             Constant.PRE_EVENT_INFO_NAME
         ) else eventInfo.getString(Constant.EVENT_INFO_NAME)
 
-
-    private fun correctAttributeInsertStatus(eventName: String): Boolean {
-        if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE) {
-            if (EventDateAdapter.getInstance()?.isAttributeInsert == false) {
-                EventDateAdapter.getInstance()?.isAttributeInsert = true
-                return true
-            }
-            return false
-        }
-        return true
-    }
 
     private fun correctAttributeFirstOpenTimeInfo(
         eventName: String,

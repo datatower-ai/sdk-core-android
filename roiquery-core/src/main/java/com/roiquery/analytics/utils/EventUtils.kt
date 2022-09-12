@@ -252,7 +252,7 @@ object EventUtils {
             put(Constant.COMMON_PROPERTY_NETWORK_TYPE, NetworkUtil.getNetworkTypeString(context))
             put(Constant.COMMON_PROPERTY_SIMULATOR, EmulatorDetector.isEmulator())
 
-            put(Constant.COMMON_PROPERTY_USER_AGENT, dataAdapter?.uaWebview)
+            put(Constant.COMMON_PROPERTY_USER_AGENT, NetworkUtils.getUserAgent(context))
 
         }
 

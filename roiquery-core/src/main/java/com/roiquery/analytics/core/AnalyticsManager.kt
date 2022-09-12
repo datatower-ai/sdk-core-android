@@ -53,7 +53,7 @@ class AnalyticsManager private constructor(
                     Message.obtain().apply {
                         //上报标志
                         this.what = FLUSH_QUEUE
-                        mWorker.runMessage(this)
+                        mWorker.runMessageOnce(this, 1000L)
                     }
                 }
 

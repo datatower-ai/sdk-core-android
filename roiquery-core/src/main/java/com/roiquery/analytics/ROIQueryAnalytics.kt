@@ -191,7 +191,7 @@ open class ROIQueryAnalytics {
          * @param id 用户系统id
          */
         @JvmStatic
-        fun setAccountId(id: String) {
+        fun setAccountId(id: String?) {
             AnalyticsImp.getInstance(mContext).accountId = id
         }
 
