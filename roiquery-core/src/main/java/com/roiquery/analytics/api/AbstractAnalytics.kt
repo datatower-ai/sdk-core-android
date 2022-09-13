@@ -80,7 +80,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
             initProperties()
             initCloudConfig()
             initAppLifecycleListener()
-//            getUserAgentByUIThread()
             trackPresetEvent()
             getGAID()
             getOAID()

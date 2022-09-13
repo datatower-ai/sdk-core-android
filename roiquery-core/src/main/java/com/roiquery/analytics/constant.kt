@@ -76,8 +76,6 @@ internal object Constant {
 
     //latest
     const val USER_PROPERTY_LATEST_INSTANCE_ID    = "#latest_instance_id"
-    const val USER_PROPERTY_LATEST_ACID           = "#latest_acid"
-    const val USER_PROPERTY_LATEST_DID            = "#latest_did"
     const val USER_PROPERTY_LATEST_APP_SET_ID     = "#latest_app_set_id"
     const val USER_PROPERTY_LATEST_GAID           = "#latest_gaid"
     const val USER_PROPERTY_LATEST_OAID           = "#latest_oaid"

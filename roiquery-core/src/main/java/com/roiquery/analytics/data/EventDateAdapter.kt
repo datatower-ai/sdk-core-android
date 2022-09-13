@@ -73,7 +73,6 @@ class EventDateAdapter private constructor(
      * @return acountId
      */
     var firstOpenTime: Long
-        // TODO: runBlocking 不建议用在代码中，只用于测试，后续优化
         get() = runBlocking{ getLongConfig(DataParams.CONFIG_FIRST_OPEN_TIME) }
         set(value) = setLongConfig(DataParams.CONFIG_FIRST_OPEN_TIME,value)
 

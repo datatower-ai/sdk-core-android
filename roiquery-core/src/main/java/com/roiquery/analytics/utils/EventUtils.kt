@@ -53,8 +53,6 @@ object EventUtils {
     fun getLatestUserProperties(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
             put(Constant.USER_PROPERTY_LATEST_INSTANCE_ID, dataAdapter?.rqid)
-            put(Constant.USER_PROPERTY_LATEST_ACID, dataAdapter?.accountId)
-            put(Constant.USER_PROPERTY_LATEST_DID, DeviceUtils.getAndroidID(context))
             put(Constant.USER_PROPERTY_LATEST_APP_SET_ID, dataAdapter?.appSetId)
             put(Constant.USER_PROPERTY_LATEST_GAID, dataAdapter?.gaid)
             put(Constant.USER_PROPERTY_LATEST_OAID, dataAdapter?.oaid)

@@ -44,9 +44,6 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
             if (value != null) {
                 EventDateAdapter.getInstance()?.accountId = value
                 updateEventInfo(Constant.EVENT_INFO_ACID, value)
-                userSet(JSONObject().apply {
-                    put(Constant.USER_PROPERTY_LATEST_ACID, value)
-                })
             }
         }
 

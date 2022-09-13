@@ -1,6 +1,4 @@
-include ':demo_iap'
-include ':demo_cloudconfig'
-include ':demo_ad'
+
 include ':roiquery-core'
 include ':demo_analytics'
 rootProject.name = "ROIQuery-SDK"

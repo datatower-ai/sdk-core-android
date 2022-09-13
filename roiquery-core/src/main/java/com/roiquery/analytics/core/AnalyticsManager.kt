@@ -87,20 +87,9 @@ class AnalyticsManager private constructor(
         }
     }
 
-    /**
-     * 是否需要立即上报
-     */
-    private fun isNeedFlushImmediately(eventName: String): Boolean {
-        val tagName = Constant.PRESET_EVENT_TAG + eventName
-        return tagName == Constant.PRESET_EVENT_APP_OPEN
-                || tagName == Constant.PRESET_EVENT_APP_FIRST_OPEN
-                || tagName == Constant.PRESET_EVENT_APP_ATTRIBUTE
-                || tagName == Constant.PRESET_EVENT_APP_CLOSE
-                || tagName == Constant.PRESET_EVENT_APP_STATE_CHANGED
-    }
 
     /**
-     * 删除所有数据库内的事件，慎用
+     * 删除所有数据库内的事件
      */
     fun deleteAll() = mWorker.runMessage(Message.obtain().apply { what = DELETE_ALL })
 
