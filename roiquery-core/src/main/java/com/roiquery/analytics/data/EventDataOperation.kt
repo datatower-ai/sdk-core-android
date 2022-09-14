@@ -22,12 +22,12 @@ internal class EventDataOperation(
     mContext: Context
 ) : ROIQueryCoroutineScope() {
     var TAG = "EventDataOperation"
-    private var analyticsDB: ROIQueryAnalyticsDB? =
-        ROIQueryAnalyticsDB.getInstance(context = mContext)
+    private var analyticsDB: ROIQueryAnalyticsDB? = ROIQueryAnalyticsDB.getInstance(context = mContext)
+
     private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
         run {
             LogUtils.e(exception.message)
-           reportRoomDatabaseError(exception.message)
+            reportRoomDatabaseError(exception.message)
         }
     }
 
@@ -38,27 +38,19 @@ internal class EventDataOperation(
     suspend fun insertData(jsonObject: JSONObject?, eventSyn: String) =
         suspendCoroutine<Int> {
             scope.launch(exceptionHandler) {
-                try {
-                    launch {
-                        if (!deleteDataWhenOverMaxRows())
-                            it.resume(DataParams.DB_OUT_OF_ROW_ERROR)
-                        withContext(Dispatchers.IO) {
-                            analyticsDB?.getEventsDao()?.insertEvent(
-                                Events(
-                                    createdAt = System.currentTimeMillis(),
-                                    data =
-                                    jsonObject.toString() + "\t" + jsonObject.toString()
-                                        .hashCode(),
-                                    eventSyn = eventSyn
-                                )
-                            )
-                            it.resume(DataParams.DB_INSERT_SUCCEED)
-                        }
-                    }
-                } catch (e: Exception) {
-                    deleteTheOldestData(DataParams.CONFIG_MAX_ROWS / 2)
-                    reportRoomDatabaseError(e.message)
-                    it.resume(DataParams.DB_INSERT_EXCEPTION)
+                if (!deleteDataWhenOverMaxRows())
+                    it.resume(DataParams.DB_OUT_OF_ROW_ERROR)
+                withContext(Dispatchers.IO) {
+                    analyticsDB?.getEventsDao()?.insertEvent(
+                        Events(
+                            createdAt = System.currentTimeMillis(),
+                            data =
+                            jsonObject.toString() + "\t" + jsonObject.toString()
+                                .hashCode(),
+                            eventSyn = eventSyn
+                        )
+                    )
+                    it.resume(DataParams.DB_INSERT_SUCCEED)
                 }
             }
         }
@@ -89,15 +81,14 @@ internal class EventDataOperation(
     /**
      * 查询配置
      */
-    suspend fun queryConfig(name: String):String? {
+    suspend fun queryConfig(name: String): String? {
         try {
-         return  analyticsDB?.getConfigDao()?.queryValueByName(name)
+            return analyticsDB?.getConfigDao()?.queryValueByName(name)
         } catch (e: Exception) {
             reportRoomDatabaseError(e.message)
         }
         return null
     }
-
 
 
     /**
@@ -126,7 +117,6 @@ internal class EventDataOperation(
                 }
             }
         }
-
 
 
     /**
@@ -158,7 +148,7 @@ internal class EventDataOperation(
     }
 
 
-    private suspend fun deleteTheOldestData(num:Int) {
+    private suspend fun deleteTheOldestData(num: Int) {
         try {
             analyticsDB?.getEventsDao()?.deleteTheOldestData(num)
         } catch (e: Exception) {
@@ -227,11 +217,14 @@ internal class EventDataOperation(
         }
     }
 
-    private fun reportRoomDatabaseError(errorMsg:String?){
-        scope.launch (Dispatchers.Main){
+    private fun reportRoomDatabaseError(errorMsg: String?) {
+        scope.launch(Dispatchers.Main) {
             try {
                 LogUtils.w(errorMsg)
-                ROIQueryQualityHelper.instance.reportQualityMessage(ROIQueryErrorParams.ROOM_DATABASE_ERROR,errorMsg)
+                ROIQueryQualityHelper.instance.reportQualityMessage(
+                    ROIQueryErrorParams.ROOM_DATABASE_ERROR,
+                    errorMsg
+                )
             } catch (e: Exception) {
             }
         }
