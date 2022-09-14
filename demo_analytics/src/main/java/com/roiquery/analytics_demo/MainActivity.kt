@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.button_db_view).setOnClickListener {
-            DbInspector.show()
+           startService(Intent(this, SubProcessService::class.java))
         }
     }
 

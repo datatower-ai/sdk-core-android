@@ -37,6 +37,9 @@
         <activity android:name=".UserSetTest"
             android:theme="@style/Theme.ROIQuerySDK.NoActionBar"/>
 
+        <service android:name=".SubProcessService"
+            android:process=":subProcessService"/>
+
     </application>
 
 </manifest>
