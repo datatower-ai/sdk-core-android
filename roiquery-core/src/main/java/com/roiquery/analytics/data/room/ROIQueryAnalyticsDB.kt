@@ -11,8 +11,6 @@ import com.roiquery.analytics.data.room.bean.Configs
 import com.roiquery.analytics.data.room.bean.Events
 import com.roiquery.analytics.data.room.dao.ConfigsDao
 import com.roiquery.analytics.data.room.dao.EventInfoDao
-import com.roiquery.analytics.utils.AppInfoUtils
-import com.roiquery.analytics.utils.ProcessUtils
 
 /**
  * author: xiaosailing
@@ -39,14 +37,14 @@ abstract class ROIQueryAnalyticsDB : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context): ROIQueryAnalyticsDB? {
-            if (!ProcessUtils.isMainProcess(context as Application?)){
-                return null
-            }
             return Room.databaseBuilder(
                 context,
                 ROIQueryAnalyticsDB::class.java,
                 DATABASE_NAME
-            ).addMigrations(MIGRATION_1_2).build()
+            )
+                .addMigrations(MIGRATION_1_2)
+                .setJournalMode(JournalMode.WRITE_AHEAD_LOGGING)
+                .build()
         }
     }
 

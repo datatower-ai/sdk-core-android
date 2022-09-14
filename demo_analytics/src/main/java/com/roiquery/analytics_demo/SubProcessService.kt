@@ -4,14 +4,19 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import com.roiquery.analytics.ROIQueryAnalytics
+import com.roiquery.analytics.utils.ProcessUtils
+import org.json.JSONObject
 
 class SubProcessService : Service() {
+
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
     override fun onCreate() {
-        ROIQueryAnalytics.track("sub_process_service_oncreate")
+        ROIQueryAnalytics.track("sub_process_service_oncreate", JSONObject().apply {
+            put("process_name",ProcessUtils.getCurrentProcessName(application))
+        })
         super.onCreate()
     }
 
