@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.infinum.dbinspector.DbInspector
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,24 +13,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        findViewById<View>(R.id.button_analytics_core).setOnClickListener{
-            startActivity(Intent(this, CoreActivity::class.java))
+        findViewById<View>(R.id.button_analytics_test).setOnClickListener {
+            startActivity(Intent(this,AnalyticsTestActivity::class.java))
+        }
+        findViewById<View>(R.id.User_Operate).setOnClickListener {
+            startActivity(Intent(this, UserSetTest::class.java))
         }
 
-        findViewById<View>(R.id.button_ad_report).setOnClickListener{
-            startActivity(Intent(this, AdReportActivity::class.java))
+        findViewById<View>(R.id.button_db_view).setOnClickListener {
+           startService(Intent(this, SubProcessService::class.java))
         }
+    }
 
 
-        findViewById<View>(R.id.button_iap_report).setOnClickListener{
-            startActivity(Intent(this, IapReportActivity::class.java))
-        }
+    override fun onStart() {
+        super.onStart()
+    }
 
-        findViewById<View>(R.id.button_ias_report).setOnClickListener{
-            startActivity(Intent(this, IasReportActivity::class.java))
-        }
-
-
+    override fun onStop() {
+        super.onStop()
     }
 
 

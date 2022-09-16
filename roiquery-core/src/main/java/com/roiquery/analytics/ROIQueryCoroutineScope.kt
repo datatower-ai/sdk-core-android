@@ -22,18 +22,17 @@ open class ROIQueryCoroutineScope internal constructor(){
 
     val scope: CoroutineScope
         get() {
-            while (true) {
-                val existing = mInternalScopeRef.get() as CoroutineScope?
-                if (existing != null) {
-                    return existing
-                }
-                val newScope = CoroutineScope(
-                    SupervisorJob() + Dispatchers.Main.immediate
-                )
-                if (mInternalScopeRef.compareAndSet(null, newScope)) {
-                    return newScope
-                }
+            val existing = mInternalScopeRef.get() as CoroutineScope?
+            if (existing != null) {
+                return existing
             }
+            val newScope = CoroutineScope(
+                SupervisorJob() + Dispatchers.Main.immediate
+            )
+            if (mInternalScopeRef.compareAndSet(null, newScope)) {
+                return newScope
+            }
+            return newScope
         }
 
     internal class CloseableCoroutineScope(context: CoroutineContext) : Closeable, CoroutineScope {

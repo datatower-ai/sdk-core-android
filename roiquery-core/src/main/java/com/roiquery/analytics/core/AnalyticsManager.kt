@@ -37,11 +37,11 @@ class AnalyticsManager private constructor(
     private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
 
 
-    fun enqueueEventMessage(name: String, eventJson: JSONObject,eventSyn:String) {
-        try {
-            if (mDateAdapter == null) return
-            synchronized(mDateAdapter) {
-                scope.launch {
+    fun enqueueEventMessage(name: String, eventJson: JSONObject, eventSyn: String) {
+        if (mDateAdapter == null) return
+        synchronized(mDateAdapter) {
+            scope.launch {
+                try {
                     //插入数据库
                     val insertedCount = mDateAdapter.addJSON(eventJson, eventSyn)
 
@@ -55,15 +55,15 @@ class AnalyticsManager private constructor(
                         this.what = FLUSH_QUEUE
                         mWorker.runMessageOnce(this, 1000L)
                     }
+                } catch (e: Exception) {
+                    LogUtils.i(TAG, "enqueueEventMessage error:$e")
+                    ROIQueryQualityHelper.instance.reportQualityMessage(
+                        ROIQueryErrorParams.UNKNOWN_TYPE,
+                        "event name: $name ," + e.stackTraceToString()
+                    )
                 }
 
             }
-        } catch (e: Exception) {
-            LogUtils.i(TAG, "enqueueEventMessage error:$e")
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.UNKNOWN_TYPE,
-                "event name: $name ," + e.stackTraceToString()
-            )
         }
     }
 
@@ -130,14 +130,14 @@ class AnalyticsManager private constructor(
             return
         }
         //读取数据库数据
-        var eventsData:String?
+        var eventsData: String?
         synchronized(mDateAdapter) {
             eventsData = mDateAdapter.generateDataString(
                 Constant.EVENT_REPORT_SIZE
             )
         }
 
-        if (eventsData == null||JSONArray(eventsData).length()==0) {
+        if (eventsData == null || JSONArray(eventsData).length() == 0) {
             LogUtils.d(TAG, "db count = 0，disable upload")
             mDateAdapter.enableUpload = true
             return
@@ -158,7 +158,7 @@ class AnalyticsManager private constructor(
                         if (info.isNotEmpty()) {
                             mDateAdapter.enableUpload = false
                             //http 请求
-                            uploadDataToNet(info,  mDateAdapter)
+                            uploadDataToNet(info, mDateAdapter)
                         } else {
                             mDateAdapter.enableUpload = true
                         }
@@ -226,9 +226,9 @@ class AnalyticsManager private constructor(
             val length = jsonArray.length()
             for (i in 0 until length) {
                 jsonArray.optJSONObject(i)?.let {
-                    if (it.optString(EVENT_INFO_SYN).isNotEmpty()){
+                    if (it.optString(EVENT_INFO_SYN).isNotEmpty()) {
                         mDateAdapter.cleanupEvents(it.optString(EVENT_INFO_SYN))
-                    }else{
+                    } else {
                         mDateAdapter.cleanupEvents(it.optString(PRE_EVENT_INFO_SYN))
                     }
                 }

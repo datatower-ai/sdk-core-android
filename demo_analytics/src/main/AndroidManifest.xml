@@ -44,6 +44,9 @@
             android:name=".IasReportActivity"
             android:theme="@style/Theme.ROIQuerySDK.NoActionBar" />
 
+        <service android:name=".SubProcessService"
+            android:process=":subProcessService"/>
+
     </application>
 
 </manifest>
