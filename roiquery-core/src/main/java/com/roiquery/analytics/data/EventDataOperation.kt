@@ -43,7 +43,8 @@ internal class EventDataOperation(
                     it.resume(DataParams.DB_OUT_OF_ROW_ERROR)
                 withContext(Dispatchers.IO) {
                     try {
-                        analyticsDB?.getEventsDao()?.insertEvent(
+                        //return the SQLite row id or -1 if no row is inserted
+                       val result = analyticsDB?.getEventsDao()?.insertEvent(
                             Events(
                                 createdAt = System.currentTimeMillis(),
                                 data =
@@ -52,7 +53,7 @@ internal class EventDataOperation(
                                 eventSyn = eventSyn
                             )
                         )
-                        it.resume(DataParams.DB_INSERT_SUCCEED)
+                        it.resume(if(result == -1L) DataParams.DB_INSERT_ERROR else DataParams.DB_INSERT_SUCCEED)
                     } catch (e: Exception){
                         reportRoomDatabaseError(e.message)
                         it.resume(DataParams.DB_INSERT_EXCEPTION)

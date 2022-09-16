@@ -153,6 +153,9 @@ internal object Constant {
 
     const val TIME_OFFSET_DEFAULT_VALUE = "0"
 
+
+    const val TIME_FROM_ROI_NET_BODY = "[]"
+
 }
 
 

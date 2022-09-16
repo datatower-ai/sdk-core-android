@@ -48,7 +48,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     // 事件通用属性
     private var mCommonProperties: MutableMap<String, Any?>? = null
 
-    //事件采集管理
+    //事件采集管理线程池
     protected var mTrackTaskManager: ExecutorService? = null
 
     //采集 、上报管理
@@ -110,7 +110,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     private fun initLocalData() {
         mDataAdapter = EventDateAdapter.getInstance(mContext!!, mContext!!.packageName)
         mDataAdapter?.timeOffset = Constant.TIME_OFFSET_DEFAULT_VALUE
-        mDataAdapter?.lastEngagementTime = Constant.TIME_OFFSET_DEFAULT_VALUE
         mDataAdapter?.enableUpload = true
     }
 
@@ -271,7 +270,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     /**
      * 初始化配置
      */
-    protected open fun initConfig(packageName: String) {
+    private fun initConfig(packageName: String) {
         var configBundle: Bundle? = null
         try {
             mContext?.let {
@@ -338,7 +337,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
      * @param enable 是否开启
      * @param logLevel log 级别
      */
-    fun configLog(
+    private fun configLog(
         enable: Boolean = mConfigOptions?.mEnabledDebug ?: false,
         logLevel: Int = mConfigOptions?.mLogLevel ?: LogUtils.V
     ) {
@@ -465,7 +464,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
         setLatestUserProperties()
         setActiveUserProperties()
 
-//        setSystemUserProperties()
     }
 
 
@@ -533,7 +531,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     /**
      * 获取 app 归因属性
      */
-//     TODO: ANR
     private fun getAppAttribute() {
         val referrerClient: InstallReferrerClient? = InstallReferrerClient.newBuilder(mContext).build()
         referrerClient?.startConnection(object : InstallReferrerStateListener {
@@ -630,17 +627,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                 ).toJSONObject())
     }
 
-    /**
-     * 如果超过六分钟，则可能 app_engagement 上报有中断，重新触发
-     */
-    fun checkAppEngagementEvent() {
-//        if (!mDataAdapter?.lastEngagementTime.isNullOrEmpty() &&
-//            getRealTime() - (mDataAdapter?.lastEngagementTime?.toLong()
-//                ?: 0L) > Constant.APP_ENGAGEMENT_INTERVAL_TIME_LONG + 60 * 1000L
-//        ) {
-//            trackAppEngagementEvent()
-//        }
-    }
 
     /**
      * 采集 app 活跃事件
@@ -652,19 +638,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
             .postAsync()
     }
 
-    /**
-     * 获取浏览器user_agent
-     */
-    private fun getUserAgentByUIThread() {
-        launch (Dispatchers.Default){
-            mContext?.let {
-                if (mDataAdapter?.uaWebview?.isEmpty() == true){
-                    mDataAdapter?.uaWebview = NetworkUtils.getUserAgent(it)
-                }
-                updateCommonProperties(COMMON_PROPERTY_USER_AGENT, mDataAdapter?.uaWebview ?: "")
-            }
-        }
-    }
+
 
 
     inner class EngagementTask(name: String?) : TickTask(name) {
@@ -674,7 +648,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                 Constant.PRESET_EVENT_APP_ENGAGEMENT,
                 true
             )
-            mDataAdapter?.lastEngagementTime = getRealTime().toString()
             //补发，以免异常情况获取不到 app_attribute 事件
             startAppAttribute()
         }

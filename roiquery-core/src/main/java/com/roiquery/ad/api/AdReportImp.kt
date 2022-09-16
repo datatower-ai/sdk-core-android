@@ -463,7 +463,6 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
 
     private fun generateAdReportJson(seq: String) =
         JSONObject().apply {
-            LogUtils.d("mSequenessMap", mSequenessMap.size)
             mSequenessMap[seq]?.let { adEventProperty ->
                 put(AdReportConstant.PROPERTY_AD_ID, adEventProperty.adId)
                 put(AdReportConstant.PROPERTY_AD_TYPE, adEventProperty.adType)

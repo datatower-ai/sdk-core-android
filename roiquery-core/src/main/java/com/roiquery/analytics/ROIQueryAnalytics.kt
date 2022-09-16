@@ -249,7 +249,6 @@ open class ROIQueryAnalytics {
                 checkNotNull(mContext) { "Call ROIQuery.initSDK first" }
                 EventDateAdapter.getInstance()?.isAppForeground = true
                 AnalyticsImp.getInstance(mContext).trackAppStateChanged()
-                AnalyticsImp.getInstance(mContext).checkAppEngagementEvent()
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppForeground()
                 }

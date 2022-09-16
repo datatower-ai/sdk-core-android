@@ -19,21 +19,21 @@ class EventDateAdapter private constructor(
      * Adds a JSON string representing an event with properties or a person record
      * to the SQLiteDatabase.
      *
-     * @param j the JSON to record
+     * @param data the event JSON to record
+     * @param eventSyn event id
      * @return the number of rows in the table, or DB_OUT_OF_MEMORY_ERROR/DB_UPDATE_ERROR
      * on failure
      */
-    suspend fun addJSON(j: JSONObject?, eventSyn: String)= coroutineScope {
+    suspend fun addJSON(data: JSONObject?, eventSyn: String)= coroutineScope {
         suspendCoroutine<Int> {
             scope.launch {
-                val code = mOperation?.insertData(j, eventSyn)!!
-                it.resume(
-                    if (code == DataParams.DB_INSERT_SUCCEED) {
-                        mOperation!!.queryDataCount()
-                    } else code
-                )
+                try {
+                    val code = mOperation?.insertData(data, eventSyn)!!
+                    it.resume(code)
+                } catch (e:Exception){
+                    it.resume(DataParams.DB_ADD_JSON_ERROR)
+                }
             }
-
         }
     }
 

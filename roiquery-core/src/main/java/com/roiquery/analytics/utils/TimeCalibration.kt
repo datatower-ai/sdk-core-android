@@ -2,6 +2,7 @@ package com.roiquery.analytics.utils
 
 import android.os.SystemClock
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.Constant.TIME_FROM_ROI_NET_BODY
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
@@ -16,7 +17,6 @@ import com.roiquery.analytics.network.RequestHelper
 class TimeCalibration private constructor() {
 
     companion object {
-        private const val TIME_FROM_ROI_NET_BODY = "[{}]"
         const val TIME_NOT_VERIFY_VALUE = 0L
         val instance: TimeCalibration by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             TimeCalibration()
@@ -38,7 +38,9 @@ class TimeCalibration private constructor() {
                         _latestTime = response
                         _latestSystemElapsedRealtime = getSystemHibernateTimeGap()
                         //避免因为时间未同步而造成数据堆积
-                        ROIQueryAnalytics.flush()
+                        if (ROIQueryAnalytics.isSDKInitSuccess()) {
+                            ROIQueryAnalytics.flush()
+                        }
                     }
 
                 }).execute()

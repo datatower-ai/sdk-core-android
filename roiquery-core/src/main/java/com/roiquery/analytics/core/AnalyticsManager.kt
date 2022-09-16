@@ -45,12 +45,9 @@ class AnalyticsManager private constructor(
             scope.launch {
                 try {
                     //插入数据库
-                    val insertedCount = mDateAdapter.addJSON(eventJson, eventSyn)
+                    val insertCode = mDateAdapter.addJSON(eventJson, eventSyn)
                     //检测插入结果
-                    checkInsertResult(insertedCount, eventJson, eventSyn)
-                    val msg = if (insertedCount < 0) " Failed to insert the event " else " the event: $name  has been inserted to db，count = $insertedCount  "
-                    LogUtils.json(TAG , msg)
-
+                    checkInsertResult(insertCode, name, eventJson, eventSyn)
                     //发送上报的message
                     Message.obtain().apply {
                         //上报标志
@@ -86,16 +83,16 @@ class AnalyticsManager private constructor(
         }
     }
 
-    private fun checkInsertResult(insertedCount: Int, eventJson: JSONObject, eventSyn: String){
-        if (insertedCount < 0) {
+    private fun checkInsertResult(insertCode: Int, eventName: String, eventJson: JSONObject, eventSyn: String){
+        if (insertCode < 0) {
             if (!mErrorInsertDataMap.containsKey(eventSyn) && mErrorInsertDataMap.size < 20) {
                 mErrorInsertDataMap[eventSyn] = eventJson
             }
-            qualityReport(insertedCount)
-            LogUtils.d("mErrorInsertDataMap", mErrorInsertDataMap.size)
+            qualityReport(insertCode)
         }
+        val msg = if (insertCode < 0) " Failed to insert the event " else " the event: $eventName  has been inserted to db，code = $insertCode  "
+        LogUtils.json(TAG , msg)
     }
-
 
 
     private fun qualityReport(insertedCount: Int) {

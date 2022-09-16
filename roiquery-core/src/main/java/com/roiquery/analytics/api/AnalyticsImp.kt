@@ -3,6 +3,7 @@ package com.roiquery.analytics.api
 import android.annotation.SuppressLint
 import android.content.Context
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.Constant.TIME_FROM_ROI_NET_BODY
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
@@ -173,7 +174,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
             HttpMethod.POST_ASYNC,
             Constant.EVENT_REPORT_URL
         )
-            .jsonData("[{}]")
+            .jsonData(TIME_FROM_ROI_NET_BODY)
             .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
             .callback(object : HttpCallback.TimeCallback() {
                 override fun onFailure(code: Int, errorMessage: String?) {
@@ -192,7 +193,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
             HttpMethod.POST_SYNC,
             Constant.EVENT_REPORT_URL
         )
-            .jsonData("[{}]")
+            .jsonData(TIME_FROM_ROI_NET_BODY)
             .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
             .executeSync()?.let {
                 return it.date
