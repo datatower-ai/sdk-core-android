@@ -8,6 +8,7 @@ import android.os.Message
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.Constant.PRE_EVENT_INFO_SYN
+import com.roiquery.analytics.ROIQueryAnalytics.Companion.mContext
 import com.roiquery.analytics.ROIQueryCoroutineScope
 import com.roiquery.analytics.data.DataParams
 import com.roiquery.analytics.data.EventDateAdapter
@@ -35,6 +36,7 @@ class AnalyticsManager private constructor(
 ) : ROIQueryCoroutineScope() {
     private val mWorker: Worker = Worker()
     private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
+    private val mErrorInsertDataMap: MutableMap<String, JSONObject> = mutableMapOf()
 
 
     fun enqueueEventMessage(name: String, eventJson: JSONObject, eventSyn: String) {
@@ -44,16 +46,16 @@ class AnalyticsManager private constructor(
                 try {
                     //插入数据库
                     val insertedCount = mDateAdapter.addJSON(eventJson, eventSyn)
+                    //检测插入结果
+                    checkInsertResult(insertedCount, eventJson, eventSyn)
+                    val msg = if (insertedCount < 0) " Failed to insert the event " else " the event: $name  has been inserted to db，count = $insertedCount  "
+                    LogUtils.json(TAG , msg)
 
-                    qualityReport(insertedCount)
-                    val msg =
-                        if (insertedCount < 0) " Failed to insert the event " else " the event: $name  has been inserted to db，count = $insertedCount  "
-//                LogUtils.json(TAG + msg, eventJson.toString())
                     //发送上报的message
                     Message.obtain().apply {
                         //上报标志
                         this.what = FLUSH_QUEUE
-                        mWorker.runMessageOnce(this, 1000L)
+                        mWorker.runMessageOnce(this, FLUSH_DELAY)
                     }
                 } catch (e: Exception) {
                     LogUtils.i(TAG, "enqueueEventMessage error:$e")
@@ -67,13 +69,40 @@ class AnalyticsManager private constructor(
         }
     }
 
-    private fun qualityReport(insertedCount: Int) {
-        if (insertedCount < 0) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.DATA_INSERT_ERROR,
-                insertedCount.toString()
-            )
+    fun enqueueErrorInsertEventMessage(){
+        try {
+            if (mErrorInsertDataMap.isNotEmpty()) {
+                val eventSyn = mErrorInsertDataMap.keys.first()
+                val eventJson =  mErrorInsertDataMap[eventSyn]
+                val evenName = eventJson?.getString(Constant.EVENT_INFO_NAME)
+
+                if (eventJson != null && evenName != null) {
+                    mErrorInsertDataMap.remove(eventSyn)
+                    enqueueEventMessage(evenName, eventJson, eventSyn)
+                }
+            }
+        } catch (e :Exception){
+            LogUtils.i(TAG, "enqueueErrorInsertEventMessage error:$e")
         }
+    }
+
+    private fun checkInsertResult(insertedCount: Int, eventJson: JSONObject, eventSyn: String){
+        if (insertedCount < 0) {
+            if (!mErrorInsertDataMap.containsKey(eventSyn) && mErrorInsertDataMap.size < 20) {
+                mErrorInsertDataMap[eventSyn] = eventJson
+            }
+            qualityReport(insertedCount)
+            LogUtils.d("mErrorInsertDataMap", mErrorInsertDataMap.size)
+        }
+    }
+
+
+
+    private fun qualityReport(insertedCount: Int) {
+        ROIQueryQualityHelper.instance.reportQualityMessage(
+            ROIQueryErrorParams.DATA_INSERT_ERROR,
+            insertedCount.toString()
+        )
     }
 
     /**
@@ -196,7 +225,7 @@ class AnalyticsManager private constructor(
                         deleteEventAfterReport(event, mDateAdapter)
 
                         //避免事件积压，成功后再次上报
-                        flush(2000L)
+                        flush(FLUSH_DELAY)
                     } else {
                         val msg =
                             "error code: ${response?.getString(ResponseDataKey.KEY_CODE)}, msg: ${
@@ -317,6 +346,7 @@ class AnalyticsManager private constructor(
     companion object {
         private const val TAG = Constant.LOG_TAG
         private const val FLUSH_QUEUE = 3
+        private const val FLUSH_DELAY = 1000L
         private const val DELETE_ALL = 4
         private val S_INSTANCES: MutableMap<Context, AnalyticsManager> = HashMap()
 

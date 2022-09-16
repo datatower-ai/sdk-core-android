@@ -33,24 +33,30 @@ internal class EventDataOperation(
 
     /**
      * 保存数据
-     * 插入成功 返回true 失败返回 false
+     * 插入成功 返回0 失败返回 error code
      */
     suspend fun insertData(jsonObject: JSONObject?, eventSyn: String) =
         suspendCoroutine<Int> {
             scope.launch(exceptionHandler) {
+
                 if (!deleteDataWhenOverMaxRows())
                     it.resume(DataParams.DB_OUT_OF_ROW_ERROR)
                 withContext(Dispatchers.IO) {
-                    analyticsDB?.getEventsDao()?.insertEvent(
-                        Events(
-                            createdAt = System.currentTimeMillis(),
-                            data =
-                            jsonObject.toString() + "\t" + jsonObject.toString()
-                                .hashCode(),
-                            eventSyn = eventSyn
+                    try {
+                        analyticsDB?.getEventsDao()?.insertEvent(
+                            Events(
+                                createdAt = System.currentTimeMillis(),
+                                data =
+                                jsonObject.toString() + "\t" + jsonObject.toString()
+                                    .hashCode(),
+                                eventSyn = eventSyn
+                            )
                         )
-                    )
-                    it.resume(DataParams.DB_INSERT_SUCCEED)
+                        it.resume(DataParams.DB_INSERT_SUCCEED)
+                    } catch (e: Exception){
+                        reportRoomDatabaseError(e.message)
+                        it.resume(DataParams.DB_INSERT_EXCEPTION)
+                    }
                 }
             }
         }

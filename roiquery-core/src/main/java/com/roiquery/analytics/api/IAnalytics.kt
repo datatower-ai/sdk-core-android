@@ -134,28 +134,28 @@ interface IAnalytics {
     fun trackUser(eventName: String, properties: JSONObject? = JSONObject())
 
 
-    /**
-     * 采集 app 退出
-     *
-     * @param eventName 事件的名称
-     */
-    fun trackAppClose(properties: JSONObject? = JSONObject())
-
-
-    /**
-     * 采集页面打开事件
-     *
-     * @param properties 事件的属性
-     */
-    fun trackPageOpen(properties: JSONObject? = JSONObject())
-
-
-    /**
-     * 采集页面关闭事件
-     *
-     * @param properties 事件的属性
-     */
-    fun trackPageClose(properties: JSONObject? = JSONObject())
+//    /**
+//     * 采集 app 退出
+//     *
+//     * @param eventName 事件的名称
+//     */
+//    fun trackAppClose(properties: JSONObject? = JSONObject())
+//
+//
+//    /**
+//     * 采集页面打开事件
+//     *
+//     * @param properties 事件的属性
+//     */
+//    fun trackPageOpen(properties: JSONObject? = JSONObject())
+//
+//
+//    /**
+//     * 采集页面关闭事件
+//     *
+//     * @param properties 事件的属性
+//     */
+//    fun trackPageClose(properties: JSONObject? = JSONObject())
 
 //
 //    /**

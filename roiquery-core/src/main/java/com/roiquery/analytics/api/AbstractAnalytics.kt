@@ -195,8 +195,8 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                         EVENT_INFO_SYN
                     )
                 )
-
-
+                //如果有插入失败的数据，则一起插入
+                mAnalyticsManager?.enqueueErrorInsertEventMessage()
             }
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)

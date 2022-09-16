@@ -76,11 +76,11 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
-        adTrack(
-            AdReportConstant.EVENT_AD_ENTRANCE,
-            generateAdReportJson(seq)
-        )
+//        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
+//        adTrack(
+//            AdReportConstant.EVENT_AD_ENTRANCE,
+//            generateAdReportJson(seq)
+//        )
     }
 
     override fun reportToShow(
@@ -148,13 +148,13 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
-            showTS = SystemClock.elapsedRealtime()
-        } ?: return
-        adTrack(
-            AdReportConstant.EVENT_AD_IMPRESSION,
-            generateAdReportJson(seq)
-        )
+//        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
+//            showTS = SystemClock.elapsedRealtime()
+//        } ?: return
+//        adTrack(
+//            AdReportConstant.EVENT_AD_IMPRESSION,
+//            generateAdReportJson(seq)
+//        )
     }
 
     override fun reportOpen(
@@ -166,11 +166,11 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
-        adTrack(
-            AdReportConstant.EVENT_AD_OPEN,
-            generateAdReportJson(seq)
-        )
+//        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
+//        adTrack(
+//            AdReportConstant.EVENT_AD_OPEN,
+//            generateAdReportJson(seq)
+//        )
     }
 
     override fun reportClose(

@@ -5,14 +5,14 @@ internal object AdReportConstant {
 
     //预置事件名称
     private const val PRESET_EVENT_TAG = "#"
-    const val EVENT_AD_ENTRANCE         =  "#ad_entrance"
+//    const val EVENT_AD_ENTRANCE         =  "#ad_entrance"
     const val EVENT_AD_LOAD_BEGIN       =  "#ad_load_begin"
     const val EVENT_AD_LOAD_END         =  "#ad_load_end"
     const val EVENT_AD_TO_SHOW          =  "#ad_to_show"
     const val EVENT_AD_SHOW             =  "#ad_show"
     const val EVENT_AD_SHOW_FAILED      =  "#ad_show_failed"
-    const val EVENT_AD_IMPRESSION       =  "#ad_impression"
-    const val EVENT_AD_OPEN             =  "#ad_open"
+//    const val EVENT_AD_IMPRESSION       =  "#ad_impression"
+//    const val EVENT_AD_OPEN             =  "#ad_open"
     const val EVENT_AD_CLOSE            =  "#ad_close"
     const val EVENT_AD_CLICK            =  "#ad_click"
     const val EVENT_AD_LEFT_APP         =  "#ad_left_app"

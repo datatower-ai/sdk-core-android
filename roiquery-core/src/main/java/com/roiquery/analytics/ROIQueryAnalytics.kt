@@ -51,68 +51,6 @@ open class ROIQueryAnalytics {
 
 
 
-
-        /**
-         * 采集 app 退出
-         *
-         * @param properties 事件属性，可为空
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackAppClose(properties: Map<String, Any>? = mutableMapOf()) =
-            AnalyticsImp.getInstance(mContext).trackAppClose(properties)
-
-        /**
-         * 采集 app 退出
-         *
-         * @param properties 事件属性
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackAppClose(properties: JSONObject?) =
-            AnalyticsImp.getInstance(mContext).trackAppClose(properties)
-
-
-        /**
-         * 采集 页面打开
-         *
-         * @param properties 事件属性，可为空
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackPageOpen(properties: Map<String, Any>? = mutableMapOf()) =
-            AnalyticsImp.getInstance(mContext).trackPageOpen(properties)
-
-        /**
-         * 采集 页面打开
-         *
-         * @param properties 事件属性，可为空
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackPageOpen(properties: JSONObject?) =
-            AnalyticsImp.getInstance(mContext).trackPageOpen(properties)
-
-        /**
-         * 采集 页面关闭
-         *
-         * @param properties 事件属性，可为空
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackPageClose(properties: Map<String, Any>? = mutableMapOf()) =
-            AnalyticsImp.getInstance(mContext).trackPageClose(properties)
-
-        /**
-         * 采集 页面关闭
-         *
-         * @param properties 事件属性，可为空
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackPageClose(properties: JSONObject?) =
-            AnalyticsImp.getInstance(mContext).trackPageClose(properties)
-
         /**
          * 设置一般的用户属性
          *

@@ -45,11 +45,11 @@ class AnalyticsTestActivity : AppCompatActivity() {
         findViewById<View>(R.id.button_track_ad_click).visibility= View.GONE
 
         findViewById<View>(R.id.button_track_page_close).setOnClickListener {
-            ROIQueryAnalytics.trackPageClose()
+//            ROIQueryAnalytics.trackPageClose()
 
         }
         findViewById<View>(R.id.button_track_app_close).setOnClickListener {
-            ROIQueryAnalytics.trackAppClose()
+//            ROIQueryAnalytics.trackAppClose()
         }
 
         ROIQueryAnalytics.setFCMToken("sdfsdfdfsdf")
@@ -59,12 +59,12 @@ class AnalyticsTestActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        ROIQueryAnalytics.trackPageOpen()
+//        ROIQueryAnalytics.trackPageOpen()
     }
 
     override fun onStop() {
         super.onStop()
-        ROIQueryAnalytics.trackPageClose()
+//        ROIQueryAnalytics.trackPageClose()
     }
 
     //设置监听事件,点击返回按钮则退出当前页面

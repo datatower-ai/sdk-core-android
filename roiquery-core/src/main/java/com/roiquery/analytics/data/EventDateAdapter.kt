@@ -14,7 +14,6 @@ class EventDateAdapter private constructor(
     context: Context,
     packageName: String,
 ): ROIQueryCoroutineScope()  {
-    private val mDbParams: DataParams? = DataParams.getInstance(packageName)
     private var mOperation: EventDataOperation? = EventDataOperation(context.applicationContext)
     /**
      * Adds a JSON string representing an event with properties or a person record

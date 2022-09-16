@@ -225,29 +225,6 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
         trackNormal(eventName,true, properties)
     }
 
-    fun trackAppClose(properties: Map<String, Any?>?) {
-        trackNormalInternal(Constant.PRESET_EVENT_APP_CLOSE, properties)
-    }
-
-    override fun trackAppClose(properties: JSONObject?) {
-        trackNormalInternal(Constant.PRESET_EVENT_APP_CLOSE, properties)
-    }
-
-    fun trackPageOpen(properties: Map<String, Any?>?) {
-        trackNormalInternal(Constant.PRESET_EVENT_PAGE_OPEN,  properties)
-    }
-
-    override fun trackPageOpen(properties: JSONObject?) {
-        trackNormalInternal(Constant.PRESET_EVENT_PAGE_OPEN, properties)
-    }
-
-    fun trackPageClose(properties: Map<String, Any?>?) {
-        trackNormalInternal(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
-    }
-
-    override fun trackPageClose(properties: JSONObject?) {
-        trackNormalInternal(Constant.PRESET_EVENT_PAGE_CLOSE, properties)
-    }
 
     fun userSet(properties: JSONObject?){
         trackUser(Constant.PRESET_EVENT_USER_SET, properties)
