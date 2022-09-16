@@ -1,31 +1,30 @@
 package com.roiquery.analytics_demo
 
 import android.app.Application
-import android.content.Intent
-import com.jraska.console.Console
+import com.roiquery.ad.utils.UUIDUtils
 import com.roiquery.analytics.ROIQuery
 import com.roiquery.analytics.ROIQueryChannel
-import com.roiquery.analytics.utils.LogUtils
 
 
 class MyApp : Application() {
     override fun onCreate() {
         super.onCreate()
-
-        LogUtils.getConfig().setOnConsoleOutputListener { _, tag, content ->
-            run {
-                if (tag.contains("AnalyticsManager")
-                    || tag.contains("AnalyticsApi")) {
-                    Console.writeLine(tag)
-                    Console.writeLine(content)
-                }
-            }
-        }
-        LogUtils.d("roiquery_app","app init ${this.applicationContext}")
-
-
         //init SDK
-        ROIQuery.initSDK(this,"android_analytics",ROIQueryChannel.GP,true)
+        ROIQuery.initSDK(this,"dt_test",ROIQueryChannel.GP,true)
+
+        //mock data
+        if (SharedPreferencesUtils.getParam(this,"first_open",true) as Boolean) {
+
+            SharedPreferencesUtils.setParam(this,"acid","acid-" + UUIDUtils.generateUUID())
+            SharedPreferencesUtils.setParam(this,"fiid","fiid-" + UUIDUtils.generateUUID())
+            SharedPreferencesUtils.setParam(this,"fcm_token","fcm_token" + UUIDUtils.generateUUID())
+            SharedPreferencesUtils.setParam(this,"afid","afid-" + UUIDUtils.generateUUID())
+            SharedPreferencesUtils.setParam(this,"asid","asid-" + UUIDUtils.generateUUID())
+            SharedPreferencesUtils.setParam(this,"koid","koid-" + UUIDUtils.generateUUID())
+
+            SharedPreferencesUtils.setParam(this,"first_open",false)
+        }
+
     }
 
 }

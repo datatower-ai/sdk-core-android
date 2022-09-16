@@ -120,9 +120,10 @@ interface IAnalytics {
      * 调用 track 接口，追踪一个带有属性的事件
      *
      * @param eventName 事件的名称
+     * @param isPreset 是否是预置事件
      * @param eventType 事件的类型
      */
-    fun trackNormal(eventName: String?, properties: JSONObject? = JSONObject())
+    fun trackNormal(eventName: String?, isPreset: Boolean, properties: JSONObject? = JSONObject())
 
      /**
      * 调用 track 用户属性接口，追踪一个带有属性的事件
@@ -130,31 +131,31 @@ interface IAnalytics {
      * @param eventName 事件的名称
      * @param eventType 事件的类型
      */
-    fun trackUser(eventType: String, properties: JSONObject? = JSONObject())
+    fun trackUser(eventName: String, properties: JSONObject? = JSONObject())
 
 
-    /**
-     * 采集 app 退出
-     *
-     * @param eventName 事件的名称
-     */
-    fun trackAppClose(properties: JSONObject? = JSONObject())
-
-
-    /**
-     * 采集页面打开事件
-     *
-     * @param properties 事件的属性
-     */
-    fun trackPageOpen(properties: JSONObject? = JSONObject())
-
-
-    /**
-     * 采集页面关闭事件
-     *
-     * @param properties 事件的属性
-     */
-    fun trackPageClose(properties: JSONObject? = JSONObject())
+//    /**
+//     * 采集 app 退出
+//     *
+//     * @param eventName 事件的名称
+//     */
+//    fun trackAppClose(properties: JSONObject? = JSONObject())
+//
+//
+//    /**
+//     * 采集页面打开事件
+//     *
+//     * @param properties 事件的属性
+//     */
+//    fun trackPageOpen(properties: JSONObject? = JSONObject())
+//
+//
+//    /**
+//     * 采集页面关闭事件
+//     *
+//     * @param properties 事件的属性
+//     */
+//    fun trackPageClose(properties: JSONObject? = JSONObject())
 
 //
 //    /**

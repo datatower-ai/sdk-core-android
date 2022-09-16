@@ -1,18 +1,11 @@
 package com.roiquery.iap
 
-import com.roiquery.cloudconfig.ROIQueryCloudConfig
 import com.roiquery.iap.api.IAPReportImp
 
 
 open class ROIQueryIAPReport {
     companion object {
 
-
-        /**
-         * sdk 是否可用，默认可用，由cloud config 控制
-         */
-        internal fun isSDKEnable() =
-            ROIQueryCloudConfig.getBoolean(Constant.ENABLE_IAP_SDK_KEY, true)
 
         /**
          * 展示购买入口的时候上报

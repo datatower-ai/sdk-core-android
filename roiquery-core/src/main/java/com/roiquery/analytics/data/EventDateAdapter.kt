@@ -14,27 +14,26 @@ class EventDateAdapter private constructor(
     context: Context,
     packageName: String,
 ): ROIQueryCoroutineScope()  {
-    private val mDbParams: DataParams? = DataParams.getInstance(packageName)
     private var mOperation: EventDataOperation? = EventDataOperation(context.applicationContext)
     /**
      * Adds a JSON string representing an event with properties or a person record
      * to the SQLiteDatabase.
      *
-     * @param j the JSON to record
+     * @param data the event JSON to record
+     * @param eventSyn event id
      * @return the number of rows in the table, or DB_OUT_OF_MEMORY_ERROR/DB_UPDATE_ERROR
      * on failure
      */
-    suspend fun addJSON(j: JSONObject?, eventSyn: String)= coroutineScope {
+    suspend fun addJSON(data: JSONObject?, eventSyn: String)= coroutineScope {
         suspendCoroutine<Int> {
             scope.launch {
-                val code = mOperation?.insertData(j, eventSyn)!!
-                it.resume(
-                    if (code == DataParams.DB_INSERT_SUCCEED) {
-                        mOperation!!.queryDataCount()
-                    } else code
-                )
+                try {
+                    val code = mOperation?.insertData(data, eventSyn)!!
+                    it.resume(code)
+                } catch (e:Exception){
+                    it.resume(DataParams.DB_ADD_JSON_ERROR)
+                }
             }
-
         }
     }
 
@@ -73,7 +72,6 @@ class EventDateAdapter private constructor(
      * @return acountId
      */
     var firstOpenTime: Long
-        // TODO: runBlocking 不建议用在代码中，只用于测试，后续优化
         get() = runBlocking{ getLongConfig(DataParams.CONFIG_FIRST_OPEN_TIME) }
         set(value) = setLongConfig(DataParams.CONFIG_FIRST_OPEN_TIME,value)
 
@@ -229,14 +227,6 @@ class EventDateAdapter private constructor(
         get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_FIRST_OPEN) }
         set(value) = setBooleanConfig(DataParams.CONFIG_FIRST_OPEN,value)
 
-
-
-    /**
-     * 上报了attribute事件的个数
-     */
-    var attributedCount: Int
-        get() = runBlocking{ getIntConfig(DataParams.CONFIG_ATTRIBUTE_COUNT,0) }
-        set(value) = setIntConfig(DataParams.CONFIG_ATTRIBUTE_COUNT,value)
 
     /**
      * attribute 事件的插入数据库状态

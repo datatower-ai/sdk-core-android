@@ -35,7 +35,7 @@ open class ROIQueryAnalytics {
             eventName: String?,
             properties: Map<String, Any>? = mutableMapOf()
         ) =
-            AnalyticsImp.getInstance(mContext).trackNormal(eventName, properties)
+            AnalyticsImp.getInstance(mContext).trackNormal(eventName, false,properties)
 
 
         /**
@@ -46,69 +46,10 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun track(eventName: String?, properties: JSONObject?) =
-            AnalyticsImp.getInstance(mContext).trackNormal(eventName,properties)
+            AnalyticsImp.getInstance(mContext).trackNormal(eventName, false,properties)
 
 
-        /**
-         * 采集 app 退出
-         *
-         * @param properties 事件属性，可为空
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackAppClose(properties: Map<String, Any>? = mutableMapOf()) =
-            AnalyticsImp.getInstance(mContext).trackAppClose(properties)
 
-        /**
-         * 采集 app 退出
-         *
-         * @param properties 事件属性
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackAppClose(properties: JSONObject?) =
-            AnalyticsImp.getInstance(mContext).trackAppClose(properties)
-
-
-        /**
-         * 采集 页面打开
-         *
-         * @param properties 事件属性，可为空
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackPageOpen(properties: Map<String, Any>? = mutableMapOf()) =
-            AnalyticsImp.getInstance(mContext).trackPageOpen(properties)
-
-        /**
-         * 采集 页面打开
-         *
-         * @param properties 事件属性，可为空
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackPageOpen(properties: JSONObject?) =
-            AnalyticsImp.getInstance(mContext).trackPageOpen(properties)
-
-        /**
-         * 采集 页面关闭
-         *
-         * @param properties 事件属性，可为空
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackPageClose(properties: Map<String, Any>? = mutableMapOf()) =
-            AnalyticsImp.getInstance(mContext).trackPageClose(properties)
-
-        /**
-         * 采集 页面关闭
-         *
-         * @param properties 事件属性，可为空
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun trackPageClose(properties: JSONObject?) =
-            AnalyticsImp.getInstance(mContext).trackPageClose(properties)
 
         /**
          * 设置一般的用户属性
@@ -188,7 +129,7 @@ open class ROIQueryAnalytics {
          * @param id 用户系统id
          */
         @JvmStatic
-        fun setAccountId(id: String) {
+        fun setAccountId(id: String?) {
             AnalyticsImp.getInstance(mContext).accountId = id
         }
 
@@ -274,6 +215,31 @@ open class ROIQueryAnalytics {
         }
 
         /**
+         * 调用 track 接口，追踪一个带有属性的事件
+         *
+         * @param eventName 事件的名称
+         * @param properties 事件属性
+         */
+        @JvmStatic
+        @JvmOverloads
+        internal fun trackInternal(
+            eventName: String?,
+            properties: Map<String, Any>? = mutableMapOf()
+        ) =
+            AnalyticsImp.getInstance(mContext).trackNormal(eventName, true, properties)
+
+
+        /**
+         * 调用 track 接口，追踪一个带有属性的事件
+         *
+         * @param eventName 事件的名称
+         * @param properties 事件属性
+         */
+        @JvmStatic
+        internal fun trackInternal(eventName: String?, properties: JSONObject?) =
+            AnalyticsImp.getInstance(mContext).trackNormal(eventName, true, properties)
+
+        /**
          * app 进入前台
          *
          */
@@ -283,7 +249,6 @@ open class ROIQueryAnalytics {
                 checkNotNull(mContext) { "Call ROIQuery.initSDK first" }
                 EventDateAdapter.getInstance()?.isAppForeground = true
                 AnalyticsImp.getInstance(mContext).trackAppStateChanged()
-                AnalyticsImp.getInstance(mContext).checkAppEngagementEvent()
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppForeground()
                 }

@@ -8,6 +8,7 @@ import android.os.Message
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.Constant.PRE_EVENT_INFO_SYN
+import com.roiquery.analytics.ROIQueryAnalytics.Companion.mContext
 import com.roiquery.analytics.ROIQueryCoroutineScope
 import com.roiquery.analytics.data.DataParams
 import com.roiquery.analytics.data.EventDateAdapter
@@ -35,6 +36,7 @@ class AnalyticsManager private constructor(
 ) : ROIQueryCoroutineScope() {
     private val mWorker: Worker = Worker()
     private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
+    private val mErrorInsertDataMap: MutableMap<String, JSONObject> = mutableMapOf()
 
 
     fun enqueueEventMessage(name: String, eventJson: JSONObject, eventSyn: String) {
@@ -43,26 +45,14 @@ class AnalyticsManager private constructor(
             scope.launch {
                 try {
                     //插入数据库
-                    val insertedCount = mDateAdapter.addJSON(eventJson, eventSyn)
-
-                    qualityReport(insertedCount)
-                    val msg =
-                        if (insertedCount < 0) " Failed to insert the event " else " the event: $name  has been inserted to db，count = $insertedCount  "
-//                LogUtils.json(TAG + msg, eventJson.toString())
+                    val insertCode = mDateAdapter.addJSON(eventJson, eventSyn)
+                    //检测插入结果
+                    checkInsertResult(insertCode, name, eventJson, eventSyn)
                     //发送上报的message
                     Message.obtain().apply {
                         //上报标志
                         this.what = FLUSH_QUEUE
-                        // 立即发送：有特殊事件需要立即上报、库存已满（无法插入）、超过允许本地缓存日志的最大条目数
-                        if (isNeedFlushImmediately(name)
-                            || insertedCount == DataParams.DB_OUT_OF_ROW_ERROR
-                            || insertedCount > 100
-                        ) {
-                            mWorker.runMessageOnce(this, 1000L)
-                        } else {
-                            //不立即上报，有时间间隔
-                            mWorker.runMessageOnce(this, 2000L)
-                        }
+                        mWorker.runMessageOnce(this, FLUSH_DELAY)
                     }
                 } catch (e: Exception) {
                     LogUtils.i(TAG, "enqueueEventMessage error:$e")
@@ -76,13 +66,40 @@ class AnalyticsManager private constructor(
         }
     }
 
-    private fun qualityReport(insertedCount: Int) {
-        if (insertedCount < 0) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.DATA_INSERT_ERROR,
-                insertedCount.toString()
-            )
+    fun enqueueErrorInsertEventMessage(){
+        try {
+            if (mErrorInsertDataMap.isNotEmpty()) {
+                val eventSyn = mErrorInsertDataMap.keys.first()
+                val eventJson =  mErrorInsertDataMap[eventSyn]
+                val evenName = eventJson?.getString(Constant.EVENT_INFO_NAME)
+
+                if (eventJson != null && evenName != null) {
+                    mErrorInsertDataMap.remove(eventSyn)
+                    enqueueEventMessage(evenName, eventJson, eventSyn)
+                }
+            }
+        } catch (e :Exception){
+            LogUtils.i(TAG, "enqueueErrorInsertEventMessage error:$e")
         }
+    }
+
+    private fun checkInsertResult(insertCode: Int, eventName: String, eventJson: JSONObject, eventSyn: String){
+        if (insertCode < 0) {
+            if (!mErrorInsertDataMap.containsKey(eventSyn) && mErrorInsertDataMap.size < 20) {
+                mErrorInsertDataMap[eventSyn] = eventJson
+            }
+            qualityReport(insertCode)
+        }
+        val msg = if (insertCode < 0) " Failed to insert the event " else " the event: $eventName  has been inserted to db，code = $insertCode  "
+        LogUtils.json(TAG , msg)
+    }
+
+
+    private fun qualityReport(insertedCount: Int) {
+        ROIQueryQualityHelper.instance.reportQualityMessage(
+            ROIQueryErrorParams.DATA_INSERT_ERROR,
+            insertedCount.toString()
+        )
     }
 
     /**
@@ -96,20 +113,9 @@ class AnalyticsManager private constructor(
         }
     }
 
-    /**
-     * 是否需要立即上报
-     */
-    private fun isNeedFlushImmediately(eventName: String): Boolean {
-        val tagName = Constant.PRESET_EVENT_TAG + eventName
-        return tagName == Constant.PRESET_EVENT_APP_OPEN
-                || tagName == Constant.PRESET_EVENT_APP_FIRST_OPEN
-                || tagName == Constant.PRESET_EVENT_APP_ATTRIBUTE
-                || tagName == Constant.PRESET_EVENT_APP_CLOSE
-                || tagName == Constant.PRESET_EVENT_APP_STATE_CHANGED
-    }
 
     /**
-     * 删除所有数据库内的事件，慎用
+     * 删除所有数据库内的事件
      */
     fun deleteAll() = mWorker.runMessage(Message.obtain().apply { what = DELETE_ALL })
 
@@ -124,7 +130,7 @@ class AnalyticsManager private constructor(
                 return false
             }
             if (mDateAdapter?.enableUpload == false) {
-                LogUtils.i(TAG, "A process is currently uploading，or upload is disable")
+                LogUtils.i(TAG, "A task is currently uploading，or upload is disable")
                 return false
             } else {
                 mDateAdapter?.enableUpload = false
@@ -216,7 +222,7 @@ class AnalyticsManager private constructor(
                         deleteEventAfterReport(event, mDateAdapter)
 
                         //避免事件积压，成功后再次上报
-                        flush(2000L)
+                        flush(FLUSH_DELAY)
                     } else {
                         val msg =
                             "error code: ${response?.getString(ResponseDataKey.KEY_CODE)}, msg: ${
@@ -337,6 +343,7 @@ class AnalyticsManager private constructor(
     companion object {
         private const val TAG = Constant.LOG_TAG
         private const val FLUSH_QUEUE = 3
+        private const val FLUSH_DELAY = 1000L
         private const val DELETE_ALL = 4
         private val S_INSTANCES: MutableMap<Context, AnalyticsManager> = HashMap()
 

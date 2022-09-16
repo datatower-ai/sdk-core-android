@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
@@ -14,7 +13,7 @@ import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.Constant.COMMON_PROPERTY_USER_AGENT_WEBVIEW
+import com.roiquery.analytics.Constant.COMMON_PROPERTY_USER_AGENT
 import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
@@ -49,7 +48,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     // 事件通用属性
     private var mCommonProperties: MutableMap<String, Any?>? = null
 
-    //事件采集管理
+    //事件采集管理线程池
     protected var mTrackTaskManager: ExecutorService? = null
 
     //采集 、上报管理
@@ -81,7 +80,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
             initProperties()
             initCloudConfig()
             initAppLifecycleListener()
-            getUserAgentByUIThread()
             trackPresetEvent()
             getGAID()
             getOAID()
@@ -112,7 +110,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     private fun initLocalData() {
         mDataAdapter = EventDateAdapter.getInstance(mContext!!, mContext!!.packageName)
         mDataAdapter?.timeOffset = Constant.TIME_OFFSET_DEFAULT_VALUE
-        mDataAdapter?.lastEngagementTime = Constant.TIME_OFFSET_DEFAULT_VALUE
         mDataAdapter?.enableUpload = true
     }
 
@@ -144,12 +141,14 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     protected fun trackEvent(
         eventName: String?,
         eventType: String,
+        isPreset: Boolean,
         properties: JSONObject? = null
     ) {
         try {
             if (eventName.isNullOrEmpty()) return
-            val realEventName = assertEvent(eventName, properties)
-            if (TextUtils.isEmpty(realEventName)) return
+
+            if (!isPreset && !assertEvent(eventName, properties)) return
+
             var isTimeVerify: Boolean
 
             launch(Dispatchers.Default) {
@@ -159,7 +158,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                         isTimeVerify = this!=TimeCalibration.TIME_NOT_VERIFY_VALUE
                         // 如果时间已校准，则 保存当前时间，否则保存当前时间的系统休眠时间差用做上报时时间校准依据
                         put(Constant.EVENT_INFO_TIME, if (isTimeVerify) this else TimeCalibration.instance.getSystemHibernateTimeGap())
-                        put(Constant.EVENT_INFO_NAME, realEventName)
+                        put(Constant.EVENT_INFO_NAME, eventName)
                         put(Constant.EVENT_INFO_TYPE, eventType)
                         put(EVENT_INFO_SYN, DataUtils.getUUID())
                     }
@@ -171,7 +170,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
 
                         //应用是否在前台, 需要动态添加
                         put(
-                            Constant.ENGAGEMENT_PROPERTY_IS_FOREGROUND,
+                            Constant.COMMON_PROPERTY_IS_FOREGROUND,
                             mDataAdapter?.isAppForeground
                         )
                         //合并用户自定义属性和通用属性
@@ -191,12 +190,12 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                 }
 
                 mAnalyticsManager?.enqueueEventMessage(
-                    realEventName, data, eventInfo.optString(
+                    eventName, data, eventInfo.optString(
                         EVENT_INFO_SYN
                     )
                 )
-
-
+                //如果有插入失败的数据，则一起插入
+                mAnalyticsManager?.enqueueErrorInsertEventMessage()
             }
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
@@ -266,25 +265,12 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     private fun assertEvent(
         eventName: String,
         properties: JSONObject? = null
-    ): String {
-        //检验事件名
-        var realEventName = eventName
-        if (eventName.startsWith(Constant.PRESET_EVENT_TAG)) {//预置事件
-            realEventName = eventName.replace(Constant.PRESET_EVENT_TAG, "")
-        } else if (!EventUtils.isValidEventName(eventName)) {
-            realEventName = ""
-        }
-        //校验属性名、属性值
-        if (!EventUtils.isValidProperty(properties)) {
-            realEventName = ""
-        }
-        return realEventName
-    }
+    ) = EventUtils.isValidEventName(eventName) && EventUtils.isValidProperty(properties)
 
     /**
      * 初始化配置
      */
-    protected open fun initConfig(packageName: String) {
+    private fun initConfig(packageName: String) {
         var configBundle: Bundle? = null
         try {
             mContext?.let {
@@ -351,7 +337,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
      * @param enable 是否开启
      * @param logLevel log 级别
      */
-    fun configLog(
+    private fun configLog(
         enable: Boolean = mConfigOptions?.mEnabledDebug ?: false,
         logLevel: Int = mConfigOptions?.mLogLevel ?: LogUtils.V
     ) {
@@ -418,7 +404,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                 override fun onOAIDGetComplete(oaid: String) {
                     // 不同厂商的OAID格式是不一样的，可进行MD5、SHA1之类的哈希运算统一
                     mDataAdapter?.oaid = oaid
-                    trackUser(Constant.EVENT_TYPE_USER_SET,JSONObject().apply {
+                    trackUser(Constant.PRESET_EVENT_USER_SET,JSONObject().apply {
                         put(Constant.USER_PROPERTY_LATEST_OAID,oaid)
                     })
                     updateEventInfo(Constant.EVENT_INFO_OAID, oaid)
@@ -444,7 +430,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                 val info = AdvertisingIdClient.getAdvertisingIdInfo(mContext!!)
                 val id = info.id ?: ""
                 mDataAdapter?.gaid = id
-                trackUser(Constant.EVENT_TYPE_USER_SET,JSONObject().apply {
+                trackUser(Constant.PRESET_EVENT_USER_SET,JSONObject().apply {
                     put(Constant.USER_PROPERTY_LATEST_GAID, id)
                 })
                 updateEventInfo(Constant.EVENT_INFO_GAID, id)
@@ -478,7 +464,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
         setLatestUserProperties()
         setActiveUserProperties()
 
-//        setSystemUserProperties()
     }
 
 
@@ -486,19 +471,13 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
      * 采集app 启动事件
      */
     private fun trackAppOpenEvent(isFirstOpen: Boolean) {
-        trackNormal(if (isFirstOpen) Constant.PRESET_EVENT_APP_FIRST_OPEN else Constant.PRESET_EVENT_APP_OPEN)
+        trackNormal(if (isFirstOpen) Constant.PRESET_EVENT_APP_FIRST_OPEN else Constant.PRESET_EVENT_APP_OPEN,true)
     }
 
-    private fun setSystemUserProperties() {
-        trackUser(
-            Constant.EVENT_TYPE_USER_SET_ONCE,
-            JSONObject(EventUtils.getSystemPropertiesForUserSet(mContext!!,mDataAdapter))
-        )
-    }
 
     private fun setLatestUserProperties() {
         trackUser(
-            Constant.EVENT_TYPE_USER_SET,
+            Constant.PRESET_EVENT_USER_SET,
             JSONObject(EventUtils.getLatestUserProperties(mContext!!, mDataAdapter))
         )
     }
@@ -509,7 +488,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                updateSdkVersionProperty(this)
             }
         trackUser(
-            Constant.EVENT_TYPE_USER_SET_ONCE,
+            Constant.PRESET_EVENT_USER_SET_ONCE,
             activeUserProperties
         )
     }
@@ -552,7 +531,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     /**
      * 获取 app 归因属性
      */
-//     TODO: ANR
     private fun getAppAttribute() {
         val referrerClient: InstallReferrerClient? = InstallReferrerClient.newBuilder(mContext).build()
         referrerClient?.startConnection(object : InstallReferrerStateListener {
@@ -607,6 +585,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
         val isOK = failedReason.isBlank()
         trackNormal(
             Constant.PRESET_EVENT_APP_ATTRIBUTE,
+            true,
             PropertyBuilder.newInstance()
                 .append(
                     HashMap<String?, Any>().apply {
@@ -630,7 +609,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                         )
                         put(
                             Constant.ATTRIBUTE_PROPERTY_CNL,
-                            mConfigOptions?.mChannel ?: ""
+                            cnl
                         )
                         if (!isOK) {
                             put(
@@ -648,17 +627,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                 ).toJSONObject())
     }
 
-    /**
-     * 如果超过六分钟，则可能 app_engagement 上报有中断，重新触发
-     */
-    fun checkAppEngagementEvent() {
-        if (!mDataAdapter?.lastEngagementTime.isNullOrEmpty() &&
-            getRealTime() - (mDataAdapter?.lastEngagementTime?.toLong()
-                ?: 0L) > Constant.APP_ENGAGEMENT_INTERVAL_TIME_LONG + 60 * 1000L
-        ) {
-            trackAppEngagementEvent()
-        }
-    }
 
     /**
      * 采集 app 活跃事件
@@ -670,28 +638,16 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
             .postAsync()
     }
 
-    /**
-     * 获取浏览器user_agent
-     */
-    private fun getUserAgentByUIThread() {
-        launch (Dispatchers.Default){
-            mContext?.let {
-                if (mDataAdapter?.uaWebview?.isEmpty() == true){
-                    mDataAdapter?.uaWebview = NetworkUtils.getUserAgent(it)
-                }
-                updateCommonProperties(COMMON_PROPERTY_USER_AGENT_WEBVIEW, mDataAdapter?.uaWebview ?: "")
-            }
-        }
-    }
+
 
 
     inner class EngagementTask(name: String?) : TickTask(name) {
 
         override fun onTick(loopTime: Int) {
             trackNormal(
-                Constant.PRESET_EVENT_APP_ENGAGEMENT
+                Constant.PRESET_EVENT_APP_ENGAGEMENT,
+                true
             )
-            mDataAdapter?.lastEngagementTime = getRealTime().toString()
             //补发，以免异常情况获取不到 app_attribute 事件
             startAppAttribute()
         }

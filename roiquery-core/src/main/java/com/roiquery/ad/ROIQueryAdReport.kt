@@ -59,29 +59,7 @@ open class ROIQueryAdReport {
         ) = AdReportImp.getInstance()
             .reportLoadEnd(id, type.value, platform.value, duration, result, seq,errorCode, errorMessage, properties)
 
-        /**
-         * 上报 广告入口
-         *
-         * @param id 广告最小单元id
-         * @param type 广告类型
-         * @param platform 广告平台
-         * @param location 广告位
-         * @param seq 系列行为标识
-         * @param properties 额外事件属性
-         * @param entrance 广告入口
-         */
-        @JvmOverloads
-        @JvmStatic
-        fun reportEntrance(
-            id: String,
-            type: AdType,
-            platform: AdPlatform,
-            location: String,
-            seq: String,
-            properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
-        ) = AdReportImp.getInstance()
-            .reportEntrance(id, type.value, platform.value, location, seq, properties, entrance)
+
 
         /**
          * 上报 广告展示请求
@@ -157,57 +135,6 @@ open class ROIQueryAdReport {
         ) = AdReportImp.getInstance()
             .reportShowFailed(id, type.value, platform.value, location, seq, errorCode,errorMessage,properties,entrance)
 
-
-
-        /**
-         * 上报 广告曝光
-         *
-         * @param id 广告最小单元id
-         * @param type 广告类型
-         * @param platform 广告平台
-         * @param location 广告位
-         * @param seq 系列行为标识
-         * @param properties 额外事件属性
-         * @param entrance 广告入口
-         */
-        @JvmOverloads
-        @JvmStatic
-        fun reportImpression(
-            id: String,
-            type: AdType,
-            platform: AdPlatform,
-            location: String,
-            seq: String,
-            properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
-        ) = AdReportImp.getInstance()
-            .reportImpression(id, type.value, platform.value, location, seq, properties, entrance)
-
-
-        /**
-         * 上报 广告打开
-         *
-         * @param id 广告最小单元id
-         * @param type 广告类型
-         * @param platform 广告平台
-         * @param location 广告位
-         * @param seq 系列行为标识
-         * @param properties 额外事件属性
-         * @param entrance 广告入口
-         */
-        @JvmOverloads
-        @JvmStatic
-        @Deprecated("this method has be deprecated",ReplaceWith("reportLeftApp"),DeprecationLevel.HIDDEN)
-        fun reportOpen(
-            id: String,
-            type: AdType,
-            platform: AdPlatform,
-            location: String,
-            seq: String,
-            properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
-        ) = AdReportImp.getInstance()
-            .reportOpen(id, type.value, platform.value, location, seq, properties, entrance)
 
 
         /**
@@ -335,31 +262,6 @@ open class ROIQueryAdReport {
             .reportConversion(id, type.value, platform.value, location, seq,
                 AD_CONVERSION_SOURCE.LEFT_APP, properties, entrance)
 
-
-        /**
-         * 上报 自定义转化，通过曝光
-         *
-         * @param id 广告最小单元id
-         * @param type 广告类型
-         * @param platform 广告平台
-         * @param location 广告位
-         * @param seq 系列行为标识
-         * @param properties 额外事件属性
-         * @param entrance 广告入口
-         */
-        @JvmOverloads
-        @JvmStatic
-        fun reportConversionByImpression(
-            id: String,
-            type: AdType,
-            platform: AdPlatform,
-            location: String,
-            seq: String,
-            properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
-        ) = AdReportImp.getInstance()
-            .reportConversion(id, type.value, platform.value, location, seq,
-                AD_CONVERSION_SOURCE.IMPRESSION, properties, entrance)
 
 
 
@@ -532,18 +434,6 @@ open class ROIQueryAdReport {
         @JvmStatic
         fun generateUUID() = UUIDUtils.generateUUID()
 
-
-        /**
-         * 获取聚合平台具体广告网络的广告单元
-         */
-        @JvmStatic
-        fun getPlatform(
-            mediation: Int,
-            networkName: String,
-            networkPlacementId: String,
-            adgroupName: String,
-            adgroupType: String
-        ) = AdPlatformUtils.getPlatform(mediation, networkName, networkPlacementId, adgroupName, adgroupType)
 
     }
 }

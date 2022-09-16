@@ -22,7 +22,7 @@ class EventInfoCheckHelper private constructor() {
         }
     }
 
-    fun correctEventTime(data: String, correctFinish:(info:String)->Unit) {
+    fun correctEventTime(data: String, correctFinish: (info: String) -> Unit) {
         try {
 
             val jsonArray = JSONArray(data)
@@ -35,7 +35,7 @@ class EventInfoCheckHelper private constructor() {
             for (index in 0 until length) {
                 jsonArray.getJSONObject(index)?.let { it ->
                     if (isNewFormatData(it)) {
-                        correctNewFormatData(it,  correctedEventInfo)
+                        correctNewFormatData(it, correctedEventInfo)
                     } else {
                         correctedEventInfo.put(it)
                     }
@@ -49,7 +49,7 @@ class EventInfoCheckHelper private constructor() {
         }
     }
 
-    private  fun correctNewFormatData(
+    private fun correctNewFormatData(
         jsonEventBody: JSONObject,
         correctedEventInfo: JSONArray
     ) {
@@ -69,18 +69,23 @@ class EventInfoCheckHelper private constructor() {
                         TimeCalibration.instance.getVerifyTimeAsyncByGapTime(infoTime)
                     eventInfo.put(
                         Constant.EVENT_INFO_TIME,
-                        verifyTimeAsyncByGapTime.toString()
+                        verifyTimeAsyncByGapTime
                     )
 
-                    if (presetEventName == Constant.PRESET_EVENT_APP_FIRST_OPEN) saveFirstOpenTime(verifyTimeAsyncByGapTime)
+                    if (presetEventName == Constant.PRESET_EVENT_APP_FIRST_OPEN) saveFirstOpenTime(
+                        verifyTimeAsyncByGapTime
+                    )
 
                     correctedEventInfo.put(eventInfo)
 
-                } else {}
+                } else {
+                }
             } else {
-                eventInfo.put(Constant.EVENT_INFO_TIME,infoTime.toString())
+                eventInfo.put(Constant.EVENT_INFO_TIME, infoTime)
 
-                if (presetEventName == Constant.PRESET_EVENT_APP_FIRST_OPEN) saveFirstOpenTime(infoTime)
+                if (presetEventName == Constant.PRESET_EVENT_APP_FIRST_OPEN) saveFirstOpenTime(
+                    infoTime
+                )
 
                 correctedEventInfo.put(eventInfo)
             }
@@ -88,22 +93,17 @@ class EventInfoCheckHelper private constructor() {
     }
 
     private fun eventNameForPreset(eventInfo: JSONObject) =
-        "${Constant.PRESET_EVENT_TAG}${
-            if (eventInfo.optString(Constant.PRE_EVENT_INFO_NAME).isNotEmpty()) eventInfo.optString(
-                Constant.PRE_EVENT_INFO_NAME
-            ) else eventInfo.getString(Constant.EVENT_INFO_NAME)
-        }"
+        if (eventInfo.optString(Constant.PRE_EVENT_INFO_NAME).isNotEmpty()) eventInfo.optString(
+            Constant.PRE_EVENT_INFO_NAME
+        ) else eventInfo.getString(Constant.EVENT_INFO_NAME)
 
 
     private fun correctAttributeFirstOpenTimeInfo(
         eventName: String,
         eventInfo: JSONObject
-    ):Boolean {
+    ): Boolean {
         checkAttributeInsertStatus(eventName)
-        if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE && eventInfo.optLong(
-                Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME
-            ) == 0L
-        ) {
+        if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE && eventInfo.optLong(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == 0L) {
             if (EventDateAdapter.getInstance()?.firstOpenTime == 0L) {
                 return false
             } else {
@@ -126,10 +126,10 @@ class EventInfoCheckHelper private constructor() {
         })
     }
 
-    private fun checkAttributeInsertStatus(eventName: String){
-        if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE){
+    private fun checkAttributeInsertStatus(eventName: String) {
+        if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE) {
             EventDateAdapter.getInstance()?.isAttributeInsert = true
-            LogUtils.d("AttributeInsertStatus","true")
+            LogUtils.d("AttributeInsertStatus", "true")
         }
     }
 

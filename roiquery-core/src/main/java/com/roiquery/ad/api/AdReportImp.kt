@@ -12,9 +12,11 @@ import com.roiquery.ad.AdReportConstant.PROPERTY_AD_SHOW_ERROR_MESSAGE
 import com.roiquery.ad.AdType
 import com.roiquery.ad.utils.AdEventProperty
 import com.roiquery.ad.utils.AdPlatformUtils
+import com.roiquery.analytics.ROIQuery
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.AppLifecycleHelper.OnAppStatusListener
+import com.roiquery.analytics.utils.EventUtils
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.transJSONObject2Map
 import org.json.JSONObject
@@ -34,7 +36,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         seq: String,
         properties: MutableMap<String, Any>?
     ) {
-        updateAdEventProperty(id, type, platform, "", seq, properties, "")
+        updateAdEventProperty(id, type, platform, "", seq, properties, "") ?: return
         adTrack(
             AdReportConstant.EVENT_AD_LOAD_BEGIN,
             generateAdReportJson(seq)
@@ -49,10 +51,10 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         result: Boolean,
         seq: String,
         errorCode: Int,
-        errorMessage: String ,
+        errorMessage: String,
         properties: MutableMap<String, Any>?
     ) {
-        updateAdEventProperty(id, type, platform, "", seq, properties, "")
+        updateAdEventProperty(id, type, platform, "", seq, properties, "") ?: return
         adTrack(
             AdReportConstant.EVENT_AD_LOAD_END,
             generateAdReportJson(seq).apply {
@@ -65,7 +67,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
     }
 
 
-    override fun  reportEntrance(
+    override fun reportEntrance(
         id: String,
         type: Int,
         platform: Int,
@@ -74,11 +76,11 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)
-        adTrack(
-            AdReportConstant.EVENT_AD_ENTRANCE,
-            generateAdReportJson(seq)
-        )
+//        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
+//        adTrack(
+//            AdReportConstant.EVENT_AD_ENTRANCE,
+//            generateAdReportJson(seq)
+//        )
     }
 
     override fun reportToShow(
@@ -90,7 +92,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
         adTrack(
             AdReportConstant.EVENT_AD_TO_SHOW,
             generateAdReportJson(seq)
@@ -108,7 +110,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
     ) {
         updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
             showTS = SystemClock.elapsedRealtime()
-        }
+        } ?: return
         adTrack(
             AdReportConstant.EVENT_AD_SHOW,
             generateAdReportJson(seq)
@@ -126,13 +128,11 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
-        val propertiesWithErrorInfo = properties ?: mutableMapOf()
-        propertiesWithErrorInfo[PROPERTY_AD_SHOW_ERROR_CODE] = errorCode
-        propertiesWithErrorInfo[PROPERTY_AD_SHOW_ERROR_MESSAGE] = errorMessage
-
-        updateAdEventProperty(id, type, platform, location, seq, propertiesWithErrorInfo,entrance)?.apply {
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
             showTS = SystemClock.elapsedRealtime()
-        }
+            this.properties?.set(PROPERTY_AD_SHOW_ERROR_CODE, errorCode)
+            this.properties?.set(PROPERTY_AD_SHOW_ERROR_MESSAGE, errorMessage)
+        } ?: return
         adTrack(
             AdReportConstant.EVENT_AD_SHOW_FAILED,
             generateAdReportJson(seq)
@@ -148,13 +148,13 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
-            showTS = SystemClock.elapsedRealtime()
-        }
-        adTrack(
-            AdReportConstant.EVENT_AD_IMPRESSION,
-            generateAdReportJson(seq)
-        )
+//        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
+//            showTS = SystemClock.elapsedRealtime()
+//        } ?: return
+//        adTrack(
+//            AdReportConstant.EVENT_AD_IMPRESSION,
+//            generateAdReportJson(seq)
+//        )
     }
 
     override fun reportOpen(
@@ -166,11 +166,11 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)
-        adTrack(
-            AdReportConstant.EVENT_AD_OPEN,
-            generateAdReportJson(seq)
-        )
+//        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
+//        adTrack(
+//            AdReportConstant.EVENT_AD_OPEN,
+//            generateAdReportJson(seq)
+//        )
     }
 
     override fun reportClose(
@@ -182,7 +182,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         properties: MutableMap<String, Any>?,
         entrance: String?,
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
         adTrack(
             AdReportConstant.EVENT_AD_CLOSE,
             generateAdReportJson(seq)
@@ -200,7 +200,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
     ) {
         updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
             clickTS = SystemClock.elapsedRealtime()
-        }
+        } ?: return
         adTrack(
             AdReportConstant.EVENT_AD_CLICK,
             generateAdReportJson(seq)
@@ -216,7 +216,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         properties: MutableMap<String, Any>?,
         entrance: String?,
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
         adTrack(
             AdReportConstant.EVENT_AD_REWARDED,
             generateAdReportJson(seq)
@@ -233,11 +233,11 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         properties: MutableMap<String, Any>?,
         entrance: String?
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
         adTrack(
             AdReportConstant.EVENT_AD_CONVERSION,
             generateAdReportJson(seq).apply {
-                put(AdReportConstant.PROPERTY_AD_CONVERSION_SOURCE,conversionSource)
+                put(AdReportConstant.PROPERTY_AD_CONVERSION_SOURCE, conversionSource)
             }
         )
     }
@@ -254,7 +254,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
             leftApplicationTS = SystemClock.elapsedRealtime()
             isLeftApplication = true
-        }
+        } ?: return
         adTrack(
             AdReportConstant.EVENT_AD_LEFT_APP,
             generateAdReportJson(seq)
@@ -285,20 +285,39 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
                     "        precision: $precision,\n" +
                     "        entrance: $entrance?"
         )
-        val property = updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
-            this.value = value
-            this.currency = currency
-            this.precision = precision
-        }
+        val property =
+            updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
+                this.value = value
+                this.currency = currency
+                this.precision = precision
+            } ?: return
         adTrack(
             AdReportConstant.EVENT_AD_PAID,
             generateAdReportJson(seq).apply {
-                put(AdReportConstant.PROPERTY_AD_MEDIAITON, if(properties?.containsKey(AdReportConstant.PROPERTY_AD_MEDIAITON) == true) properties[AdReportConstant.PROPERTY_AD_MEDIAITON] else property?.mediation)
-                put(AdReportConstant.PROPERTY_AD_MEDIAITON_ID, if(properties?.containsKey(AdReportConstant.PROPERTY_AD_MEDIAITON_ID) == true) properties[AdReportConstant.PROPERTY_AD_MEDIAITON_ID] else property?.mediationId)
-                put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, if(properties?.containsKey(AdReportConstant.PROPERTY_AD_VALUE_MICROS) == true) properties[AdReportConstant.PROPERTY_AD_VALUE_MICROS] else property?.value)
-                put(AdReportConstant.PROPERTY_AD_CURRENCY_CODE, if(properties?.containsKey(AdReportConstant.PROPERTY_AD_CURRENCY_CODE) == true) properties[AdReportConstant.PROPERTY_AD_CURRENCY_CODE] else property?.currency)
-                put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE,if(properties?.containsKey(AdReportConstant.PROPERTY_AD_PRECISION_TYPE) == true) properties[AdReportConstant.PROPERTY_AD_PRECISION_TYPE] else property?.precision)
-                put(AdReportConstant.PROPERTY_AD_COUNTRY,if(properties?.containsKey(AdReportConstant.PROPERTY_AD_COUNTRY) == true) properties[AdReportConstant.PROPERTY_AD_COUNTRY] else property?.country)
+                put(
+                    AdReportConstant.PROPERTY_AD_MEDIAITON,
+                    if (properties?.containsKey(AdReportConstant.PROPERTY_AD_MEDIAITON) == true) properties[AdReportConstant.PROPERTY_AD_MEDIAITON] else property.mediation
+                )
+                put(
+                    AdReportConstant.PROPERTY_AD_MEDIAITON_ID,
+                    if (properties?.containsKey(AdReportConstant.PROPERTY_AD_MEDIAITON_ID) == true) properties[AdReportConstant.PROPERTY_AD_MEDIAITON_ID] else property.mediationId
+                )
+                put(
+                    AdReportConstant.PROPERTY_AD_VALUE_MICROS,
+                    if (properties?.containsKey(AdReportConstant.PROPERTY_AD_VALUE_MICROS) == true) properties[AdReportConstant.PROPERTY_AD_VALUE_MICROS] else property.value
+                )
+                put(
+                    AdReportConstant.PROPERTY_AD_CURRENCY_CODE,
+                    if (properties?.containsKey(AdReportConstant.PROPERTY_AD_CURRENCY_CODE) == true) properties[AdReportConstant.PROPERTY_AD_CURRENCY_CODE] else property.currency
+                )
+                put(
+                    AdReportConstant.PROPERTY_AD_PRECISION_TYPE,
+                    if (properties?.containsKey(AdReportConstant.PROPERTY_AD_PRECISION_TYPE) == true) properties[AdReportConstant.PROPERTY_AD_PRECISION_TYPE] else property.precision
+                )
+                put(
+                    AdReportConstant.PROPERTY_AD_COUNTRY,
+                    if (properties?.containsKey(AdReportConstant.PROPERTY_AD_COUNTRY) == true) properties[AdReportConstant.PROPERTY_AD_COUNTRY] else property.country
+                )
             }
         )
     }
@@ -352,16 +371,16 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
             this.currency = currency
             this.precision = precision
             this.country = country
-        }
+        } ?: return
         adTrack(
             AdReportConstant.EVENT_AD_PAID,
             generateAdReportJson(seq).apply {
-                put(AdReportConstant.PROPERTY_AD_MEDIAITON, property?.mediation)
-                put(AdReportConstant.PROPERTY_AD_MEDIAITON_ID, property?.mediationId)
-                put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, property?.value)
-                put(AdReportConstant.PROPERTY_AD_CURRENCY_CODE, property?.currency)
-                put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE, property?.precision)
-                put(AdReportConstant.PROPERTY_AD_COUNTRY, property?.country)
+                put(AdReportConstant.PROPERTY_AD_MEDIAITON, property.mediation)
+                put(AdReportConstant.PROPERTY_AD_MEDIAITON_ID, property.mediationId)
+                put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, property.value)
+                put(AdReportConstant.PROPERTY_AD_CURRENCY_CODE, property.currency)
+                put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE, property.precision)
+                put(AdReportConstant.PROPERTY_AD_COUNTRY, property.country)
             }
         )
 
@@ -400,15 +419,15 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
             this.country = country
             this.mediation = mediation
             this.mediationId = mediationId
-        }
+        } ?: return
         adTrack(
             AdReportConstant.EVENT_AD_PAID,
             generateAdReportJson(seq).apply {
-                put(AdReportConstant.PROPERTY_AD_MEDIAITON, property?.mediation)
-                put(AdReportConstant.PROPERTY_AD_MEDIAITON_ID, property?.mediationId)
-                put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, property?.value)
-                put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE, property?.precision)
-                put(AdReportConstant.PROPERTY_AD_COUNTRY, property?.country)
+                put(AdReportConstant.PROPERTY_AD_MEDIAITON, property.mediation)
+                put(AdReportConstant.PROPERTY_AD_MEDIAITON_ID, property.mediationId)
+                put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, property.value)
+                put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE, property.precision)
+                put(AdReportConstant.PROPERTY_AD_COUNTRY, property.country)
             }
         )
     }
@@ -439,12 +458,11 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         eventName: String,
         properties: JSONObject?,
     ) {
-        ROIQueryAnalytics.track(eventName, properties?.transJSONObject2Map())
+        ROIQueryAnalytics.trackInternal(eventName, properties)
     }
 
     private fun generateAdReportJson(seq: String) =
         JSONObject().apply {
-            LogUtils.d("mSequenessMap",mSequenessMap.size)
             mSequenessMap[seq]?.let { adEventProperty ->
                 put(AdReportConstant.PROPERTY_AD_ID, adEventProperty.adId)
                 put(AdReportConstant.PROPERTY_AD_TYPE, adEventProperty.adType)
@@ -516,6 +534,13 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
             e.printStackTrace()
             return null
         }
+        if (!EventUtils.isValidProperty(JSONObject().apply {
+                properties?.forEach { property ->
+                    put(property.key, property.value)
+                }
+            })) {
+            return null
+        }
         if (!mSequenessMap.containsKey(seq)) {
             makeAdEventProperty(seq)
         }
@@ -523,10 +548,10 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
             if (id.isNotEmpty()) {
                 it.adId = id
             }
-            if (type != AdType.IDLE.value){
+            if (type != AdType.IDLE.value) {
                 it.adType = type
             }
-            if (platform != AdPlatform.IDLE.value){
+            if (platform != AdPlatform.IDLE.value) {
                 it.adPlatform = platform
             }
             if (location.isNotEmpty()) {
@@ -539,7 +564,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         return mSequenessMap[seq]
     }
 
-    private fun getLeftApplicationEventProperty():AdEventProperty?{
+    private fun getLeftApplicationEventProperty(): AdEventProperty? {
         for (mutableEntry in mSequenessMap) {
             if (mutableEntry.value?.isLeftApplication!!) {
                 return mutableEntry.value
