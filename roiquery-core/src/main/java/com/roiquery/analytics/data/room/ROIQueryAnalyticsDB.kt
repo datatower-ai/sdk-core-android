@@ -37,14 +37,18 @@ abstract class ROIQueryAnalyticsDB : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context): ROIQueryAnalyticsDB? {
-            return Room.databaseBuilder(
-                context,
-                ROIQueryAnalyticsDB::class.java,
-                DATABASE_NAME
-            )
-                .addMigrations(MIGRATION_1_2)
-                .setJournalMode(JournalMode.WRITE_AHEAD_LOGGING)
-                .build()
+            return try {
+                Room.databaseBuilder(
+                    context,
+                    ROIQueryAnalyticsDB::class.java,
+                    DATABASE_NAME
+                )
+                    .addMigrations(MIGRATION_1_2)
+                    .setJournalMode(JournalMode.WRITE_AHEAD_LOGGING)
+                    .build()
+            } catch (e: Exception){
+                null
+            }
         }
     }
 

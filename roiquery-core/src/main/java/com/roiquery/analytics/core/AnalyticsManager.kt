@@ -37,6 +37,7 @@ class AnalyticsManager private constructor(
     private val mWorker: Worker = Worker()
     private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
     private val mErrorInsertDataMap: MutableMap<String, JSONObject> = mutableMapOf()
+    private var mDisableUploadCount = 0
 
 
     fun enqueueEventMessage(name: String, eventJson: JSONObject, eventSyn: String) {
@@ -102,6 +103,13 @@ class AnalyticsManager private constructor(
         )
     }
 
+    private fun checkDisableUpload(){
+        if(mDisableUploadCount > 10){
+            mDateAdapter?.enableUpload = true
+            mDisableUploadCount = 0
+        }
+    }
+
     /**
      * 主动上报
      */
@@ -131,13 +139,19 @@ class AnalyticsManager private constructor(
             }
             if (mDateAdapter?.enableUpload == false) {
                 LogUtils.i(TAG, "A task is currently uploading，or upload is disable")
+                mDisableUploadCount ++
+                checkDisableUpload()
                 return false
             } else {
                 mDateAdapter?.enableUpload = false
+//                LogUtils.d(TAG, "enableUpload = false 147")
+
+                mDisableUploadCount = 0
             }
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
             mDateAdapter?.enableUpload = true
+            mDisableUploadCount = 0
             return false
         }
         return true
@@ -181,11 +195,17 @@ class AnalyticsManager private constructor(
             eventsData?.let {
                 EventInfoCheckHelper.instance.correctEventTime(it) { info ->
                     launch(Dispatchers.Main) {
-                        if (info.isNotEmpty()) {
-                            mDateAdapter.enableUpload = false
-                            //http 请求
-                            uploadDataToNet(info, mDateAdapter)
-                        } else {
+                        try {
+                            if (info.isNotEmpty()) {
+                                mDateAdapter.enableUpload = false
+//                                LogUtils.d(TAG, "enableUpload = false 200")
+                                //http 请求
+                                uploadDataToNet(info, mDateAdapter)
+                            } else {
+                                mDateAdapter.enableUpload = true
+//                                LogUtils.d(TAG, "enableUpload = true 205")
+                            }
+                        } catch (e: Exception){
                             mDateAdapter.enableUpload = true
                         }
                     }
@@ -238,6 +258,7 @@ class AnalyticsManager private constructor(
 
                 override fun onAfter() {
                     mDateAdapter.enableUpload = true
+//                    LogUtils.d(TAG, "enableUpload = true 257")
                 }
             }).execute()
     }
