@@ -1,8 +1,7 @@
 package com.roiquery.quality
 
+import androidx.annotation.IntDef
 import androidx.annotation.StringDef
-import java.lang.annotation.Retention
-import java.lang.annotation.RetentionPolicy
 
 /**
  * author: xiaosailing
@@ -12,70 +11,91 @@ import java.lang.annotation.RetentionPolicy
  */
 internal object ROIQueryErrorParams {
 
-    /**
-     * 数据库插入失败
-     */
-    const val DATA_INSERT_ERROR = "data_insert_error"
+    const val CODE_INIT_CONFIG_ERROR = 1001
+    const val CODE_INIT_EXCEPTION = 1002
+    const val CODE_TRACK_ERROR = 2001
+    const val CODE_INIT_DB_ERROR = 2007
+    const val CODE_INSERT_DB_NORMAL_ERROR = 2003
+    const val CODE_INSERT_DB_OUT_OF_ROW_ERROR = 2004
+    const val CODE_INSERT_DB_EXCEPTION = 2005
+    const val CODE_INSERT_JSON_EXCEPTION = 2006
+    const val CODE_INSERT_DATA_EXCEPTION = 2008
+    const val CODE_QUERY_DB_ERROR = 2009
+    const val CODE_QUERY_DB_EXCEPTION = 2010
 
-    /**
-     * 数据库超过最大限制，且正在进行上报
-     */
-    const val DATA_OVER_NUM = "data_over_num"
+    const val CODE_HANDLE_UPLOAD_MESSAGE_ERROR = 3001
+    const val CODE_CHECK_ENABLE_UPLOAD_EXCEPTION = 3002
+    const val CODE_REPORT_ERROR_ON_FAIL = 3003
+    const val CODE_REPORT_ERROR_ON_RESPONSE = 3004
 
-    /**
-     * sdk 不可用
-     */
-    const val SDK_INIT_ERROR = "sdk_init_error"
 
-    /**
-     * 数据上传Key 值为null
-     */
-    const val TRACK_PROPERTIES_KEY_NULL = "track_properties_key_null"
+    @IntDef(
 
-    /**
-     * oaid 获取失败
-     *
-     * 不会导致事件不上报，只可能导致 oaid为 空字符串
-     */
-    const val OAID_ERROR = "oaid_error"
+        CODE_INIT_CONFIG_ERROR,
+        CODE_INIT_EXCEPTION,
+        CODE_TRACK_ERROR,
+        CODE_INIT_DB_ERROR,
+        CODE_INSERT_DB_NORMAL_ERROR,
+        CODE_INSERT_DB_OUT_OF_ROW_ERROR,
+        CODE_INSERT_DB_EXCEPTION,
+        CODE_INSERT_JSON_EXCEPTION,
+        CODE_INSERT_DATA_EXCEPTION,
+        CODE_QUERY_DB_ERROR,
+        CODE_QUERY_DB_EXCEPTION,
 
-    /**
-     * 未知错误
-     */
-    const val UNKNOWN_TYPE = "unknown_type"
+        CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
+        CODE_CHECK_ENABLE_UPLOAD_EXCEPTION,
+        CODE_REPORT_ERROR_ON_FAIL,
+        CODE_REPORT_ERROR_ON_RESPONSE
+    )
+    @Retention(AnnotationRetention.SOURCE)
+    annotation class ROIQueryErrorCode
 
-    /**
-     * 上报接口访问失败
-     */
-    const val REPORT_ERROR_ON_FAIL = "report_error_on_fail"
 
-    /**
-     * 上报接口访问成功，但业务失败
-     */
-    const val REPORT_ERROR_ON_RESPONSE = "report_error_on_response"
+    const val TYPE_ERROR = 1
+    const val TYPE_WARNING = 2
+    const val TYPE_MESSAGE = 3
 
-    /**
-     * 事件记录线程池错误
-     */
-    const val TRACK_TASK_MANAGER_ERROR = "track_task_manager_error"
+    @IntDef(
+        TYPE_ERROR,
+        TYPE_MESSAGE,
+        TYPE_WARNING
+    )
+    @Retention(AnnotationRetention.SOURCE)
+    annotation class ROIQueryErrorLevel
 
-    const val ROOM_DATABASE_ERROR = "room_database_error"
+
+    const val INIT_CONFIG_ERROR = "can not get config "
+    const val INIT_EXCEPTION = "throw exception when sdk init "
+    const val TRACK_MANAGER_ERROR = "track task manager throws exception "
+    const val TRACK_GENERATE_EVENT_ERROR = " throw exception when generate event info "
+    const val INIT_DB_ERROR = "can not get db instance "
+    const val INSERT_DB_NORMAL_ERROR = "insert data failed "
+    const val INSERT_DB_OUT_OF_ROW_ERROR = "data counts over 500 "
+    const val INSERT_DB_EXCEPTION = "throw exception when insert data "
+    const val INSERT_JSON_EXCEPTION = "throw exception when add json data "
+    const val INSERT_OLD_DATA_EXCEPTION = "throw exception when try to insert old data "
+    const val DELETE_DB_EXCEPTION = "throw exception when delete data "
+    const val HANDLE_UPLOAD_MESSAGE_ERROR = "throw exception when send meassage to upload data "
+    const val CHECK_ENABLE_UPLOAD_EXCEPTION = "throw exception when check upload "
 
 
     @StringDef(
-        DATA_INSERT_ERROR,
-        DATA_OVER_NUM,
-        SDK_INIT_ERROR,
-        TRACK_PROPERTIES_KEY_NULL,
-        OAID_ERROR,
-        UNKNOWN_TYPE,
-        REPORT_ERROR_ON_FAIL,
-        REPORT_ERROR_ON_RESPONSE,
-        TRACK_TASK_MANAGER_ERROR,
-        ROOM_DATABASE_ERROR
+        INIT_CONFIG_ERROR,
+        INIT_EXCEPTION,
+        TRACK_MANAGER_ERROR,
+        TRACK_GENERATE_EVENT_ERROR,
+        INIT_DB_ERROR,
+        INSERT_DB_NORMAL_ERROR,
+        INSERT_DB_OUT_OF_ROW_ERROR,
+        INSERT_DB_EXCEPTION,
+        INSERT_JSON_EXCEPTION,
+        INSERT_OLD_DATA_EXCEPTION,
+        DELETE_DB_EXCEPTION,
+        HANDLE_UPLOAD_MESSAGE_ERROR,
+        CHECK_ENABLE_UPLOAD_EXCEPTION
     )
-    @Retention(
-        RetentionPolicy.SOURCE
-    )
-    annotation class ROIQueryErrorType
+    @Retention(AnnotationRetention.SOURCE)
+    annotation class ROIQueryErrorMsg
+
 }
