@@ -24,10 +24,57 @@ internal class EventDataOperation(
     var TAG = "EventDataOperation"
     private var analyticsDB: ROIQueryAnalyticsDB? = ROIQueryAnalyticsDB.getInstance(context = mContext)
 
-    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+    private val insertDataNormalError = CoroutineExceptionHandler { _, exception ->
         run {
             LogUtils.e(exception.message)
-            reportRoomDatabaseError(exception.message)
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_INSERT_DB_NORMAL_ERROR,
+                exception.message,ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR
+            )
+        }
+    }
+
+    private val insertOutOfRowError = CoroutineExceptionHandler { _, exception ->
+        run {
+            LogUtils.e(exception.message)
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_INSERT_DB_OUT_OF_ROW_ERROR,
+                exception.message,ROIQueryErrorParams.INSERT_DB_OUT_OF_ROW_ERROR
+            )
+        }
+    }
+    private val insertDataException = CoroutineExceptionHandler { _, exception ->
+        run {
+            LogUtils.e(exception.message)
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_INSERT_DB_EXCEPTION,
+                exception.message,ROIQueryErrorParams.INSERT_DB_EXCEPTION
+            )
+        }
+    }
+    private val deleteDbException = CoroutineExceptionHandler { _, exception ->
+        run {
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_INSERT_DATA_EXCEPTION,
+                exception.message,ROIQueryErrorParams.DELETE_DB_EXCEPTION
+            )
+        }
+    }
+    private val query = CoroutineExceptionHandler { _, exception ->
+        run {
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_QUERY_DB_ERROR,
+                exception.message
+            )
+        }
+    }
+
+    private val queryDbException = CoroutineExceptionHandler { _, exception ->
+        run {
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_QUERY_DB_EXCEPTION,
+                exception.message
+            )
         }
     }
 
@@ -37,7 +84,7 @@ internal class EventDataOperation(
      */
     suspend fun insertData(jsonObject: JSONObject?, eventSyn: String) =
         suspendCoroutine<Int> {
-            scope.launch(exceptionHandler) {
+            scope.launch(insertDataNormalError) {
 
                 if (!deleteDataWhenOverMaxRows())
                     it.resume(DataParams.DB_OUT_OF_ROW_ERROR)
@@ -55,7 +102,7 @@ internal class EventDataOperation(
                         )
                         it.resume(if(result == -1L) DataParams.DB_INSERT_ERROR else DataParams.DB_INSERT_SUCCEED)
                     } catch (e: Exception){
-                        reportRoomDatabaseError(e.message)
+                        insertDataException.handleException(this.coroutineContext,e)
                         it.resume(DataParams.DB_INSERT_EXCEPTION)
                     }
                 }
@@ -67,7 +114,7 @@ internal class EventDataOperation(
      * 保存配置
      */
     fun insertConfig(name: String, value: String?) {
-        scope.launch(exceptionHandler) {
+        scope.launch(insertDataNormalError) {
             value?.let { notEmptyValue ->
                 analyticsDB?.getConfigDao()?.let {
                     val isExist = it.existsValue(name) > 0
@@ -88,14 +135,20 @@ internal class EventDataOperation(
     /**
      * 查询配置
      */
-    suspend fun queryConfig(name: String): String? {
-        try {
-            return analyticsDB?.getConfigDao()?.queryValueByName(name)
-        } catch (e: Exception) {
-            reportRoomDatabaseError(e.message)
+    suspend fun queryConfig(name: String) =
+        suspendCoroutine<String?> {
+            scope.launch(Dispatchers.IO) {
+                try {
+                    it.resume(analyticsDB?.getConfigDao()?.queryValueByName(name))
+                } catch (e: Exception) {
+                    queryDbException.handleException(this.coroutineContext, e)
+                    it.resume(null)
+                }
+            }
+
         }
-        return null
-    }
+
+
 
 
     /**
@@ -117,7 +170,7 @@ internal class EventDataOperation(
                         }
                     }
                 } catch (e: Exception) {
-                    reportRoomDatabaseError(e.message)
+                    queryDbException.handleException(this.coroutineContext, e)
                 } finally {
                     jsonData.append("]")
                     it.resume(jsonData.toString())
@@ -137,7 +190,7 @@ internal class EventDataOperation(
                     analyticsDB?.getEventsDao()?.dataCount() ?: 0
                 )
             } catch (e: Exception) {
-                reportRoomDatabaseError(e.message)
+                queryDbException.handleException(this.coroutineContext, e)
             }
         }
 
@@ -147,19 +200,15 @@ internal class EventDataOperation(
      * 删除数据
      */
     suspend fun deleteEventByEventSyn(eventSyn: String) {
-        try {
+        scope.launch(deleteDbException) {
             analyticsDB?.getEventsDao()?.deleteEventByEventSyn(eventSyn)
-        } catch (ex: Exception) {
-            reportRoomDatabaseError(ex.message)
         }
     }
 
 
     private suspend fun deleteTheOldestData(num: Int) {
-        try {
+        scope.launch(deleteDbException) {
             analyticsDB?.getEventsDao()?.deleteTheOldestData(num)
-        } catch (e: Exception) {
-            reportRoomDatabaseError(e.message)
         }
     }
 
@@ -179,7 +228,6 @@ internal class EventDataOperation(
                 }
             }
         } catch (ex: Exception) {
-            reportRoomDatabaseError(ex.message)
         }
         return data
     }
@@ -201,7 +249,7 @@ internal class EventDataOperation(
                     try {
                         deleteTheOldestData(DataParams.CONFIG_MAX_ROWS / 2)
                     } catch (e: Exception) {
-                        reportRoomDatabaseError(e.message)
+                        insertOutOfRowError.handleException(this.coroutineContext,e)
                         it.resume(false)
                     }
                     //数据库较满时，删除成功 it.resume(true)
@@ -219,22 +267,11 @@ internal class EventDataOperation(
             try {
                 analyticsDB?.getEventsDao()?.clearTable()
             } catch (e: Exception) {
-                reportRoomDatabaseError(e.message)
+                deleteDbException.handleException(this.coroutineContext,e)
             }
         }
     }
 
-    private fun reportRoomDatabaseError(errorMsg: String?) {
-        scope.launch(Dispatchers.Main) {
-            try {
-                LogUtils.w(errorMsg)
-                ROIQueryQualityHelper.instance.reportQualityMessage(
-                    ROIQueryErrorParams.ROOM_DATABASE_ERROR,
-                    errorMsg
-                )
-            } catch (e: Exception) {
-            }
-        }
-    }
+
 
 }
