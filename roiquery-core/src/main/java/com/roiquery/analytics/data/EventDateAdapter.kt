@@ -116,7 +116,7 @@ class EventDateAdapter private constructor(
      * @return event_session
      */
     var eventSession: String
-        get() = runBlocking{getStringConfig(DataParams.CONFIG_EVENT_SESSION)}
+        get() = runBlocking{ getStringConfig(DataParams.CONFIG_EVENT_SESSION) }
         set(value) = setStringConfig(DataParams.CONFIG_EVENT_SESSION,value)
 
     /**
@@ -192,8 +192,6 @@ class EventDateAdapter private constructor(
     var gaid: String
         set(value) = setStringConfig(DataParams.CONFIG_GAID,value)
         get() = runBlocking {   getStringConfig(DataParams.CONFIG_GAID)  }
-
-
 
     /**
      *  uaWebview
@@ -281,9 +279,11 @@ class EventDateAdapter private constructor(
 
     private suspend fun getStringConfig(key: String): String{
         val values = mOperation?.queryConfig(key)
-        return if (values != null && values.isNotEmpty() && values != "null") {
+        val s = if (values != null && values.isNotEmpty() && values != "null") {
             values
         } else ""
+
+        return s
     }
 
     private fun setStringConfig(
@@ -304,6 +304,7 @@ class EventDateAdapter private constructor(
                 longValue = value.toLong()
             }
         } catch (e: NumberFormatException) {
+
         }
         return longValue
     }

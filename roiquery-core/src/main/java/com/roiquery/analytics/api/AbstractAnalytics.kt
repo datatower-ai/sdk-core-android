@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.TextUtils
+import android.util.Log
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
@@ -13,13 +13,14 @@ import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.Constant.COMMON_PROPERTY_USER_AGENT
 import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.AnalyticsManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpPOSTResourceRemoteRepository
+import com.roiquery.analytics.taskscheduler.SchedulerTask
+import com.roiquery.analytics.taskscheduler.TaskScheduler
 import com.roiquery.analytics.utils.*
 import com.roiquery.cloudconfig.ROIQueryCloudConfig
 import com.roiquery.quality.ROIQueryErrorParams
@@ -29,8 +30,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import org.qiyi.basecore.taskmanager.TM
-import org.qiyi.basecore.taskmanager.TickTask
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext
@@ -41,12 +40,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
 
     private var mContext: Context? = null
-
-    // 事件信息，包含事件的基本数据
-    private var mEventInfo: MutableMap<String, Any?>? = null
-
-    // 事件通用属性
-    private var mCommonProperties: MutableMap<String, Any?>? = null
 
     //事件采集管理线程池
     protected var mTrackTaskManager: ExecutorService? = null
@@ -81,8 +74,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
             initCloudConfig()
             initAppLifecycleListener()
             trackPresetEvent()
-            getGAID()
-            getOAID()
             mSDKConfigInit = true
             LogUtils.d("ROIQuery","init succeed")
         } catch (e: Exception) {
@@ -117,15 +108,14 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
      * 初始化预置、通用属性
      */
     private fun initProperties() {
-        initEventInfo()
-        initCommonProperties()
+        PropertyManager.instance.init(mContext, mDataAdapter, mConfigOptions)
     }
 
     /**
      * 监听应用生命周期
      */
     private fun initAppLifecycleListener() {
-        TM.postUI {
+        if (ProcessUtils.isMainProcess(ROIQueryAnalytics.mContext as Application?)) {
             ProcessLifecycleOwner.get().lifecycle.addObserver(LifecycleObserverImpl())
         }
     }
@@ -153,7 +143,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
 
             launch(Dispatchers.Default) {
                 //设置事件的基本信息
-                val eventInfo = JSONObject(mEventInfo).apply {
+                val eventInfo = JSONObject(PropertyManager.instance.getEventInfo()).apply {
                     TimeCalibration.instance.getVerifyTimeAsync().apply {
                         isTimeVerify = this!=TimeCalibration.TIME_NOT_VERIFY_VALUE
                         // 如果时间已校准，则 保存当前时间，否则保存当前时间的系统休眠时间差用做上报时时间校准依据
@@ -166,12 +156,21 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
 
                 //事件属性, 常规事件与用户属性类型区分
                 val eventProperties = if (eventType == Constant.EVENT_TYPE_TRACK) {
-                    JSONObject(mCommonProperties).apply {
-
+                    JSONObject(PropertyManager.instance.getCommonProperties()).apply {
                         //应用是否在前台, 需要动态添加
                         put(
                             Constant.COMMON_PROPERTY_IS_FOREGROUND,
                             mDataAdapter?.isAppForeground
+                        )
+                        //硬盘使用率
+                        put(
+                            Constant.COMMON_PROPERTY_STORAGE_USED,
+                            MemoryUtils.getStorageUsed(mContext)
+                        )
+                        //内存使用率
+                        put(
+                            Constant.COMMON_PROPERTY_MEMORY_USED,
+                            MemoryUtils.getMemoryUsed(mContext)
                         )
                         //合并用户自定义属性和通用属性
                         DataUtils.mergeJSONObject(properties, this, null)
@@ -210,54 +209,40 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
         )
     }
 
-    /**
-     * 获取并配置 事件一些基本属性
-     *
-     * @return
-     */
-    protected open fun initEventInfo() {
-        mEventInfo = EventUtils.getEventInfo(mContext!!, mDataAdapter)
-    }
-
-    fun updateEventInfo(key: String, value: String) {
-        mEventInfo?.put(key, value)
-    }
-
-    fun getEventInfo() = mEventInfo
 
     /**
      * 获取并配置 事件通用属性
      *
      * @return
      */
-    protected open fun initCommonProperties() {
-        if (ProcessUtils.isMainProcess(mContext as Application?)) {
-            mDataAdapter?.eventSession = DataUtils.getSession()
-        }
-        mCommonProperties = EventUtils.getCommonProperties(mContext!!, mDataAdapter)
-        mConfigOptions.let { config ->
-            if (config?.mCommonProperties != null) {
-                val iterator = config.mCommonProperties!!.keys()
-                while (iterator.hasNext()) {
-                    val key = iterator.next()
-                    try {
-                        val value = config.mCommonProperties!![key]
-                        updateCommonProperties(key, value.toString())
-                    } catch (e: Exception) {
-                        LogUtils.printStackTrace(e)
-                    }
-                }
-            }
-        }
-    }
-
-
-    fun updateCommonProperties(key: String, value: String) {
-        mCommonProperties?.put(key, value)
-    }
-
-
-    fun getCommonProperties() = mCommonProperties
+//    protected open fun initCommonProperties() {
+//        if (ProcessUtils.isMainProcess(mContext as Application?)) {
+//            mDataAdapter?.eventSession = DataUtils.getSession()
+//        }
+//        mCommonProperties = EventUtils.getCommonProperties(mContext!!, mDataAdapter)
+//        mConfigOptions.let { config ->
+//            if (config?.mCommonProperties != null) {
+//                val iterator = config.mCommonProperties!!.keys()
+//                while (iterator.hasNext()) {
+//                    val key = iterator.next()
+//                    try {
+//                        val value = config.mCommonProperties!![key]
+//                        updateCommonProperties(key, value.toString())
+//                    } catch (e: Exception) {
+//                        LogUtils.printStackTrace(e)
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//
+//    fun updateCommonProperties(key: String, value: String) {
+//        mCommonProperties?.put(key, value)
+//    }
+//
+//
+//    fun getCommonProperties() = mCommonProperties
 
     /**
      * 事件校验
@@ -356,6 +341,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
                 override fun onDisconnected() {}
                 override fun onConnected(networkType: NetworkUtil.NetworkType?) {
                     LogUtils.i("onNetConnChanged", networkType)
+                    PropertyManager.instance.updateNetworkType(networkType)
                     mAnalyticsManager?.flush()
                 }
             })
@@ -391,56 +377,56 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     }
 
 
-    /**
-     * oaid 获取，异步
-     */
-    private fun getOAID() {
-        try {
-            if (!DeviceID.supportedOAID(mContext)) {
-                // 不支持OAID，须自行生成GUID，然后存到`SharedPreferences`及`ExternalStorage`甚至`CloudStorage`。
-                return
-            }
-            DeviceID.getOAID(mContext, object : IGetter {
-                override fun onOAIDGetComplete(oaid: String) {
-                    // 不同厂商的OAID格式是不一样的，可进行MD5、SHA1之类的哈希运算统一
-                    mDataAdapter?.oaid = oaid
-                    trackUser(Constant.PRESET_EVENT_USER_SET,JSONObject().apply {
-                        put(Constant.USER_PROPERTY_LATEST_OAID,oaid)
-                    })
-                    updateEventInfo(Constant.EVENT_INFO_OAID, oaid)
-                }
-
-                override fun onOAIDGetError(exception: java.lang.Exception) {
-                    // 获取OAID失败
-                    LogUtils.d(exception)
-                }
-            })
-        } catch (e: Exception) {
-            LogUtils.d(e)
-        }
-    }
-
-    /**
-     * gaid 获取，异步
-     */
-    private fun getGAID() {
-        ThreadUtils.getSinglePool().submit {
-            try {
-                LogUtils.d("getGAID", "start")
-                val info = AdvertisingIdClient.getAdvertisingIdInfo(mContext!!)
-                val id = info.id ?: ""
-                mDataAdapter?.gaid = id
-                trackUser(Constant.PRESET_EVENT_USER_SET,JSONObject().apply {
-                    put(Constant.USER_PROPERTY_LATEST_GAID, id)
-                })
-                updateEventInfo(Constant.EVENT_INFO_GAID, id)
-                LogUtils.d("getGAID", "onSuccess：$id")
-            } catch (exception: Exception) {
-                LogUtils.d("getGAID", "onException:" + exception.message.toString())
-            }
-
-        }
-    }
+//    /**
+//     * oaid 获取，异步
+//     */
+//    private fun getOAID() {
+//        try {
+//            if (!DeviceID.supportedOAID(mContext)) {
+//                // 不支持OAID，须自行生成GUID，然后存到`SharedPreferences`及`ExternalStorage`甚至`CloudStorage`。
+//                return
+//            }
+//            DeviceID.getOAID(mContext, object : IGetter {
+//                override fun onOAIDGetComplete(oaid: String) {
+//                    // 不同厂商的OAID格式是不一样的，可进行MD5、SHA1之类的哈希运算统一
+//                    mDataAdapter?.oaid = oaid
+//                    trackUser(Constant.PRESET_EVENT_USER_SET,JSONObject().apply {
+//                        put(Constant.USER_PROPERTY_LATEST_OAID,oaid)
+//                    })
+//                    updateEventInfo(Constant.EVENT_INFO_OAID, oaid)
+//                }
+//
+//                override fun onOAIDGetError(exception: java.lang.Exception) {
+//                    // 获取OAID失败
+//                    LogUtils.d(exception)
+//                }
+//            })
+//        } catch (e: Exception) {
+//            LogUtils.d(e)
+//        }
+//    }
+//
+//    /**
+//     * gaid 获取，异步
+//     */
+//    private fun getGAID() {
+//        ThreadUtils.getSinglePool().submit {
+//            try {
+//                LogUtils.d("getGAID", "start")
+//                val info = AdvertisingIdClient.getAdvertisingIdInfo(mContext!!)
+//                val id = info.id ?: ""
+//                mDataAdapter?.gaid = id
+//                trackUser(Constant.PRESET_EVENT_USER_SET,JSONObject().apply {
+//                    put(Constant.USER_PROPERTY_LATEST_GAID, id)
+//                })
+//                updateEventInfo(Constant.EVENT_INFO_GAID, id)
+//                LogUtils.d("getGAID", "onSuccess：$id")
+//            } catch (exception: Exception) {
+//                LogUtils.d("getGAID", "onException:" + exception.message.toString())
+//            }
+//
+//        }
+//    }
 
     /**
      * 采集app 预置事件
@@ -463,7 +449,6 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
         trackAppEngagementEvent()
         setLatestUserProperties()
         setActiveUserProperties()
-
     }
 
 
@@ -485,7 +470,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
     private fun setActiveUserProperties() {
         val activeUserProperties =
             JSONObject(EventUtils.getActiveUserProperties(mContext!!, mDataAdapter)).apply {
-               updateSdkVersionProperty(this)
+               PropertyManager.instance.updateSdkVersionProperty(this)
             }
         trackUser(
             Constant.PRESET_EVENT_USER_SET_ONCE,
@@ -493,26 +478,26 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
         )
     }
 
-    private fun updateSdkVersionProperty(jsonObject: JSONObject){
-        //接入 SDK 的类型可能是 Android 或 Unity ，因此这里需动态获取
-        getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_TYPE)?.toString()?.let {
-            if (it.isNotEmpty()) {
-                jsonObject.put(
-                    Constant.USER_PROPERTY_ACTIVE_SDK_TYPE,
-                    it
-                )
-            }
-        }
-        //SDK 版本
-        getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_VERSION)?.toString()?.let {
-            if (it.isNotEmpty()) {
-                jsonObject.put(
-                    Constant.USER_PROPERTY_ACTIVE_SDK_VERSION,
-                    it
-                )
-            }
-        }
-    }
+//    private fun updateSdkVersionProperty(jsonObject: JSONObject){
+//        //接入 SDK 的类型可能是 Android 或 Unity ，因此这里需动态获取
+//        PropertyManager.instance.getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_TYPE)?.toString()?.let {
+//            if (it.isNotEmpty()) {
+//                jsonObject.put(
+//                    Constant.USER_PROPERTY_ACTIVE_SDK_TYPE,
+//                    it
+//                )
+//            }
+//        }
+//        //SDK 版本
+//        PropertyManager.instance.getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_VERSION)?.toString()?.let {
+//            if (it.isNotEmpty()) {
+//                jsonObject.put(
+//                    Constant.USER_PROPERTY_ACTIVE_SDK_VERSION,
+//                    it
+//                )
+//            }
+//        }
+//    }
 
 
     private fun startAppAttribute() {
@@ -632,27 +617,16 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
      * 采集 app 活跃事件
      */
     private fun trackAppEngagementEvent() {
-        EngagementTask("EngagementTask")
-            .setIntervalWithFixedRate(Constant.APP_ENGAGEMENT_INTERVAL_TIME_INT)
-            .setMaxLoopTime(Int.MAX_VALUE)
-            .postAsync()
+        TaskScheduler.scheduleTask(object : SchedulerTask(Constant.APP_ENGAGEMENT_INTERVAL_TIME_LONG, false) {
+            override fun onSchedule() {
+                trackNormal(
+                    Constant.PRESET_EVENT_APP_ENGAGEMENT,
+                    true
+                )
+                //补发，以免异常情况获取不到 app_attribute 事件
+                startAppAttribute()
+            }
+        })
     }
-
-
-
-
-    inner class EngagementTask(name: String?) : TickTask(name) {
-
-        override fun onTick(loopTime: Int) {
-            trackNormal(
-                Constant.PRESET_EVENT_APP_ENGAGEMENT,
-                true
-            )
-            //补发，以免异常情况获取不到 app_attribute 事件
-            startAppAttribute()
-        }
-
-    }
-
 
 }

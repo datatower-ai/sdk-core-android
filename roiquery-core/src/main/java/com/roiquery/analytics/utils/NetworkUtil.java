@@ -1,6 +1,5 @@
 package com.roiquery.analytics.utils;
 
-import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -51,8 +50,7 @@ public final class NetworkUtil {
         NETWORK_NO
     }
 
-    public static String getNetworkTypeString(Context context) {
-        NetworkType networkType = getNetworkType(context);
+    public static String convertNetworkTypeToString(NetworkType networkType){
         if (networkType == NetworkType.NETWORK_ETHERNET) {
             return "e";
         }
@@ -77,8 +75,11 @@ public final class NetworkUtil {
         if (networkType == NetworkType.NETWORK_NO) {
             return "none_network";
         }
+        return "unknown_network";
+    }
 
-        return "";
+    public static String getNetworkTypeString(Context context) {
+        return convertNetworkTypeToString(getNetworkType(context));
     }
 
     /**

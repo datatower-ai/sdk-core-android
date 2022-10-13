@@ -44,7 +44,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
         set(value) {
             if (value != null) {
                 EventDateAdapter.getInstance()?.accountId = value
-                updateEventInfo(Constant.EVENT_INFO_ACID, value)
+                PropertyManager.instance.updateACID(value)
             }
         }
 
@@ -57,7 +57,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
         set(value) {
             if (value != null) {
                 EventDateAdapter.getInstance()?.fiid = value
-                updateCommonProperties(Constant.COMMON_PROPERTY_FIREBASE_IID, value)
+                PropertyManager.instance.updateFireBaseInstanceId(value)
                 userSet(JSONObject().apply {
                     put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, value)
                 })
@@ -69,7 +69,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
         set(value) {
             if (value != null) {
                 EventDateAdapter.getInstance()?.fcmToken = value
-                updateCommonProperties(Constant.COMMON_PROPERTY_FCM_TOKEN, value)
+                PropertyManager.instance.updateFCMToken(value)
                 userSet(JSONObject().apply {
                     put(Constant.USER_PROPERTY_LATEST_FCM_TOKEN, value)
                 })
@@ -80,7 +80,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
         set(value) {
             if (value != null) {
                 EventDateAdapter.getInstance()?.afid = value
-                updateCommonProperties(Constant.COMMON_PROPERTY_APPSFLYER_ID, value)
+                PropertyManager.instance.updateAFID(value)
                 userSet(JSONObject().apply {
                     put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, value)
                 })
@@ -91,7 +91,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
         set(value) {
             if (value != null) {
                 EventDateAdapter.getInstance()?.koid = value
-                updateCommonProperties(Constant.COMMON_PROPERTY_KOCHAVA_ID, value)
+                PropertyManager.instance.updateKOID(value)
                 userSet(JSONObject().apply {
                     put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, value)
                 })
@@ -103,7 +103,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
         set(value) {
             if (value != null) {
                 EventDateAdapter.getInstance()?.appSetId = value
-                updateCommonProperties(Constant.COMMON_PROPERTY_APP_SET_ID, value)
+                PropertyManager.instance.updateAppSetId(value)
                 userSet(JSONObject().apply {
                     put(Constant.USER_PROPERTY_LATEST_APP_SET_ID, value)
                 })

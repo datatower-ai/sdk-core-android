@@ -2,9 +2,11 @@ package com.roiquery.quality
 
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryAnalytics
+import com.roiquery.analytics.api.PropertyManager
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
+import com.roiquery.analytics.utils.EventUtils.getEventInfo
 import com.roiquery.analytics.utils.LogUtils
 import org.json.JSONObject
 
@@ -54,10 +56,10 @@ internal class ROIQueryQualityHelper private constructor() {
     private fun getJsonData(@ROIQueryErrorParams.ROIQueryErrorType errorType: String, errorMsg: String?): String{
         try {
             if (mEventInfo == null) {
-                mEventInfo = ROIQueryAnalytics.getEventInfo()
+                mEventInfo = PropertyManager.instance.getEventInfo()
             }
             if (mCommonProperties == null) {
-                mCommonProperties = ROIQueryAnalytics.getCommonProperties()
+                mCommonProperties = PropertyManager.instance.getCommonProperties()
             }
             val info = JSONObject(mEventInfo).apply {
                 put(ERROR_TYPE, errorType)

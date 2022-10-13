@@ -20,30 +20,50 @@ object EventUtils {
 
     fun getEventInfo(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
+
+            //设备 ID。即唯一ID，区分设备的最小ID
             put(
                 Constant.EVENT_INFO_DID,
                 DeviceUtils.getAndroidID(context)
-            )//设备 ID。即唯一ID，区分设备的最小ID
-            put(
-                Constant.EVENT_INFO_ACID,
-                dataAdapter?.accountId
-            )//登录账号id
-            put(
-                Constant.EVENT_INFO_GAID,
-                dataAdapter?.gaid.toString()
-            )//谷歌广告标识id,不同app在同一个设备上gaid一样
-            put(
-                Constant.EVENT_INFO_OAID,
-                dataAdapter?.oaid.toString()
-            )//华为广告标识id,不同app在同一个设备上oaid一样
+            )
+            //登录账号id
+            dataAdapter?.accountId?.let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.EVENT_INFO_ACID,
+                        it
+                    )
+                }
+            }
+            //谷歌广告标识id,不同app在同一个设备上gaid一样
+            dataAdapter?.gaid?.let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.EVENT_INFO_GAID,
+                        it
+                    )
+                }
+            }
+            //华为广告标识id,不同app在同一个设备上oaid一样
+            dataAdapter?.oaid?.let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.EVENT_INFO_OAID,
+                        it
+                    )
+                }
+            }
+            //应用唯一标识,后台分配
             put(
                 Constant.EVENT_INFO_APP_ID,
                 AbstractAnalytics.mConfigOptions?.mAppId
-            )//应用唯一标识,后台分配
+            )
+            //包名
             put(
                 Constant.EVENT_INFO_PKG,
                 context.packageName
-            )//包名
+            )
+            //debug 标志
             if (AbstractAnalytics.mConfigOptions?.mEnabledDebug == true) {
                 put(Constant.EVENT_INFO_DEBUG, true)
             }
@@ -52,22 +72,74 @@ object EventUtils {
 
     fun getLatestUserProperties(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
-            put(Constant.USER_PROPERTY_LATEST_INSTANCE_ID, dataAdapter?.rqid)
-            put(Constant.USER_PROPERTY_LATEST_APP_SET_ID, dataAdapter?.appSetId)
-            put(Constant.USER_PROPERTY_LATEST_GAID, dataAdapter?.gaid)
-            put(Constant.USER_PROPERTY_LATEST_OAID, dataAdapter?.oaid)
-            put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, dataAdapter?.fiid)
-            put(Constant.USER_PROPERTY_LATEST_FCM_TOKEN, dataAdapter?.fcmToken)
-            put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, dataAdapter?.afid)
-            put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, dataAdapter?.koid)
-            put(Constant.USER_PROPERTY_LATEST_APP_VERSION_NAME, AppInfoUtils.getAppVersionName(context))
-            put(Constant.USER_PROPERTY_LATEST_APP_VERSION_CODE, AppInfoUtils.getAppVersionCode(context))
+            dataAdapter?.rqid?.let {
+                if (it.isNotEmpty()) {
+                    put(Constant.USER_PROPERTY_LATEST_INSTANCE_ID, it)
+                }
+            }
+             dataAdapter?.appSetId?.let {
+                if (it.isNotEmpty()) {
+                    put(Constant.USER_PROPERTY_LATEST_APP_SET_ID, it)
+                }
+            }
+             dataAdapter?.gaid?.let {
+                if (it.isNotEmpty()) {
+                    put(Constant.USER_PROPERTY_LATEST_GAID, it)
+                }
+            }
+             dataAdapter?.oaid?.let {
+                if (it.isNotEmpty()) {
+                    put(Constant.USER_PROPERTY_LATEST_OAID, it)
+                }
+            }
+             dataAdapter?.fiid?.let {
+                if (it.isNotEmpty()) {
+                    put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, it)
+                }
+            }
+
+            dataAdapter?.fcmToken?.let {
+                if (it.isNotEmpty()) {
+                    put(Constant.USER_PROPERTY_LATEST_FCM_TOKEN, it)
+                }
+            }
+
+            dataAdapter?.afid?.let {
+                if (it.isNotEmpty()) {
+                    put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, it)
+                }
+            }
+
+            dataAdapter?.koid?.let {
+                if (it.isNotEmpty()) {
+                    put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, it)
+                }
+            }
+
+            put(
+                Constant.USER_PROPERTY_LATEST_APP_VERSION_NAME,
+                AppInfoUtils.getAppVersionName(context)
+            )
+            put(
+                Constant.USER_PROPERTY_LATEST_APP_VERSION_CODE,
+                AppInfoUtils.getAppVersionCode(context)
+            )
         }
 
     fun getActiveUserProperties(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
-            put(Constant.USER_PROPERTY_ACTIVE_MCC, DeviceUtils.getMcc(context))
-            put(Constant.USER_PROPERTY_ACTIVE_MNC, DeviceUtils.getMnc(context))
+
+            DeviceUtils.getMcc(context).let {
+                if (it.isNotEmpty()) {
+                    put(Constant.USER_PROPERTY_ACTIVE_MCC, it)
+                }
+            }
+            DeviceUtils.getMnc(context).let {
+                if (it.isNotEmpty()) {
+                    put(Constant.USER_PROPERTY_ACTIVE_MNC, it)
+                }
+            }
+
             put(
                 Constant.USER_PROPERTY_ACTIVE_OS_COUNTRY,
                 DeviceUtils.getLocalCountry(context)
@@ -144,113 +216,171 @@ object EventUtils {
 
     fun getCommonProperties(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
+            //系列行为标识
             put(
                 Constant.COMMON_PROPERTY_EVENT_SESSION,
-                dataAdapter?.eventSession
-            )//系列行为标识
-            put(
-                Constant.COMMON_PROPERTY_FIREBASE_IID,
-                dataAdapter?.fiid
-            )//Firebase的app_instance_id
-            put(
-                Constant.COMMON_PROPERTY_FCM_TOKEN,
-                dataAdapter?.fcmToken
-            )//firebase cloud message
-            put(
-                Constant.COMMON_PROPERTY_APPSFLYER_ID,
-                dataAdapter?.afid
-            )//appsflyer_id
-            put(
-                Constant.COMMON_PROPERTY_KOCHAVA_ID,
-                dataAdapter?.koid
-            )//kochava_id
+                DataUtils.getSession()
+            )
+            //Firebase的app_instance_id
+            dataAdapter?.fiid?.let {
+                if (it.isNotEmpty()) {
+                    put(Constant.COMMON_PROPERTY_FIREBASE_IID, it)
+                }
+            }
+            //firebase cloud message
+            dataAdapter?.fcmToken?.let {
+                if (it.isNotEmpty()) {
+                    put(Constant.COMMON_PROPERTY_FCM_TOKEN, it)
+                }
+            }
+            //appsflyer_id
+            dataAdapter?.afid?.let {
+                if (it.isNotEmpty()) {
+                    put(Constant.COMMON_PROPERTY_APPSFLYER_ID, it)
+                }
+            }
+            //kochava_id
+            dataAdapter?.koid?.let {
+                if (it.isNotEmpty()) {
+                    put(Constant.COMMON_PROPERTY_KOCHAVA_ID, it)
+                }
+            }
+            //app set id
+            dataAdapter?.appSetId?.let {
+                if (it.isNotEmpty()) {
+                    put(Constant.COMMON_PROPERTY_APP_SET_ID, it)
+                }
+            }
+            //roiquery_id
             put(
                 Constant.COMMON_PROPERTY_ROIQUERY_ID,
                 DeviceUtils.getROIQueryID(dataAdapter)
-            )//roiquery_id
-            //
-            put(
-                Constant.COMMON_PROPERTY_APP_SET_ID,
-                dataAdapter?.appSetId
-            )//app set id
-            put(
-                Constant.COMMON_PROPERTY_MCC,
-                DeviceUtils.getMcc(context)
-            )//移动信号国家码
-            put(
-                Constant.COMMON_PROPERTY_MNC,
-                DeviceUtils.getMnc(context)
-            )//移动信号网络码
+            )
+
+            //移动信号国家码
+            DeviceUtils.getMcc(context).let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.COMMON_PROPERTY_MCC,
+                        DeviceUtils.getMcc(context)
+                    )
+                }
+            }
+
+            //移动信号网络码
+            DeviceUtils.getMnc(context).let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.COMMON_PROPERTY_MNC,
+                        DeviceUtils.getMnc(context)
+                    )
+                }
+            }
+            //系统国家
             put(
                 Constant.COMMON_PROPERTY_OS_COUNTRY,
                 DeviceUtils.getLocalCountry(context)
-            )//系统国家
+            )
+            //系统语言
             put(
                 Constant.COMMON_PROPERTY_OS_LANG,
                 DeviceUtils.getLocaleLanguage()
-            )//系统语言
+            )
+            //应用版本号
             put(
                 Constant.COMMON_PROPERTY_APP_VERSION_CODE,
                 AppInfoUtils.getAppVersionCode(context)
-            )//应用版本号
+            )
+            //应用版本号
             put(
                 Constant.COMMON_PROPERTY_APP_VERSION_NAME,
                 AppInfoUtils.getAppVersionName(context)
-            )//应用版本号
+            )
+            //接入 SDK 的类型，如 Android，iOS,Unity
             put(
                 Constant.COMMON_PROPERTY_SDK_TYPE,
                 Constant.SDK_TYPE_ANDROID
-            )//接入 SDK 的类型，如 Android，iOS,Unity ,Flutter
+            )
+            //SDK 版本,如 1.1.2
             put(
                 Constant.COMMON_PROPERTY_SDK_VERSION,
                 BuildConfig.VERSION_NAME
-            )//SDK 版本,如 1.1.2
+            )
+            //如 Android、iOS 等
             put(
                 Constant.COMMON_PROPERTY_OS,
                 Constant.SDK_TYPE_ANDROID
-            )//如 Android、iOS 等
+            )
+            //操作系统版本名, Android 8.0.0 等
             put(
                 Constant.COMMON_PROPERTY_OS_VERSION_NAME,
                 DeviceUtils.oS
-            )//操作系统版本名, Android 8.0.0 等
+            )
+            //操作系统版本号, 如 31
             put(
                 Constant.COMMON_PROPERTY_OS_VERSION_CODE,
                 Build.VERSION.SDK_INT
-            )//操作系统版本号, 如 31
+            )
+            //用户设备的制造商，如 Apple，vivo 等
             put(
                 Constant.COMMON_PROPERTY_DEVICE_MANUFACTURER,
                 DeviceUtils.manufacturer
-            )//用户设备的制造商，如 Apple，vivo 等
+            )
+            //设备品牌,如 Galaxy、Pixel
             put(
                 Constant.COMMON_PROPERTY_DEVICE_BRAND,
                 DeviceUtils.brand
-            )//设备品牌,如 Galaxy、Pixel
+            )
             put(
                 Constant.COMMON_PROPERTY_BUILD_DEVICE,
                 Build.DEVICE
             )
+            //设备型号,用户设备的型号，如 iPhone 8 等
             put(
                 Constant.COMMON_PROPERTY_DEVICE_MODEL,
                 DeviceUtils.model
-            )//设备型号,用户设备的型号，如 iPhone 8 等
+            )
             val size = DeviceUtils.getDeviceSize(context)
+            //屏幕高度
             put(
                 Constant.COMMON_PROPERTY_SCREEN_WIDTH,
                 size[0]
-            )//屏幕高度
+            )
+            //屏幕宽度
             put(
                 Constant.COMMON_PROPERTY_SCREEN_HEIGHT,
                 size[1]
-            )//屏幕宽度
-
-            put(Constant.COMMON_PROPERTY_MEMORY_USED, MemoryUtils.getMemoryUsed(context))
-            put(Constant.COMMON_PROPERTY_STORAGE_USED, MemoryUtils.getStorageUsed(context))
-            put(Constant.COMMON_PROPERTY_DIMS_DPI, DensityUtils.getDensityDpi(context))
-
-            put(Constant.COMMON_PROPERTY_NETWORK_TYPE, NetworkUtil.getNetworkTypeString(context))
-            put(Constant.COMMON_PROPERTY_SIMULATOR, EmulatorDetector.isEmulator())
-
-            put(Constant.COMMON_PROPERTY_USER_AGENT, NetworkUtils.getUserAgent(context))
+            )
+            //像素密度
+            put(
+                Constant.COMMON_PROPERTY_DIMS_DPI,
+                DensityUtils.getDensityDpi(context)
+            )
+//            //内存使用率
+//            put(
+//                Constant.COMMON_PROPERTY_MEMORY_USED,
+//                MemoryUtils.getMemoryUsed(context)
+//            )
+//            //硬盘使用率
+//            put(
+//                Constant.COMMON_PROPERTY_STORAGE_USED,
+//                MemoryUtils.getStorageUsed(context)
+//            )
+            //网络状态
+            put(
+                Constant.COMMON_PROPERTY_NETWORK_TYPE,
+                NetworkUtil.getNetworkTypeString(context)
+            )
+            //是否是模拟器
+            put(
+                Constant.COMMON_PROPERTY_SIMULATOR,
+                EmulatorDetector.isEmulator()
+            )
+            //用户浏览器ua
+            put(
+                Constant.COMMON_PROPERTY_USER_AGENT,
+                NetworkUtils.getUserAgent(context)
+            )
 
         }
 

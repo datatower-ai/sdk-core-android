@@ -1,6 +1,7 @@
 package com.roiquery.analytics
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
 import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.api.AnalyticsImp
@@ -9,6 +10,7 @@ import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.AppLifecycleHelper
 import com.roiquery.analytics.utils.LogUtils
+import com.roiquery.analytics.utils.ProcessUtils
 
 import org.json.JSONObject
 import java.lang.Exception
@@ -252,7 +254,6 @@ open class ROIQueryAnalytics {
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppForeground()
                 }
-                LogUtils.d("RoiqueryAnalytics", "onAppForeground")
             } catch (e: Exception) {
                 LogUtils.printStackTrace("RoiqueryAnalytics", e)
             }
@@ -270,7 +271,6 @@ open class ROIQueryAnalytics {
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppBackground()
                 }
-                LogUtils.d("RoiqueryAnalytics", "onAppBackground")
             } catch (e: Exception) {
                 LogUtils.printStackTrace("RoiqueryAnalytics", e)
             }
@@ -300,9 +300,9 @@ open class ROIQueryAnalytics {
          */
         internal fun isSDKInitSuccess(): Boolean = AbstractAnalytics.mSDKConfigInit
 
-        internal fun getEventInfo() = AnalyticsImp.getInstance(mContext).getEventInfo()
+//        internal fun getEventInfo() = AnalyticsImp.getInstance(mContext).getEventInfo()
 
-        internal fun getCommonProperties() = AnalyticsImp.getInstance(mContext).getCommonProperties()
+//        internal fun getCommonProperties() = AnalyticsImp.getInstance(mContext).getCommonProperties()
 
     }
 }

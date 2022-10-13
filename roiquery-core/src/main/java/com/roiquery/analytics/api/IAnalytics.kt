@@ -1,6 +1,5 @@
 package com.roiquery.analytics.api
 
-import com.roiquery.analytics.Constant
 import org.json.JSONObject
 
 interface IAnalytics {
