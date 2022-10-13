@@ -79,8 +79,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
         } catch (e: Exception) {
             if (!ROIQueryAnalytics.isSDKInitSuccess()) {
                 ROIQueryQualityHelper.instance.reportQualityMessage(
-                    ROIQueryErrorParams.SDK_INIT_ERROR,
-                    "SDK  init error "
+                    ROIQueryErrorParams.CODE_INIT_EXCEPTION,e.message,ROIQueryErrorParams.INIT_EXCEPTION,ROIQueryErrorParams.TYPE_ERROR
                 )
             }
             LogUtils.printStackTrace(e)
@@ -204,8 +203,8 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
 
     private fun trackQualityEvent(qualityInfo: String) {
         ROIQueryQualityHelper.instance.reportQualityMessage(
-            ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL,
-            qualityInfo
+            ROIQueryErrorParams.CODE_TRACK_ERROR,
+            qualityInfo,ROIQueryErrorParams.TRACK_GENERATE_EVENT_ERROR
         )
     }
 
@@ -265,6 +264,9 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
             }
 
         } catch (e: PackageManager.NameNotFoundException) {
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_INIT_CONFIG_ERROR,e.message,ROIQueryErrorParams.INIT_CONFIG_ERROR,ROIQueryErrorParams.TYPE_ERROR
+            )
             LogUtils.printStackTrace(e)
         }
         if (null == configBundle) {

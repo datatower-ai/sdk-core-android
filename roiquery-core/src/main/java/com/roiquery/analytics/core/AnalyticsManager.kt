@@ -8,9 +8,7 @@ import android.os.Message
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.Constant.PRE_EVENT_INFO_SYN
-import com.roiquery.analytics.ROIQueryAnalytics.Companion.mContext
 import com.roiquery.analytics.ROIQueryCoroutineScope
-import com.roiquery.analytics.data.DataParams
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
@@ -58,8 +56,8 @@ class AnalyticsManager private constructor(
                 } catch (e: Exception) {
                     LogUtils.i(TAG, "enqueueEventMessage error:$e")
                     ROIQueryQualityHelper.instance.reportQualityMessage(
-                        ROIQueryErrorParams.UNKNOWN_TYPE,
-                        "event name: $name ," + e.stackTraceToString()
+                        ROIQueryErrorParams.CODE_INIT_DB_ERROR,
+                        "event name: $name ," + e.stackTraceToString(),ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR
                     )
                 }
 
@@ -85,21 +83,21 @@ class AnalyticsManager private constructor(
     }
 
     private fun checkInsertResult(insertCode: Int, eventName: String, eventJson: JSONObject, eventSyn: String){
+        val msg = if (insertCode < 0) " Failed to insert the event " else " the event: $eventName  has been inserted to db，code = $insertCode  "
         if (insertCode < 0) {
             if (!mErrorInsertDataMap.containsKey(eventSyn) && mErrorInsertDataMap.size < 20) {
                 mErrorInsertDataMap[eventSyn] = eventJson
             }
-            qualityReport(insertCode)
+            qualityReport(msg)
         }
-        val msg = if (insertCode < 0) " Failed to insert the event " else " the event: $eventName  has been inserted to db，code = $insertCode  "
         LogUtils.json(TAG , msg)
     }
 
 
-    private fun qualityReport(insertedCount: Int) {
+    private fun qualityReport(msg: String) {
         ROIQueryQualityHelper.instance.reportQualityMessage(
-            ROIQueryErrorParams.DATA_INSERT_ERROR,
-            insertedCount.toString()
+            ROIQueryErrorParams.CODE_INSERT_DB_NORMAL_ERROR,
+            msg,ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR
         )
     }
 
@@ -152,6 +150,10 @@ class AnalyticsManager private constructor(
             LogUtils.printStackTrace(e)
             mDateAdapter?.enableUpload = true
             mDisableUploadCount = 0
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_CHECK_ENABLE_UPLOAD_EXCEPTION,
+                e.message,ROIQueryErrorParams.CHECK_ENABLE_UPLOAD_EXCEPTION,ROIQueryErrorParams.TYPE_WARNING
+            )
             return false
         }
         return true
@@ -207,6 +209,11 @@ class AnalyticsManager private constructor(
                             }
                         } catch (e: Exception){
                             mDateAdapter.enableUpload = true
+                            ROIQueryQualityHelper.instance.reportQualityMessage(
+                                ROIQueryErrorParams.CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
+                                e.message,ROIQueryErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,ROIQueryErrorParams.TYPE_WARNING
+                            )
+
                         }
                     }
                 }
@@ -229,8 +236,8 @@ class AnalyticsManager private constructor(
                 override fun onFailure(code: Int, errorMessage: String?) {
                     LogUtils.d(TAG, errorMessage)
                     ROIQueryQualityHelper.instance.reportQualityMessage(
-                        ROIQueryErrorParams.REPORT_ERROR_ON_FAIL,
-                        errorMessage
+                        ROIQueryErrorParams.CODE_REPORT_ERROR_ON_FAIL,
+                        errorMsg = errorMessage, level = ROIQueryErrorParams.TYPE_WARNING
                     )
                 }
 
@@ -250,8 +257,8 @@ class AnalyticsManager private constructor(
                             }"
                         LogUtils.d(TAG, msg)
                         ROIQueryQualityHelper.instance.reportQualityMessage(
-                            ROIQueryErrorParams.REPORT_ERROR_ON_RESPONSE,
-                            msg
+                            ROIQueryErrorParams.CODE_REPORT_ERROR_ON_RESPONSE,
+                            msg, level = ROIQueryErrorParams.TYPE_WARNING
                         )
                     }
                 }
@@ -339,8 +346,8 @@ class AnalyticsManager private constructor(
                     }
                 } catch (e: RuntimeException) {
                     ROIQueryQualityHelper.instance.reportQualityMessage(
-                        ROIQueryErrorParams.UNKNOWN_TYPE,
-                        e.stackTraceToString()
+                        ROIQueryErrorParams.CODE_TRACK_ERROR,
+                        e.stackTraceToString(),ROIQueryErrorParams.TRACK_MANAGER_ERROR
                     )
                     LogUtils.i(
                         TAG,

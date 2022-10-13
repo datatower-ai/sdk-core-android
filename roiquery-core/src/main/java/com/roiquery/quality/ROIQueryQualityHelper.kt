@@ -17,33 +17,34 @@ import org.json.JSONObject
  * version：1.0
  */
 internal class ROIQueryQualityHelper private constructor() {
-    private val ERROR_TYPE: String = "message_type"
-    private val ERROR_MESSAGE: String = "message_content"
 
     // 事件信息，包含事件的基本数据
     private var mEventInfo: MutableMap<String, Any?>? = null
+
     // 事件通用属性
     private var mCommonProperties: MutableMap<String, Any?>? = null
 
     fun reportQualityMessage(
-        @ROIQueryErrorParams.ROIQueryErrorType errorType: String,
-        errorMsg: String?
+        @ROIQueryErrorParams.ROIQueryErrorCode errorCode: Int,
+        errorMsg: String?,
+        @ROIQueryErrorParams.ROIQueryErrorMsg defaultErrorMsg: String? = null,
+        @ROIQueryErrorParams.ROIQueryErrorLevel level: Int = ROIQueryErrorParams.TYPE_ERROR
     ) {
         try {
             RequestHelper.Builder(
                 HttpMethod.POST_ASYNC,
                 Constant.ERROR_REPORT_URL
             )
-                .jsonData(getJsonData(errorType, errorMsg))
+                .jsonData(getJsonData(errorCode, errorMsg, defaultErrorMsg, level))
                 .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
                 .callback(object :
                     HttpCallback.JsonCallback() {
                     override fun onFailure(code: Int, errorMessage: String?) {
-                        LogUtils.d("ROIQueryQuality onFailure",errorMessage)
+                        LogUtils.d("ROIQueryQuality onFailure", errorMessage)
                     }
 
                     override fun onResponse(response: JSONObject?) {
-                        LogUtils.d("ROIQueryQuality onResponse",response.toString())
+                        LogUtils.d("ROIQueryQuality onResponse", response.toString())
                     }
 
                     override fun onAfter() {
@@ -52,8 +53,13 @@ internal class ROIQueryQualityHelper private constructor() {
         } catch (e: Exception) {
         }
     }
-    
-    private fun getJsonData(@ROIQueryErrorParams.ROIQueryErrorType errorType: String, errorMsg: String?): String{
+
+    private fun getJsonData(
+        @ROIQueryErrorParams.ROIQueryErrorLevel errorType: Int,
+        errorMsg: String?,
+        defaultErrorMsg: String?,
+        level: Int
+    ): String {
         try {
             if (mEventInfo == null) {
                 mEventInfo = PropertyManager.instance.getEventInfo()
@@ -62,10 +68,9 @@ internal class ROIQueryQualityHelper private constructor() {
                 mCommonProperties = PropertyManager.instance.getCommonProperties()
             }
             val info = JSONObject(mEventInfo).apply {
-                put(ERROR_TYPE, errorType)
-                put("properties",JSONObject(mCommonProperties).apply {
-                    put(ERROR_MESSAGE, errorMsg)
-                })
+                put(ERROR_CODE, errorType)
+                put(ERROR_LEVEL, level)
+                put(ERROR_MESSAGE, defaultErrorMsg.plus(errorMsg))
             }
             return info.toString()
         } catch (e: Exception) {
@@ -75,6 +80,9 @@ internal class ROIQueryQualityHelper private constructor() {
 
 
     companion object {
+        private const val ERROR_CODE: String = "error_code"
+        private const val ERROR_LEVEL = "error_level"
+        private const val ERROR_MESSAGE: String = "error_message"
         val instance: ROIQueryQualityHelper by lazy {
             ROIQueryQualityHelper()
         }

@@ -133,7 +133,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
             trackInternal(eventName, eventType, isPreset, JSONObject(properties ?: mutableMapOf<String,Any>()))
         } catch (e: Exception) {
             ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.TRACK_PROPERTIES_KEY_NULL,
+                ROIQueryErrorParams.CODE_TRACK_ERROR,
                 "event name: $eventName" + e.stackTraceToString()
             )
             return
@@ -149,7 +149,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
              } catch (e: Exception) {
                  LogUtils.printStackTrace(e)
                  ROIQueryQualityHelper.instance.reportQualityMessage(
-                     ROIQueryErrorParams.TRACK_TASK_MANAGER_ERROR,
+                     ROIQueryErrorParams.CODE_TRACK_ERROR,
                      "event name: $eventName "
                  )
              }
