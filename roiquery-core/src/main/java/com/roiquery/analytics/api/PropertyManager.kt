@@ -6,6 +6,7 @@ import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.ROIQueryAnalytics.Companion.userSet
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
@@ -17,6 +18,7 @@ class PropertyManager private constructor() {
             PropertyManager()
         }
     }
+
     private var mContext: Context? = null
 
     // 事件信息，包含事件的基本数据
@@ -28,7 +30,7 @@ class PropertyManager private constructor() {
     //本地数据适配器，包括sp、db的操作
     private var mDataAdapter: EventDateAdapter? = null
 
-    fun init(context: Context?, dateAdapter: EventDateAdapter?, initConfig: AnalyticsConfig?){
+    fun init(context: Context?, dateAdapter: EventDateAdapter?, initConfig: AnalyticsConfig?) {
         mContext = context
         mDataAdapter = dateAdapter
         initEventInfo()
@@ -59,7 +61,7 @@ class PropertyManager private constructor() {
      *
      * @return
      */
-     private fun initCommonProperties(initConfig: AnalyticsConfig?) {
+    private fun initCommonProperties(initConfig: AnalyticsConfig?) {
         mCommonProperties = EventUtils.getCommonProperties(mContext!!, mDataAdapter)
         initConfig?.let { config ->
             if (config.mCommonProperties != null) {
@@ -85,7 +87,6 @@ class PropertyManager private constructor() {
     fun getCommonProperties() = mCommonProperties
 
 
-
     /**
      * oaid 获取，异步
      */
@@ -98,9 +99,10 @@ class PropertyManager private constructor() {
                 override fun onOAIDGetComplete(oaid: String) {
                     mDataAdapter?.oaid = oaid
                     updateEventInfo(Constant.EVENT_INFO_OAID, oaid)
-                    AnalyticsImp.getInstance(mContext).trackUser(Constant.PRESET_EVENT_USER_SET, JSONObject().apply {
-                        put(Constant.USER_PROPERTY_LATEST_OAID,oaid)
-                    })
+                    AnalyticsImp.getInstance(mContext)
+                        .trackUser(Constant.PRESET_EVENT_USER_SET, JSONObject().apply {
+                            put(Constant.USER_PROPERTY_LATEST_OAID, oaid)
+                        })
                 }
 
                 override fun onOAIDGetError(exception: java.lang.Exception) {
@@ -122,9 +124,10 @@ class PropertyManager private constructor() {
                 val id = info.id ?: ""
                 mDataAdapter?.gaid = id
                 updateEventInfo(Constant.EVENT_INFO_GAID, id)
-                AnalyticsImp.getInstance(mContext).trackUser(Constant.PRESET_EVENT_USER_SET, JSONObject().apply {
-                    put(Constant.USER_PROPERTY_LATEST_GAID, id)
-                })
+                AnalyticsImp.getInstance(mContext)
+                    .trackUser(Constant.PRESET_EVENT_USER_SET, JSONObject().apply {
+                        put(Constant.USER_PROPERTY_LATEST_GAID, id)
+                    })
             } catch (exception: Exception) {
                 LogUtils.d("getGAID", "onException:" + exception.message.toString())
             }
@@ -132,7 +135,7 @@ class PropertyManager private constructor() {
     }
 
 
-     fun updateSdkVersionProperty(jsonObject: JSONObject){
+    fun updateSdkVersionProperty(jsonObject: JSONObject) {
         //接入 SDK 的类型可能是 Android 或 Unity ，因此这里需动态获取
         getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_TYPE)?.toString()?.let {
             if (it.isNotEmpty()) {
@@ -153,32 +156,50 @@ class PropertyManager private constructor() {
         }
     }
 
-    fun updateNetworkType(networkType: NetworkUtil.NetworkType?){
-        updateEventInfo(Constant.COMMON_PROPERTY_NETWORK_TYPE, NetworkUtil.convertNetworkTypeToString(networkType))
+    fun updateNetworkType(networkType: NetworkUtil.NetworkType?) {
+        updateCommonProperties(
+            Constant.COMMON_PROPERTY_NETWORK_TYPE,
+            NetworkUtil.convertNetworkTypeToString(networkType)
+        )
     }
 
-    fun updateACID(acid: String){
+    fun updateACID(acid: String) {
         updateEventInfo(Constant.EVENT_INFO_ACID, acid)
     }
 
-    fun updateFireBaseInstanceId(fiid: String){
+    fun updateFireBaseInstanceId(fiid: String) {
         updateCommonProperties(Constant.COMMON_PROPERTY_FIREBASE_IID, fiid)
+        userSet(JSONObject().apply {
+            put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, fiid)
+        })
     }
 
-    fun updateFCMToken(fcmToken: String){
+    fun updateFCMToken(fcmToken: String) {
         updateCommonProperties(Constant.COMMON_PROPERTY_FCM_TOKEN, fcmToken)
+        userSet(JSONObject().apply {
+            put(Constant.USER_PROPERTY_LATEST_FCM_TOKEN, fcmToken)
+        })
     }
 
-    fun updateAFID(afid: String){
+    fun updateAFID(afid: String) {
         updateCommonProperties(Constant.COMMON_PROPERTY_APPSFLYER_ID, afid)
+        userSet(JSONObject().apply {
+            put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, afid)
+        })
     }
 
-    fun updateKOID(koid: String){
+    fun updateKOID(koid: String) {
         updateCommonProperties(Constant.COMMON_PROPERTY_KOCHAVA_ID, koid)
+        userSet(JSONObject().apply {
+            put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, koid)
+        })
     }
 
-     fun updateAppSetId(appSetId: String){
+    fun updateAppSetId(appSetId: String) {
         updateCommonProperties(Constant.COMMON_PROPERTY_APP_SET_ID, appSetId)
+        userSet(JSONObject().apply {
+            put(Constant.USER_PROPERTY_LATEST_APP_SET_ID, appSetId)
+        })
     }
 
 }

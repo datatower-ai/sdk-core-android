@@ -58,9 +58,6 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
             if (value != null) {
                 EventDateAdapter.getInstance()?.fiid = value
                 PropertyManager.instance.updateFireBaseInstanceId(value)
-                userSet(JSONObject().apply {
-                    put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, value)
-                })
             }
         }
 
@@ -70,9 +67,6 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
             if (value != null) {
                 EventDateAdapter.getInstance()?.fcmToken = value
                 PropertyManager.instance.updateFCMToken(value)
-                userSet(JSONObject().apply {
-                    put(Constant.USER_PROPERTY_LATEST_FCM_TOKEN, value)
-                })
             }
         }
     override var afid: String?
@@ -81,9 +75,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
             if (value != null) {
                 EventDateAdapter.getInstance()?.afid = value
                 PropertyManager.instance.updateAFID(value)
-                userSet(JSONObject().apply {
-                    put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, value)
-                })
+
             }
         }
     override var koid: String?
@@ -92,9 +84,6 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
             if (value != null) {
                 EventDateAdapter.getInstance()?.koid = value
                 PropertyManager.instance.updateKOID(value)
-                userSet(JSONObject().apply {
-                    put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, value)
-                })
             }
         }
 
@@ -104,9 +93,6 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
             if (value != null) {
                 EventDateAdapter.getInstance()?.appSetId = value
                 PropertyManager.instance.updateAppSetId(value)
-                userSet(JSONObject().apply {
-                    put(Constant.USER_PROPERTY_LATEST_APP_SET_ID, value)
-                })
             }
         }
 

@@ -338,7 +338,9 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics , CoroutineScop
         NetworkUtil.registerNetworkStatusChangedListener(
             mContext,
             object : NetworkUtil.OnNetworkStatusChangedListener {
-                override fun onDisconnected() {}
+                override fun onDisconnected() {
+                    PropertyManager.instance.updateNetworkType(NetworkUtil.NetworkType.NETWORK_NO)
+                }
                 override fun onConnected(networkType: NetworkUtil.NetworkType?) {
                     LogUtils.i("onNetConnChanged", networkType)
                     PropertyManager.instance.updateNetworkType(networkType)
