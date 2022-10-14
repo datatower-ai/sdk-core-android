@@ -199,7 +199,6 @@ object DeviceUtils {
                 ua = WebSettings.getDefaultUserAgent(context)
             }
         } catch (e: Exception) {
-            e.printStackTrace()
         }
         return ua
     }
