@@ -18,11 +18,7 @@ import org.json.JSONObject
  */
 internal class ROIQueryQualityHelper private constructor() {
 
-    // 事件信息，包含事件的基本数据
-    private var mEventInfo: MutableMap<String, Any?>? = null
-
-    // 事件通用属性
-    private var mCommonProperties: MutableMap<String, Any?>? = null
+    private var mJsonParams: MutableMap<String, Any?>? = null
 
     fun reportQualityMessage(
         @ROIQueryErrorParams.ROIQueryErrorCode errorCode: Int,
@@ -61,16 +57,12 @@ internal class ROIQueryQualityHelper private constructor() {
         level: Int
     ): String {
         try {
-            if (mEventInfo == null) {
-                mEventInfo = PropertyManager.instance.getEventInfo()
-            }
-            if (mCommonProperties == null) {
-                mCommonProperties = PropertyManager.instance.getCommonProperties()
-            }
-            val info = JSONObject(mEventInfo).apply {
-                put(ERROR_CODE, errorType)
-                put(ERROR_LEVEL, level)
-                put(ERROR_MESSAGE, defaultErrorMsg.plus(errorMsg))
+            val info = generateJsonParams()?.let {
+                JSONObject(it).apply {
+                    put(ERROR_CODE, errorType)
+                    put(ERROR_LEVEL, level)
+                    put(ERROR_MESSAGE, defaultErrorMsg.plus(errorMsg))
+                }
             }
             return info.toString()
         } catch (e: Exception) {
@@ -78,11 +70,36 @@ internal class ROIQueryQualityHelper private constructor() {
         return JSONObject().toString()
     }
 
+    private fun generateJsonParams(): MutableMap<String, Any?>? {
+        if (mJsonParams == null) {
+            mJsonParams = mutableMapOf<String, Any?>().apply {
+                PropertyManager.instance.getEventInfo()?.let {
+                    put(APP_ID, it[Constant.EVENT_INFO_APP_ID])
+                }
+                PropertyManager.instance.getCommonProperties()?.let {
+                    put(INSTANCE_ID, it[Constant.COMMON_PROPERTY_ROIQUERY_ID])
+                    put(SDK_TYPE, it[Constant.COMMON_PROPERTY_SDK_TYPE])
+                    put(SDK_VERSION_NAME, it[Constant.COMMON_PROPERTY_SDK_VERSION])
+                    put(APP_VERSION_NAME, it[Constant.COMMON_PROPERTY_APP_VERSION_NAME])
+                    put(OS_VERSION_NAME, it[Constant.COMMON_PROPERTY_OS_VERSION_NAME])
+                    put(DEVICE_MODEL, it[Constant.COMMON_PROPERTY_DEVICE_MODEL])
+                }
+            }
+        }
+        return mJsonParams
+    }
 
     companion object {
-        private const val ERROR_CODE: String = "error_code"
-        private const val ERROR_LEVEL = "error_level"
-        private const val ERROR_MESSAGE: String = "error_message"
+        private const val APP_ID            = "app_id"
+        private const val INSTANCE_ID       = "instance_id"
+        private const val SDK_TYPE          = "sdk_type"
+        private const val SDK_VERSION_NAME  = "sdk_version_name"
+        private const val APP_VERSION_NAME  = "app_version_name"
+        private const val OS_VERSION_NAME   = "os_version_name"
+        private const val DEVICE_MODEL      = "device_model"
+        private const val ERROR_CODE        = "error_code"
+        private const val ERROR_LEVEL       = "error_level"
+        private const val ERROR_MESSAGE     = "error_message"
         val instance: ROIQueryQualityHelper by lazy {
             ROIQueryQualityHelper()
         }

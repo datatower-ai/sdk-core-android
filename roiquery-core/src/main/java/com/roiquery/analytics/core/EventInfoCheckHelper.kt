@@ -102,7 +102,6 @@ class EventInfoCheckHelper private constructor() {
         eventName: String,
         eventInfo: JSONObject
     ): Boolean {
-        checkAttributeInsertStatus(eventName)
         if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE && eventInfo.optLong(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == 0L) {
             if (EventDateAdapter.getInstance()?.firstOpenTime == 0L) {
                 return false
@@ -129,6 +128,7 @@ class EventInfoCheckHelper private constructor() {
     private fun checkAttributeInsertStatus(eventName: String) {
         if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE) {
             EventDateAdapter.getInstance()?.isAttributeInsert = true
+            LogUtils.d("checkAttributeInsertStatus","true")
         }
     }
 
