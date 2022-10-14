@@ -91,26 +91,29 @@ class PropertyManager private constructor() {
      * oaid 获取，异步
      */
     private fun getOAID() {
-        try {
-            if (!DeviceID.supportedOAID(mContext)) {
-                return
-            }
-            DeviceID.getOAID(mContext, object : IGetter {
-                override fun onOAIDGetComplete(oaid: String) {
-                    mDataAdapter?.oaid = oaid
-                    updateEventInfo(Constant.EVENT_INFO_OAID, oaid)
-                    AnalyticsImp.getInstance(mContext)
-                        .trackUser(Constant.PRESET_EVENT_USER_SET, JSONObject().apply {
-                            put(Constant.USER_PROPERTY_LATEST_OAID, oaid)
-                        })
-                }
+        if (mDataAdapter?.oaid?.isNotEmpty() == true || !DeviceID.supportedOAID(mContext)) {
+            return
+        }
+        TaskScheduler.execute {
+            try {
+                DeviceID.getOAID(mContext, object : IGetter {
+                    override fun onOAIDGetComplete(oaid: String) {
+                        mDataAdapter?.oaid = oaid
+                        updateEventInfo(Constant.EVENT_INFO_OAID, oaid)
+                        Thread.sleep(2000)
+                        AnalyticsImp.getInstance(mContext)
+                            .trackUser(Constant.PRESET_EVENT_USER_SET, JSONObject().apply {
+                                put(Constant.USER_PROPERTY_LATEST_OAID, oaid)
+                            })
+                    }
 
-                override fun onOAIDGetError(exception: java.lang.Exception) {
-                    LogUtils.d(exception)
-                }
-            })
-        } catch (e: Exception) {
-            LogUtils.d(e)
+                    override fun onOAIDGetError(exception: java.lang.Exception) {
+                        LogUtils.d(exception)
+                    }
+                })
+            } catch (e: Exception) {
+                LogUtils.d(e)
+            }
         }
     }
 
@@ -118,12 +121,16 @@ class PropertyManager private constructor() {
      * gaid 获取，异步
      */
     private fun getGAID() {
+        if (mDataAdapter?.gaid?.isNotEmpty() == true) {
+            return
+        }
         TaskScheduler.execute {
             try {
                 val info = AdvertisingIdClient.getAdvertisingIdInfo(mContext!!)
                 val id = info.id ?: ""
                 mDataAdapter?.gaid = id
                 updateEventInfo(Constant.EVENT_INFO_GAID, id)
+                Thread.sleep(2000)
                 AnalyticsImp.getInstance(mContext)
                     .trackUser(Constant.PRESET_EVENT_USER_SET, JSONObject().apply {
                         put(Constant.USER_PROPERTY_LATEST_GAID, id)
