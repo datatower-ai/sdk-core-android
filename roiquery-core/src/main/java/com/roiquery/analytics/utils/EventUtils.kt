@@ -72,7 +72,7 @@ object EventUtils {
 
     fun getLatestUserProperties(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
-            dataAdapter?.rqid?.let {
+            DeviceUtils.getROIQueryID(dataAdapter).let {
                 if (it.isNotEmpty()) {
                     put(Constant.USER_PROPERTY_LATEST_INSTANCE_ID, it)
                 }
@@ -379,7 +379,7 @@ object EventUtils {
             //用户浏览器ua
             put(
                 Constant.COMMON_PROPERTY_USER_AGENT,
-                NetworkUtils.getUserAgent(context)
+                DeviceUtils.getUserAgent(context)
             )
 
         }

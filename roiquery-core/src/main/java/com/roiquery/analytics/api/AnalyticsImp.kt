@@ -50,7 +50,9 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
 
     override var rqid: String?
         get() = EventDateAdapter.getInstance()?.rqid
-        set(value) {}
+        set(value) {
+
+        }
 
     override var fiid: String?
         get() = EventDateAdapter.getInstance()?.fiid

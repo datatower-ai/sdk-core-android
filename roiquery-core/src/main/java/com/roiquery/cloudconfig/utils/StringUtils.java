@@ -43,30 +43,6 @@ public final class StringUtils {
         return true;
     }
 
-    /**
-     * Return whether string1 is equals to string2.
-     *
-     * @param s1 The first string.
-     * @param s2 The second string.
-     * @return {@code true}: yes<br>{@code false}: no
-     */
-    public static boolean equals(final CharSequence s1, final CharSequence s2) {
-        if (s1 == s2) return true;
-        int length;
-        if (s1 != null && s2 != null && (length = s1.length()) == s2.length()) {
-            if (s1 instanceof String && s2 instanceof String) {
-                return s1.equals(s2);
-            } else {
-                for (int i = 0; i < length; i++) {
-                    if (s1.charAt(i) != s2.charAt(i)) return false;
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
-
 
     /**
      * Return the length of string.

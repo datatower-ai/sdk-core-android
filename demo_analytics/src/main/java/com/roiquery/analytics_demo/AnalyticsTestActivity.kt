@@ -34,11 +34,7 @@ class AnalyticsTestActivity : AppCompatActivity() {
 //                val time = ROIQueryAnalytics.getServerTimeSync()
 //                LogUtils.d("getServerTimeSync", time)
 //            }.start()
-            ROIQueryAnalytics.getServerTimeAsync(object : ServerTimeListener {
-                override fun onFinished(time: Long, msg: String) {
-                    LogUtils.d("getServerTimeSync", time)
-                }
-            })
+
         }
 
         findViewById<View>(R.id.button_track_ad_show).visibility= View.GONE

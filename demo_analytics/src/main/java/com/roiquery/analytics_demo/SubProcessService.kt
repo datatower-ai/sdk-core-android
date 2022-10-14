@@ -15,7 +15,7 @@ class SubProcessService : Service() {
 
     override fun onCreate() {
         ROIQueryAnalytics.track("sub_process_service_oncreate", JSONObject().apply {
-            put("process_name",ProcessUtils.getCurrentProcessName(application))
+            put("process_name",ProcessUtils.getProcessName(application))
         })
         super.onCreate()
     }
