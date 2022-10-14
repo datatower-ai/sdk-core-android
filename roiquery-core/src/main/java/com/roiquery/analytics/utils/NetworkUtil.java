@@ -1,6 +1,5 @@
 package com.roiquery.analytics.utils;
 
-import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +24,8 @@ import java.util.Set;
 
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 import static android.Manifest.permission.INTERNET;
+
+import com.roiquery.analytics.taskscheduler.TaskScheduler;
 
 /**
  * <pre>
@@ -51,8 +52,7 @@ public final class NetworkUtil {
         NETWORK_NO
     }
 
-    public static String getNetworkTypeString(Context context) {
-        NetworkType networkType = getNetworkType(context);
+    public static String convertNetworkTypeToString(NetworkType networkType){
         if (networkType == NetworkType.NETWORK_ETHERNET) {
             return "e";
         }
@@ -77,8 +77,11 @@ public final class NetworkUtil {
         if (networkType == NetworkType.NETWORK_NO) {
             return "none_network";
         }
+        return "unknown_network";
+    }
 
-        return "";
+    public static String getNetworkTypeString(Context context) {
+        return convertNetworkTypeToString(getNetworkType(context));
     }
 
     /**
@@ -318,7 +321,7 @@ public final class NetworkUtil {
         @RequiresPermission(ACCESS_NETWORK_STATE)
         void registerListener(final OnNetworkStatusChangedListener listener) {
             if (listener == null) return;
-            ThreadUtils.runOnUiThread(new Runnable() {
+            TaskScheduler.runOnUIThread(new Runnable() {
                 @Override
                 @RequiresPermission(ACCESS_NETWORK_STATE)
                 public void run() {
@@ -340,7 +343,7 @@ public final class NetworkUtil {
 
         void unregisterListener(final OnNetworkStatusChangedListener listener) {
             if (listener == null) return;
-            ThreadUtils.runOnUiThread(new Runnable() {
+            TaskScheduler.runOnUIThread(new Runnable() {
                 @Override
                 public void run() {
                     int preSize = mListeners.size();
@@ -356,7 +359,7 @@ public final class NetworkUtil {
         public void onReceive(Context context, Intent intent) {
             if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
                 // debouncing
-                ThreadUtils.runOnUiThreadDelayed(new Runnable() {
+                TaskScheduler.runOnUIThreadDelayed(new Runnable() {
                     @Override
                     @RequiresPermission(ACCESS_NETWORK_STATE)
                     public void run() {

@@ -90,36 +90,6 @@ class EventDateAdapter private constructor(
         set(value) = setStringConfig(DataParams.CLOUD_CONFIG_AES_KEY,value)
 
     /**
-     *  服务器与本地时间差
-     *
-     * @return event_session
-     */
-    var timeOffset: String
-        get() {
-            val timeLocalOffset = runBlocking{ getStringConfig(DataParams.TIME_SERVER_LOCAL_OFFSET)}
-            return if (TextUtils.isEmpty(timeLocalOffset)) Constant.TIME_OFFSET_DEFAULT_VALUE else timeLocalOffset
-        }
-        set(value) = setStringConfig(DataParams.TIME_SERVER_LOCAL_OFFSET,value)
-
-    /**
-     *  app_engagement 最后发生时间
-     *
-     * @return event_session
-     */
-    var lastEngagementTime: String
-        get() = runBlocking{getStringConfig(DataParams.LAST_APP_ENGAGEMENT_TIME)}
-        set(value) = setStringConfig(DataParams.LAST_APP_ENGAGEMENT_TIME,value)
-
-    /**
-     *  event_session
-     *
-     * @return event_session
-     */
-    var eventSession: String
-        get() = runBlocking{getStringConfig(DataParams.CONFIG_EVENT_SESSION)}
-        set(value) = setStringConfig(DataParams.CONFIG_EVENT_SESSION,value)
-
-    /**
      *  ROIQuery id
      *
      * @return rqid
@@ -193,8 +163,6 @@ class EventDateAdapter private constructor(
         set(value) = setStringConfig(DataParams.CONFIG_GAID,value)
         get() = runBlocking {   getStringConfig(DataParams.CONFIG_GAID)  }
 
-
-
     /**
      *  uaWebview
      *
@@ -229,13 +197,6 @@ class EventDateAdapter private constructor(
 
 
     /**
-     * attribute 事件的插入数据库状态
-     */
-    var isAttributeInsert: Boolean
-        get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_ATTRIBUTE_UPLOAD_STATUS,false) }
-        set(value) = setBooleanConfig(DataParams.CONFIG_ATTRIBUTE_UPLOAD_STATUS, value)
-
-    /**
      * app 是否在后台
      */
     var isAppForeground: Boolean
@@ -261,29 +222,31 @@ class EventDateAdapter private constructor(
     }
 
 
-    private suspend fun getIntConfig(key: String,default: Int = 0): Int{
-        val values = mOperation?.queryConfig(key)
-        return if (values != null && values.isNotEmpty() && values != "null") {
-            values.toInt()
-        } else default
-    }
-
-    private fun setIntConfig(
-        key: String,
-        value: Int
-    ) {
-        mOperation?.insertConfig(
-            key,
-            value.toString()
-        )
-    }
+//    private suspend fun getIntConfig(key: String,default: Int = 0): Int{
+//        val values = mOperation?.queryConfig(key)
+//        return if (values != null && values.isNotEmpty() && values != "null") {
+//            values.toInt()
+//        } else default
+//    }
+//
+//    private fun setIntConfig(
+//        key: String,
+//        value: Int
+//    ) {
+//        mOperation?.insertConfig(
+//            key,
+//            value.toString()
+//        )
+//    }
 
 
     private suspend fun getStringConfig(key: String): String{
         val values = mOperation?.queryConfig(key)
-        return if (values != null && values.isNotEmpty() && values != "null") {
+        val s = if (values != null && values.isNotEmpty() && values != "null") {
             values
         } else ""
+
+        return s
     }
 
     private fun setStringConfig(
@@ -304,6 +267,7 @@ class EventDateAdapter private constructor(
                 longValue = value.toLong()
             }
         } catch (e: NumberFormatException) {
+
         }
         return longValue
     }

@@ -12,13 +12,11 @@ import com.roiquery.ad.AdReportConstant.PROPERTY_AD_SHOW_ERROR_MESSAGE
 import com.roiquery.ad.AdType
 import com.roiquery.ad.utils.AdEventProperty
 import com.roiquery.ad.utils.AdPlatformUtils
-import com.roiquery.analytics.ROIQuery
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.AppLifecycleHelper.OnAppStatusListener
 import com.roiquery.analytics.utils.EventUtils
 import com.roiquery.analytics.utils.LogUtils
-import com.roiquery.analytics.utils.transJSONObject2Map
 import org.json.JSONObject
 
 class AdReportImp private constructor(context: Context?) : IAdReport {

@@ -64,4 +64,7 @@ dependencies {
     }else {
         implementation 'com.roiquery.android:core:'   + rootProject.ext.core.coreVersionName
     }
+
+    //对外sdk依赖
+//    implementation 'com.lovinjoy:datatowerai-core:1.2.50'
 }

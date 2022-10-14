@@ -11,8 +11,9 @@ import android.telephony.TelephonyManager
 import android.text.TextUtils
 import android.view.Surface
 import android.view.WindowManager
+import android.webkit.WebSettings
+import android.webkit.WebView
 import com.roiquery.analytics.data.EventDateAdapter
-
 import java.util.*
 
 
@@ -58,6 +59,16 @@ object DeviceUtils {
         return  dataAdapter?.rqid ?: ""
     }
 
+
+    /**
+     * 获取 dpi
+     *
+     * @param context
+     */
+    fun getDensityDpi(context: Context): Int {
+        val displayMetrics = context.resources.displayMetrics
+        return displayMetrics.densityDpi
+    }
 
 
     /**
@@ -171,6 +182,26 @@ object DeviceUtils {
 
     fun getLocaleLanguage():String{
         return Locale.getDefault().language
+    }
+
+
+    /**
+     * 获取userAgent
+     */
+    fun getUserAgent(context: Context): String {
+        var ua: String = ""
+        try {
+            if (Build.VERSION.SDK_INT < 19) {
+                val web = WebView(context)
+                ua = web.settings.userAgentString
+                web.destroy()
+            } else {
+                ua = WebSettings.getDefaultUserAgent(context)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return ua
     }
 
     /**

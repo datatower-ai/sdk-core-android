@@ -4,6 +4,8 @@ import android.app.Application
 import com.roiquery.ad.utils.UUIDUtils
 import com.roiquery.analytics.ROIQuery
 import com.roiquery.analytics.ROIQueryChannel
+import com.roiquery.analytics.utils.LogUtils
+import org.json.JSONObject
 
 
 class MyApp : Application() {

@@ -158,25 +158,6 @@ public class StorageBean {
                 '}';
     }
 
-    public JSONObject toJSON() {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("freeStore=", freeStore);
-            jsonObject.put("usedStore", usedStore);
-            jsonObject.put("totalStore", totalStore);
-            jsonObject.put("ratioStore", ratioStore);
-            jsonObject.put("storePath", storePath);
-            jsonObject.put("freeMemory", freeMemory);
-            jsonObject.put("usedMemory", usedMemory);
-            jsonObject.put("totalMemory", totalMemory);
-            jsonObject.put("ratioMemory", ratioMemory);
-            jsonObject.put("memInfo", memInfo);
-            jsonObject.put("romSize", romSize);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return jsonObject;
-    }
 
 
 }

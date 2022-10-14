@@ -102,7 +102,6 @@ class EventInfoCheckHelper private constructor() {
         eventName: String,
         eventInfo: JSONObject
     ): Boolean {
-        checkAttributeInsertStatus(eventName)
         if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE && eventInfo.optLong(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == 0L) {
             if (EventDateAdapter.getInstance()?.firstOpenTime == 0L) {
                 return false
@@ -124,13 +123,6 @@ class EventInfoCheckHelper private constructor() {
         ROIQueryAnalytics.userSetOnce(JSONObject().apply {
             put(Constant.USER_PROPERTY_ACTIVE_EVENT_TIME, firstOpenTime.toString())
         })
-    }
-
-    private fun checkAttributeInsertStatus(eventName: String) {
-        if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE) {
-            EventDateAdapter.getInstance()?.isAttributeInsert = true
-            LogUtils.d("AttributeInsertStatus", "true")
-        }
     }
 
 }

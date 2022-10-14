@@ -52,4 +52,13 @@
         android:text="IAS_Report"
         />
 
+    <Button
+        android:id="@+id/button_test_memory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_margin="5dp"
+        android:text="test_memory"
+        android:textAllCaps="false" />
+
 </LinearLayout>

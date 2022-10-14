@@ -60,14 +60,6 @@ internal class EventDataOperation(
             )
         }
     }
-    private val query = CoroutineExceptionHandler { _, exception ->
-        run {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_QUERY_DB_ERROR,
-                exception.message
-            )
-        }
-    }
 
     private val queryDbException = CoroutineExceptionHandler { _, exception ->
         run {
