@@ -198,19 +198,30 @@ object EventUtils {
                 size[1]
             )//屏幕高度
 
-            put(Constant.USER_PROPERTY_ACTIVE_DIMS_DPI, DeviceUtils.getDensityDpi(context))
-            put(Constant.USER_PROPERTY_ACTIVE_MEMORY_USED, MemoryUtils.getMemoryUsed(context))
-            put(Constant.USER_PROPERTY_ACTIVE_STORAGE_USED, MemoryUtils.getStorageUsed(context))
+            put(
+                Constant.USER_PROPERTY_ACTIVE_DIMS_DPI,
+                DeviceUtils.getDensityDpi(context)
+            )
+            put(
+                Constant.USER_PROPERTY_ACTIVE_MEMORY_USED,
+                MemoryUtils.getMemoryUsed(context)
+            )
+            put(
+                Constant.USER_PROPERTY_ACTIVE_STORAGE_USED,
+                MemoryUtils.getStorageUsed(context)
+            )
             put(
                 Constant.USER_PROPERTY_ACTIVE_NETWORK_TYPE,
                 NetworkUtil.getNetworkTypeString(context)
             )
-            put(Constant.USER_PROPERTY_ACTIVE_SIMULATOR, EmulatorDetector.isEmulator())
-            dataAdapter?.uaWebview?.let {
-                if (it.isNotEmpty()) {
-                    put(Constant.USER_PROPERTY_ACTIVE_USER_AGENT, it)
-                }
-            }
+            put(
+                Constant.USER_PROPERTY_ACTIVE_SIMULATOR,
+                EmulatorDetector.isEmulator()
+            )
+            put(
+                Constant.USER_PROPERTY_ACTIVE_USER_AGENT,
+                DeviceUtils.getUserAgent(context)
+            )
 
         }
 
