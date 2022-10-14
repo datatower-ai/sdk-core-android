@@ -222,8 +222,11 @@ public class TaskScheduler {
     }
 
     public static void runOnUIThread(Runnable runnable) {
-
         getInstance().mMainHandler.post(runnable);
+    }
+
+    public static void runOnUIThreadDelayed(Runnable runnable, long delayMillis) {
+        getInstance().mMainHandler.postDelayed(runnable, delayMillis);
     }
 
     /**

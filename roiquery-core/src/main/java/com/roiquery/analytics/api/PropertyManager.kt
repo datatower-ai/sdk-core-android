@@ -1,6 +1,5 @@
 package com.roiquery.analytics.api
 
-import android.app.Application
 import android.content.Context
 import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
@@ -9,6 +8,7 @@ import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryAnalytics.Companion.userSet
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.taskscheduler.TaskScheduler
 import com.roiquery.analytics.utils.*
 import org.json.JSONObject
 
@@ -54,7 +54,7 @@ class PropertyManager private constructor() {
         mEventInfo?.put(key, value)
     }
 
-    fun getEventInfo() = mEventInfo
+    fun getEventInfo() = mEventInfo?.toMutableMap() ?: mutableMapOf()
 
     /**
      * 获取并配置 事件通用属性
@@ -84,7 +84,7 @@ class PropertyManager private constructor() {
         mCommonProperties?.put(key, value)
     }
 
-    fun getCommonProperties() = mCommonProperties
+    fun getCommonProperties() = mCommonProperties?.toMutableMap() ?: mutableMapOf()
 
 
     /**
@@ -118,7 +118,7 @@ class PropertyManager private constructor() {
      * gaid 获取，异步
      */
     private fun getGAID() {
-        ThreadUtils.getSinglePool().submit {
+        TaskScheduler.execute {
             try {
                 val info = AdvertisingIdClient.getAdvertisingIdInfo(mContext!!)
                 val id = info.id ?: ""
@@ -135,9 +135,9 @@ class PropertyManager private constructor() {
     }
 
 
-    fun updateSdkVersionProperty(jsonObject: JSONObject) {
+    fun updateSdkVersionProperty(jsonObject: JSONObject, typeKye: String, versionKey: String) {
         //接入 SDK 的类型可能是 Android 或 Unity ，因此这里需动态获取
-        getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_TYPE)?.toString()?.let {
+        getCommonProperties()[Constant.COMMON_PROPERTY_SDK_TYPE]?.toString()?.let {
             if (it.isNotEmpty()) {
                 jsonObject.put(
                     Constant.USER_PROPERTY_ACTIVE_SDK_TYPE,
@@ -146,7 +146,7 @@ class PropertyManager private constructor() {
             }
         }
         //SDK 版本
-        getCommonProperties()?.get(Constant.COMMON_PROPERTY_SDK_VERSION)?.toString()?.let {
+        getCommonProperties()[Constant.COMMON_PROPERTY_SDK_VERSION]?.toString()?.let {
             if (it.isNotEmpty()) {
                 jsonObject.put(
                     Constant.USER_PROPERTY_ACTIVE_SDK_VERSION,

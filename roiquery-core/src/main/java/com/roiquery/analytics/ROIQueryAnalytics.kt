@@ -179,31 +179,6 @@ open class ROIQueryAnalytics {
             AnalyticsImp.getInstance(mContext).appSetId = id
         }
 
-        /**
-         * 获取当前时间，如果没有校准，则返回系统时间
-         * @return
-         */
-        @JvmStatic
-        fun getRealTime() = AnalyticsImp.getInstance(mContext).getRealTime()
-
-        /**
-         * 异步获取服务器时间
-         * @return
-         */
-        @JvmStatic
-        fun getServerTimeAsync(serverTimeListener: ServerTimeListener?) {
-            AnalyticsImp.getInstance(mContext).getServerTimeAsync(serverTimeListener)
-        }
-
-        /**
-         * 同步获取服务器时间
-         * @return
-         */
-        @JvmStatic
-        fun getServerTimeSync(): Long {
-            return AnalyticsImp.getInstance(mContext).getServerTimeSync()
-        }
-
         /******************** internal *******************/
 
         /**
@@ -299,10 +274,6 @@ open class ROIQueryAnalytics {
          * sdk 是否初始化成功
          */
         internal fun isSDKInitSuccess(): Boolean = AbstractAnalytics.mSDKConfigInit
-
-//        internal fun getEventInfo() = AnalyticsImp.getInstance(mContext).getEventInfo()
-
-//        internal fun getCommonProperties() = AnalyticsImp.getInstance(mContext).getCommonProperties()
 
     }
 }

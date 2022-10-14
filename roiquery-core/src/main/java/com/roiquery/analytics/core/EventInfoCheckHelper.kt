@@ -125,11 +125,4 @@ class EventInfoCheckHelper private constructor() {
         })
     }
 
-    private fun checkAttributeInsertStatus(eventName: String) {
-        if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE) {
-            EventDateAdapter.getInstance()?.isAttributeInsert = true
-            LogUtils.d("checkAttributeInsertStatus","true")
-        }
-    }
-
 }

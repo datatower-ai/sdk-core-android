@@ -45,7 +45,6 @@ abstract class HttpCallback<T> {
     }
 
     fun onSuccess(response: RealResponse) {
-        AnalyticsImp.getInstance(ROIQueryAnalytics.mContext).calibrateTime(response.date)
         val obj: T = onParseResponse(response,response.result)
         sMainHandler.post {
             onResponse(obj)

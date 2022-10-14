@@ -16,7 +16,6 @@ class DataParams private constructor(packageName: String) {
         const val CONFIG_FIRST_OPEN_TIME = "first_open_time"
         const val CONFIG_GAID = "gaid"
         const val CONFIG_OAID = "oaid"
-        const val CONFIG_EVENT_SESSION = "event_session"
         const val CONFIG_ROIQUERY_ID = "roiquery_id"
         const val CONFIG_FIREBASE_IID = "firebase_iid"
         const val CONFIG_FCM_TOKEN = "fcm_token"
@@ -27,13 +26,8 @@ class DataParams private constructor(packageName: String) {
         const val CONFIG_ENABLE_UPLOADS = "enable_upload"
         const val CONFIG_ENABLE_TRACK = "enable_track"
         const val CONFIG_FIRST_OPEN = "first_open"
-        const val CONFIG_ATTRIBUTE = "app_attribute"
-        const val CONFIG_ATTRIBUTE_COUNT = "app_attribute_count"
-        const val CONFIG_ATTRIBUTE_UPLOAD_STATUS = "app_attribute_upload_status"
         const val CONFIG_IS_FOREGROUND = "is_foreground"
         const val CLOUD_CONFIG_AES_KEY = "cloud_config_aes_key"
-        const val TIME_SERVER_LOCAL_OFFSET = "time_server_local_offset"
-        const val LAST_APP_ENGAGEMENT_TIME = "last_app_engagement_time"
         const val USER_AGENT_WEBVIEW = "user_agent_webview"
 
 
@@ -46,8 +40,6 @@ class DataParams private constructor(packageName: String) {
         const val DB_ADD_JSON_ERROR = -4
         const val DB_INSERT_DATA_REPEAT = -5
         const val VALUE = "value"
-        const val GZIP_DATA_EVENT = "1"
-        const val GZIP_DATA_ENCRYPT = "9"
 
         const val CONFIG_MAX_ROWS = 500
 

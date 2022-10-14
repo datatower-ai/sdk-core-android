@@ -1,7 +1,6 @@
 package com.roiquery.analytics.config
 
 import com.roiquery.analytics.utils.LogUtils
-import com.roiquery.analytics.utils.NetworkType
 import org.json.JSONObject
 
 abstract class AbstractAnalyticsConfig {
@@ -35,8 +34,7 @@ abstract class AbstractAnalyticsConfig {
     /**
      * 网络上传策略
      */
-    var mNetworkTypePolicy: Int =
-        NetworkType.TYPE_3G or NetworkType.TYPE_4G or NetworkType.TYPE_WIFI or NetworkType.TYPE_5G
+    var mNetworkTypePolicy: Int = 0
 
     /**
      * mAppId
