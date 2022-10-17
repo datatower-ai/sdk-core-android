@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.roiquery.ad.AdPlatform
 import com.roiquery.ad.AdType
 import com.roiquery.ad.ROIQueryAdReport
-import com.roiquery.ad.utils.UUIDUtils
 
 
 class AdReportActivity : AppCompatActivity() {
@@ -20,7 +19,7 @@ class AdReportActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
         title = "AdReport"
 
-        val ad_seq = UUIDUtils.generateUUID()
+        val ad_seq = ROIQueryAdReport.generateUUID()
         val ad_unit = "ad_uint-sf234234"
         val ad_type = AdType.REWARDED
         val ad_platform = AdPlatform.ADX
