@@ -7,7 +7,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.roiquery.analytics.ROIQueryAnalytics
 import org.json.JSONObject
+import org.koin.android.ext.koin.ERROR_MSG
 import java.io.*
+import java.util.HashMap
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,29 +36,38 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.button_test_memory).setOnClickListener {
-            Thread {
+            params["SOURCE"] = "source"
+            params["RESULT"] = "result"
+            params["ERROR_MSG"] = "errorMessage"
+            ROIQueryAnalytics.track("SERVERS_REFRESH_FINISH1", params)
+            params.clear()
 
-                ROIQueryAnalytics.track("test", JSONObject().apply {
-                    put("big_text",readAssetsTxt("test.txt"))
-                })
-            }.start()
+            params["SOURCE"] = "source"
+            params["RESULT"] = "result"
+            params["ERROR_MSG"] = "errorMessage"
+            ROIQueryAnalytics.track("SERVERS_REFRESH_FINISH2", params)
+            params.clear()
         }
     }
 
-    private fun addMemory() {
-        val count = 2000
-        for (i in 0 until count) {
-            //mStringBuilder.append(mTempStr);
-            val filename = "temp$i"
-            val file = File(cacheDir, filename)
-            try {
-                file.createNewFile()
-                val out = FileOutputStream(file)
-            } catch (e: FileNotFoundException) {
-            } catch (e: IOException) {
-            }
-        }
+    private val params: MutableMap<String, Any> = HashMap()
+
+    private fun track1() {
+        params["SOURCE"] = "source"
+        params["RESULT"] = "result"
+        params["ERROR_MSG"] = "errorMessage"
+        ROIQueryAnalytics.track("SERVERS_REFRESH_FINISH1", params)
+        params.clear()
     }
+
+    private fun track2() {
+        params["SOURCE"] = "source"
+        params["RESULT"] = "result"
+        params["ERROR_MSG"] = "errorMessage"
+        ROIQueryAnalytics.track("SERVERS_REFRESH_FINISH2", params)
+        params.clear()
+    }
+
 
 
 

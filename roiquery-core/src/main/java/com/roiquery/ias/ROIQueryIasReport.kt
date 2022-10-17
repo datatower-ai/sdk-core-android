@@ -1,5 +1,7 @@
 package com.roiquery.ias
 
+import com.roiquery.ad.utils.UUIDUtils
+
 /**
  * author: xiaosailing
  * date: 2022-02-24
@@ -111,5 +113,12 @@ open class ROIQueryIasReport {
             )
 
         }
+
+        /**
+         * 生成UUID
+         */
+        @JvmStatic
+        fun generateUUID() = UUIDUtils.generateUUID()
+
     }
 }

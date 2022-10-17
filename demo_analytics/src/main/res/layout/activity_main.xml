@@ -56,9 +56,9 @@
         android:id="@+id/button_test_memory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_margin="5dp"
-        android:text="test_memory"
+        android:text="test"
         android:textAllCaps="false" />
 
 </LinearLayout>

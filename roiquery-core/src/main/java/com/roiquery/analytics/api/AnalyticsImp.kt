@@ -157,38 +157,6 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
              }
          } }
 
-    fun getServerTimeAsync(serverTimeListener: ServerTimeListener?){
-        RequestHelper.Builder(
-            HttpMethod.POST_ASYNC,
-            Constant.EVENT_REPORT_URL
-        )
-            .jsonData(TIME_FROM_ROI_NET_BODY)
-            .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
-            .callback(object : HttpCallback.TimeCallback() {
-                override fun onFailure(code: Int, errorMessage: String?) {
-                    serverTimeListener?.onFinished(0L,errorMessage ?: "onFailure")
-                }
-
-                override fun onResponse(response: Long) {
-                    serverTimeListener?.onFinished(response,"ok")
-                }
-            })
-            .execute()
-    }
-
-    fun getServerTimeSync():Long {
-        RequestHelper.Builder(
-            HttpMethod.POST_SYNC,
-            Constant.EVENT_REPORT_URL
-        )
-            .jsonData(TIME_FROM_ROI_NET_BODY)
-            .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
-            .executeSync()?.let {
-                return it.date
-            }
-        return 0L
-    }
-
     override fun trackUser(eventName: String, properties: JSONObject?) {
         trackInternal(eventName, Constant.EVENT_TYPE_USER,true, properties)
     }
@@ -198,11 +166,11 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
     }
 
     fun trackNormal(eventName: String?, isPreset: Boolean, properties: Map<String, Any?>?){
-        trackNormal(eventName, isPreset, JSONObject(properties ?: mutableMapOf<String,Any>()))
+        trackNormal(eventName, isPreset, JSONObject(properties?.toMutableMap() ?: mutableMapOf<String,Any?>()))
     }
 
     private fun trackNormalInternal(eventName: String?, properties: Map<String, Any?>?){
-        trackNormalInternal(eventName, JSONObject(properties ?: mutableMapOf<String,Any>()))
+        trackNormalInternal(eventName, JSONObject(properties?.toMutableMap() ?: mutableMapOf<String,Any?>()))
     }
 
     /**

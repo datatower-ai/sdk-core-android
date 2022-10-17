@@ -20,7 +20,7 @@ class IapReportActivity : AppCompatActivity() {
         title = "IapReport"
 
 
-        val seq = UUIDUtils.generateUUID()
+        val seq = ROIQueryIAPReport.generateUUID()
         var order = generateUUID()?:"24234"
         val placement = "me"
 

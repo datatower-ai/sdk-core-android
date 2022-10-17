@@ -1,5 +1,6 @@
 package com.roiquery.iap
 
+import com.roiquery.ad.utils.UUIDUtils
 import com.roiquery.iap.api.IAPReportImp
 
 
@@ -95,6 +96,15 @@ open class ROIQueryIAPReport {
             msg: String? = "",
         ) = IAPReportImp.getInstance()
             .reportNotToPurchased(order, sku, price, currency, seq, code, placement, msg)
+
+        /**
+         * 生成UUID
+         */
+        @JvmStatic
+        fun generateUUID() = UUIDUtils.generateUUID()
+
     }
+
+
 
 }
