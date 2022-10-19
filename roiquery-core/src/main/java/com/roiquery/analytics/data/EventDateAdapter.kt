@@ -12,7 +12,6 @@ import kotlin.coroutines.suspendCoroutine
 
 class EventDateAdapter private constructor(
     context: Context,
-    packageName: String,
 ): ROIQueryCoroutineScope()  {
     private var mOperation: EventDataOperation? = EventDataOperation(context.applicationContext)
     /**
@@ -279,11 +278,10 @@ class EventDateAdapter private constructor(
     companion object {
         private var instance: EventDateAdapter? = null
         internal fun getInstance(
-            context: Context, packageName: String,
-
-            ): EventDateAdapter? {
+            context: Context
+        ): EventDateAdapter? {
             if (instance == null) {
-                instance = EventDateAdapter(context, packageName)
+                instance = EventDateAdapter(context)
             }
             return instance
         }

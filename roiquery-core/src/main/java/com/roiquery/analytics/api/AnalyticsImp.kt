@@ -3,13 +3,11 @@ package com.roiquery.analytics.api
 import android.annotation.SuppressLint
 import android.content.Context
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.Constant.TIME_FROM_ROI_NET_BODY
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
+import com.roiquery.analytics.core.AnalyticsManager
+import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.data.EventDateAdapter
-import com.roiquery.analytics.network.HttpCallback
-import com.roiquery.analytics.network.HttpMethod
-import com.roiquery.analytics.network.RequestHelper
 import com.roiquery.analytics.utils.EventUtils
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.quality.ROIQueryErrorParams
@@ -18,7 +16,7 @@ import org.json.JSONException
 
 import org.json.JSONObject
 
-class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(context) {
+class AnalyticsImp internal constructor(context: Context) : AbstractAnalytics(context) {
 
 
     override var maxCacheSize: Long?
@@ -143,19 +141,8 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
     }
 
     private fun trackInternal(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?) {
-         mTrackTaskManager?.let {
-             try {
-                 it.execute {
-                     trackEvent(eventName, eventType, isPreset, properties)
-                 }
-             } catch (e: Exception) {
-                 LogUtils.printStackTrace(e)
-                 ROIQueryQualityHelper.instance.reportQualityMessage(
-                     ROIQueryErrorParams.CODE_TRACK_ERROR,
-                     "event name: $eventName "
-                 )
-             }
-         } }
+         EventTrackManager.instance.trackEvent(eventName, eventType, isPreset, properties)
+    }
 
     override fun trackUser(eventName: String, properties: JSONObject?) {
         trackInternal(eventName, Constant.EVENT_TYPE_USER,true, properties)
@@ -223,12 +210,11 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
 
 
     override fun flush() {
-        mAnalyticsManager?.flush()
+        AnalyticsManager.getInstance()?.flush()
     }
 
 
     override fun deleteAll() {
-        mAnalyticsManager?.deleteAll()
     }
 
 
@@ -237,14 +223,13 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
         @SuppressLint("StaticFieldLeak")
         @Volatile
         private var instance: AnalyticsImp? = null
-        internal fun getInstance(context: Context?): AnalyticsImp {
-            if (context == null || mConfigOptions == null) {
+        internal fun getInstance(context: Context): AnalyticsImp {
+            if (mConfigOptions == null) {
                 throw IllegalStateException("call ROIQuerySDK.init() first")
             }
             return instance ?: synchronized(this) {
                 instance ?: AnalyticsImp(context).also { instance = it }
             }
-
         }
 
         internal fun init(
@@ -256,8 +241,7 @@ class AnalyticsImp internal constructor(context: Context?) : AbstractAnalytics(c
             }
             if (instance == null) {
                 mConfigOptions = configOptions
-                ROIQueryAnalytics.mContext = context.applicationContext
-                instance = getInstance(ROIQueryAnalytics.mContext)
+                instance = getInstance(context)
             }
         }
 

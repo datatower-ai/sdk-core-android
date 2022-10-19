@@ -8,10 +8,10 @@ import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.AnalyticsManager
+import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpPOSTResourceRemoteRepository
 import com.roiquery.analytics.taskscheduler.SchedulerTask
@@ -24,22 +24,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import org.json.JSONObject
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext
 
 
-abstract class AbstractAnalytics(context: Context?) : IAnalytics, CoroutineScope {
+abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
 
-    private var mContext: Context? = null
-
-    //事件采集管理线程池
-    protected var mTrackTaskManager: ExecutorService? = null
-
-    //采集 、上报管理
-    protected var mAnalyticsManager: AnalyticsManager? = null
 
     //本地数据适配器，包括sp、db的操作
     private var mDataAdapter: EventDateAdapter? = null
@@ -57,17 +48,15 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics, CoroutineScope
     }
 
 
-    init {
+    fun internalInit(context: Context){
         try {
-            mContext = context
-            initConfig(mContext!!.packageName)
-            initLocalData()
-            initTracker(mContext!!)
-            initTime()
-            initProperties()
+            initConfig(context.packageName)
+            initLocalData(context)
+            initTracker()
+            initProperties(context)
             initCloudConfig()
             registerNetworkStatusChangedListener()
-            registerAppLifecycleListener()
+            registerAppLifecycleListener(context)
             trackPresetEvent()
             mSDKConfigInit = true
             LogUtils.d("ROIQuery", "init succeed")
@@ -84,34 +73,27 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics, CoroutineScope
         }
     }
 
-    /**
-     * Init time
-     * 初始化网络时间，保存至内存中
-     */
-    private fun initTime() {
-        TimeCalibration.instance.getReferenceTime()
-    }
 
     /**
      * 初始化本地数据
      */
-    private fun initLocalData() {
-        mDataAdapter = EventDateAdapter.getInstance(mContext!!, mContext!!.packageName)
+    private fun initLocalData(context: Context) {
+        mDataAdapter = EventDateAdapter.getInstance(context)
         mDataAdapter?.enableUpload = true
     }
 
     /**
      * 初始化预置、通用属性
      */
-    private fun initProperties() {
-        PropertyManager.instance.init(mContext, mDataAdapter, mConfigOptions)
+    private fun initProperties(context: Context) {
+        PropertyManager.instance.init(context, mDataAdapter, mConfigOptions)
     }
 
     /**
      * 监听应用生命周期
      */
-    private fun registerAppLifecycleListener() {
-        if (ProcessUtils.isInMainProcess(mContext!!)) {
+    private fun registerAppLifecycleListener(context: Context) {
+        if (ProcessUtils.isInMainProcess(context)) {
             ProcessLifecycleOwner.get().lifecycle.addObserver(LifecycleObserverImpl())
         }
     }
@@ -119,110 +101,18 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics, CoroutineScope
     /**
      * 初始化数据采集
      */
-    private fun initTracker(context: Context) {
-        mTrackTaskManager = Executors.newSingleThreadExecutor()
-        mAnalyticsManager = AnalyticsManager.getInstance(context)
+    private fun initTracker() {
+        EventTrackManager.instance.init()
     }
 
-    protected fun trackEvent(
-        eventName: String?,
-        eventType: String,
-        isPreset: Boolean,
-        properties: JSONObject? = null
-    ) {
-        try {
-            if (eventName.isNullOrEmpty()) return
-
-            if (!isPreset && !assertEvent(eventName, properties)) return
-
-            var isTimeVerify: Boolean
-
-            //设置事件的基本信息
-            val eventInfo = JSONObject(PropertyManager.instance.getEventInfo()).apply {
-                TimeCalibration.instance.getVerifyTimeAsync().apply {
-                    isTimeVerify = this != TimeCalibration.TIME_NOT_VERIFY_VALUE
-                    // 如果时间已校准，则 保存当前时间，否则保存当前时间的系统休眠时间差用做上报时时间校准依据
-                    put(
-                        Constant.EVENT_INFO_TIME,
-                        if (isTimeVerify) this else TimeCalibration.instance.getSystemHibernateTimeGap()
-                    )
-                    put(Constant.EVENT_INFO_NAME, eventName)
-                    put(Constant.EVENT_INFO_TYPE, eventType)
-                    put(EVENT_INFO_SYN, DataUtils.getUUID())
-                }
-            }
-
-            //事件属性, 常规事件与用户属性类型区分
-            val eventProperties = if (eventType == Constant.EVENT_TYPE_TRACK) {
-                JSONObject(PropertyManager.instance.getCommonProperties()).apply {
-                    //应用是否在前台, 需要动态添加
-                    put(
-                        Constant.COMMON_PROPERTY_IS_FOREGROUND,
-                        mDataAdapter?.isAppForeground
-                    )
-                    //硬盘使用率
-                    put(
-                        Constant.COMMON_PROPERTY_STORAGE_USED,
-                        MemoryUtils.getStorageUsed(mContext)
-                    )
-                    //内存使用率
-                    put(
-                        Constant.COMMON_PROPERTY_MEMORY_USED,
-                        MemoryUtils.getMemoryUsed(mContext)
-                    )
-                    //合并用户自定义属性和通用属性
-                    DataUtils.mergeJSONObject(properties, this, null)
-                }
-            } else {
-                properties
-            }
-
-            //设置事件属性
-            eventInfo.put(Constant.EVENT_INFO_PROPERTIES, eventProperties)
-
-            //将事件时间是否校准的结果保存至事件信息中，以供上报时校准时间使用
-            val data = JSONObject().apply {
-                put(Constant.EVENT_BODY, eventInfo)
-                put(Constant.EVENT_TIME_CALIBRATED, isTimeVerify)
-            }
-
-            mAnalyticsManager?.enqueueEventMessage(
-                eventName, data, eventInfo.optString(
-                    EVENT_INFO_SYN
-                )
-            )
-            //如果有插入失败的数据，则一起插入
-            mAnalyticsManager?.enqueueErrorInsertEventMessage()
-
-        } catch (e: Exception) {
-            LogUtils.printStackTrace(e)
-            trackQualityEvent("trackEvent&&$eventName&& ${e.message}")
-        }
-    }
-
-    private fun trackQualityEvent(qualityInfo: String) {
-        ROIQueryQualityHelper.instance.reportQualityMessage(
-            ROIQueryErrorParams.CODE_TRACK_ERROR,
-            qualityInfo, ROIQueryErrorParams.TRACK_GENERATE_EVENT_ERROR
-        )
-    }
-
-
-    /**
-     * 事件校验
-     */
-    private fun assertEvent(
-        eventName: String,
-        properties: JSONObject? = null
-    ) = EventUtils.isValidEventName(eventName) && EventUtils.isValidProperty(properties)
 
     /**
      * 初始化配置
      */
-    private fun initConfig(packageName: String) {
+    private fun initConfig(context: Context,packageName: String) {
         var configBundle: Bundle? = null
         try {
-            mContext?.let {
+            context.let {
                 val appInfo = it.applicationContext.packageManager
                     .getApplicationInfo(packageName, PackageManager.GET_META_DATA)
                 configBundle = appInfo.metaData
@@ -265,16 +155,16 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics, CoroutineScope
     /**
      * 初始化云控配置
      */
-    private fun initCloudConfig() {
+    private fun initCloudConfig(context: Context) {
         ROIQueryCloudConfig.init(
-            mContext!!,
+            context,
             HttpPOSTResourceRemoteRepository.create(
                 Constant.CLOUD_CONFIG_URL//拉取配置地址
                 //拉取参数
             ) {
                 mutableMapOf<String, String>().apply {
                     put("app_id", mConfigOptions?.mAppId ?: "")
-                    put("did", DeviceUtils.getAndroidID(mContext!!) ?: "")
+                    put("did", DeviceUtils.getAndroidID(context) ?: "")
                 }
             },
             mDataAdapter?.cloudConfigAesKey ?: "",
@@ -303,9 +193,9 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics, CoroutineScope
         }
     }
 
-    private fun registerNetworkStatusChangedListener() {
+    private fun registerNetworkStatusChangedListener(context: Context) {
         NetworkUtil.registerNetworkStatusChangedListener(
-            mContext,
+            context,
             object : NetworkUtil.OnNetworkStatusChangedListener {
                 override fun onDisconnected() {
                     PropertyManager.instance.updateNetworkType(NetworkUtil.NetworkType.NETWORK_NO)
@@ -314,7 +204,7 @@ abstract class AbstractAnalytics(context: Context?) : IAnalytics, CoroutineScope
                 override fun onConnected(networkType: NetworkUtil.NetworkType?) {
                     LogUtils.i("onNetConnChanged", networkType)
                     PropertyManager.instance.updateNetworkType(networkType)
-                    mAnalyticsManager?.flush()
+                    AnalyticsManager.getInstance()?.flush()
                 }
             })
     }

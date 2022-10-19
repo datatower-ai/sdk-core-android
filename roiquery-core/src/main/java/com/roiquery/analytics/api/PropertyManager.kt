@@ -80,7 +80,7 @@ class PropertyManager private constructor() {
     }
 
 
-    private fun updateCommonProperties(key: String, value: String) {
+    private fun updateCommonProperties(key: String, value: Any?) {
         mCommonProperties?.put(key, value)
     }
 
@@ -161,6 +161,14 @@ class PropertyManager private constructor() {
                 )
             }
         }
+    }
+
+
+    fun updateIsForeground(isForeground: Boolean) {
+        updateCommonProperties(
+            Constant.COMMON_PROPERTY_IS_FOREGROUND,
+            isForeground
+        )
     }
 
     fun updateNetworkType(networkType: NetworkUtil.NetworkType?) {

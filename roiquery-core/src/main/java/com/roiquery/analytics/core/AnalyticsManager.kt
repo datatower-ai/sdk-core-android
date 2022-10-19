@@ -1,6 +1,5 @@
 package com.roiquery.analytics.core
 
-import android.content.Context
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
@@ -13,6 +12,7 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
+import com.roiquery.analytics.utils.AdtUtil
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
 import com.roiquery.analytics.utils.TimeCalibration
@@ -22,15 +22,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
-import kotlin.collections.HashMap
 
 
 /**
  * 管理内部事件采集、上报
  */
 class AnalyticsManager private constructor(
-    var mContext: Context,
-//    var mAnalyticsDataAPI: AnalyticsImp
 ) : ROIQueryCoroutineScope() {
     private val mWorker: Worker = Worker()
     private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
@@ -131,7 +128,7 @@ class AnalyticsManager private constructor(
     private fun enableUploadData(): Boolean {
         try {
             //无网络
-            if (!isNetworkAvailable(mContext)) {
+            if (!isNetworkAvailable(AdtUtil.getInstance().applicationContext)) {
                 LogUtils.d(TAG, "NetworkAvailable，disable upload")
                 return false
             }
@@ -373,29 +370,15 @@ class AnalyticsManager private constructor(
         private const val FLUSH_QUEUE = 3
         private const val FLUSH_DELAY = 1000L
         private const val DELETE_ALL = 4
-        private val S_INSTANCES: MutableMap<Context, AnalyticsManager> = HashMap()
 
+        private var instancessss: AnalyticsManager? = null
 
-        /**
-         * 获取 AnalyticsMessages 对象
-         *
-         * @param messageContext Context
-         */
-        fun getInstance(
-            messageContext: Context,
-//            analyticsAPI: AnalyticsImp
-        ): AnalyticsManager? {
-            synchronized(S_INSTANCES) {
-                val appContext: Context = messageContext.applicationContext
-                val ret: AnalyticsManager?
-                if (!S_INSTANCES.containsKey(appContext)) {
-                    ret = AnalyticsManager(appContext)
-                    S_INSTANCES[appContext] = ret
-                } else {
-                    ret = S_INSTANCES[appContext]
-                }
-                return ret
+        @Synchronized
+        fun getInstance(): AnalyticsManager?{
+            if(null == instancessss){
+                instancessss = AnalyticsManager()
             }
+            return this.instancessss
         }
     }
 

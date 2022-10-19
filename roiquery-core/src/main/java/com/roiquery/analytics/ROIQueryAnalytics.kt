@@ -1,16 +1,14 @@
 package com.roiquery.analytics
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
 import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.api.AnalyticsImp
-import com.roiquery.analytics.api.ServerTimeListener
+import com.roiquery.analytics.api.PropertyManager
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.AppLifecycleHelper
 import com.roiquery.analytics.utils.LogUtils
-import com.roiquery.analytics.utils.ProcessUtils
 
 import org.json.JSONObject
 import java.lang.Exception
@@ -18,9 +16,6 @@ import java.lang.Exception
 open class ROIQueryAnalytics {
 
     companion object {
-
-        @SuppressLint("StaticFieldLeak")
-        internal var mContext: Context? = null
 
         private var mAppLifecycleListeners =
             mutableListOf<AppLifecycleHelper.OnAppStatusListener?>()
@@ -225,6 +220,8 @@ open class ROIQueryAnalytics {
                 if (!isSDKInitSuccess()) return
                 checkNotNull(mContext) { "Call ROIQuery.initSDK first" }
                 EventDateAdapter.getInstance()?.isAppForeground = true
+                PropertyManager.instance.updateIsForeground(true)
+                LogUtils.d("trackAppStateChanged","onAppForeground")
                 AnalyticsImp.getInstance(mContext).trackAppStateChanged()
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppForeground()
@@ -242,6 +239,8 @@ open class ROIQueryAnalytics {
                 if (!isSDKInitSuccess()) return
                 checkNotNull(mContext) { "Call ROIQuerySDK.init first" }
                 EventDateAdapter.getInstance()?.isAppForeground = false
+                PropertyManager.instance.updateIsForeground(false)
+                LogUtils.d("trackAppStateChanged","onAppBackground")
                 AnalyticsImp.getInstance(mContext).trackAppStateChanged()
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppBackground()
