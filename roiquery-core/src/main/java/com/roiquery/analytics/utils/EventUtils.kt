@@ -21,11 +21,6 @@ object EventUtils {
     fun getEventInfo(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
 
-            //设备 ID。即唯一ID，区分设备的最小ID
-            put(
-                Constant.EVENT_INFO_DID,
-                DeviceUtils.getAndroidID(context)
-            )
             //登录账号id
             dataAdapter?.accountId?.let {
                 if (it.isNotEmpty()) {

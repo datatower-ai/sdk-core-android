@@ -3,6 +3,7 @@ package com.roiquery.analytics.api
 import android.content.Context
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.ROIQueryCoroutineScope
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.data.EventDateAdapter
@@ -37,7 +38,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
     //检索用户是否启用了限制广告跟踪
     private var limitAdTrackingEnabled = false
 
-    fun init(context: Context?, dateAdapter: EventDateAdapter?, initConfig: AnalyticsConfig?) {
+    fun init(context: Context?, dateAdapter: EventDateAdapter?, initConfig: AnalyticsConfig?, dataTowerIdHandler: (dtid: String) -> Unit) {
         mContext = context
         mDataAdapter = dateAdapter
         initEventInfo()
