@@ -51,9 +51,9 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
     }
 
 
-    private fun initDTId() {
+    private fun initDTId():String {
         if (mDataAdapter?.dtId?.isNotEmpty()==true){
-            return
+            return mDataAdapter?.dtId ?: ""
         }
         val appId = AbstractAnalytics.mConfigOptions?.mAppId
         val gaid: String? =
@@ -67,6 +67,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
         if (dtId.isNotEmpty()){
             mDataAdapter?.dtId = dtId
         }
+        return dtId
     }
 
     /**
