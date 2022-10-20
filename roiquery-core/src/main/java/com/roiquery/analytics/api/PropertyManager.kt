@@ -8,9 +8,13 @@ import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.taskscheduler.TaskScheduler
 import com.roiquery.analytics.utils.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import java.security.MessageDigest
 
-class PropertyManager private constructor() {
+class PropertyManager private constructor() : ROIQueryCoroutineScope() {
     companion object {
         val instance by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
             PropertyManager()
@@ -30,16 +34,39 @@ class PropertyManager private constructor() {
 
     private var resumeFromBackground = false
 
-    fun init(context: Context?, dateAdapter: EventDateAdapter?, initConfig: AnalyticsConfig?, dataTowerIdHandler: (dtid: String) -> Unit) {
+    //检索用户是否启用了限制广告跟踪
+    private var limitAdTrackingEnabled = false
+
+    fun init(context: Context?, dateAdapter: EventDateAdapter?, initConfig: AnalyticsConfig?) {
         mContext = context
         mDataAdapter = dateAdapter
         initEventInfo()
         initCommonProperties(initConfig)
-        getGAID()
         getDataTowerId(dataTowerIdHandler)
+        scope.launch {
+            getGAID()
+            initDTId()
+        }
     }
 
 
+    private fun initDTId() {
+        if (mDataAdapter?.dtId?.isNotEmpty()==true){
+            return
+        }
+        val appId = AbstractAnalytics.mConfigOptions?.mAppId
+        val gaid: String? =
+            if ((mEventInfo?.get(Constant.EVENT_INFO_GAID )as String?)?.isEmpty() == true)  mDataAdapter?.gaid else mEventInfo?.get(Constant.EVENT_INFO_GAID) as String?
+        val androidId: String? = mContext?.let { DeviceUtils.getAndroidID(it) }
+        val dtIdOriginal = (if (limitAdTrackingEnabled) androidId else gaid ?: androidId).plus("+$appId")
+        val dtId = DataEncryption.instance.str2Sha1Str(dtIdOriginal)
+        updateEventInfo(
+            Constant.EVENT_INFO_DT_ID, dtId
+        )
+        if (dtId.isNotEmpty()){
+            mDataAdapter?.dtId = dtId
+        }
+    }
 
     /**
      * 获取并配置 事件一些基本属性
@@ -101,15 +128,16 @@ class PropertyManager private constructor() {
     /**
      * gaid 获取，异步
      */
-    private fun getGAID() {
+    private suspend fun getGAID() {
         if (mDataAdapter?.gaid?.isNotEmpty() == true) {
             return
         }
-        TaskScheduler.execute {
+        withContext(Dispatchers.IO) {
             try {
                 val info = AdvertisingIdClient.getAdvertisingIdInfo(mContext!!)
                 val id = info.id ?: ""
                 mDataAdapter?.gaid = id
+                limitAdTrackingEnabled = info.isLimitAdTrackingEnabled
                 updateEventInfo(Constant.EVENT_INFO_GAID, id)
 
                 EventTrackManager.instance.trackUser(

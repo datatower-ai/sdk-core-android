@@ -27,6 +27,7 @@ internal object Constant {
     const val EVENT_INFO_GAID        = "#gaid"
     const val EVENT_INFO_OAID        = "#oaid"
     const val EVENT_INFO_ACID        = "#acid"
+    const val EVENT_INFO_DT_ID       = "#dt_id"
     const val EVENT_INFO_PKG         = "#pkg"
     const val EVENT_INFO_APP_ID      = "#app_id"
     const val EVENT_INFO_DEBUG       = "#debug"

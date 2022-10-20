@@ -202,6 +202,10 @@ class EventDateAdapter private constructor(
         get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_IS_FOREGROUND)}
         set(value) = setBooleanConfig(DataParams.CONFIG_IS_FOREGROUND,value)
 
+    var dtId : String
+        set(value) = setStringConfig(DataParams.CONFIG_DT_ID,value)
+        get() = runBlocking {   getStringConfig(DataParams.CONFIG_DT_ID)  }
+
 
     private suspend fun getBooleanConfig(key: String,default:Boolean = true): Boolean{
         val values = mOperation?.queryConfig(key)
