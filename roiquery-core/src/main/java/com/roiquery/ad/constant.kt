@@ -23,8 +23,8 @@ internal object AdReportConstant {
 
 
     const val PROPERTY_AD_ID            = "#ad_id"
-    const val PROPERTY_AD_TYPE          = "#ad_type"
-    const val PROPERTY_AD_PLATFORM      = "#ad_platform"
+    const val PROPERTY_AD_TYPE          = "#ad_type_code"
+    const val PROPERTY_AD_PLATFORM      = "#ad_platform_code"
     const val PROPERTY_AD_LOCATION      = "#ad_location"
     const val PROPERTY_AD_ENTRANCE      = "#ad_entrance"
     const val PROPERTY_AD_SEQ           = "#ad_seq"
@@ -32,12 +32,12 @@ internal object AdReportConstant {
     const val PROPERTY_AD_CLICK_GAP     = "#ad_click_gap"
     const val PROPERTY_AD_RETURN_GAP    = "#ad_return_gap"
 
-    const val PROPERTY_AD_MEDIAITON      = "#ad_mediation"
+    const val PROPERTY_AD_MEDIAITON      = "#ad_mediation_code"
     const val PROPERTY_AD_MEDIAITON_ID   = "#ad_mediation_id"
     const val PROPERTY_AD_VALUE_MICROS   = "#ad_value"
     const val PROPERTY_AD_CURRENCY_CODE  = "#ad_currency"
     const val PROPERTY_AD_PRECISION_TYPE = "#ad_precision"
-    const val PROPERTY_AD_COUNTRY        = "#ad_country"
+    const val PROPERTY_AD_COUNTRY        = "#ad_country_code"
 
     const val PROPERTY_AD_SHOW_ERROR_CODE       = "#error_code"
     const val PROPERTY_AD_SHOW_ERROR_MESSAGE    = "#error_message"

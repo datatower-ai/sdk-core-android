@@ -71,7 +71,6 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             if (value != null) {
                 EventDateAdapter.getInstance()?.afid = value
                 PropertyManager.instance.updateAFID(value)
-
             }
         }
     override var koid: String?
@@ -88,7 +87,6 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         set(value) {
             if (value != null) {
                 EventDateAdapter.getInstance()?.appSetId = value
-                PropertyManager.instance.updateAppSetId(value)
             }
         }
 

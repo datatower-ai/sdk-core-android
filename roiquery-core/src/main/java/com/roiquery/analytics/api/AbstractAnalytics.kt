@@ -60,7 +60,7 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
             initLocalData(context)
             initTracker()
             initProperties(context, dataTowerIdHandler = {
-                initCloudConfig(context)
+                initCloudConfig(context, it)
                 registerNetworkStatusChangedListener(context)
                 registerAppLifecycleListener(context)
                 trackPresetEvent(context)
@@ -77,6 +77,7 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
     private fun onInitSuccess(){
         hasInit.set(true)
         isInitRunning.set(false)
+        EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_APP_INITIALIZE)
         LogUtils.d("ROIQuery", "init succeed")
     }
 
@@ -107,7 +108,7 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
      * 初始化预置、通用属性, 并获取DT id
      */
     private fun initProperties(context: Context, dataTowerIdHandler: (dtid: String) -> Unit) {
-        PropertyManager.instance.init(context, mDataAdapter, mConfigOptions, dataTowerIdHandler)
+        PropertyManager.instance.init(context, mConfigOptions, dataTowerIdHandler)
     }
 
     /**
@@ -176,13 +177,12 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
                 )
             }
         }
-
     }
 
     /**
      * 初始化云控配置
      */
-    private fun initCloudConfig(context: Context) {
+    private fun initCloudConfig(context: Context,id: String) {
         ROIQueryCloudConfig.init(
             context,
             HttpPOSTResourceRemoteRepository.create(
@@ -191,7 +191,7 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
             ) {
                 mutableMapOf<String, String>().apply {
                     put("app_id", mConfigOptions?.mAppId ?: "")
-                    put("did", DeviceUtils.getAndroidID(context) ?: "")
+                    put("did", id)
                 }
             },
             mDataAdapter?.cloudConfigAesKey ?: "",

@@ -71,11 +71,11 @@ internal class ROIQueryQualityHelper private constructor() {
     private fun generateJsonParams(): MutableMap<String, Any?>? {
         if (mJsonParams == null) {
             mJsonParams = mutableMapOf<String, Any?>().apply {
-                PropertyManager.instance.getEventInfo()?.let {
+                PropertyManager.instance.getEventInfo().let {
                     put(APP_ID, it[Constant.EVENT_INFO_APP_ID])
+                    put(INSTANCE_ID, it[Constant.EVENT_INFO_DT_ID])
                 }
-                PropertyManager.instance.getCommonProperties()?.let {
-                    put(INSTANCE_ID, it[Constant.COMMON_PROPERTY_ROIQUERY_ID])
+                PropertyManager.instance.getCommonProperties().let {
                     put(SDK_TYPE, it[Constant.COMMON_PROPERTY_SDK_TYPE])
                     put(SDK_VERSION_NAME, it[Constant.COMMON_PROPERTY_SDK_VERSION])
                     put(APP_VERSION_NAME, it[Constant.COMMON_PROPERTY_APP_VERSION_NAME])

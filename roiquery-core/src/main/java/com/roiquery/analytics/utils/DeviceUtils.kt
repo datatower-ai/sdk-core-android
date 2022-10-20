@@ -143,8 +143,8 @@ object DeviceUtils {
      * @return androidID
      */
     @SuppressLint("HardwareIds")
-    fun getAndroidID(context: Context): String? {
-        var androidID: String? = ""
+    fun getAndroidID(context: Context): String {
+        var androidID = ""
         try {
             androidID =
                 Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)

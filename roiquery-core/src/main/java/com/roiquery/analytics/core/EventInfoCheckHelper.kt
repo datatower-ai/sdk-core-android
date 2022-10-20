@@ -110,11 +110,6 @@ class EventInfoCheckHelper private constructor() {
     private fun isNewFormatData(eventInfo: JSONObject) =
         eventInfo.has(Constant.EVENT_TIME_CALIBRATED) && eventInfo.has(Constant.EVENT_BODY)
 
-    private fun saveFirstOpenTime(firstOpenTime: Long) {
-        EventDateAdapter.getInstance()?.firstOpenTime = firstOpenTime
-        ROIQueryAnalytics.userSetOnce(JSONObject().apply {
-            put(Constant.USER_PROPERTY_ACTIVE_EVENT_TIME, firstOpenTime.toString())
-        })
-    }
+
 
 }

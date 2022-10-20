@@ -172,12 +172,7 @@ class PresetEventManager {
                                 failedReason
                             )
                         }
-                        mDataAdapter?.firstOpenTime?.let {
-                            put(
-                                Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
-                                it
-                            )
-                        }
+
                     }
                 ).toJSONObject())
     }

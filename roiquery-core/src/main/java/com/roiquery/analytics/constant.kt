@@ -23,9 +23,8 @@ internal object Constant {
     //event upload try times when filed
     const val EVENT_REPORT_TRY_COUNT = 3
 
-    const val EVENT_INFO_DID         = "#did"
+    const val EVENT_INFO_ANDROID_ID  = "#android_id"
     const val EVENT_INFO_GAID        = "#gaid"
-    const val EVENT_INFO_OAID        = "#oaid"
     const val EVENT_INFO_ACID        = "#acid"
     const val EVENT_INFO_DT_ID       = "#dt_id"
     const val EVENT_INFO_PKG         = "#pkg"
@@ -44,15 +43,15 @@ internal object Constant {
 
 
     const val COMMON_PROPERTY_EVENT_SESSION       = "#session_id"
-    const val COMMON_PROPERTY_FIREBASE_IID        = "#firebase_iid"
-    const val COMMON_PROPERTY_FCM_TOKEN           = "#fcm_token"
-    const val COMMON_PROPERTY_APPSFLYER_ID        = "#appsflyer_id"
-    const val COMMON_PROPERTY_KOCHAVA_ID          = "#kochava_id"
-    const val COMMON_PROPERTY_APP_SET_ID          = "#app_set_id"
-    const val COMMON_PROPERTY_ROIQUERY_ID         = "#instance_id"
+//    const val COMMON_PROPERTY_FIREBASE_IID        = "#firebase_iid"
+//    const val COMMON_PROPERTY_FCM_TOKEN           = "#fcm_token"
+//    const val COMMON_PROPERTY_APPSFLYER_ID        = "#appsflyer_id"
+//    const val COMMON_PROPERTY_KOCHAVA_ID          = "#kochava_id"
+//    const val COMMON_PROPERTY_APP_SET_ID          = "#app_set_id"
+//    const val COMMON_PROPERTY_ROIQUERY_ID         = "#instance_id"
     const val COMMON_PROPERTY_MCC                 = "#mcc"
     const val COMMON_PROPERTY_MNC                 = "#mnc"
-    const val COMMON_PROPERTY_OS_COUNTRY          = "#os_country"
+    const val COMMON_PROPERTY_OS_COUNTRY          = "#os_country_code"
     const val COMMON_PROPERTY_OS_LANG             = "#os_lang"
     const val COMMON_PROPERTY_APP_VERSION_CODE    = "#app_version_code"
     const val COMMON_PROPERTY_APP_VERSION_NAME    = "#app_version_name"
@@ -69,17 +68,17 @@ internal object Constant {
     const val COMMON_PROPERTY_SIMULATOR           = "#simulator"
     const val COMMON_PROPERTY_MEMORY_USED         = "#memory_used"
     const val COMMON_PROPERTY_STORAGE_USED        = "#storage_used"
-    const val COMMON_PROPERTY_USER_AGENT          = "#user_agent"
+//    const val COMMON_PROPERTY_USER_AGENT          = "#user_agent"
     const val COMMON_PROPERTY_DEVICE_MODEL        = "#device_model"
     const val COMMON_PROPERTY_SCREEN_HEIGHT       = "#screen_height"
     const val COMMON_PROPERTY_SCREEN_WIDTH        = "#screen_width"
     const val COMMON_PROPERTY_IS_FOREGROUND       = "#is_foreground"
 
     //latest
-    const val USER_PROPERTY_LATEST_INSTANCE_ID    = "#latest_instance_id"
-    const val USER_PROPERTY_LATEST_APP_SET_ID     = "#latest_app_set_id"
+//    const val USER_PROPERTY_LATEST_INSTANCE_ID    = "#latest_instance_id"
+//    const val USER_PROPERTY_LATEST_APP_SET_ID     = "#latest_app_set_id"
     const val USER_PROPERTY_LATEST_GAID           = "#latest_gaid"
-    const val USER_PROPERTY_LATEST_OAID           = "#latest_oaid"
+//    const val USER_PROPERTY_LATEST_OAID           = "#latest_oaid"
     const val USER_PROPERTY_LATEST_FIREBASE_IID   = "#latest_firebase_iid"
     const val USER_PROPERTY_LATEST_FCM_TOKEN      = "#latest_fcm_token"
     const val USER_PROPERTY_LATEST_APPSFLYER_ID   = "#latest_appsflyer_id"
@@ -88,9 +87,11 @@ internal object Constant {
     const val USER_PROPERTY_LATEST_APP_VERSION_NAME     = "#latest_app_version_name"
 
     //active
+    const val USER_PROPERTY_ACTIVE_GAID                = "#active_gaid"
+    const val USER_PROPERTY_ACTIVE_ANDROID_ID          = "#active_android_id"
     const val USER_PROPERTY_ACTIVE_MCC                 = "#active_mcc"
     const val USER_PROPERTY_ACTIVE_MNC                 = "#active_mnc"
-    const val USER_PROPERTY_ACTIVE_OS_COUNTRY          = "#active_os_country"
+    const val USER_PROPERTY_ACTIVE_OS_COUNTRY          = "#active_os_country_code"
     const val USER_PROPERTY_ACTIVE_OS_LANG             = "#active_os_lang"
     const val USER_PROPERTY_ACTIVE_EVENT_TIME          = "#active_event_time"
     const val USER_PROPERTY_ACTIVE_PKG                 = "#active_pkg"
@@ -115,7 +116,7 @@ internal object Constant {
     const val USER_PROPERTY_ACTIVE_BUILD_DEVICE        = "#active_build_device"
 
     //app_install
-    const val ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME             = "#first_open_time"
+//    const val ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME             = "#first_open_time"
     const val ATTRIBUTE_PROPERTY_REFERRER_URL                = "#referrer_url"
     const val ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME         = "#referrer_click_time"
     const val ATTRIBUTE_PROPERTY_APP_INSTALL_TIME            = "#app_install_time"

@@ -30,24 +30,7 @@ object EventUtils {
                     )
                 }
             }
-            //谷歌广告标识id,不同app在同一个设备上gaid一样
-            dataAdapter?.gaid?.let {
-                if (it.isNotEmpty()) {
-                    put(
-                        Constant.EVENT_INFO_GAID,
-                        it
-                    )
-                }
-            }
-            //华为广告标识id,不同app在同一个设备上oaid一样
-            dataAdapter?.oaid?.let {
-                if (it.isNotEmpty()) {
-                    put(
-                        Constant.EVENT_INFO_OAID,
-                        it
-                    )
-                }
-            }
+
             //应用唯一标识,后台分配
             put(
                 Constant.EVENT_INFO_APP_ID,
@@ -76,26 +59,7 @@ object EventUtils {
 
     fun getLatestUserProperties(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
-            DeviceUtils.getROIQueryID(dataAdapter).let {
-                if (it.isNotEmpty()) {
-                    put(Constant.USER_PROPERTY_LATEST_INSTANCE_ID, it)
-                }
-            }
-             dataAdapter?.appSetId?.let {
-                if (it.isNotEmpty()) {
-                    put(Constant.USER_PROPERTY_LATEST_APP_SET_ID, it)
-                }
-            }
-             dataAdapter?.gaid?.let {
-                if (it.isNotEmpty()) {
-                    put(Constant.USER_PROPERTY_LATEST_GAID, it)
-                }
-            }
-             dataAdapter?.oaid?.let {
-                if (it.isNotEmpty()) {
-                    put(Constant.USER_PROPERTY_LATEST_OAID, it)
-                }
-            }
+
              dataAdapter?.fiid?.let {
                 if (it.isNotEmpty()) {
                     put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, it)
@@ -232,41 +196,6 @@ object EventUtils {
     fun getCommonProperties(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
 
-            //Firebase的app_instance_id
-            dataAdapter?.fiid?.let {
-                if (it.isNotEmpty()) {
-                    put(Constant.COMMON_PROPERTY_FIREBASE_IID, it)
-                }
-            }
-            //firebase cloud message
-            dataAdapter?.fcmToken?.let {
-                if (it.isNotEmpty()) {
-                    put(Constant.COMMON_PROPERTY_FCM_TOKEN, it)
-                }
-            }
-            //appsflyer_id
-            dataAdapter?.afid?.let {
-                if (it.isNotEmpty()) {
-                    put(Constant.COMMON_PROPERTY_APPSFLYER_ID, it)
-                }
-            }
-            //kochava_id
-            dataAdapter?.koid?.let {
-                if (it.isNotEmpty()) {
-                    put(Constant.COMMON_PROPERTY_KOCHAVA_ID, it)
-                }
-            }
-            //app set id
-            dataAdapter?.appSetId?.let {
-                if (it.isNotEmpty()) {
-                    put(Constant.COMMON_PROPERTY_APP_SET_ID, it)
-                }
-            }
-            //roiquery_id
-            put(
-                Constant.COMMON_PROPERTY_ROIQUERY_ID,
-                DeviceUtils.getROIQueryID(dataAdapter)
-            )
 
             //移动信号国家码
             DeviceUtils.getMcc(context).let {
@@ -387,11 +316,7 @@ object EventUtils {
                 Constant.COMMON_PROPERTY_SIMULATOR,
                 EmulatorDetector.isEmulator()
             )
-            //用户浏览器ua
-            put(
-                Constant.COMMON_PROPERTY_USER_AGENT,
-                DeviceUtils.getUserAgent(context)
-            )
+
 
         }
 

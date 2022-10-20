@@ -66,15 +66,6 @@ class EventDateAdapter private constructor(
 
 
     /**
-     *  app 首次打开时间
-     *
-     * @return acountId
-     */
-    var firstOpenTime: Long
-        get() = runBlocking{ getLongConfig(DataParams.CONFIG_FIRST_OPEN_TIME) }
-        set(value) = setLongConfig(DataParams.CONFIG_FIRST_OPEN_TIME,value)
-
-    /**
      *  acountId,自有用户系统id
      *
      * @return acountId
@@ -162,14 +153,6 @@ class EventDateAdapter private constructor(
         set(value) = setStringConfig(DataParams.CONFIG_GAID,value)
         get() = runBlocking {   getStringConfig(DataParams.CONFIG_GAID)  }
 
-    /**
-     *  uaWebview
-     *
-     * @return uaWebview
-     */
-    var uaWebview: String
-        get() = runBlocking{ getStringConfig(DataParams.USER_AGENT_WEBVIEW) }
-        set(value) = setStringConfig(DataParams.USER_AGENT_WEBVIEW,value)
 
     /**
      * 是否上报数据，默认是
