@@ -36,6 +36,9 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
     //本地数据适配器，包括sp、db的操作
     private var mDataAdapter: EventDateAdapter? = null
 
+    //检索用户是否启用了限制广告跟踪
+    private var limitAdTrackingEnabled = false
+
     fun init(context: Context?, dateAdapter: EventDateAdapter?, initConfig: AnalyticsConfig?) {
         mContext = context
         mDataAdapter = dateAdapter
@@ -54,9 +57,9 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
         }
         val appId = AbstractAnalytics.mConfigOptions?.mAppId
         val gaid: String? =
-            if (mDataAdapter?.gaid?.isEmpty() == true) mEventInfo?.get(Constant.EVENT_INFO_GAID) as String? else mDataAdapter?.gaid
+            if ((mEventInfo?.get(Constant.EVENT_INFO_GAID )as String?)?.isEmpty() == true)  mDataAdapter?.gaid else mEventInfo?.get(Constant.EVENT_INFO_GAID) as String?
         val androidId: String? = mContext?.let { DeviceUtils.getAndroidID(it) }
-        val dtIdOriginal = (gaid ?: androidId).plus("+$appId")
+        val dtIdOriginal = (if (limitAdTrackingEnabled) androidId else gaid ?: androidId).plus("+$appId")
         val dtId = DataEncryption.instance.str2Sha1Str(dtIdOriginal)
         updateEventInfo(
             Constant.EVENT_INFO_DT_ID, dtId
@@ -156,6 +159,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
                 val info = AdvertisingIdClient.getAdvertisingIdInfo(mContext!!)
                 val id = info.id ?: ""
                 mDataAdapter?.gaid = id
+                limitAdTrackingEnabled = info.isLimitAdTrackingEnabled
                 updateEventInfo(Constant.EVENT_INFO_GAID, id)
                 Thread.sleep(2000)
                 AnalyticsImp.getInstance(mContext)
