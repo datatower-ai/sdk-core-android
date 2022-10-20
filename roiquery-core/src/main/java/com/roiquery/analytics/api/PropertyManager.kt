@@ -1,18 +1,24 @@
 package com.roiquery.analytics.api
 
 import android.content.Context
+import android.util.Log
 import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryAnalytics.Companion.userSet
+import com.roiquery.analytics.ROIQueryCoroutineScope
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.taskscheduler.TaskScheduler
 import com.roiquery.analytics.utils.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import java.security.MessageDigest
 
-class PropertyManager private constructor() {
+class PropertyManager private constructor() : ROIQueryCoroutineScope() {
     companion object {
         val instance by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
             PropertyManager()
@@ -36,7 +42,28 @@ class PropertyManager private constructor() {
         initEventInfo()
         initCommonProperties(initConfig)
         getOAID()
-        getGAID()
+        scope.launch {
+            getGAID()
+            initDTId()
+        }
+    }
+
+    private fun initDTId() {
+        if (mDataAdapter?.dtId?.isNotEmpty()==true){
+            return
+        }
+        val appId = AbstractAnalytics.mConfigOptions?.mAppId
+        val gaid: String? =
+            if (mDataAdapter?.gaid?.isEmpty() == true) mEventInfo?.get(Constant.EVENT_INFO_GAID) as String? else mDataAdapter?.gaid
+        val androidId: String? = mContext?.let { DeviceUtils.getAndroidID(it) }
+        val dtIdOriginal = (gaid ?: androidId).plus("+$appId")
+        val dtId = DataEncryption.instance.str2Sha1Str(dtIdOriginal)
+        updateEventInfo(
+            Constant.EVENT_INFO_DT_ID, dtId
+        )
+        if (dtId.isNotEmpty()){
+            mDataAdapter?.dtId = dtId
+        }
     }
 
 
@@ -120,11 +147,11 @@ class PropertyManager private constructor() {
     /**
      * gaid 获取，异步
      */
-    private fun getGAID() {
+    private suspend fun getGAID() {
         if (mDataAdapter?.gaid?.isNotEmpty() == true) {
             return
         }
-        TaskScheduler.execute {
+        withContext(Dispatchers.IO) {
             try {
                 val info = AdvertisingIdClient.getAdvertisingIdInfo(mContext!!)
                 val id = info.id ?: ""

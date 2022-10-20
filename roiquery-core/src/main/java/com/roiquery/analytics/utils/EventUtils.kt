@@ -67,6 +67,15 @@ object EventUtils {
             if (AbstractAnalytics.mConfigOptions?.mEnabledDebug == true) {
                 put(Constant.EVENT_INFO_DEBUG, true)
             }
+            //dt_id (gaid/androidId + appId)
+            dataAdapter?.dtId?.let {
+                if (it.isNotEmpty()) {
+                    put(
+                        Constant.EVENT_INFO_DT_ID,
+                        it
+                    )
+                }
+            }
         }
 
 
