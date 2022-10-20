@@ -1,12 +1,10 @@
 package com.roiquery.analytics.api
 
 import android.content.Context
-import com.github.gzuliyujiang.oaid.DeviceID
-import com.github.gzuliyujiang.oaid.IGetter
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.ROIQueryAnalytics.Companion.userSet
 import com.roiquery.analytics.config.AnalyticsConfig
+import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.taskscheduler.TaskScheduler
 import com.roiquery.analytics.utils.*
@@ -30,14 +28,17 @@ class PropertyManager private constructor() {
     //本地数据适配器，包括sp、db的操作
     private var mDataAdapter: EventDateAdapter? = null
 
-    fun init(context: Context?, dateAdapter: EventDateAdapter?, initConfig: AnalyticsConfig?) {
+    private var resumeFromBackground = false
+
+    fun init(context: Context?, dateAdapter: EventDateAdapter?, initConfig: AnalyticsConfig?, dataTowerIdHandler: (dtid: String) -> Unit) {
         mContext = context
         mDataAdapter = dateAdapter
         initEventInfo()
         initCommonProperties(initConfig)
-        getOAID()
         getGAID()
+        getDataTowerId(dataTowerIdHandler)
     }
+
 
 
     /**
@@ -84,37 +85,17 @@ class PropertyManager private constructor() {
         mCommonProperties?.put(key, value)
     }
 
+    private fun removeCommonProperty(key: String){
+        if(mCommonProperties?.containsKey(key) == true){
+            mCommonProperties?.remove(key)
+        }
+    }
+
     fun getCommonProperties() = mCommonProperties?.toMutableMap() ?: mutableMapOf()
 
 
-    /**
-     * oaid 获取，异步
-     */
-    private fun getOAID() {
-        if (mDataAdapter?.oaid?.isNotEmpty() == true || !DeviceID.supportedOAID(mContext)) {
-            return
-        }
-        TaskScheduler.execute {
-            try {
-                DeviceID.getOAID(mContext, object : IGetter {
-                    override fun onOAIDGetComplete(oaid: String) {
-                        mDataAdapter?.oaid = oaid
-                        updateEventInfo(Constant.EVENT_INFO_OAID, oaid)
-                        Thread.sleep(2000)
-                        AnalyticsImp.getInstance(mContext)
-                            .trackUser(Constant.PRESET_EVENT_USER_SET, JSONObject().apply {
-                                put(Constant.USER_PROPERTY_LATEST_OAID, oaid)
-                            })
-                    }
-
-                    override fun onOAIDGetError(exception: java.lang.Exception) {
-                        LogUtils.d(exception)
-                    }
-                })
-            } catch (e: Exception) {
-                LogUtils.d(e)
-            }
-        }
+    private fun getDataTowerId(dataTowerIdHandler: (dtid: String) -> Unit){
+        dataTowerIdHandler.invoke("")
     }
 
     /**
@@ -130,11 +111,12 @@ class PropertyManager private constructor() {
                 val id = info.id ?: ""
                 mDataAdapter?.gaid = id
                 updateEventInfo(Constant.EVENT_INFO_GAID, id)
-                Thread.sleep(2000)
-                AnalyticsImp.getInstance(mContext)
-                    .trackUser(Constant.PRESET_EVENT_USER_SET, JSONObject().apply {
-                        put(Constant.USER_PROPERTY_LATEST_GAID, id)
-                    })
+
+                EventTrackManager.instance.trackUser(
+                    Constant.PRESET_EVENT_USER_SET, JSONObject().apply {
+                    put(Constant.USER_PROPERTY_LATEST_GAID, id)
+                })
+
             } catch (exception: Exception) {
                 LogUtils.d("getGAID", "onException:" + exception.message.toString())
             }
@@ -169,6 +151,23 @@ class PropertyManager private constructor() {
             Constant.COMMON_PROPERTY_IS_FOREGROUND,
             isForeground
         )
+        val isFirstOpen = mDataAdapter?.isFirstOpen
+        if (isFirstOpen == true) {
+            mDataAdapter?.isFirstOpen = false
+        }
+        if (isForeground) {
+            updateCommonProperties(Constant.COMMON_PROPERTY_EVENT_SESSION, DataUtils.getSession())
+
+            EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_SESSION_START,JSONObject().apply {
+                put(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME, isFirstOpen)
+                put(Constant.SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND, resumeFromBackground)
+                put(Constant.SESSION_START_PROPERTY_START_REASON, "")
+            })
+        }else {
+            resumeFromBackground = true
+            removeCommonProperty(Constant.COMMON_PROPERTY_EVENT_SESSION)
+            EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_SESSION_END)
+        }
     }
 
     fun updateNetworkType(networkType: NetworkUtil.NetworkType?) {
@@ -184,37 +183,52 @@ class PropertyManager private constructor() {
 
     fun updateFireBaseInstanceId(fiid: String) {
         updateCommonProperties(Constant.COMMON_PROPERTY_FIREBASE_IID, fiid)
-        userSet(JSONObject().apply {
-            put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, fiid)
-        })
+        EventTrackManager.instance.trackUser(
+            Constant.PRESET_EVENT_USER_SET,
+            JSONObject().apply {
+                put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, fiid)
+            }
+        )
     }
 
     fun updateFCMToken(fcmToken: String) {
         updateCommonProperties(Constant.COMMON_PROPERTY_FCM_TOKEN, fcmToken)
-        userSet(JSONObject().apply {
-            put(Constant.USER_PROPERTY_LATEST_FCM_TOKEN, fcmToken)
-        })
+        EventTrackManager.instance.trackUser(
+            Constant.PRESET_EVENT_USER_SET,
+            JSONObject().apply {
+                put(Constant.USER_PROPERTY_LATEST_FCM_TOKEN, fcmToken)
+            }
+        )
     }
 
     fun updateAFID(afid: String) {
         updateCommonProperties(Constant.COMMON_PROPERTY_APPSFLYER_ID, afid)
-        userSet(JSONObject().apply {
-            put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, afid)
-        })
+        EventTrackManager.instance.trackUser(
+            Constant.PRESET_EVENT_USER_SET,
+            JSONObject().apply {
+                put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, afid)
+            }
+        )
     }
 
     fun updateKOID(koid: String) {
         updateCommonProperties(Constant.COMMON_PROPERTY_KOCHAVA_ID, koid)
-        userSet(JSONObject().apply {
-            put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, koid)
-        })
+        EventTrackManager.instance.trackUser(
+            Constant.PRESET_EVENT_USER_SET,
+            JSONObject().apply {
+                put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, koid)
+            }
+        )
     }
 
     fun updateAppSetId(appSetId: String) {
         updateCommonProperties(Constant.COMMON_PROPERTY_APP_SET_ID, appSetId)
-        userSet(JSONObject().apply {
-            put(Constant.USER_PROPERTY_LATEST_APP_SET_ID, appSetId)
-        })
+        EventTrackManager.instance.trackUser(
+            Constant.PRESET_EVENT_USER_SET,
+            JSONObject().apply {
+                put(Constant.USER_PROPERTY_LATEST_APP_SET_ID, appSetId)
+            }
+        )
     }
 
 }

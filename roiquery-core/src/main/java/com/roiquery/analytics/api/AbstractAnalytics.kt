@@ -10,12 +10,11 @@ import com.android.installreferrer.api.ReferrerDetails
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.core.AnalyticsManager
 import com.roiquery.analytics.core.EventTrackManager
+import com.roiquery.analytics.core.EventUploadManager
+import com.roiquery.analytics.core.PresetEventManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpPOSTResourceRemoteRepository
-import com.roiquery.analytics.taskscheduler.SchedulerTask
-import com.roiquery.analytics.taskscheduler.TaskScheduler
 import com.roiquery.analytics.utils.*
 import com.roiquery.cloudconfig.ROIQueryCloudConfig
 import com.roiquery.quality.ROIQueryErrorParams
@@ -24,6 +23,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import org.json.JSONObject
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.CoroutineContext
 
 
@@ -31,48 +31,69 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
 
-
     //本地数据适配器，包括sp、db的操作
     private var mDataAdapter: EventDateAdapter? = null
 
+    private val hasInit = AtomicBoolean(false)
+
+    private val isInitRunning = AtomicBoolean(false)
 
     companion object {
         const val TAG = "AnalyticsApi"
-
         // 配置
         internal var mConfigOptions: AnalyticsConfig? = null
+    }
 
-        // SDK 配置是否初始化
-        var mSDKConfigInit = false
-
+    fun init(context: Context){
+        if(isInitRunning.get() || hasInit.get()){
+            return
+        }
+        isInitRunning.set(true)
+        //real init
+        internalInit(context)
     }
 
 
     fun internalInit(context: Context){
         try {
-            initConfig(context.packageName)
+            initConfig(context)
             initLocalData(context)
             initTracker()
-            initProperties(context)
-            initCloudConfig()
-            registerNetworkStatusChangedListener()
-            registerAppLifecycleListener(context)
-            trackPresetEvent()
-            mSDKConfigInit = true
-            LogUtils.d("ROIQuery", "init succeed")
+            initProperties(context, dataTowerIdHandler = {
+                initCloudConfig(context)
+                registerNetworkStatusChangedListener(context)
+                registerAppLifecycleListener(context)
+                trackPresetEvent(context)
+                onInitSuccess()
+            })
         } catch (e: Exception) {
-            if (!ROIQueryAnalytics.isSDKInitSuccess()) {
-                ROIQueryQualityHelper.instance.reportQualityMessage(
-                    ROIQueryErrorParams.CODE_INIT_EXCEPTION,
-                    e.message,
-                    ROIQueryErrorParams.INIT_EXCEPTION,
-                    ROIQueryErrorParams.TYPE_ERROR
-                )
-            }
-            LogUtils.printStackTrace(e)
+            onInitFailed(e.message)
         }
     }
 
+    /**
+     * 初始化本成功
+     */
+    private fun onInitSuccess(){
+        hasInit.set(true)
+        isInitRunning.set(false)
+        LogUtils.d("ROIQuery", "init succeed")
+    }
+
+    /**
+     * 初始化失败
+     */
+    private fun onInitFailed(errorMessage: String?){
+        isInitRunning.set(false)
+        ROIQueryQualityHelper.instance.reportQualityMessage(
+            ROIQueryErrorParams.CODE_INIT_EXCEPTION,
+            errorMessage,
+            ROIQueryErrorParams.INIT_EXCEPTION,
+            ROIQueryErrorParams.TYPE_ERROR
+        )
+    }
+
+    fun isInitSuccess() = hasInit.get()
 
     /**
      * 初始化本地数据
@@ -83,10 +104,10 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
     }
 
     /**
-     * 初始化预置、通用属性
+     * 初始化预置、通用属性, 并获取DT id
      */
-    private fun initProperties(context: Context) {
-        PropertyManager.instance.init(context, mDataAdapter, mConfigOptions)
+    private fun initProperties(context: Context, dataTowerIdHandler: (dtid: String) -> Unit) {
+        PropertyManager.instance.init(context, mDataAdapter, mConfigOptions, dataTowerIdHandler)
     }
 
     /**
@@ -105,16 +126,22 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
         EventTrackManager.instance.init()
     }
 
+    /**
+     * 采集预置事件
+     */
+    private fun trackPresetEvent(context: Context) {
+        PresetEventManager.instance.trackPresetEvent(context)
+    }
 
     /**
-     * 初始化配置
+     * 初始化SDK传递进来的配置
      */
-    private fun initConfig(context: Context,packageName: String) {
+    private fun initConfig(context: Context) {
         var configBundle: Bundle? = null
         try {
             context.let {
                 val appInfo = it.applicationContext.packageManager
-                    .getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+                    .getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
                 configBundle = appInfo.metaData
             }
 
@@ -193,6 +220,9 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
         }
     }
 
+    /**
+     * 网络状态监控
+     */
     private fun registerNetworkStatusChangedListener(context: Context) {
         NetworkUtil.registerNetworkStatusChangedListener(
             context,
@@ -204,197 +234,11 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
                 override fun onConnected(networkType: NetworkUtil.NetworkType?) {
                     LogUtils.i("onNetConnChanged", networkType)
                     PropertyManager.instance.updateNetworkType(networkType)
-                    AnalyticsManager.getInstance()?.flush()
+                    EventUploadManager.getInstance()?.flush()
                 }
             })
     }
 
-
-    /**
-     * 采集app 预置事件
-     */
-    private fun trackPresetEvent() {
-        //子进程不采集
-        if (!ProcessUtils.isInMainProcess(mContext!!)) {
-            LogUtils.i(
-                "trackPresetEvent",
-                ProcessUtils.getProcessName(mContext!!) + "is not main process"
-            )
-            return
-        }
-        checkFirstOpen()
-        trackAppEngagementEvent()
-        setLatestUserProperties()
-        setActiveUserProperties()
-    }
-
-    private fun checkFirstOpen() {
-        val isFirstOpen = mDataAdapter?.isFirstOpen
-        if (isFirstOpen == true) {
-            mDataAdapter?.isFirstOpen = false
-            startAppAttribute()
-        }
-        trackAppOpenEvent(isFirstOpen)
-    }
-
-    /**
-     * 采集app 启动事件
-     */
-    private fun trackAppOpenEvent(isFirstOpen: Boolean?) {
-        trackNormal(
-            if (isFirstOpen == true) Constant.PRESET_EVENT_APP_FIRST_OPEN else Constant.PRESET_EVENT_APP_OPEN,
-            true
-        )
-    }
-
-    /**
-     * 采集 app 活跃事件
-     */
-    private fun trackAppEngagementEvent() {
-        TaskScheduler.scheduleTask(object :
-            SchedulerTask(Constant.APP_ENGAGEMENT_INTERVAL_TIME_LONG, false) {
-            override fun onSchedule() {
-                trackNormal(
-                    Constant.PRESET_EVENT_APP_ENGAGEMENT,
-                    true
-                )
-            }
-        })
-    }
-
-    private fun setLatestUserProperties() {
-        trackUser(
-            Constant.PRESET_EVENT_USER_SET,
-            JSONObject(EventUtils.getLatestUserProperties(mContext!!, mDataAdapter))
-        )
-    }
-
-    private fun setActiveUserProperties() {
-        val activeUserProperties =
-            JSONObject(EventUtils.getActiveUserProperties(mContext!!, mDataAdapter)).apply {
-                PropertyManager.instance.updateSdkVersionProperty(
-                    this,
-                    Constant.USER_PROPERTY_ACTIVE_SDK_TYPE,
-                    Constant.USER_PROPERTY_ACTIVE_SDK_VERSION
-                )
-            }
-        trackUser(
-            Constant.PRESET_EVENT_USER_SET_ONCE,
-            activeUserProperties
-        )
-    }
-
-    private fun startAppAttribute() {
-        try {
-            getAppAttribute()
-        } catch (e: Exception) {
-            LogUtils.printStackTrace(e)
-            trackAppAttributeEvent(
-                ReferrerDetails(null),
-                "Exception: " + e.message.toString()
-            )
-        }
-    }
-
-    /**
-     * 获取 app 归因属性
-     */
-    private fun getAppAttribute() {
-        val referrerClient: InstallReferrerClient? =
-            InstallReferrerClient.newBuilder(mContext).build()
-        referrerClient?.startConnection(object : InstallReferrerStateListener {
-
-            override fun onInstallReferrerSetupFinished(responseCode: Int) {
-                try {
-                    when (responseCode) {
-                        InstallReferrerClient.InstallReferrerResponse.OK -> {
-                            // Connection established.
-                            trackAppAttributeEvent(referrerClient.installReferrer, "")
-                        }
-                        else -> trackAppAttributeEvent(
-                            ReferrerDetails(null),
-                            "responseCode:$responseCode"
-                        )
-
-                    }
-                    referrerClient.endConnection()
-                } catch (e: Exception) {
-                    trackAppAttributeEvent(
-                        ReferrerDetails(null),
-                        "responseCode:$responseCode" + ",Exception: " + e.message.toString()
-                    )
-                }
-
-            }
-
-            override fun onInstallReferrerServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
-                try {
-                    trackAppAttributeEvent(
-                        ReferrerDetails(null),
-                        "onInstallReferrerServiceDisconnected"
-                    )
-                    referrerClient.endConnection()
-                } catch (e: Exception) {
-                    trackAppAttributeEvent(
-                        ReferrerDetails(null),
-                        "onInstallReferrerServiceDisconnected,Exception: " + e.message.toString()
-                    )
-                }
-
-            }
-        })
-    }
-
-    /**
-     * 采集 app 归因属性事件
-     */
-    private fun trackAppAttributeEvent(response: ReferrerDetails, failedReason: String) {
-        val isOK = failedReason.isBlank()
-        trackNormal(
-            Constant.PRESET_EVENT_APP_ATTRIBUTE,
-            true,
-            PropertyBuilder.newInstance()
-                .append(
-                    HashMap<String?, Any>().apply {
-
-                        val cnl = mConfigOptions?.mChannel ?: ""
-                        put(
-                            Constant.ATTRIBUTE_PROPERTY_REFERRER_URL,
-                            if (isOK) response.installReferrer + "&cnl=$cnl" else "cnl=$cnl"
-                        )
-                        put(
-                            Constant.ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME,
-                            if (isOK) response.referrerClickTimestampSeconds else 0
-                        )
-                        put(
-                            Constant.ATTRIBUTE_PROPERTY_APP_INSTALL_TIME,
-                            if (isOK) response.installBeginTimestampSeconds else 0
-                        )
-                        put(
-                            Constant.ATTRIBUTE_PROPERTY_INSTANT_EXPERIENCE_LAUNCHED,
-                            if (isOK) response.googlePlayInstantParam else false
-                        )
-                        put(
-                            Constant.ATTRIBUTE_PROPERTY_CNL,
-                            cnl
-                        )
-                        if (!isOK) {
-                            put(
-                                Constant.ATTRIBUTE_PROPERTY_FAILED_REASON,
-                                failedReason
-                            )
-                        }
-                        mDataAdapter?.firstOpenTime?.let {
-                            put(
-                                Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
-                                it
-                            )
-                        }
-                    }
-                ).toJSONObject())
-    }
 
 
 }

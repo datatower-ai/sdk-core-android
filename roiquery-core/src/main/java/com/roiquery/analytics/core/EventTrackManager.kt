@@ -1,8 +1,6 @@
 package com.roiquery.analytics.core
 
-import android.content.Context
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.ROIQueryAnalytics.Companion.mContext
 import com.roiquery.analytics.api.PropertyManager
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.ROIQueryErrorParams
@@ -20,14 +18,14 @@ class EventTrackManager {
     }
 
     //事件采集管理线程池
-    protected var mTrackTaskManager: ExecutorService? = null
+    private var mTrackTaskManager: ExecutorService? = null
 
     //采集 、上报管理
-    protected var mAnalyticsManager: AnalyticsManager? = null
+    private var mAnalyticsManager: EventUploadManager? = null
 
     fun init(){
         mTrackTaskManager = Executors.newSingleThreadExecutor()
-        mAnalyticsManager = AnalyticsManager.getInstance()
+        mAnalyticsManager = EventUploadManager.getInstance()
         initTime()
     }
 
@@ -39,7 +37,6 @@ class EventTrackManager {
         TimeCalibration.instance.getReferenceTime()
     }
 
-
     /**
      * 事件校验
      */
@@ -49,11 +46,40 @@ class EventTrackManager {
     ) = EventUtils.isValidEventName(eventName) && EventUtils.isValidProperty(properties)
 
 
-    fun trackEvent(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?){
+    /**
+     * 用于 track 非预置事件
+     *
+     * */
+    fun trackNormal(eventName: String?, properties: JSONObject? = JSONObject()){
+        trackInternal(eventName, Constant.EVENT_TYPE_TRACK, false, properties)
+    }
+
+    /**
+     * 用于 track 预置事件
+     *
+     * */
+    fun trackNormalPreset(eventName: String?, properties: JSONObject? = JSONObject()){
+        trackInternal(eventName, Constant.EVENT_TYPE_TRACK, true, properties)
+    }
+
+    fun trackUser(eventName: String?, properties: JSONObject? = JSONObject()){
+        trackInternal(eventName, Constant.EVENT_TYPE_USER, true, properties)
+    }
+
+    fun trackUserWithPropertyCheck(eventName: String?, properties: JSONObject? = JSONObject()){
+        if(!EventUtils.isValidProperty(properties)) return
+        trackInternal(eventName, Constant.EVENT_TYPE_USER, true, properties)
+    }
+
+    private fun trackInternal(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?) {
+        trackEvent(eventName, eventType, isPreset, properties)
+    }
+
+    private fun trackEvent(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?){
         mTrackTaskManager?.let {
             try {
                 it.execute {
-                    trackEventTask(eventName, eventType, isPreset, properties)
+                    addEventTask(eventName, eventType, isPreset, properties)
                 }
             } catch (e: Exception) {
                 LogUtils.printStackTrace(e)
@@ -65,7 +91,7 @@ class EventTrackManager {
         }
     }
 
-    private fun trackEventTask(
+    private fun addEventTask(
         eventName: String?,
         eventType: String,
         isPreset: Boolean,
@@ -102,15 +128,15 @@ class EventTrackManager {
 //                        mDataAdapter?.isAppForeground
 //                    )
                     //硬盘使用率
-                    put(
-                        Constant.COMMON_PROPERTY_STORAGE_USED,
-                        MemoryUtils.getStorageUsed(mContext)
-                    )
-                    //内存使用率
-                    put(
-                        Constant.COMMON_PROPERTY_MEMORY_USED,
-                        MemoryUtils.getMemoryUsed(mContext)
-                    )
+//                    put(
+//                        Constant.COMMON_PROPERTY_STORAGE_USED,
+////                        MemoryUtils.getStorageUsed(mContext)
+//                    )
+//                    //内存使用率
+//                    put(
+//                        Constant.COMMON_PROPERTY_MEMORY_USED,
+////                        MemoryUtils.getMemoryUsed(mContext)
+//                    )
                     //合并用户自定义属性和通用属性
                     DataUtils.mergeJSONObject(properties, this, null)
                 }

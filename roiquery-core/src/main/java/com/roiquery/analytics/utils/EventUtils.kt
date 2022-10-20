@@ -227,11 +227,7 @@ object EventUtils {
 
     fun getCommonProperties(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
-            //系列行为标识
-            put(
-                Constant.COMMON_PROPERTY_EVENT_SESSION,
-                DataUtils.getSession()
-            )
+
             //Firebase的app_instance_id
             dataAdapter?.fiid?.let {
                 if (it.isNotEmpty()) {
@@ -395,8 +391,8 @@ object EventUtils {
 
         }
 
-    fun isValidEventName(name: String): Boolean {
-        if (TextUtils.isEmpty(name)) {
+    fun isValidEventName(name: String?): Boolean {
+        if (name.isNullOrEmpty() || TextUtils.isEmpty(name)) {
             LogUtils.e("Empty event name is not allowed.")
             return false
         }

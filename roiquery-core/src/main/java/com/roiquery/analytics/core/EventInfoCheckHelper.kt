@@ -54,9 +54,9 @@ class EventInfoCheckHelper private constructor() {
         correctedEventInfo: JSONArray
     ) {
         jsonEventBody.optJSONObject(Constant.EVENT_BODY)?.let { eventInfo ->
-            val presetEventName = eventNameForPreset(eventInfo)
+//            val presetEventName = eventNameForPreset(eventInfo)
 
-            if (!correctAttributeFirstOpenTimeInfo(presetEventName, eventInfo)) return
+//            if (!correctAttributeFirstOpenTimeInfo(presetEventName, eventInfo)) return
 
             val infoTime = eventInfo.optLong(Constant.EVENT_INFO_TIME)
 
@@ -72,20 +72,12 @@ class EventInfoCheckHelper private constructor() {
                         verifyTimeAsyncByGapTime
                     )
 
-                    if (presetEventName == Constant.PRESET_EVENT_APP_FIRST_OPEN) saveFirstOpenTime(
-                        verifyTimeAsyncByGapTime
-                    )
-
                     correctedEventInfo.put(eventInfo)
 
                 } else {
                 }
             } else {
                 eventInfo.put(Constant.EVENT_INFO_TIME, infoTime)
-
-                if (presetEventName == Constant.PRESET_EVENT_APP_FIRST_OPEN) saveFirstOpenTime(
-                    infoTime
-                )
 
                 correctedEventInfo.put(eventInfo)
             }
@@ -98,22 +90,22 @@ class EventInfoCheckHelper private constructor() {
         ) else eventInfo.getString(Constant.EVENT_INFO_NAME)
 
 
-    private fun correctAttributeFirstOpenTimeInfo(
-        eventName: String,
-        eventInfo: JSONObject
-    ): Boolean {
-        if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE && eventInfo.optLong(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == 0L) {
-            if (EventDateAdapter.getInstance()?.firstOpenTime == 0L) {
-                return false
-            } else {
-                eventInfo.getJSONObject(Constant.EVENT_INFO_PROPERTIES).put(
-                    Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
-                    EventDateAdapter.getInstance()?.firstOpenTime.toString()
-                )
-            }
-        }
-        return true
-    }
+//    private fun correctAttributeFirstOpenTimeInfo(
+//        eventName: String,
+//        eventInfo: JSONObject
+//    ): Boolean {
+//        if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE && eventInfo.optLong(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == 0L) {
+//            if (EventDateAdapter.getInstance()?.firstOpenTime == 0L) {
+//                return false
+//            } else {
+//                eventInfo.getJSONObject(Constant.EVENT_INFO_PROPERTIES).put(
+//                    Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
+//                    EventDateAdapter.getInstance()?.firstOpenTime.toString()
+//                )
+//            }
+//        }
+//        return true
+//    }
 
     private fun isNewFormatData(eventInfo: JSONObject) =
         eventInfo.has(Constant.EVENT_TIME_CALIBRATED) && eventInfo.has(Constant.EVENT_BODY)

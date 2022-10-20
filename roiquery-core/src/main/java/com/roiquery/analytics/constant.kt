@@ -42,7 +42,7 @@ internal object Constant {
     const val EVENT_TIME_CALIBRATED  = "time_calibrated"
 
 
-    const val COMMON_PROPERTY_EVENT_SESSION       = "#app_session"
+    const val COMMON_PROPERTY_EVENT_SESSION       = "#session_id"
     const val COMMON_PROPERTY_FIREBASE_IID        = "#firebase_iid"
     const val COMMON_PROPERTY_FCM_TOKEN           = "#fcm_token"
     const val COMMON_PROPERTY_APPSFLYER_ID        = "#appsflyer_id"
@@ -113,6 +113,7 @@ internal object Constant {
     const val USER_PROPERTY_ACTIVE_USER_AGENT          = "#active_user_agent"
     const val USER_PROPERTY_ACTIVE_BUILD_DEVICE        = "#active_build_device"
 
+    //app_install
     const val ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME             = "#first_open_time"
     const val ATTRIBUTE_PROPERTY_REFERRER_URL                = "#referrer_url"
     const val ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME         = "#referrer_click_time"
@@ -121,22 +122,33 @@ internal object Constant {
     const val ATTRIBUTE_PROPERTY_FAILED_REASON               = "#failed_reason"
     const val ATTRIBUTE_PROPERTY_CNL                         = "#cnl"
 
+    //session_start
+    const val SESSION_START_PROPERTY_IS_FIRST_TIME           = "#is_first_time"
+    const val SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND  = "#resume_from_background"
+    const val SESSION_START_PROPERTY_START_REASON            = "#start_reason"
+
+    //session_end
+
+    const val SESSION_END_PROPERTY_SESSION_DURATION          = "#session_duration"
 
     //preset event name about Analytics
     const val PRESET_EVENT_TAG = "#"
     const val EVENT_TYPE_TRACK = "track"
     const val EVENT_TYPE_USER  = "user"
 
-    const val PRESET_EVENT_APP_FIRST_OPEN  = "#app_first_open"
-    const val PRESET_EVENT_APP_OPEN        = "#app_open"
-    const val PRESET_EVENT_APP_ATTRIBUTE   = "#app_attribute"
-    const val PRESET_EVENT_APP_ENGAGEMENT  = "#app_engagement"
+//    const val PRESET_EVENT_APP_FIRST_OPEN  = "#app_first_open"
+//    const val PRESET_EVENT_APP_OPEN        = "#app_open"
+    const val PRESET_EVENT_APP_INITIALIZE    = "#app_initialize"
+    const val PRESET_EVENT_APP_INSTALL       = "#app_install"
+    const val PRESET_EVENT_SESSION_START     = "#session_start"
+    const val PRESET_EVENT_SESSION_END       = "#session_end"
+//    const val PRESET_EVENT_APP_ENGAGEMENT  = "#app_engagement"
 //    const val PRESET_EVENT_APP_CLOSE       = "#app_close"
 //    const val PRESET_EVENT_PAGE_OPEN       = "#page_open"
 //    const val PRESET_EVENT_PAGE_CLOSE      = "#page_close"
 //    const val PRESET_EVENT_USER_PROPERTIES = "#user_properties"
 //    const val PRESET_EVENT_APP_QUALITY     = "#app_quality"
-    const val PRESET_EVENT_APP_STATE_CHANGED  =  "#app_state_changed"
+//    const val PRESET_EVENT_APP_STATE_CHANGED  =  "#app_state_changed"
 
     const val PRESET_EVENT_USER_ADD      = "#user_add"
     const val PRESET_EVENT_USER_SET      = "#user_set"

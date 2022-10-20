@@ -142,10 +142,6 @@ class IAPReportImp : IIapReport {
         @Volatile
         private var instance: IAPReportImp? = null
         internal fun getInstance(context: Context? = null): IAPReportImp {
-            var pContext = context
-            if (pContext == null) {
-                pContext = ROIQueryAnalytics.getContext()
-            }
             return instance ?: synchronized(this) {
                 instance ?: IAPReportImp().also { instance = it }
             }

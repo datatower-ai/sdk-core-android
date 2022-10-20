@@ -25,9 +25,9 @@ import org.json.JSONObject
 
 
 /**
- * 管理内部事件采集、上报
+ * 管理内部事件上报
  */
-class AnalyticsManager private constructor(
+class EventUploadManager private constructor(
 ) : ROIQueryCoroutineScope() {
     private val mWorker: Worker = Worker()
     private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
@@ -371,12 +371,12 @@ class AnalyticsManager private constructor(
         private const val FLUSH_DELAY = 1000L
         private const val DELETE_ALL = 4
 
-        private var instancessss: AnalyticsManager? = null
+        private var instancessss: EventUploadManager? = null
 
         @Synchronized
-        fun getInstance(): AnalyticsManager?{
+        fun getInstance(): EventUploadManager?{
             if(null == instancessss){
-                instancessss = AnalyticsManager()
+                instancessss = EventUploadManager()
             }
             return this.instancessss
         }
