@@ -4,27 +4,18 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.lifecycle.ProcessLifecycleOwner
-import com.android.installreferrer.api.InstallReferrerClient
-import com.android.installreferrer.api.InstallReferrerStateListener
-import com.android.installreferrer.api.ReferrerDetails
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.core.EventUploadManager
 import com.roiquery.analytics.core.PresetEventManager
 import com.roiquery.analytics.data.EventDateAdapter
-import com.roiquery.analytics.network.HttpPOSTResourceRemoteRepository
 import com.roiquery.analytics.utils.*
-import com.roiquery.cloudconfig.ROIQueryCloudConfig
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import org.json.JSONObject
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.CoroutineContext
 
@@ -63,7 +54,6 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
             initTracker()
             registerAppLifecycleListener(context)
             initProperties(context, dataTowerIdHandler = {
-                initCloudConfig(context, it)
                 registerNetworkStatusChangedListener(context)
                 trackPresetEvent(context)
                 onInitSuccess()
@@ -163,45 +153,6 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
 
         mConfigOptions?.let { configOptions ->
             configLog(configOptions.mEnabledDebug, configOptions.mLogLevel)
-            if (configOptions.mFlushInterval == 0) {
-                configOptions.setFlushInterval(
-                    2000
-                )
-            }
-            if (configOptions.mFlushBulkSize == 0) {
-                configOptions.setFlushBulkSize(
-                    100
-                )
-            }
-            if (configOptions.mMaxCacheSize == 0L) {
-                configOptions.setMaxCacheSize(
-                    32 * 1024 * 1024L
-                )
-            }
-        }
-    }
-
-    /**
-     * 初始化云控配置
-     */
-    private fun initCloudConfig(context: Context,id: String) {
-        ROIQueryCloudConfig.init(
-            context,
-            HttpPOSTResourceRemoteRepository.create(
-                Constant.CLOUD_CONFIG_URL//拉取配置地址
-                //拉取参数
-            ) {
-                mutableMapOf<String, String>().apply {
-                    put("app_id", mConfigOptions?.mAppId ?: "")
-                    put("did", id)
-                }
-            },
-            mDataAdapter?.cloudConfigAesKey ?: "",
-            {
-                mDataAdapter?.cloudConfigAesKey = it
-            }
-        ) {
-//            LogUtils.d("CloudConfig", it)
         }
     }
 

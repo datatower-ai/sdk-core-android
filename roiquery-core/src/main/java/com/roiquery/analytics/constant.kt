@@ -116,7 +116,6 @@ internal object Constant {
     const val USER_PROPERTY_ACTIVE_BUILD_DEVICE        = "#active_build_device"
 
     //app_install
-//    const val ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME             = "#first_open_time"
     const val ATTRIBUTE_PROPERTY_REFERRER_URL                = "#referrer_url"
     const val ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME         = "#referrer_click_time"
     const val ATTRIBUTE_PROPERTY_APP_INSTALL_TIME            = "#app_install_time"
@@ -138,19 +137,12 @@ internal object Constant {
     const val EVENT_TYPE_TRACK = "track"
     const val EVENT_TYPE_USER  = "user"
 
-//    const val PRESET_EVENT_APP_FIRST_OPEN  = "#app_first_open"
-//    const val PRESET_EVENT_APP_OPEN        = "#app_open"
+
     const val PRESET_EVENT_APP_INITIALIZE    = "#app_initialize"
     const val PRESET_EVENT_APP_INSTALL       = "#app_install"
     const val PRESET_EVENT_SESSION_START     = "#session_start"
     const val PRESET_EVENT_SESSION_END       = "#session_end"
-//    const val PRESET_EVENT_APP_ENGAGEMENT  = "#app_engagement"
-//    const val PRESET_EVENT_APP_CLOSE       = "#app_close"
-//    const val PRESET_EVENT_PAGE_OPEN       = "#page_open"
-//    const val PRESET_EVENT_PAGE_CLOSE      = "#page_close"
-//    const val PRESET_EVENT_USER_PROPERTIES = "#user_properties"
-//    const val PRESET_EVENT_APP_QUALITY     = "#app_quality"
-//    const val PRESET_EVENT_APP_STATE_CHANGED  =  "#app_state_changed"
+
 
     const val PRESET_EVENT_USER_ADD      = "#user_add"
     const val PRESET_EVENT_USER_SET      = "#user_set"
@@ -159,9 +151,7 @@ internal object Constant {
     const val PRESET_EVENT_USER_APPEND   = "#user_append"
     const val PRESET_EVENT_USER_DEL      = "#user_delete"
 
-    //engagement interval time
-    const val APP_ENGAGEMENT_INTERVAL_TIME_INT = 5 * 60 * 1000 // 5min
-    const val APP_ENGAGEMENT_INTERVAL_TIME_LONG = 5 * 60 * 1000L // 5min
+
 
     const val SDK_TYPE_ANDROID = "Android"
 

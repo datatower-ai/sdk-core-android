@@ -1,10 +1,8 @@
 package com.roiquery.analytics.core
 
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.api.PropertyManager
 import com.roiquery.analytics.data.EventDateAdapter
-import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.TimeCalibration
 import org.json.JSONArray
 import org.json.JSONException
@@ -134,26 +132,34 @@ class EventInfoCheckHelper private constructor() {
         ) else eventInfo.getString(Constant.EVENT_INFO_NAME)
 
 
-//    private fun correctAttributeFirstOpenTimeInfo(
-//        eventName: String,
-//        eventInfo: JSONObject
-//    ): Boolean {
-//        if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE && eventInfo.optLong(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == 0L) {
-//            if (EventDateAdapter.getInstance()?.firstOpenTime == 0L) {
-//                return false
-//            } else {
-//                eventInfo.getJSONObject(Constant.EVENT_INFO_PROPERTIES).put(
-//                    Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
-//                    EventDateAdapter.getInstance()?.firstOpenTime.toString()
-//                )
-//            }
-//        }
-//        return true
-//    }
+
 
     private fun isNewFormatData(eventInfo: JSONObject) =
         eventInfo.has(Constant.EVENT_TIME_CALIBRATED) && eventInfo.has(Constant.EVENT_BODY)
 
+
+
+    fun checkAppInstallInsertState(eventName: String){
+        try {
+            if(eventName == Constant.PRESET_EVENT_APP_INSTALL){
+                EventDateAdapter.getInstance()?.isAppInstallInserted = true
+            }
+        } catch (e: Exception){
+
+        }
+    }
+
+    fun checkFirstSessionStartInsertState(eventName: String, eventInfo: JSONObject){
+        try {
+            if(eventName == Constant.PRESET_EVENT_SESSION_START
+                && eventInfo.optJSONObject(Constant.EVENT_INFO_PROPERTIES)?.optBoolean(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME) == true
+            ){
+                EventDateAdapter.getInstance()?.isFirstSessionStartInserted = true
+            }
+        } catch (e: Exception){
+
+        }
+    }
 
 
 }

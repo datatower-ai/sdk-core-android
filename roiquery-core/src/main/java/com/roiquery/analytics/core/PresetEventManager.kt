@@ -42,9 +42,7 @@ class PresetEventManager {
     }
 
     private fun checkFirstOpen(context: Context) {
-        val isFirstOpen = mDataAdapter?.isFirstOpen
-        if (isFirstOpen == true) {
-            mDataAdapter?.isFirstOpen = false
+        if (mDataAdapter?.isAppInstallInserted == false) {
             startAppAttribute(context)
         }
     }

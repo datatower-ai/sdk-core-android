@@ -86,6 +86,9 @@ class EventUploadManager private constructor(
                 mErrorInsertDataMap[eventSyn] = eventJson
             }
             qualityReport(msg)
+        }else {
+            EventInfoCheckHelper.instance.checkAppInstallInsertState(eventName)
+            EventInfoCheckHelper.instance.checkFirstSessionStartInsertState(eventName, eventJson)
         }
         LogUtils.json(TAG , msg)
     }
@@ -368,7 +371,7 @@ class EventUploadManager private constructor(
     companion object {
         private const val TAG = Constant.LOG_TAG
         private const val FLUSH_QUEUE = 3
-        private const val FLUSH_DELAY = 1000L
+        private const val FLUSH_DELAY = 0L
         private const val DELETE_ALL = 4
 
         private var instancessss: EventUploadManager? = null
