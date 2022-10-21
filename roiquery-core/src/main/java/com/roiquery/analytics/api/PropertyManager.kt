@@ -201,7 +201,8 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
             EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_SESSION_START,JSONObject().apply {
                 put(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME, isFirstOpen)
                 put(Constant.SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND, resumeFromBackground)
-                put(Constant.SESSION_START_PROPERTY_START_REASON, startReason)
+                startReason?.isNotEmpty().let {
+                    put(Constant.SESSION_START_PROPERTY_START_REASON, startReason) }
             })
         }else {
             resumeFromBackground = true

@@ -84,9 +84,13 @@ class LifecycleObserverImpl : ActivityLifecycleCallbacks {
             }
         } catch (exception: Exception) {
             //exception.printStackTrace();
-            return startReasonJsonObj.toString()
+            return null
         }
-        return startReasonJsonObj.toString()
+        return  if (startReasonJsonObj.toString() == "{}"){
+             null
+        }else{
+            startReasonJsonObj.toString()
+        }
     }
 
 }
