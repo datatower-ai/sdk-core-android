@@ -165,6 +165,11 @@ class PresetEventManager {
                         failedReason
                     )
                 }
+            },
+            insertHandler = { code: Int, _: String ->
+                if (code == 0) {
+                    EventDateAdapter.getInstance()?.isAppInstallInserted = true
+                }
             }
         )
 

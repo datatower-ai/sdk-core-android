@@ -129,11 +129,11 @@ class EventTrackManager {
             //事件属性, 常规事件与用户属性类型区分
             val eventProperties = if (eventType == Constant.EVENT_TYPE_TRACK) {
                 JSONObject(PropertyManager.instance.getCommonProperties()).apply {
-                    //应用是否在前台, 需要动态添加
-//                    put(
-//                        Constant.COMMON_PROPERTY_IS_FOREGROUND,
-//                        mDataAdapter?.isAppForeground
-//                    )
+                    //fps
+                    put(
+                        Constant.COMMON_PROPERTY_FPS,
+                        MemoryUtils.getFPS()
+                    )
                     //硬盘使用率
                     put(
                         Constant.COMMON_PROPERTY_STORAGE_USED,

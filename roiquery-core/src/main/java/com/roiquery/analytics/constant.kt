@@ -55,6 +55,7 @@ internal object Constant {
     const val COMMON_PROPERTY_NETWORK_TYPE        = "#network_type"
     const val COMMON_PROPERTY_SIMULATOR           = "#simulator"
     const val COMMON_PROPERTY_MEMORY_USED         = "#memory_used"
+    const val COMMON_PROPERTY_FPS                 = "#fps"
     const val COMMON_PROPERTY_STORAGE_USED        = "#storage_used"
     const val COMMON_PROPERTY_DEVICE_MODEL        = "#device_model"
     const val COMMON_PROPERTY_SCREEN_HEIGHT       = "#screen_height"

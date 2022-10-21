@@ -2,6 +2,7 @@ package com.roiquery.analytics_demo
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -44,7 +45,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        ROIQueryAnalytics.track("activity_on_pause")
+        Handler().postDelayed({
+            ROIQueryAnalytics.track("activity_on_pause")
+        },2000)
+
     }
 
 }

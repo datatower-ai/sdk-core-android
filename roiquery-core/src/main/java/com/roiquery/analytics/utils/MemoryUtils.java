@@ -8,11 +8,13 @@ import android.app.usage.StorageStatsManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.StatFs;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.text.TextUtils;
 import android.text.format.Formatter;
+import android.view.Choreographer;
 
 
 import androidx.annotation.NonNull;
@@ -31,10 +33,63 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-/**
- * Created by chensongsong on 2020/6/2.
- */
+
 public class MemoryUtils {
+
+    static  long firstVsync;
+    static  long secondVsync;
+    static  volatile int fps;
+
+    /**
+     * 获取FPS.
+     * */
+    public static int getFPS() {
+        if (fps == 0) {
+            fps = 60;
+        }
+        return fps;
+    }
+
+    /**
+     * 监听FPS.
+     * */
+    public static void listenFPS() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            final Choreographer.FrameCallback secondCallBack = new Choreographer.FrameCallback() {
+                @Override
+                public void doFrame(long frameTimeNanos) {
+                    secondVsync = frameTimeNanos;
+                    if (secondVsync <= firstVsync) {
+                        fps = 60;
+                    } else {
+                        long hz = 1000000000 / (secondVsync - firstVsync);
+                        if (hz > 70) {
+                            fps = 60;
+                        } else {
+                            fps = (int) hz;
+                        }
+                    }
+                }
+            };
+
+            final Choreographer.FrameCallback firstCallBack = new Choreographer.FrameCallback() {
+                @Override
+                public void doFrame(long frameTimeNanos) {
+                    firstVsync = frameTimeNanos;
+                    Choreographer.getInstance().postFrameCallback(secondCallBack);
+                }
+            };
+            final Handler handler = new Handler();
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    handler.postDelayed(this, 500);
+                    Choreographer.getInstance().postFrameCallback(firstCallBack);
+                }
+            };
+            handler.postDelayed(runnable, 500);
+        }
+    }
 
 
     public static String getMemoryUsed(Context context) {

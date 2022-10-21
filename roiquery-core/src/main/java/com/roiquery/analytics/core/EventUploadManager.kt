@@ -88,9 +88,6 @@ class EventUploadManager private constructor(
                 mErrorInsertDataMap[eventSyn] = eventJson
             }
             qualityReport(msg)
-        }else {
-            EventInfoCheckHelper.instance.checkAppInstallInsertState(eventName)
-            EventInfoCheckHelper.instance.checkFirstSessionStartInsertState(eventName, eventJson)
         }
         LogUtils.json(TAG , msg)
     }

@@ -1,6 +1,7 @@
 package com.roiquery.analytics.core
 
 import android.content.Context
+import android.os.Looper
 import android.os.SystemClock
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
@@ -58,7 +59,6 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
             dataAdapter?.dtId?.let {
                 if (it.isNotEmpty()) {
                     updateDTID(it)
-                    LogUtils.d("")
                     dataTowerIdHandler.invoke(it)
                     return@launch
                 }
@@ -89,6 +89,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
      * @return
      */
     private fun initCommonProperties(context: Context, initConfig: AnalyticsConfig?) {
+        initFPSListener()
         commonProperties = EventUtils.getCommonProperties(context, dataAdapter)
         initConfig?.let { config ->
             if (config.mCommonProperties != null) {
@@ -104,6 +105,13 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
                 }
             }
         }
+    }
+
+    private fun initFPSListener(){
+        if (null == Looper.myLooper()) {
+            Looper.prepare()
+        }
+        MemoryUtils.listenFPS()
     }
 
 
@@ -128,13 +136,14 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
                     val androidId = DeviceUtils.getAndroidID(context)
                     updateAndroidId(androidId)
                     it.resume(androidId)
+                } else {
+                    it.resume(gaid)
                 }
-                it.resume(gaid)
             }
         }
 
 
-    private fun initDTId( originalId: String): String {
+    private fun initDTId(originalId: String): String {
 
         val appId = AbstractAnalytics.mConfigOptions?.mAppId
 
@@ -154,6 +163,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
                 val info = AdvertisingIdClient.getAdvertisingIdInfo(context)
                 val id = info.id ?: ""
                 limitAdTrackingEnabled = info.isLimitAdTrackingEnabled
+//                limitAdTrackingEnabled = true
                 updateGAID(id)
             } catch (exception: Exception) {
                 LogUtils.d("getGAID", "onException:" + exception.message.toString())
@@ -184,7 +194,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
     }
 
 
-    fun updateIsForeground(isForeground: Boolean, startReason:String? ="") {
+    fun updateIsForeground(isForeground: Boolean, startReason: String? = "") {
         updateCommonProperties(
             Constant.COMMON_PROPERTY_IS_FOREGROUND,
             isForeground
@@ -196,21 +206,41 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
 
             updateCommonProperties(Constant.COMMON_PROPERTY_EVENT_SESSION, DataUtils.getSession())
 
-            EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_SESSION_START,JSONObject().apply {
-                put(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME, isFirstOpen)
-                put(Constant.SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND, resumeFromBackground)
-                startReason?.isNotEmpty().let {
-                    put(Constant.SESSION_START_PROPERTY_START_REASON, startReason) }
-            })
-        }else {
-            resumeFromBackground = true
-            EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_SESSION_END, JSONObject().apply {
-                if (sessionStartTime != 0L){
-                    val sessionDuration  = SystemClock.elapsedRealtime() - sessionStartTime
-                    put(Constant.SESSION_END_PROPERTY_SESSION_DURATION, sessionDuration)
-                    sessionStartTime = 0L
+            EventTrackManager.instance.trackNormalPreset(
+                Constant.PRESET_EVENT_SESSION_START,
+                JSONObject().apply {
+                    put(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME, isFirstOpen)
+                    put(
+                        Constant.SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND,
+                        resumeFromBackground
+                    )
+                    startReason?.isNotEmpty().let {
+                        put(Constant.SESSION_START_PROPERTY_START_REASON, startReason)
+                    }
+                },
+                insertHandler = { code: Int, _: String ->
+                    if (code == 0 && isFirstOpen == true) {
+                        EventDateAdapter.getInstance()?.isFirstSessionStartInserted = true
+                    }
                 }
-            })
+            )
+        } else {
+            resumeFromBackground = true
+            EventTrackManager.instance.trackNormalPreset(
+                Constant.PRESET_EVENT_SESSION_END,
+                JSONObject().apply {
+                    if (sessionStartTime != 0L) {
+                        val sessionDuration = SystemClock.elapsedRealtime() - sessionStartTime
+                        put(Constant.SESSION_END_PROPERTY_SESSION_DURATION, sessionDuration)
+                        sessionStartTime = 0L
+                    }
+                },
+                insertHandler = { code: Int, _: String ->
+                    if (code == 0) {
+                        removeCommonProperty(Constant.COMMON_PROPERTY_EVENT_SESSION)
+                    }
+                }
+            )
         }
     }
 
@@ -317,8 +347,5 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
         )
     }
 
-    fun removeSessionId(){
-        removeCommonProperty(Constant.COMMON_PROPERTY_EVENT_SESSION)
-    }
 
 }
