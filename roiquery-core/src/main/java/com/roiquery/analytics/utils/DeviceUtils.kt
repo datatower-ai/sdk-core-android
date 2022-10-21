@@ -52,12 +52,7 @@ object DeviceUtils {
         get() = if (TextUtils.isEmpty(Build.BRAND)) "UNKNOWN" else Build.BRAND.trim { it <= ' ' }
 
 
-    fun getROIQueryID(dataAdapter: EventDateAdapter?): String{
-        if (dataAdapter?.rqid.isNullOrEmpty()) {
-            return UUID.randomUUID().toString().replace("-", "").apply { dataAdapter?.rqid = this }
-        }
-        return  dataAdapter?.rqid ?: ""
-    }
+
 
 
     /**

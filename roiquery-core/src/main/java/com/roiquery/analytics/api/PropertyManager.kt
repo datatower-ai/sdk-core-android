@@ -38,7 +38,6 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
 
     private var sessionStartTime = 0L
 
-    private var gaid = ""
 
     fun init(context: Context, initConfig: AnalyticsConfig?, dataTowerIdHandler: (id: String) -> Unit) {
         dataAdapter = EventDateAdapter.getInstance(context)
@@ -50,18 +49,26 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
     private fun getDataTowerId(context: Context, dataTowerIdHandler: (id: String) -> Unit){
         scope.launch {
             getGAID(context)
+            dataAdapter?.dtId?.let {
+                if (it.isNotEmpty()) {
+                    updateDTID(it)
+                    dataTowerIdHandler.invoke(it)
+                    return@launch
+                }
+            }
             dataTowerIdHandler.invoke(initDTId(context))
         }
     }
 
     private fun initDTId(context: Context):String {
+
         val appId = AbstractAnalytics.mConfigOptions?.mAppId
 
-        val dtIdOriginal = (if (gaid.isEmpty() || limitAdTrackingEnabled){
+        val dtIdOriginal = (if (getGAID().isEmpty() || limitAdTrackingEnabled){
             val androidId = DeviceUtils.getAndroidID(context)
             updateAndroidId(androidId)
             androidId
-        }  else gaid).plus("+$appId")
+        }  else getGAID()).plus("+$appId")
 
         val dtId = DataEncryption.instance.str2Sha1Str(dtIdOriginal)
         updateDTID(dtId)
@@ -194,16 +201,35 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
         }
     }
 
-    private fun updateDTID(dtId: String){
-        if (dtId.isEmpty()){
+    fun getDTID(): String{
+        (getEventInfo()[Constant.EVENT_INFO_DT_ID] as String?)?.let {
+            if (it.isNotEmpty()) {
+                return it
+            }
+        }
+        return ""
+    }
+
+    private fun updateDTID(id: String){
+        if (id.isEmpty()){
             return
         }
-        dataAdapter?.dtId = dtId
+        if(dataAdapter?.dtId?.isEmpty() == true){
+            dataAdapter?.dtId = id
+        }
         updateEventInfo(
-            Constant.EVENT_INFO_DT_ID, dtId
+            Constant.EVENT_INFO_DT_ID, id
         )
     }
 
+    fun getGAID(): String{
+        (getEventInfo()[Constant.EVENT_INFO_GAID] as String?)?.let {
+            if (it.isNotEmpty()) {
+                return it
+            }
+        }
+        return ""
+    }
 
     private fun updateGAID(id: String){
         if(id.isEmpty() || limitAdTrackingEnabled){
@@ -222,9 +248,17 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
             })
     }
 
+    fun getAndroidId(): String{
+        (getEventInfo()[Constant.EVENT_INFO_ANDROID_ID] as String?)?.let {
+            if (it.isNotEmpty()) {
+                return it
+            }
+        }
+        return ""
+    }
+
     private fun updateAndroidId(id: String){
         updateEventInfo(Constant.EVENT_INFO_ANDROID_ID, id)
-
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET_ONCE, JSONObject().apply {
                 put(Constant.USER_PROPERTY_ACTIVE_ANDROID_ID, id)
@@ -238,12 +272,14 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
         )
     }
 
-
     fun updateACID(acid: String) {
+        if(acid.isEmpty()) return
+        EventDateAdapter.getInstance()?.accountId = acid
         updateEventInfo(Constant.EVENT_INFO_ACID, acid)
     }
 
-    fun updateFireBaseInstanceId(fiid: String) {
+    fun updateFireBaseInstanceId(fiid: String?) {
+        if(fiid?.isEmpty() == true) return
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET,
             JSONObject().apply {
@@ -252,16 +288,8 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
         )
     }
 
-    fun updateFCMToken(fcmToken: String) {
-        EventTrackManager.instance.trackUser(
-            Constant.PRESET_EVENT_USER_SET,
-            JSONObject().apply {
-                put(Constant.USER_PROPERTY_LATEST_FCM_TOKEN, fcmToken)
-            }
-        )
-    }
-
-    fun updateAFID(afid: String) {
+    fun updateAFID(afid: String?) {
+        if(afid?.isEmpty() == true) return
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET,
             JSONObject().apply {
@@ -270,7 +298,8 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
         )
     }
 
-    fun updateKOID(koid: String) {
+    fun updateKOID(koid: String?) {
+        if(koid?.isEmpty() == true) return
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET,
             JSONObject().apply {

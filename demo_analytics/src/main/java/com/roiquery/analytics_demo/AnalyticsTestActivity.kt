@@ -48,7 +48,6 @@ class AnalyticsTestActivity : AppCompatActivity() {
 //            ROIQueryAnalytics.trackAppClose()
         }
 
-        ROIQueryAnalytics.setFCMToken("sdfsdfdfsdf")
     }
 
 

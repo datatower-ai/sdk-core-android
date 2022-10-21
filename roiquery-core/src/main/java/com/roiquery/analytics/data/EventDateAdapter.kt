@@ -55,7 +55,6 @@ class EventDateAdapter private constructor(
         }
     }
 
-
     /**
      * 从 Event 表中读取上报数据
      * @param limit 条数限制
@@ -79,86 +78,12 @@ class EventDateAdapter private constructor(
         get() = runBlocking{ getStringConfig(DataParams.CLOUD_CONFIG_AES_KEY) }
         set(value) = setStringConfig(DataParams.CLOUD_CONFIG_AES_KEY,value)
 
-    /**
-     *  ROIQuery id
-     *
-     * @return rqid
-     */
-    var rqid: String
-        get() = runBlocking{ getStringConfig(DataParams.CONFIG_ROIQUERY_ID) }
-        set(value) = setStringConfig(DataParams.CONFIG_ROIQUERY_ID,value)
-
-    /**
-     *  firebase app_instance_id
-     *
-     * @return fiid
-     */
-    var fiid: String
-        get() = runBlocking{ getStringConfig(DataParams.CONFIG_FIREBASE_IID) }
-        set(value) = setStringConfig(DataParams.CONFIG_FIREBASE_IID,value)
-
-
-    /**
-     *  firebase fcm_token
-     *
-     * @return fcm_token
-     */
-    var fcmToken: String
-        get() = runBlocking{ getStringConfig(DataParams.CONFIG_FCM_TOKEN) }
-        set(value) = setStringConfig(DataParams.CONFIG_FCM_TOKEN,value)
-
-
-    /**
-     *  AppsFlyers id
-     *
-     * @return afid
-     */
-    var afid: String
-        get() = runBlocking{ getStringConfig(DataParams.CONFIG_APPSFLYER_ID) }
-        set(value) = setStringConfig(DataParams.CONFIG_APPSFLYER_ID,value)
-
-
-    /**
-     *  kochava id
-     *
-     * @return koid
-     */
-    var koid: String
-        get() = runBlocking{ getStringConfig(DataParams.CONFIG_KOCHAVA_ID) }
-        set(value) = setStringConfig(DataParams.CONFIG_KOCHAVA_ID,value)
-
-    /**
-     *  appSet id
-     *
-     * @return appSetId
-     */
-    var appSetId: String
-        get() = runBlocking{ getStringConfig(DataParams.CONFIG_APP_SET_ID) }
-        set(value) = setStringConfig(DataParams.CONFIG_APP_SET_ID,value)
-    /**
-     *  oaid
-     *
-     * @return oaid
-     */
-    var oaid: String
-        get() = runBlocking{ getStringConfig(DataParams.CONFIG_OAID) }
-        set(value) = setStringConfig(DataParams.CONFIG_OAID,value)
-
-    /**
-     *  gaid
-     *
-     * @return gaid
-     */
-    var gaid: String
-        set(value) = setStringConfig(DataParams.CONFIG_GAID,value)
-        get() = runBlocking {   getStringConfig(DataParams.CONFIG_GAID)  }
-
 
     /**
      * 是否上报数据，默认是
      */
     var enableUpload: Boolean
-        get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_ENABLE_UPLOADS)}
+        get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_ENABLE_UPLOADS,true)}
         set(value) = setBooleanConfig(DataParams.CONFIG_ENABLE_UPLOADS,value)
 
 
@@ -166,7 +91,7 @@ class EventDateAdapter private constructor(
      * 是否采集数据，默认是
      */
     var enableTrack: Boolean
-        get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_ENABLE_TRACK)}
+        get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_ENABLE_TRACK,true)}
         set(value) = setBooleanConfig(DataParams.CONFIG_ENABLE_TRACK,value)
 
 
@@ -177,14 +102,16 @@ class EventDateAdapter private constructor(
         get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_FIRST_OPEN) }
         set(value) = setBooleanConfig(DataParams.CONFIG_FIRST_OPEN,value)
 
+    /**
+     * install 事件的插入数据库状态
+     */
+    var isAppInstallInserted: Boolean
+        get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE,false) }
+        set(value) = setBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE, value)
 
     /**
-     * app 是否在后台
+     * DataTower id
      */
-    var isAppForeground: Boolean
-        get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_IS_FOREGROUND)}
-        set(value) = setBooleanConfig(DataParams.CONFIG_IS_FOREGROUND,value)
-
     var dtId : String
         set(value) = setStringConfig(DataParams.CONFIG_DT_ID,value)
         get() = runBlocking {   getStringConfig(DataParams.CONFIG_DT_ID)  }

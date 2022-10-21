@@ -56,7 +56,6 @@ public class CoreActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.button_fcm).setOnClickListener(v -> {
-            ROIQueryAnalytics.setFCMToken(fcm_token);
         });
 
         findViewById(R.id.button_afid).setOnClickListener(v -> {
@@ -64,7 +63,6 @@ public class CoreActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.button_asid).setOnClickListener(v -> {
-            ROIQueryAnalytics.setAppSetId(asid);
         });
 
         findViewById(R.id.button_set_koid).setOnClickListener(v -> {

@@ -2,6 +2,7 @@ package com.roiquery.analytics.api
 
 import android.content.Context
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.api.AbstractAnalytics.Companion.mConfigOptions
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.core.EventUploadManager
@@ -14,94 +15,27 @@ import org.json.JSONObject
 
 class AnalyticsImp internal constructor() : AbstractAnalytics() {
 
-
-    override var maxCacheSize: Long?
-        get() = mConfigOptions?.mMaxCacheSize
-        set(value) {
-            value?.let { mConfigOptions?.setMaxCacheSize(it) }
-        }
-
-    override var flushInterval: Int?
-        get() = mConfigOptions?.mFlushInterval
-        set(value) {
-            value?.let { mConfigOptions?.setFlushInterval(it) }
-        }
-
-    override var flushBulkSize: Int?
-        get() = mConfigOptions?.mFlushBulkSize
-        set(value) {
-            value?.let { mConfigOptions?.setFlushBulkSize(it) }
-        }
-
     override var accountId: String?
         get() = EventDateAdapter.getInstance()?.accountId
         set(value) {
             if (value != null) {
-                EventDateAdapter.getInstance()?.accountId = value
                 PropertyManager.instance.updateACID(value)
             }
         }
 
-    override var rqid: String?
-        get() = EventDateAdapter.getInstance()?.rqid
-        set(value) {
+    override fun getDTId(): String? = EventDateAdapter.getInstance()?.dtId
 
-        }
+    override fun setFirebaseInstanceId(id: String?) {
+        PropertyManager.instance.updateFireBaseInstanceId(id)
+    }
 
-    override var fiid: String?
-        get() = EventDateAdapter.getInstance()?.fiid
-        set(value) {
-            if (value != null) {
-                EventDateAdapter.getInstance()?.fiid = value
-                PropertyManager.instance.updateFireBaseInstanceId(value)
-            }
-        }
+    override fun setAppsFlyersId(id: String?) {
+        PropertyManager.instance.updateAFID(id)
+    }
 
-    override var fcmToken: String?
-        get() = EventDateAdapter.getInstance()?.fcmToken
-        set(value) {
-            if (value != null) {
-                EventDateAdapter.getInstance()?.fcmToken = value
-                PropertyManager.instance.updateFCMToken(value)
-            }
-        }
-    override var afid: String?
-        get() = EventDateAdapter.getInstance()?.afid
-        set(value) {
-            if (value != null) {
-                EventDateAdapter.getInstance()?.afid = value
-                PropertyManager.instance.updateAFID(value)
-            }
-        }
-    override var koid: String?
-        get() = EventDateAdapter.getInstance()?.koid
-        set(value) {
-            if (value != null) {
-                EventDateAdapter.getInstance()?.koid = value
-                PropertyManager.instance.updateKOID(value)
-            }
-        }
-
-    override var appSetId: String?
-        get() = EventDateAdapter.getInstance()?.appSetId
-        set(value) {
-            if (value != null) {
-                EventDateAdapter.getInstance()?.appSetId = value
-            }
-        }
-
-
-    override var enableTrack: Boolean?
-        get() = EventDateAdapter.getInstance()?.enableTrack == true
-        set(value) {
-            value?.let {
-                EventDateAdapter.getInstance()?.enableTrack = it
-//                mTrackTaskManager!!.setDataTrackEnable(it)
-                mConfigOptions?.mEnableTrack = it
-            }
-
-        }
-
+    override fun setKochavaId(id: String?) {
+        PropertyManager.instance.updateKOID(id)
+    }
 
     override var enableUpload: Boolean?
         get() = EventDateAdapter.getInstance()?.enableUpload == true
@@ -113,13 +47,6 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
 
         }
 
-    override var flushNetworkPolicy: Int?
-        get() = mConfigOptions?.mNetworkTypePolicy
-        set(value) {
-            value?.let {
-                mConfigOptions?.setNetworkTypePolicy(it)
-            }
-        }
 
     override fun trackUser(eventName: String, properties: JSONObject?) {
         EventTrackManager.instance.trackUserWithPropertyCheck(eventName, properties)
@@ -132,10 +59,15 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
 
     fun trackNormal(eventName: String?, isPreset: Boolean, properties: Map<String, Any>?) {
         try {
-            trackNormal(eventName, isPreset, JSONObject(properties?.toMutableMap() ?: mutableMapOf<String, Any?>()))
+            trackNormal(
+                eventName,
+                isPreset,
+                JSONObject(properties?.toMutableMap() ?: mutableMapOf<String, Any?>())
+            )
         } catch (e: Exception) {
             ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_TRACK_ERROR,"event name: $eventName, properties map to json error" + e.stackTraceToString()
+                ROIQueryErrorParams.CODE_TRACK_ERROR,
+                "event name: $eventName, properties map to json error" + e.stackTraceToString()
             )
             return
         }
