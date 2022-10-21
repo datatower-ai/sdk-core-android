@@ -3,18 +3,36 @@ package com.roiquery.analytics.api
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
-import android.util.Log
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.utils.JsonUtils
 import org.json.JSONObject
+import java.lang.ref.WeakReference
 
 class LifecycleObserverImpl : ActivityLifecycleCallbacks {
 
+    private var mCurrentActivity: WeakReference<Activity?>? = null
+    init {
+        ProcessLifecycleOwner.get().lifecycle.addObserver(object: LifecycleEventObserver {
+            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                if (event == Lifecycle.Event.ON_START) {
+                    ROIQueryAnalytics.onAppForeground(getStartReason())
+                }else if (event == Lifecycle.Event.ON_STOP){
+                    ROIQueryAnalytics.onAppBackground()
+                }
+            }
+        })
+    }
+
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+        mCurrentActivity = WeakReference(activity)
     }
 
     override fun onActivityStarted(activity: Activity) {
-        ROIQueryAnalytics.onAppForeground(getStartReason(activity))
+        mCurrentActivity = WeakReference(activity)
     }
 
     override fun onActivityResumed(activity: Activity) {
@@ -24,7 +42,7 @@ class LifecycleObserverImpl : ActivityLifecycleCallbacks {
     }
 
     override fun onActivityStopped(activity: Activity) {
-        ROIQueryAnalytics.onAppBackground()
+
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
@@ -33,11 +51,11 @@ class LifecycleObserverImpl : ActivityLifecycleCallbacks {
     override fun onActivityDestroyed(activity: Activity) {
     }
 
-    private fun getStartReason(currentActivity: Activity): String? {
+    private fun getStartReason(): String? {
         val startReasonJsonObj = JSONObject()
         val data = JSONObject()
         try {
-            val activity: Activity = currentActivity
+            mCurrentActivity?.get()?.let {activity->
             val intent = activity.intent
             if (intent != null) {
                 val uri = intent.dataString
@@ -62,6 +80,7 @@ class LifecycleObserverImpl : ActivityLifecycleCallbacks {
                     }
                     startReasonJsonObj.put("data", data)
                 }
+            }
             }
         } catch (exception: Exception) {
             //exception.printStackTrace();
