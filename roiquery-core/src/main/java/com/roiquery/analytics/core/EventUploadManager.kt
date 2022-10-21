@@ -371,7 +371,7 @@ class EventUploadManager private constructor(
     companion object {
         private const val TAG = Constant.LOG_TAG
         private const val FLUSH_QUEUE = 3
-        private const val FLUSH_DELAY = 0L
+        private const val FLUSH_DELAY = 1000L
         private const val DELETE_ALL = 4
 
         private var instancessss: EventUploadManager? = null

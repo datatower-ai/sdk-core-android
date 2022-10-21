@@ -1,7 +1,6 @@
 package com.roiquery.analytics.core
 
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.api.PropertyManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.TimeCalibration
 import org.json.JSONArray

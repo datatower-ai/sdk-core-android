@@ -7,7 +7,6 @@ import com.android.installreferrer.api.ReferrerDetails
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.api.PropertyBuilder
-import com.roiquery.analytics.api.PropertyManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.EventUtils
 import com.roiquery.analytics.utils.LogUtils

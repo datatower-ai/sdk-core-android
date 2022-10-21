@@ -9,6 +9,7 @@ import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.core.EventUploadManager
 import com.roiquery.analytics.core.PresetEventManager
+import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.ROIQueryErrorParams

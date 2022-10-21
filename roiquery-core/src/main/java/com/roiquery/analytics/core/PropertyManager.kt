@@ -1,12 +1,12 @@
-package com.roiquery.analytics.api
+package com.roiquery.analytics.core
 
 import android.content.Context
 import android.os.SystemClock
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryCoroutineScope
+import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
 import kotlinx.coroutines.Dispatchers
@@ -251,11 +251,6 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
             return
         }
         updateEventInfo(Constant.EVENT_INFO_GAID, id)
-
-        EventTrackManager.instance.trackUser(
-            Constant.PRESET_EVENT_USER_SET, JSONObject().apply {
-                put(Constant.USER_PROPERTY_LATEST_GAID, id)
-            })
 
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET_ONCE, JSONObject().apply {

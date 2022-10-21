@@ -196,7 +196,6 @@ object EventUtils {
     fun getCommonProperties(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
 
-
             //移动信号国家码
             DeviceUtils.getMcc(context).let {
                 if (it.isNotEmpty()) {

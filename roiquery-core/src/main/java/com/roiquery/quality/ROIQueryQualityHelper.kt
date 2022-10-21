@@ -1,7 +1,7 @@
 package com.roiquery.quality
 
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.api.PropertyManager
+import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
