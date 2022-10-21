@@ -35,7 +35,7 @@ class EventUploadManager private constructor(
     private var mDisableUploadCount = 0
 
 
-    fun enqueueEventMessage(name: String, eventJson: JSONObject, eventSyn: String) {
+    fun enqueueEventMessage(name: String, eventJson: JSONObject, eventSyn: String, insertHandler: ((code: Int, msg: String) -> Unit)? = null) {
         if (mDateAdapter == null) return
         synchronized(mDateAdapter) {
             scope.launch {
@@ -43,7 +43,7 @@ class EventUploadManager private constructor(
                     //插入数据库
                     val insertCode = mDateAdapter.addJSON(eventJson, eventSyn)
                     //检测插入结果
-                    checkInsertResult(insertCode, name, eventJson, eventSyn)
+                    checkInsertResult(insertCode, name, eventJson, eventSyn, insertHandler)
                     //发送上报的message
                     Message.obtain().apply {
                         //上报标志
@@ -56,6 +56,7 @@ class EventUploadManager private constructor(
                         ROIQueryErrorParams.CODE_INIT_DB_ERROR,
                         "event name: $name ," + e.stackTraceToString(),ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR
                     )
+                    insertHandler?.invoke(ROIQueryErrorParams.CODE_INIT_DB_ERROR, ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR)
                 }
 
             }
@@ -79,16 +80,14 @@ class EventUploadManager private constructor(
         }
     }
 
-    private fun checkInsertResult(insertCode: Int, eventName: String, eventJson: JSONObject, eventSyn: String){
+    private fun checkInsertResult(insertCode: Int, eventName: String, eventJson: JSONObject, eventSyn: String, insertHandler: ((code: Int, msg: String) -> Unit)? = null){
         val msg = if (insertCode < 0) " Failed to insert the event " else " the event: $eventName  has been inserted to db，code = $insertCode  "
+        insertHandler?.invoke(insertCode, msg)
         if (insertCode < 0) {
             if (!mErrorInsertDataMap.containsKey(eventSyn) && mErrorInsertDataMap.size < 20) {
                 mErrorInsertDataMap[eventSyn] = eventJson
             }
             qualityReport(msg)
-        }else {
-            EventInfoCheckHelper.instance.checkAppInstallInsertState(eventName)
-            EventInfoCheckHelper.instance.checkFirstSessionStartInsertState(eventName, eventJson)
         }
         LogUtils.json(TAG , msg)
     }
@@ -371,7 +370,7 @@ class EventUploadManager private constructor(
     companion object {
         private const val TAG = Constant.LOG_TAG
         private const val FLUSH_QUEUE = 3
-        private const val FLUSH_DELAY = 0L
+        private const val FLUSH_DELAY = 1000L
         private const val DELETE_ALL = 4
 
         private var instancessss: EventUploadManager? = null

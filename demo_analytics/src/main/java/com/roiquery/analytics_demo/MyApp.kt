@@ -10,7 +10,7 @@ class MyApp : Application() {
     override fun onCreate() {
         super.onCreate()
         //init SDK
-        ROIQuery.initSDK(this,"dt_c054cd56b91c8b7a",ROIQueryChannel.GP,true)
+        ROIQuery.initSDK(this,"dt_id_test",ROIQueryChannel.GP,false)
 
         //mock data
         if (SharedPreferencesUtils.getParam(this,"first_open",true) as Boolean) {

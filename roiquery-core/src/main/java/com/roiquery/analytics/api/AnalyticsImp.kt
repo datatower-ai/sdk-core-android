@@ -2,10 +2,10 @@ package com.roiquery.analytics.api
 
 import android.content.Context
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.api.AbstractAnalytics.Companion.mConfigOptions
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.core.EventUploadManager
+import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper

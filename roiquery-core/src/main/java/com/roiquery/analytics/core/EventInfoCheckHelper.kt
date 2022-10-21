@@ -1,7 +1,6 @@
 package com.roiquery.analytics.core
 
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.api.PropertyManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.TimeCalibration
 import org.json.JSONArray
@@ -137,29 +136,6 @@ class EventInfoCheckHelper private constructor() {
     private fun isNewFormatData(eventInfo: JSONObject) =
         eventInfo.has(Constant.EVENT_TIME_CALIBRATED) && eventInfo.has(Constant.EVENT_BODY)
 
-
-
-    fun checkAppInstallInsertState(eventName: String){
-        try {
-            if(eventName == Constant.PRESET_EVENT_APP_INSTALL){
-                EventDateAdapter.getInstance()?.isAppInstallInserted = true
-            }
-        } catch (e: Exception){
-
-        }
-    }
-
-    fun checkFirstSessionStartInsertState(eventName: String, eventInfo: JSONObject){
-        try {
-            if(eventName == Constant.PRESET_EVENT_SESSION_START
-                && eventInfo.optJSONObject(Constant.EVENT_INFO_PROPERTIES)?.optBoolean(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME) == true
-            ){
-                EventDateAdapter.getInstance()?.isFirstSessionStartInserted = true
-            }
-        } catch (e: Exception){
-
-        }
-    }
 
 
 }

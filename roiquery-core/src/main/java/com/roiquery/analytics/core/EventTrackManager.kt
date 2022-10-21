@@ -1,7 +1,6 @@
 package com.roiquery.analytics.core
 
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.api.PropertyManager
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
@@ -58,8 +57,8 @@ class EventTrackManager {
      * 用于 track 预置事件
      *
      * */
-    fun trackNormalPreset(eventName: String?, properties: JSONObject? = JSONObject()){
-        trackInternal(eventName, Constant.EVENT_TYPE_TRACK, true, properties)
+    fun trackNormalPreset(eventName: String?, properties: JSONObject? = JSONObject(), insertHandler: ((code: Int, msg: String) -> Unit)? = null){
+        trackInternal(eventName, Constant.EVENT_TYPE_TRACK, true, properties, insertHandler)
     }
 
     fun trackUser(eventName: String?, properties: JSONObject? = JSONObject()){
@@ -71,15 +70,15 @@ class EventTrackManager {
         trackInternal(eventName, Constant.EVENT_TYPE_USER, true, properties)
     }
 
-    private fun trackInternal(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?) {
-        trackEvent(eventName, eventType, isPreset, properties)
+    private fun trackInternal(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?, insertHandler: ((code: Int, msg: String) -> Unit)? = null) {
+        trackEvent(eventName, eventType, isPreset, properties, insertHandler)
     }
 
-    private fun trackEvent(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?){
+    private fun trackEvent(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?, insertHandler: ((code: Int, msg: String) -> Unit)? = null){
         mTrackTaskManager?.let {
             try {
                 it.execute {
-                    addEventTask(eventName, eventType, isPreset, properties)
+                    addEventTask(eventName, eventType, isPreset, properties, insertHandler)
                 }
             } catch (e: Exception) {
                 LogUtils.printStackTrace(e)
@@ -87,6 +86,7 @@ class EventTrackManager {
                     ROIQueryErrorParams.CODE_TRACK_ERROR,
                     "event name: $eventName "
                 )
+                insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_ERROR,"trackEvent Exception")
             }
         }
     }
@@ -95,12 +95,19 @@ class EventTrackManager {
         eventName: String?,
         eventType: String,
         isPreset: Boolean,
-        properties: JSONObject? = null
+        properties: JSONObject? = null,
+        insertHandler: ((code: Int, msg: String) -> Unit)? = null
     ) {
         try {
-            if (eventName.isNullOrEmpty()) return
+            if (eventName.isNullOrEmpty()){
+                insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_EVENT_NAME_EMPTY,"event name isNullOrEmpty")
+                return
+            }
 
-            if (!isPreset && !assertEvent(eventName, properties)) return
+            if (!isPreset && !assertEvent(eventName, properties)){
+                insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_EVENT_ILLEGAL,"event illegal")
+                return
+            }
 
             var isTimeVerify: Boolean
 
@@ -122,21 +129,21 @@ class EventTrackManager {
             //事件属性, 常规事件与用户属性类型区分
             val eventProperties = if (eventType == Constant.EVENT_TYPE_TRACK) {
                 JSONObject(PropertyManager.instance.getCommonProperties()).apply {
-                    //应用是否在前台, 需要动态添加
-//                    put(
-//                        Constant.COMMON_PROPERTY_IS_FOREGROUND,
-//                        mDataAdapter?.isAppForeground
-//                    )
+                    //fps
+                    put(
+                        Constant.COMMON_PROPERTY_FPS,
+                        MemoryUtils.getFPS()
+                    )
                     //硬盘使用率
-//                    put(
-//                        Constant.COMMON_PROPERTY_STORAGE_USED,
-////                        MemoryUtils.getStorageUsed(mContext)
-//                    )
-//                    //内存使用率
-//                    put(
-//                        Constant.COMMON_PROPERTY_MEMORY_USED,
-////                        MemoryUtils.getMemoryUsed(mContext)
-//                    )
+                    put(
+                        Constant.COMMON_PROPERTY_STORAGE_USED,
+                        MemoryUtils.getDisk(AdtUtil.getInstance().applicationContext,false)
+                    )
+                    //内存使用率
+                    put(
+                        Constant.COMMON_PROPERTY_MEMORY_USED,
+                        MemoryUtils.getRAM(AdtUtil.getInstance().applicationContext)
+                    )
                     //合并用户自定义属性和通用属性
                     DataUtils.mergeJSONObject(properties, this, null)
                 }
@@ -154,9 +161,12 @@ class EventTrackManager {
             }
 
             mAnalyticsManager?.enqueueEventMessage(
-                eventName, data, eventInfo.optString(
+                eventName,
+                data,
+                eventInfo.optString(
                     Constant.EVENT_INFO_SYN
-                )
+                ),
+                insertHandler
             )
             //如果有插入失败的数据，则一起插入
             mAnalyticsManager?.enqueueErrorInsertEventMessage()
@@ -164,6 +174,7 @@ class EventTrackManager {
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
             trackQualityEvent("trackEvent&&$eventName&& ${e.message}")
+            insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_ERROR, ROIQueryErrorParams.TRACK_GENERATE_EVENT_ERROR)
         }
     }
 

@@ -2,6 +2,7 @@ package com.roiquery.analytics_demo
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -37,77 +38,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.button_test_memory).setOnClickListener {
-            params["SOURCE"] = "source"
-            params["RESULT"] = "result"
-            params["ERROR_MSG"] = "errorMessage"
-            ROIQueryAnalytics.track("SERVERS_REFRESH_FINISH1", params)
-            params.clear()
 
-            params["SOURCE"] = "source"
-            params["RESULT"] = "result"
-            params["ERROR_MSG"] = "errorMessage"
-            ROIQueryAnalytics.track("SERVERS_REFRESH_FINISH2", params)
-            params.clear()
         }
     }
 
-    private val params: MutableMap<String, Any> = HashMap()
 
-    private fun track1() {
-        params["SOURCE"] = "source"
-        params["RESULT"] = "result"
-        params["ERROR_MSG"] = "errorMessage"
-        ROIQueryAnalytics.track("SERVERS_REFRESH_FINISH1", params)
-        params.clear()
+    override fun onPause() {
+        super.onPause()
+        Handler().postDelayed({
+            ROIQueryAnalytics.track("activity_on_pause")
+        },2000)
+
     }
-
-    private fun track2() {
-        params["SOURCE"] = "source"
-        params["RESULT"] = "result"
-        params["ERROR_MSG"] = "errorMessage"
-        ROIQueryAnalytics.track("SERVERS_REFRESH_FINISH2", params)
-        params.clear()
-    }
-
-
-
-
-
-//    public String getFromAssets(String fileName) {
-//        try {
-//            InputStreamReader inputReader = new InputStreamReader(getResources().getAssets().open(fileName));
-//            BufferedReader bufReader = new BufferedReader(inputReader);
-//            String line = "";
-//            String result = "";
-//            while ((line = bufReader.readLine()) != null)
-//                result += line;
-//            return result;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return "";
-//    }
-
-    fun readAssetsTxt(fileName: String): String?
-    {
-        val input = assets.open("$fileName")
-        val instruments = BufferedReader(InputStreamReader(input))
-        try
-        {
-
-//            Log.e("获取的assets文本内容----", instruments.readLines().toString()!!)
-            return instruments.readLines().toString()
-        }
-        catch (e: IOException)
-        {
-            e.printStackTrace()
-        }
-        finally
-        {
-            instruments.close()
-        }
-        return "读取失败,请检查文件名称及文件是否存在!"
-    }
-
 
 }

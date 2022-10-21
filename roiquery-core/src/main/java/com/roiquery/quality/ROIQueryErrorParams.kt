@@ -14,6 +14,8 @@ internal object ROIQueryErrorParams {
     const val CODE_INIT_CONFIG_ERROR = 1001
     const val CODE_INIT_EXCEPTION = 1002
     const val CODE_TRACK_ERROR = 2001
+    const val CODE_TRACK_EVENT_NAME_EMPTY = 2011
+    const val CODE_TRACK_EVENT_ILLEGAL = 2012
     const val CODE_INIT_DB_ERROR = 2007
     const val CODE_INSERT_DB_NORMAL_ERROR = 2003
     const val CODE_INSERT_DB_OUT_OF_ROW_ERROR = 2004

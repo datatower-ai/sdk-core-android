@@ -2,7 +2,7 @@ package com.roiquery.analytics
 
 import android.content.Context
 import com.roiquery.analytics.api.AnalyticsImp
-import com.roiquery.analytics.api.PropertyManager
+import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.utils.AdtUtil
 import com.roiquery.analytics.utils.AppLifecycleHelper
