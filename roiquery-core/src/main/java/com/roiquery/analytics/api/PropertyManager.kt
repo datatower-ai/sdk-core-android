@@ -162,7 +162,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
     }
 
 
-    fun updateIsForeground(isForeground: Boolean) {
+    fun updateIsForeground(isForeground: Boolean,startReason:String? ="") {
         updateCommonProperties(
             Constant.COMMON_PROPERTY_IS_FOREGROUND,
             isForeground
@@ -179,7 +179,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
             EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_SESSION_START,JSONObject().apply {
                 put(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME, isFirstOpen)
                 put(Constant.SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND, resumeFromBackground)
-                put(Constant.SESSION_START_PROPERTY_START_REASON, "")
+                put(Constant.SESSION_START_PROPERTY_START_REASON, startReason)
             })
         }else {
             resumeFromBackground = true

@@ -1,5 +1,6 @@
 package com.roiquery.analytics.api
 
+import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -22,6 +23,7 @@ import com.roiquery.quality.ROIQueryQualityHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.CoroutineContext
@@ -59,10 +61,10 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
             initConfig(context)
             initLocalData(context)
             initTracker()
+            registerAppLifecycleListener(context)
             initProperties(context, dataTowerIdHandler = {
                 initCloudConfig(context, it)
                 registerNetworkStatusChangedListener(context)
-                registerAppLifecycleListener(context)
                 trackPresetEvent(context)
                 onInitSuccess()
             })
@@ -116,7 +118,7 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
      */
     private fun registerAppLifecycleListener(context: Context) {
         if (ProcessUtils.isInMainProcess(context)) {
-            ProcessLifecycleOwner.get().lifecycle.addObserver(LifecycleObserverImpl())
+            (context.applicationContext as Application).registerActivityLifecycleCallbacks(LifecycleObserverImpl())
         }
     }
 

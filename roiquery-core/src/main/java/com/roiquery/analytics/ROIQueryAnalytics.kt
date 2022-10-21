@@ -1,11 +1,9 @@
 package com.roiquery.analytics
 
 import android.content.Context
-import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.api.PropertyManager
 import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.AdtUtil
 import com.roiquery.analytics.utils.AppLifecycleHelper
 import com.roiquery.analytics.utils.LogUtils
@@ -215,9 +213,9 @@ open class ROIQueryAnalytics {
          * app 进入前台
          *
          */
-        internal fun onAppForeground() {
+        internal fun onAppForeground(startReason: String?) {
             try {
-                PropertyManager.instance.updateIsForeground(true)
+                PropertyManager.instance.updateIsForeground(true,startReason)
                 LogUtils.d("trackAppStateChanged","onAppForeground")
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppForeground()
