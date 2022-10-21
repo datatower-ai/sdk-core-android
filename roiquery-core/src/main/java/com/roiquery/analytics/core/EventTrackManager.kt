@@ -57,8 +57,8 @@ class EventTrackManager {
      * 用于 track 预置事件
      *
      * */
-    fun trackNormalPreset(eventName: String?, properties: JSONObject? = JSONObject()){
-        trackInternal(eventName, Constant.EVENT_TYPE_TRACK, true, properties)
+    fun trackNormalPreset(eventName: String?, properties: JSONObject? = JSONObject(), insertHandler: ((code: Int, msg: String) -> Unit)? = null){
+        trackInternal(eventName, Constant.EVENT_TYPE_TRACK, true, properties, insertHandler)
     }
 
     fun trackUser(eventName: String?, properties: JSONObject? = JSONObject()){
@@ -70,15 +70,15 @@ class EventTrackManager {
         trackInternal(eventName, Constant.EVENT_TYPE_USER, true, properties)
     }
 
-    private fun trackInternal(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?) {
-        trackEvent(eventName, eventType, isPreset, properties)
+    private fun trackInternal(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?, insertHandler: ((code: Int, msg: String) -> Unit)? = null) {
+        trackEvent(eventName, eventType, isPreset, properties, insertHandler)
     }
 
-    private fun trackEvent(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?){
+    private fun trackEvent(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?, insertHandler: ((code: Int, msg: String) -> Unit)? = null){
         mTrackTaskManager?.let {
             try {
                 it.execute {
-                    addEventTask(eventName, eventType, isPreset, properties)
+                    addEventTask(eventName, eventType, isPreset, properties, insertHandler)
                 }
             } catch (e: Exception) {
                 LogUtils.printStackTrace(e)
@@ -86,6 +86,7 @@ class EventTrackManager {
                     ROIQueryErrorParams.CODE_TRACK_ERROR,
                     "event name: $eventName "
                 )
+                insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_ERROR,"trackEvent Exception")
             }
         }
     }
@@ -94,12 +95,19 @@ class EventTrackManager {
         eventName: String?,
         eventType: String,
         isPreset: Boolean,
-        properties: JSONObject? = null
+        properties: JSONObject? = null,
+        insertHandler: ((code: Int, msg: String) -> Unit)? = null
     ) {
         try {
-            if (eventName.isNullOrEmpty()) return
+            if (eventName.isNullOrEmpty()){
+                insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_EVENT_NAME_EMPTY,"event name isNullOrEmpty")
+                return
+            }
 
-            if (!isPreset && !assertEvent(eventName, properties)) return
+            if (!isPreset && !assertEvent(eventName, properties)){
+                insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_EVENT_ILLEGAL,"event illegal")
+                return
+            }
 
             var isTimeVerify: Boolean
 
@@ -153,9 +161,12 @@ class EventTrackManager {
             }
 
             mAnalyticsManager?.enqueueEventMessage(
-                eventName, data, eventInfo.optString(
+                eventName,
+                data,
+                eventInfo.optString(
                     Constant.EVENT_INFO_SYN
-                )
+                ),
+                insertHandler
             )
             //如果有插入失败的数据，则一起插入
             mAnalyticsManager?.enqueueErrorInsertEventMessage()
@@ -163,6 +174,7 @@ class EventTrackManager {
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
             trackQualityEvent("trackEvent&&$eventName&& ${e.message}")
+            insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_ERROR, ROIQueryErrorParams.TRACK_GENERATE_EVENT_ERROR)
         }
     }
 

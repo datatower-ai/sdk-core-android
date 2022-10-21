@@ -204,7 +204,6 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
             })
         }else {
             resumeFromBackground = true
-            removeCommonProperty(Constant.COMMON_PROPERTY_EVENT_SESSION)
             EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_SESSION_END, JSONObject().apply {
                 if (sessionStartTime != 0L){
                     val sessionDuration  = SystemClock.elapsedRealtime() - sessionStartTime
@@ -318,5 +317,8 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
         )
     }
 
+    fun removeSessionId(){
+        removeCommonProperty(Constant.COMMON_PROPERTY_EVENT_SESSION)
+    }
 
 }

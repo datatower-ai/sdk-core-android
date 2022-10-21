@@ -59,31 +59,6 @@ object EventUtils {
 
     fun getLatestUserProperties(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
-
-//             dataAdapter?.fiid?.let {
-//                if (it.isNotEmpty()) {
-//                    put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, it)
-//                }
-//            }
-//
-//            dataAdapter?.fcmToken?.let {
-//                if (it.isNotEmpty()) {
-//                    put(Constant.USER_PROPERTY_LATEST_FCM_TOKEN, it)
-//                }
-//            }
-//
-//            dataAdapter?.afid?.let {
-//                if (it.isNotEmpty()) {
-//                    put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, it)
-//                }
-//            }
-//
-//            dataAdapter?.koid?.let {
-//                if (it.isNotEmpty()) {
-//                    put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, it)
-//                }
-//            }
-
             put(
                 Constant.USER_PROPERTY_LATEST_APP_VERSION_NAME,
                 AppInfoUtils.getAppVersionName(context)
@@ -107,7 +82,6 @@ object EventUtils {
                     put(Constant.USER_PROPERTY_ACTIVE_MNC, it)
                 }
             }
-
             put(
                 Constant.USER_PROPERTY_ACTIVE_OS_COUNTRY,
                 DeviceUtils.getLocalCountry(context)

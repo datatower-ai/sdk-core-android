@@ -151,9 +151,19 @@ class EventInfoCheckHelper private constructor() {
     fun checkFirstSessionStartInsertState(eventName: String, eventInfo: JSONObject){
         try {
             if(eventName == Constant.PRESET_EVENT_SESSION_START
-                && eventInfo.optJSONObject(Constant.EVENT_INFO_PROPERTIES)?.optBoolean(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME) == true
+                && eventInfo.optJSONObject(Constant.EVENT_BODY)?.optJSONObject(Constant.EVENT_INFO_PROPERTIES)?.optBoolean(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME) == true
             ){
                 EventDateAdapter.getInstance()?.isFirstSessionStartInserted = true
+            }
+        } catch (e: Exception){
+
+        }
+    }
+
+    fun checkSessionEndState(eventName: String){
+        try {
+            if(eventName == Constant.PRESET_EVENT_SESSION_END){
+                PropertyManager.instance.removeSessionId()
             }
         } catch (e: Exception){
 

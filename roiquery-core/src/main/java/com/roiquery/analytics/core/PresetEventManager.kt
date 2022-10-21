@@ -6,7 +6,6 @@ import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AbstractAnalytics
-import com.roiquery.analytics.api.PropertyBuilder
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.EventUtils
 import com.roiquery.analytics.utils.LogUtils
@@ -35,12 +34,12 @@ class PresetEventManager {
             return
         }
         mDataAdapter = EventDateAdapter.getInstance()
-        checkFirstOpen(context)
+        checkAppInstall(context)
         setLatestUserProperties(context)
         setActiveUserProperties(context)
     }
 
-    private fun checkFirstOpen(context: Context) {
+    private fun checkAppInstall(context: Context) {
         if (mDataAdapter?.isAppInstallInserted == false) {
             startAppAttribute(context)
         }
@@ -73,7 +72,7 @@ class PresetEventManager {
             getAppAttribute(context)
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
-            trackAppAttributeEvent(
+            trackAppInstallEvent(
                 ReferrerDetails(null),
                 "Exception: " + e.message.toString()
             )
@@ -93,9 +92,9 @@ class PresetEventManager {
                     when (responseCode) {
                         InstallReferrerClient.InstallReferrerResponse.OK -> {
                             // Connection established.
-                            trackAppAttributeEvent(referrerClient.installReferrer, "")
+                            trackAppInstallEvent(referrerClient.installReferrer, "")
                         }
-                        else -> trackAppAttributeEvent(
+                        else -> trackAppInstallEvent(
                             ReferrerDetails(null),
                             "responseCode:$responseCode"
                         )
@@ -103,7 +102,7 @@ class PresetEventManager {
                     }
                     referrerClient.endConnection()
                 } catch (e: Exception) {
-                    trackAppAttributeEvent(
+                    trackAppInstallEvent(
                         ReferrerDetails(null),
                         "responseCode:$responseCode" + ",Exception: " + e.message.toString()
                     )
@@ -115,13 +114,13 @@ class PresetEventManager {
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
                 try {
-                    trackAppAttributeEvent(
+                    trackAppInstallEvent(
                         ReferrerDetails(null),
                         "onInstallReferrerServiceDisconnected"
                     )
                     referrerClient.endConnection()
                 } catch (e: Exception) {
-                    trackAppAttributeEvent(
+                    trackAppInstallEvent(
                         ReferrerDetails(null),
                         "onInstallReferrerServiceDisconnected,Exception: " + e.message.toString()
                     )
@@ -132,46 +131,43 @@ class PresetEventManager {
     }
 
     /**
-     * 采集 app 归因属性事件
+     * 采集 app_install 事件
      */
-    private fun trackAppAttributeEvent(response: ReferrerDetails, failedReason: String) {
+    private fun trackAppInstallEvent(response: ReferrerDetails, failedReason: String) {
         val isOK = failedReason.isBlank()
         EventTrackManager.instance.trackNormalPreset(
             Constant.PRESET_EVENT_APP_INSTALL,
-            PropertyBuilder.newInstance()
-                .append(
-                    HashMap<String?, Any>().apply {
+            JSONObject().apply {
+                val cnl = AbstractAnalytics.mConfigOptions?.mChannel ?: ""
+                put(
+                    Constant.ATTRIBUTE_PROPERTY_REFERRER_URL,
+                    if (isOK) response.installReferrer + "&cnl=$cnl" else "cnl=$cnl"
+                )
+                put(
+                    Constant.ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME,
+                    if (isOK) response.referrerClickTimestampSeconds else 0
+                )
+                put(
+                    Constant.ATTRIBUTE_PROPERTY_APP_INSTALL_TIME,
+                    if (isOK) response.installBeginTimestampSeconds else 0
+                )
+                put(
+                    Constant.ATTRIBUTE_PROPERTY_INSTANT_EXPERIENCE_LAUNCHED,
+                    if (isOK) response.googlePlayInstantParam else false
+                )
+                put(
+                    Constant.ATTRIBUTE_PROPERTY_CNL,
+                    cnl
+                )
+                if (!isOK) {
+                    put(
+                        Constant.ATTRIBUTE_PROPERTY_FAILED_REASON,
+                        failedReason
+                    )
+                }
+            }
+        )
 
-                        val cnl = AbstractAnalytics.mConfigOptions?.mChannel ?: ""
-                        put(
-                            Constant.ATTRIBUTE_PROPERTY_REFERRER_URL,
-                            if (isOK) response.installReferrer + "&cnl=$cnl" else "cnl=$cnl"
-                        )
-                        put(
-                            Constant.ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME,
-                            if (isOK) response.referrerClickTimestampSeconds else 0
-                        )
-                        put(
-                            Constant.ATTRIBUTE_PROPERTY_APP_INSTALL_TIME,
-                            if (isOK) response.installBeginTimestampSeconds else 0
-                        )
-                        put(
-                            Constant.ATTRIBUTE_PROPERTY_INSTANT_EXPERIENCE_LAUNCHED,
-                            if (isOK) response.googlePlayInstantParam else false
-                        )
-                        put(
-                            Constant.ATTRIBUTE_PROPERTY_CNL,
-                            cnl
-                        )
-                        if (!isOK) {
-                            put(
-                                Constant.ATTRIBUTE_PROPERTY_FAILED_REASON,
-                                failedReason
-                            )
-                        }
-
-                    }
-                ).toJSONObject())
     }
 
 }
