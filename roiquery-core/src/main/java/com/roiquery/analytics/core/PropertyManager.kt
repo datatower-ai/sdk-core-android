@@ -58,6 +58,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
             dataAdapter?.dtId?.let {
                 if (it.isNotEmpty()) {
                     updateDTID(it)
+                    LogUtils.d("")
                     dataTowerIdHandler.invoke(it)
                     return@launch
                 }
@@ -268,6 +269,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
     }
 
     private fun updateAndroidId(id: String) {
+        if (id.isEmpty()) return
         updateEventInfo(Constant.EVENT_INFO_ANDROID_ID, id)
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET_ONCE, JSONObject().apply {

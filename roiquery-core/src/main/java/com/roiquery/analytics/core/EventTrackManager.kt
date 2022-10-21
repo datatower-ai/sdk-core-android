@@ -129,12 +129,12 @@ class EventTrackManager {
                     //硬盘使用率
                     put(
                         Constant.COMMON_PROPERTY_STORAGE_USED,
-                        MemoryUtils.getStorageUsed(AdtUtil.getInstance().applicationContext)
+                        MemoryUtils.getDisk(AdtUtil.getInstance().applicationContext,false)
                     )
                     //内存使用率
                     put(
                         Constant.COMMON_PROPERTY_MEMORY_USED,
-                        MemoryUtils.getMemoryUsed(AdtUtil.getInstance().applicationContext)
+                        MemoryUtils.getRAM(AdtUtil.getInstance().applicationContext)
                     )
                     //合并用户自定义属性和通用属性
                     DataUtils.mergeJSONObject(properties, this, null)

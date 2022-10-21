@@ -7,16 +7,10 @@ internal object Constant {
     //ROIQuery base url
     private val ANALYTICS_BASE_URL = if ("0" == BuildConfig.LINK_SITE) "https://test.roiquery.com" else ( if ("1" == BuildConfig.LINK_SITE)  "https://report-inner.roiquery.com" else "https://report.roiquery.com")
 
-//    private const val ANALYTICS_BASE_URL = "https://test.roiquery.com"
     //upload url
     val EVENT_REPORT_URL = "$ANALYTICS_BASE_URL/report"
-    // cloudConfig url
-    val CLOUD_CONFIG_URL = "$ANALYTICS_BASE_URL/remote/configurator"
-//    const val CLOUD_CONFIG_URL = "http://test.roiquery.com/remote/configurator"
 
     const val ERROR_REPORT_URL="https://debug.roiquery.com/debug"
-    //ntp server url
-    const val NTP_TIME_OUT_M = 31428
 
     //event upload size
     const val EVENT_REPORT_SIZE = 10
@@ -43,12 +37,6 @@ internal object Constant {
 
 
     const val COMMON_PROPERTY_EVENT_SESSION       = "#session_id"
-//    const val COMMON_PROPERTY_FIREBASE_IID        = "#firebase_iid"
-//    const val COMMON_PROPERTY_FCM_TOKEN           = "#fcm_token"
-//    const val COMMON_PROPERTY_APPSFLYER_ID        = "#appsflyer_id"
-//    const val COMMON_PROPERTY_KOCHAVA_ID          = "#kochava_id"
-//    const val COMMON_PROPERTY_APP_SET_ID          = "#app_set_id"
-//    const val COMMON_PROPERTY_ROIQUERY_ID         = "#instance_id"
     const val COMMON_PROPERTY_MCC                 = "#mcc"
     const val COMMON_PROPERTY_MNC                 = "#mnc"
     const val COMMON_PROPERTY_OS_COUNTRY          = "#os_country_code"
@@ -74,10 +62,9 @@ internal object Constant {
     const val COMMON_PROPERTY_IS_FOREGROUND       = "#is_foreground"
 
     //latest
-    const val USER_PROPERTY_LATEST_GAID           = "#latest_gaid"
-    const val USER_PROPERTY_LATEST_FIREBASE_IID   = "#latest_firebase_iid"
-    const val USER_PROPERTY_LATEST_APPSFLYER_ID   = "#latest_appsflyer_id"
-    const val USER_PROPERTY_LATEST_KOCHAVA_ID     = "#latest_kochava_id"
+    const val USER_PROPERTY_LATEST_FIREBASE_IID         = "#latest_firebase_iid"
+    const val USER_PROPERTY_LATEST_APPSFLYER_ID         = "#latest_appsflyer_id"
+    const val USER_PROPERTY_LATEST_KOCHAVA_ID           = "#latest_kochava_id"
     const val USER_PROPERTY_LATEST_APP_VERSION_CODE     = "#latest_app_version_code"
     const val USER_PROPERTY_LATEST_APP_VERSION_NAME     = "#latest_app_version_name"
 
@@ -88,7 +75,6 @@ internal object Constant {
     const val USER_PROPERTY_ACTIVE_MNC                 = "#active_mnc"
     const val USER_PROPERTY_ACTIVE_OS_COUNTRY          = "#active_os_country_code"
     const val USER_PROPERTY_ACTIVE_OS_LANG             = "#active_os_lang"
-    const val USER_PROPERTY_ACTIVE_EVENT_TIME          = "#active_event_time"
     const val USER_PROPERTY_ACTIVE_PKG                 = "#active_pkg"
     const val USER_PROPERTY_ACTIVE_APP_VERSION_CODE    = "#active_app_version_code"
     const val USER_PROPERTY_ACTIVE_APP_VERSION_NAME    = "#active_app_version_name"
@@ -124,11 +110,9 @@ internal object Constant {
     const val SESSION_START_PROPERTY_START_REASON            = "#start_reason"
 
     //session_end
-
     const val SESSION_END_PROPERTY_SESSION_DURATION          = "#session_duration"
 
     //preset event name about Analytics
-    const val PRESET_EVENT_TAG = "#"
     const val EVENT_TYPE_TRACK = "track"
     const val EVENT_TYPE_USER  = "user"
 
@@ -150,9 +134,6 @@ internal object Constant {
 
     const val SDK_TYPE_ANDROID = "Android"
 
-    const val TIME_OFFSET_DEFAULT_VALUE = "0"
-
-
     const val TIME_FROM_ROI_NET_BODY = "[]"
 
 }
@@ -160,5 +141,4 @@ internal object Constant {
 
 object ROIQueryChannel{
     const val GP = "gp"
-    const val APPSTORE = "app_store"
 }
