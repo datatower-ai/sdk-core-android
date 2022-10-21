@@ -21,27 +21,26 @@ class EventInfoCheckHelper private constructor() {
             EventInfoCheckHelper()
         }
     }
-
-    fun correctEventTime(data: String, correctFinish: (info: String) -> Unit) {
+    fun  correctEventInfo(data: String, correctFinish: (info: String) -> Unit){
         try {
 
             val jsonArray = JSONArray(data)
             val length = jsonArray.length()
             if (length == 0) {
+                correctFinish.invoke("")
                 return
             }
             val correctedEventInfo = JSONArray()
 
             for (index in 0 until length) {
                 jsonArray.getJSONObject(index)?.let { it ->
-                    if (isNewFormatData(it)) {
-                        correctNewFormatData(it, correctedEventInfo)
-                    } else {
-                        correctedEventInfo.put(it)
-                    }
+                 correctEventIdInfo(it)?.let {
+                     correctEventTime(it)?.let { correctData->
+                         correctedEventInfo.put(correctData)
+                     }
+                 }
                 }
             }
-
             correctFinish.invoke(correctedEventInfo.toString())
 
         } catch (e: JSONException) {
@@ -49,10 +48,56 @@ class EventInfoCheckHelper private constructor() {
         }
     }
 
+    private fun correctEventTime(data: JSONObject): JSONObject? {
+        return try {
+            if (isNewFormatData(data)) {
+                correctNewFormatData(data)
+            } else {
+                data
+            }
+        } catch (e: JSONException) {
+            null
+        }
+    }
+
+    private fun correctEventIdInfo(data: JSONObject):JSONObject? {
+        try {
+            val androidId = "androidId_test"
+            val dtId = "dt_id_test"
+            val gaid = "gaid_test"
+            if (androidId.isEmpty() || dtId.isEmpty() || gaid.isEmpty()) {
+                return null
+            }
+
+            (if (isNewFormatData(data)) data.optJSONObject(Constant.EVENT_BODY) else data)?.let { eventInfo ->
+                if (eventInfo.optString(Constant.EVENT_INFO_DT_ID).isEmpty()) {
+                    eventInfo.put(Constant.EVENT_INFO_DT_ID, dtId)
+                }
+                if (eventInfo.optString(Constant.EVENT_INFO_ANDROID_ID).isEmpty()) {
+                    eventInfo.put(Constant.EVENT_INFO_ANDROID_ID, androidId)
+                }
+                if (eventInfo.optString(Constant.EVENT_INFO_GAID).isEmpty()) {
+                    eventInfo.put(Constant.EVENT_INFO_GAID, gaid)
+                }
+                if (eventInfo.optString(Constant.EVENT_INFO_DT_ID)
+                        .isNotEmpty() && eventInfo.optString(
+                        Constant.EVENT_INFO_ANDROID_ID
+                    ).isNotEmpty() && eventInfo.optString(Constant.EVENT_INFO_GAID)
+                        .isNotEmpty()
+                ) {
+                        return data
+                }
+            }
+
+        } catch (e: JSONException) {
+           return null
+        }
+        return null
+    }
+
     private fun correctNewFormatData(
-        jsonEventBody: JSONObject,
-        correctedEventInfo: JSONArray
-    ) {
+        jsonEventBody: JSONObject
+    ):JSONObject? {
         jsonEventBody.optJSONObject(Constant.EVENT_BODY)?.let { eventInfo ->
 //            val presetEventName = eventNameForPreset(eventInfo)
 
@@ -71,17 +116,15 @@ class EventInfoCheckHelper private constructor() {
                         Constant.EVENT_INFO_TIME,
                         verifyTimeAsyncByGapTime
                     )
-
-                    correctedEventInfo.put(eventInfo)
-
+                    return eventInfo
                 } else {
                 }
             } else {
                 eventInfo.put(Constant.EVENT_INFO_TIME, infoTime)
-
-                correctedEventInfo.put(eventInfo)
+                return eventInfo
             }
         }
+        return null
     }
 
     private fun eventNameForPreset(eventInfo: JSONObject) =

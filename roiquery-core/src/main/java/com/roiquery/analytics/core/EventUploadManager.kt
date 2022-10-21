@@ -192,7 +192,7 @@ class EventUploadManager private constructor(
         scope.launch(Dispatchers.IO) {
             //事件主体，json格式
             eventsData?.let {
-                EventInfoCheckHelper.instance.correctEventTime(it) { info ->
+                EventInfoCheckHelper.instance.correctEventInfo(it) { info ->
                     launch(Dispatchers.Main) {
                         try {
                             if (info.isNotEmpty()) {
