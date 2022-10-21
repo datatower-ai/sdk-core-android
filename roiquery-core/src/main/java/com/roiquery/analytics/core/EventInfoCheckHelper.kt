@@ -66,7 +66,7 @@ class EventInfoCheckHelper private constructor() {
             val androidId = PropertyManager.instance.getAndroidId()
             val dtId = PropertyManager.instance.getDTID()
             val gaid = PropertyManager.instance.getGAID()
-            if (androidId.isEmpty() || dtId.isEmpty() || gaid.isEmpty()) {
+            if ((androidId.isEmpty()&& gaid.isEmpty()) || dtId.isEmpty() ) {
                 return null
             }
 
@@ -81,10 +81,10 @@ class EventInfoCheckHelper private constructor() {
                     eventInfo.put(Constant.EVENT_INFO_GAID, gaid)
                 }
                 if (eventInfo.optString(Constant.EVENT_INFO_DT_ID)
-                        .isNotEmpty() && eventInfo.optString(
+                        .isNotEmpty() && (eventInfo.optString(
                         Constant.EVENT_INFO_ANDROID_ID
-                    ).isNotEmpty() && eventInfo.optString(Constant.EVENT_INFO_GAID)
-                        .isNotEmpty()
+                    ).isNotEmpty() || eventInfo.optString(Constant.EVENT_INFO_GAID)
+                        .isNotEmpty())
                 ) {
                         return data
                 }
