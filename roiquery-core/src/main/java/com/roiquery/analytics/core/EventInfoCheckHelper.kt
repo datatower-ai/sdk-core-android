@@ -72,7 +72,7 @@ class EventInfoCheckHelper private constructor() {
                 if (eventInfo.optString(Constant.EVENT_INFO_DT_ID).isEmpty()) {
                     eventInfo.put(Constant.EVENT_INFO_DT_ID, dtId)
                 }
-                if (eventInfo.optString(Constant.EVENT_INFO_GAID).isEmpty()) {
+                if (eventInfo.optString(Constant.EVENT_INFO_GAID).isEmpty()&&gaid.isNotEmpty()) {
                     eventInfo.put(Constant.EVENT_INFO_GAID, gaid)
                 }
                 if (eventInfo.optString(Constant.EVENT_INFO_ANDROID_ID).isEmpty()&&eventInfo.optString(Constant.EVENT_INFO_GAID).isEmpty()) {
