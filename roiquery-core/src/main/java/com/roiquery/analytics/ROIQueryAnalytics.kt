@@ -139,8 +139,6 @@ open class ROIQueryAnalytics {
             AnalyticsImp.getInstance().fiid = id
         }
 
-
-
         /**
          * 设置 Firebase Cloud Message Token
          * @param token Firebase Cloud Message Token
@@ -169,10 +167,6 @@ open class ROIQueryAnalytics {
             AnalyticsImp.getInstance().koid = id
         }
 
-        @JvmStatic
-        fun setAppSetId(id: String?) {
-            AnalyticsImp.getInstance().appSetId = id
-        }
 
         /******************** internal *******************/
 

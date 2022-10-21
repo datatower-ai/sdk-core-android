@@ -19,38 +19,13 @@ interface IAnalytics {
 
 
     /**
-     * 两次数据发送的最小时间间隔，单位毫秒
-     * 默认值为 15 * 1000 毫秒
-     * 在每次调用 track、signUp 以及 profileSet 等接口的时候，都会检查如下条件，以判断是否向服务器上传数据:
-     * 1. 是否是 WIFI/3G/4G 网络条件
-     * 2. 是否满足发送条件之一:
-     * 1) 与上次发送的时间间隔是否大于 flushInterval
-     * 2) 本地缓存日志数目是否大于 flushBulkSize
-     * 如果满足这两个条件，则向服务器发送一次数据；如果不满足，则把数据加入到队列中，等待下次检查时把整个队列的内
-     * 容一并发送。需要注意的是，为了避免占用过多存储，队列最多只缓存 20MB 数据。
-     *
-     * @return 返回时间间隔，单位毫秒
-     */
-    /**
      * 设置两次数据发送的最小时间间隔
      *
      * @param flushInterval 时间间隔，单位毫秒
      */
 
     var flushInterval: Int?
-    /**
-     * 返回本地缓存日志的最大条目数
-     * 默认值为 100 条
-     * 在每次调用 track、signUp 以及 profileSet 等接口的时候，都会检查如下条件，以判断是否向服务器上传数据:
-     * 1. 是否是 WIFI/3G/4G 网络条件
-     * 2. 是否满足发送条件之一:
-     * 1) 与上次发送的时间间隔是否大于 flushInterval
-     * 2) 本地缓存日志数目是否大于 flushBulkSize
-     * 如果满足这两个条件，则向服务器发送一次数据；如果不满足，则把数据加入到队列中，等待下次检查时把整个队列的内
-     * 容一并发送。需要注意的是，为了避免占用过多存储，队列最多只缓存 32MB 数据。
-     *
-     * @return 返回本地缓存日志的最大条目数
-     */
+
     /**
      * 设置本地缓存日志的最大条目数，最小 50 条
      *
@@ -61,12 +36,12 @@ interface IAnalytics {
     /**
      * 设置当前用户的 acid
      */
-    var accountId: String?
+     var accountId: String?
 
     /**
-     * roiquery id
+     * DataTower id
      */
-    var rqid: String?
+    var dtid: String?
 
      /**
      * 设置当前用户Firebase的app_instance_id
@@ -90,16 +65,11 @@ interface IAnalytics {
      */
     var koid: String?
 
-    /**
-     * 设置谷歌开发者拥有的应用集ID
-     */
-    var appSetId: String?
 
-
-    /**
-     * 是否允许采集开启数据采集
-     */
-    var enableTrack: Boolean?
+//    /**
+//     * 是否允许采集开启数据采集
+//     */
+//    var enableTrack: Boolean?
 
     /**
      * 是否请求网络，默认是 true

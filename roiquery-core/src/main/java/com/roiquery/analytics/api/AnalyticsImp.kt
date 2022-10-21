@@ -2,6 +2,7 @@ package com.roiquery.analytics.api
 
 import android.content.Context
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.api.AbstractAnalytics.Companion.mConfigOptions
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.core.EventUploadManager
@@ -42,14 +43,12 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             }
         }
 
-    override var rqid: String?
-        get() = EventDateAdapter.getInstance()?.rqid
-        set(value) {
-
-        }
+    override var dtid: String?
+        get() = EventDateAdapter.getInstance()?.dtId
+        set(value) {}
 
     override var fiid: String?
-        get() = EventDateAdapter.getInstance()?.fiid
+        get() = {}
         set(value) {
             if (value != null) {
                 EventDateAdapter.getInstance()?.fiid = value
@@ -79,14 +78,6 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             if (value != null) {
                 EventDateAdapter.getInstance()?.koid = value
                 PropertyManager.instance.updateKOID(value)
-            }
-        }
-
-    override var appSetId: String?
-        get() = EventDateAdapter.getInstance()?.appSetId
-        set(value) {
-            if (value != null) {
-                EventDateAdapter.getInstance()?.appSetId = value
             }
         }
 
