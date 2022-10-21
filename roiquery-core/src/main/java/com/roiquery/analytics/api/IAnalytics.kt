@@ -5,33 +5,35 @@ import org.json.JSONObject
 interface IAnalytics {
 
 
-    /**
-     * 获取本地缓存上限制
-     *
-     * @return 字节
-     */
-    /**
-     * 设置本地缓存上限值，单位 byte，默认为 32MB：32 * 1024 * 1024，最小 16MB：16 * 1024 * 1024，若小于 16MB，则按 16MB 处理。
-     *
-     * @param maxCacheSize 单位 byte
-     */
-    var maxCacheSize: Long?
+//    /**
+//     * 获取本地缓存上限制
+//     *
+//     * @return 字节
+//     */
+//    /**
+//     * 设置本地缓存上限值，单位 byte，默认为 32MB：32 * 1024 * 1024，最小 16MB：16 * 1024 * 1024，若小于 16MB，则按 16MB 处理。
+//     *
+//     * @param maxCacheSize 单位 byte
+//     */
+//    var maxCacheSize: Long?
+//
+//
+//    /**
+//     * 设置两次数据发送的最小时间间隔
+//     *
+//     * @param flushInterval 时间间隔，单位毫秒
+//     */
+//
+//    var flushInterval: Int?
+//
+//    /**
+//     * 设置本地缓存日志的最大条目数，最小 50 条
+//     *
+//     * @param flushBulkSize 缓存数目
+//     */
+//    var flushBulkSize: Int?
 
 
-    /**
-     * 设置两次数据发送的最小时间间隔
-     *
-     * @param flushInterval 时间间隔，单位毫秒
-     */
-
-    var flushInterval: Int?
-
-    /**
-     * 设置本地缓存日志的最大条目数，最小 50 条
-     *
-     * @param flushBulkSize 缓存数目
-     */
-    var flushBulkSize: Int?
 
     /**
      * 设置当前用户的 acid
@@ -41,49 +43,30 @@ interface IAnalytics {
     /**
      * DataTower id
      */
-    var dtid: String?
+    fun  getDTId(): String?
 
      /**
      * 设置当前用户Firebase的app_instance_id
      */
-    var fiid: String?
-
-     /**
-     * 设置当前用户Firebase Cloud Message Token
-     */
-    var fcmToken: String?
-
+    fun setFirebaseInstanceId(id: String?)
 
     /**
      * 设置当前AppsFlyers id
      */
-    var afid: String?
-
+    fun setAppsFlyersId(id: String?)
 
     /**
      * 设置当kochava id
      */
-    var koid: String?
-
-
-//    /**
-//     * 是否允许采集开启数据采集
-//     */
-//    var enableTrack: Boolean?
+    fun setKochavaId(id: String?)
 
     /**
-     * 是否请求网络，默认是 true
+     * 是否上报数据，默认是 true
      *
-     * @return 是否请求网络
+     * @return 是否上报数据
      */
     var enableUpload: Boolean?
 
-    /**
-     * 设置 flush 时网络发送策略，默认 3G、4G、WI-FI 环境下都会尝试 flush
-     *
-     * @param networkType int 网络类型
-     */
-    var flushNetworkPolicy: Int?
 
     /**
      * 调用 track 接口，追踪一个带有属性的事件

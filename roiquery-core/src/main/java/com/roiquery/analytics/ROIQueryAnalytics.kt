@@ -17,8 +17,7 @@ open class ROIQueryAnalytics {
 
     companion object {
 
-        private var mAppLifecycleListeners =
-            mutableListOf<AppLifecycleHelper.OnAppStatusListener?>()
+        private var mAppLifecycleListeners = mutableListOf<AppLifecycleHelper.OnAppStatusListener?>()
 
         /**
          * 调用 track 接口，追踪一个带有属性的事件
@@ -44,9 +43,6 @@ open class ROIQueryAnalytics {
         @JvmStatic
         fun track(eventName: String?, properties: JSONObject?) =
             AnalyticsImp.getInstance().trackNormal(eventName, false,properties)
-
-
-
 
         /**
          * 设置一般的用户属性
@@ -106,7 +102,6 @@ open class ROIQueryAnalytics {
             AnalyticsImp.getInstance().userAppend(properties)
         }
 
-
         /**
          * 主动上报本地数据事件
          *
@@ -118,8 +113,7 @@ open class ROIQueryAnalytics {
          * 获取 DataTower instance id
          */
         @JvmStatic
-        fun getInstanceId() =
-            AnalyticsImp.getInstance().rqid
+        fun getDataTowerId() = AnalyticsImp.getInstance().getDTId()
 
         /**
          * 设置自有用户系统的id
@@ -136,16 +130,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun setFirebaseAppInstanceId(id: String?) {
-            AnalyticsImp.getInstance().fiid = id
-        }
-
-        /**
-         * 设置 Firebase Cloud Message Token
-         * @param token Firebase Cloud Message Token
-         */
-        @JvmStatic
-        fun setFCMToken(token: String?) {
-            AnalyticsImp.getInstance().fcmToken = token
+            AnalyticsImp.getInstance().setFirebaseInstanceId(id)
         }
 
 
@@ -155,7 +140,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun setAppsFlyerId(id: String?) {
-            AnalyticsImp.getInstance().afid = id
+            AnalyticsImp.getInstance().setAppsFlyersId(id)
         }
 
         /**
@@ -164,7 +149,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun setKochavaId(id: String?) {
-            AnalyticsImp.getInstance().koid = id
+            AnalyticsImp.getInstance().setKochavaId(id)
         }
 
 
@@ -234,7 +219,6 @@ open class ROIQueryAnalytics {
             } catch (e: Exception) {
                 LogUtils.printStackTrace("RoiqueryAnalytics", e)
             }
-
         }
 
 
