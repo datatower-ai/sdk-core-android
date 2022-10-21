@@ -107,7 +107,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
         }
     }
 
-    private fun initFPSListener(){
+    private fun initFPSListener() {
         if (null == Looper.myLooper()) {
             Looper.prepare()
         }
@@ -130,28 +130,39 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
     private suspend fun getOriginalId(context: Context) =
         suspendCoroutine<String> {
             scope.launch {
-                getGAIDFromClient(context)
-                val gaid = getGAID()
-                if (gaid.isEmpty() || limitAdTrackingEnabled) {
-                    val androidId = DeviceUtils.getAndroidID(context)
-                    updateAndroidId(androidId)
-                    it.resume(androidId)
-                } else {
-                    it.resume(gaid)
+                try {
+                    getGAIDFromClient(context)
+                    val gaid = getGAID()
+                    if (gaid.isEmpty() || limitAdTrackingEnabled) {
+                        val androidId = DeviceUtils.getAndroidID(context)
+                        updateAndroidId(androidId)
+                        it.resume(androidId)
+                    } else {
+                        it.resume(gaid)
+                    }
+                } catch (e: Exception) {
+                    it.resume("")
                 }
             }
         }
 
 
+    /**
+     * 异常情况下，允许空值，dt_id 为空的数据不会上报，等待 dt_id 有值时再同步dt_id为空的数据
+     */
     private fun initDTId(originalId: String): String {
-
-        val appId = AbstractAnalytics.mConfigOptions?.mAppId
-
-        val dtIdOriginal = originalId.plus("+$appId")
-
-        val dtId = DataEncryption.instance.str2Sha1Str(dtIdOriginal)
-        updateDTID(dtId)
-        return dtId
+        try {
+            if (originalId.isEmpty()) {
+                return ""
+            }
+            val appId = AbstractAnalytics.mConfigOptions?.mAppId
+            val dtIdOriginal = originalId.plus("+$appId")
+            val dtId = DataEncryption.instance.str2Sha1Str(dtIdOriginal)
+            updateDTID(dtId)
+            return dtId
+        } catch (e: Exception) {
+            return ""
+        }
     }
 
     /**
@@ -162,8 +173,8 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
             try {
                 val info = AdvertisingIdClient.getAdvertisingIdInfo(context)
                 val id = info.id ?: ""
-                limitAdTrackingEnabled = info.isLimitAdTrackingEnabled
-//                limitAdTrackingEnabled = true
+//                limitAdTrackingEnabled = info.isLimitAdTrackingEnabled
+                limitAdTrackingEnabled = true
                 updateGAID(id)
             } catch (exception: Exception) {
                 LogUtils.d("getGAID", "onException:" + exception.message.toString())
