@@ -154,10 +154,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
                 val info = AdvertisingIdClient.getAdvertisingIdInfo(context)
                 val id = info.id ?: ""
                 limitAdTrackingEnabled = info.isLimitAdTrackingEnabled
-
-                if (id.isNotEmpty() && !limitAdTrackingEnabled) {
-                    updateGAID(id)
-                }
+                updateGAID(id)
             } catch (exception: Exception) {
                 LogUtils.d("getGAID", "onException:" + exception.message.toString())
             }
