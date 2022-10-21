@@ -2,6 +2,7 @@ package com.roiquery.analytics.core
 
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryAnalytics
+import com.roiquery.analytics.api.PropertyManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.TimeCalibration
@@ -62,9 +63,9 @@ class EventInfoCheckHelper private constructor() {
 
     private fun correctEventIdInfo(data: JSONObject):JSONObject? {
         try {
-            val androidId = "androidId_test"
-            val dtId = "dt_id_test"
-            val gaid = "gaid_test"
+            val androidId = PropertyManager.instance.getAndroidId()
+            val dtId = PropertyManager.instance.getDTID()
+            val gaid = PropertyManager.instance.getGAID()
             if (androidId.isEmpty() || dtId.isEmpty() || gaid.isEmpty()) {
                 return null
             }
