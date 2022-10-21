@@ -53,7 +53,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
                 if (it.isNotEmpty()) {
                     updateDTID(it)
                     dataTowerIdHandler.invoke(it)
-                    return@let
+                    return@launch
                 }
             }
             dataTowerIdHandler.invoke(initDTId(context))
