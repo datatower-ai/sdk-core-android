@@ -59,6 +59,11 @@ object EventUtils {
 
     fun getLatestUserProperties(context: Context, dataAdapter: EventDateAdapter?) =
         mutableMapOf<String, Any?>().apply {
+            //debug 标志
+            put(
+                Constant.USER_PROPERTY_LATEST_DEBUG,
+                AbstractAnalytics.mConfigOptions?.mEnabledDebug
+            )
             put(
                 Constant.USER_PROPERTY_LATEST_APP_VERSION_NAME,
                 AppInfoUtils.getAppVersionName(context)

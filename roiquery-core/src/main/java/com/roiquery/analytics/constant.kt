@@ -63,6 +63,7 @@ internal object Constant {
     const val COMMON_PROPERTY_IS_FOREGROUND       = "#is_foreground"
 
     //latest
+    const val USER_PROPERTY_LATEST_DEBUG                = "#latest_debug"
     const val USER_PROPERTY_LATEST_FIREBASE_IID         = "#latest_firebase_iid"
     const val USER_PROPERTY_LATEST_APPSFLYER_ID         = "#latest_appsflyer_id"
     const val USER_PROPERTY_LATEST_KOCHAVA_ID           = "#latest_kochava_id"
