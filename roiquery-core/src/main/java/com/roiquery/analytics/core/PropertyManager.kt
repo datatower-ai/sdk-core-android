@@ -10,6 +10,8 @@ import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
+import com.roiquery.quality.ROIQueryErrorParams
+import com.roiquery.quality.ROIQueryQualityHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -141,6 +143,11 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
                         it.resume(gaid)
                     }
                 } catch (e: Exception) {
+                    ROIQueryQualityHelper.instance.reportQualityMessage(
+                        ROIQueryErrorParams.CODE_GET_ORIGINAL_ID_EXCEPTION,
+                        e.message,
+                        ROIQueryErrorParams.INIT_EXCEPTION
+                    )
                     it.resume("")
                 }
             }
@@ -161,6 +168,11 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
             updateDTID(dtId)
             return dtId
         } catch (e: Exception) {
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_INIT_DTID_EXCEPTION,
+                e.message,
+                ROIQueryErrorParams.INIT_EXCEPTION
+            )
             return ""
         }
     }
@@ -173,8 +185,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
             try {
                 val info = AdvertisingIdClient.getAdvertisingIdInfo(context)
                 val id = info.id ?: ""
-//                limitAdTrackingEnabled = info.isLimitAdTrackingEnabled
-                limitAdTrackingEnabled = true
+                limitAdTrackingEnabled = info.isLimitAdTrackingEnabled
                 updateGAID(id)
             } catch (exception: Exception) {
                 LogUtils.d("getGAID", "onException:" + exception.message.toString())

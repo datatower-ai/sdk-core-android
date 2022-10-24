@@ -11,8 +11,14 @@ import androidx.annotation.StringDef
  */
 internal object ROIQueryErrorParams {
 
+    //init
     const val CODE_INIT_CONFIG_ERROR = 1001
     const val CODE_INIT_EXCEPTION = 1002
+    const val CODE_GET_ORIGINAL_ID_EXCEPTION = 1003
+    const val CODE_INIT_DTID_EXCEPTION = 1004
+    const val CODE_SHA1_DTID_EXCEPTION = 1005
+
+    //track
     const val CODE_TRACK_ERROR = 2001
     const val CODE_TRACK_EVENT_NAME_EMPTY = 2011
     const val CODE_TRACK_EVENT_ILLEGAL = 2012
@@ -25,6 +31,7 @@ internal object ROIQueryErrorParams {
     const val CODE_QUERY_DB_ERROR = 2009
     const val CODE_QUERY_DB_EXCEPTION = 2010
 
+    //upload
     const val CODE_HANDLE_UPLOAD_MESSAGE_ERROR = 3001
     const val CODE_CHECK_ENABLE_UPLOAD_EXCEPTION = 3002
     const val CODE_REPORT_ERROR_ON_FAIL = 3003
@@ -35,6 +42,10 @@ internal object ROIQueryErrorParams {
 
         CODE_INIT_CONFIG_ERROR,
         CODE_INIT_EXCEPTION,
+        CODE_GET_ORIGINAL_ID_EXCEPTION,
+        CODE_INIT_DTID_EXCEPTION,
+        CODE_SHA1_DTID_EXCEPTION,
+
         CODE_TRACK_ERROR,
         CODE_INIT_DB_ERROR,
         CODE_INSERT_DB_NORMAL_ERROR,

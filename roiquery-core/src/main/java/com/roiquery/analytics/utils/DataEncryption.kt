@@ -1,5 +1,7 @@
 package com.roiquery.analytics.utils
 
+import com.roiquery.quality.ROIQueryErrorParams
+import com.roiquery.quality.ROIQueryQualityHelper
 import java.lang.Exception
 import java.security.MessageDigest
 
@@ -23,6 +25,11 @@ class DataEncryption private constructor() {
             val result = digest.digest(data.toByteArray())
             toHex(result)
         }catch (e:Exception){
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_SHA1_DTID_EXCEPTION,
+                e.message,
+                ROIQueryErrorParams.INIT_EXCEPTION
+            )
             ""
         }
     }
