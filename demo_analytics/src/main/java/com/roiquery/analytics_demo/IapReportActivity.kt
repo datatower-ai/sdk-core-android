@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.roiquery.iap.ROIQueryIAPReport
-import com.roiquery.iap.utils.UUIDUtils
 import java.lang.StringBuilder
 import java.util.*
 

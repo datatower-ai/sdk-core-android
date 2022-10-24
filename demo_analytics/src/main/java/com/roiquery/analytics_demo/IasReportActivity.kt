@@ -3,8 +3,6 @@ package com.roiquery.analytics_demo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.roiquery.iap.ROIQueryIAPReport
-import com.roiquery.iap.utils.UUIDUtils
 import com.roiquery.ias.ROIQueryIasReport
 import java.lang.StringBuilder
 import java.util.*
@@ -19,7 +17,7 @@ class IasReportActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
         title = "IasReport"
 
-        val seq = UUIDUtils.generateUUID()
+        val seq = ROIQueryIasReport.generateUUID()
         var order = generateUUID() ?: "24234"
         var o_order = generateUUID() ?: "sdsd"
         val entrance = "new_page"

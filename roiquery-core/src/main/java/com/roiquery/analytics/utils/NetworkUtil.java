@@ -25,7 +25,6 @@ import java.util.Set;
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 import static android.Manifest.permission.INTERNET;
 
-import com.roiquery.analytics.taskscheduler.TaskScheduler;
 
 /**
  * <pre>
@@ -321,7 +320,7 @@ public final class NetworkUtil {
         @RequiresPermission(ACCESS_NETWORK_STATE)
         void registerListener(final OnNetworkStatusChangedListener listener) {
             if (listener == null) return;
-            TaskScheduler.runOnUIThread(new Runnable() {
+            ThreadUtils.runOnUiThread(new Runnable() {
                 @Override
                 @RequiresPermission(ACCESS_NETWORK_STATE)
                 public void run() {
@@ -343,7 +342,7 @@ public final class NetworkUtil {
 
         void unregisterListener(final OnNetworkStatusChangedListener listener) {
             if (listener == null) return;
-            TaskScheduler.runOnUIThread(new Runnable() {
+            ThreadUtils.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     int preSize = mListeners.size();
@@ -359,7 +358,7 @@ public final class NetworkUtil {
         public void onReceive(Context context, Intent intent) {
             if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
                 // debouncing
-                TaskScheduler.runOnUIThreadDelayed(new Runnable() {
+                ThreadUtils.runOnUiThreadDelayed(new Runnable() {
                     @Override
                     @RequiresPermission(ACCESS_NETWORK_STATE)
                     public void run() {

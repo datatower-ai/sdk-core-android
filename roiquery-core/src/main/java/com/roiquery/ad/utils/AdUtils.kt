@@ -3,7 +3,6 @@ package com.roiquery.ad.utils
 import com.roiquery.ad.AdMediation
 import com.roiquery.ad.AdPlatform
 import com.roiquery.ad.AdType
-import com.roiquery.cloudconfig.utils.StringUtils
 
 
 object AdPlatformUtils {
@@ -46,7 +45,7 @@ object AdPlatformUtils {
         }
 
     private fun isMarketPlace(network: String, adgroupType: String) =
-        (StringUtils.isEmpty(network) || network == "null" || network == "NULL") && adgroupType == MOPUB_PLATFORM_MOPUB
+        (network.isEmpty() || network == "null" || network == "NULL") && adgroupType == MOPUB_PLATFORM_MOPUB
 
     private fun isBigo(adgroupName: String,adgroupType: String) = adgroupType == MOPUB_ADGROUP_TYPE_BIGO && adgroupName == MOPUB_ADGROUP_NAME_BIGO
 

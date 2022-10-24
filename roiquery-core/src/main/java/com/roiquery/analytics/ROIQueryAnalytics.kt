@@ -1,16 +1,12 @@
 package com.roiquery.analytics
 
-import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
-import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.api.AnalyticsImp
-import com.roiquery.analytics.api.ServerTimeListener
+import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.utils.AdtUtil
 import com.roiquery.analytics.utils.AppLifecycleHelper
 import com.roiquery.analytics.utils.LogUtils
-import com.roiquery.analytics.utils.ProcessUtils
 
 import org.json.JSONObject
 import java.lang.Exception
@@ -19,11 +15,7 @@ open class ROIQueryAnalytics {
 
     companion object {
 
-        @SuppressLint("StaticFieldLeak")
-        internal var mContext: Context? = null
-
-        private var mAppLifecycleListeners =
-            mutableListOf<AppLifecycleHelper.OnAppStatusListener?>()
+        private var mAppLifecycleListeners = mutableListOf<AppLifecycleHelper.OnAppStatusListener?>()
 
         /**
          * 调用 track 接口，追踪一个带有属性的事件
@@ -37,7 +29,7 @@ open class ROIQueryAnalytics {
             eventName: String?,
             properties: Map<String, Any>? = mutableMapOf()
         ) =
-            AnalyticsImp.getInstance(mContext).trackNormal(eventName, false,properties)
+            AnalyticsImp.getInstance().trackNormal(eventName, false,properties)
 
 
         /**
@@ -48,10 +40,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun track(eventName: String?, properties: JSONObject?) =
-            AnalyticsImp.getInstance(mContext).trackNormal(eventName, false,properties)
-
-
-
+            AnalyticsImp.getInstance().trackNormal(eventName, false,properties)
 
         /**
          * 设置一般的用户属性
@@ -60,7 +49,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun userSet(properties: JSONObject?){
-            AnalyticsImp.getInstance(mContext).userSet(properties)
+            AnalyticsImp.getInstance().userSet(properties)
         }
 
         /**
@@ -70,7 +59,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun userSetOnce(properties: JSONObject?){
-            AnalyticsImp.getInstance(mContext).userSetOnce(properties)
+            AnalyticsImp.getInstance().userSetOnce(properties)
         }
 
         /**
@@ -80,7 +69,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun userAdd(properties: JSONObject?){
-            AnalyticsImp.getInstance(mContext).userAdd(properties)
+            AnalyticsImp.getInstance().userAdd(properties)
         }
 
         /**
@@ -90,7 +79,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun userUnset(vararg properties: String?){
-            AnalyticsImp.getInstance(mContext).userUnset(*properties)
+            AnalyticsImp.getInstance().userUnset(*properties)
         }
 
         /**
@@ -98,7 +87,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun userDelete(){
-            AnalyticsImp.getInstance(mContext).userDelete()
+            AnalyticsImp.getInstance().userDelete()
         }
 
         /**
@@ -108,23 +97,21 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun userAppend(properties: JSONObject?){
-            AnalyticsImp.getInstance(mContext).userAppend(properties)
+            AnalyticsImp.getInstance().userAppend(properties)
         }
-
 
         /**
          * 主动上报本地数据事件
          *
          */
         @JvmStatic
-        fun flush() = AnalyticsImp.getInstance(mContext).flush()
+        fun flush() = AnalyticsImp.getInstance().flush()
 
         /**
          * 获取 DataTower instance id
          */
         @JvmStatic
-        fun getInstanceId() =
-            AnalyticsImp.getInstance(mContext).rqid
+        fun getDataTowerId() = AnalyticsImp.getInstance().getDTId()
 
         /**
          * 设置自有用户系统的id
@@ -132,7 +119,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun setAccountId(id: String?) {
-            AnalyticsImp.getInstance(mContext).accountId = id
+            AnalyticsImp.getInstance().accountId = id
         }
 
         /**
@@ -141,18 +128,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun setFirebaseAppInstanceId(id: String?) {
-            AnalyticsImp.getInstance(mContext).fiid = id
-        }
-
-
-
-        /**
-         * 设置 Firebase Cloud Message Token
-         * @param token Firebase Cloud Message Token
-         */
-        @JvmStatic
-        fun setFCMToken(token: String?) {
-            AnalyticsImp.getInstance(mContext).fcmToken = token
+            AnalyticsImp.getInstance().setFirebaseInstanceId(id)
         }
 
 
@@ -162,7 +138,7 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun setAppsFlyerId(id: String?) {
-            AnalyticsImp.getInstance(mContext).afid = id
+            AnalyticsImp.getInstance().setAppsFlyersId(id)
         }
 
         /**
@@ -171,13 +147,9 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         fun setKochavaId(id: String?) {
-            AnalyticsImp.getInstance(mContext).koid = id
+            AnalyticsImp.getInstance().setKochavaId(id)
         }
 
-        @JvmStatic
-        fun setAppSetId(id: String?) {
-            AnalyticsImp.getInstance(mContext).appSetId = id
-        }
 
         /******************** internal *******************/
 
@@ -203,7 +175,7 @@ open class ROIQueryAnalytics {
             eventName: String?,
             properties: Map<String, Any>? = mutableMapOf()
         ) =
-            AnalyticsImp.getInstance(mContext).trackNormal(eventName, true, properties)
+            AnalyticsImp.getInstance().trackNormal(eventName, true, properties)
 
 
         /**
@@ -214,18 +186,16 @@ open class ROIQueryAnalytics {
          */
         @JvmStatic
         internal fun trackInternal(eventName: String?, properties: JSONObject?) =
-            AnalyticsImp.getInstance(mContext).trackNormal(eventName, true, properties)
+            AnalyticsImp.getInstance().trackNormal(eventName, true, properties)
 
         /**
          * app 进入前台
          *
          */
-        internal fun onAppForeground() {
+        internal fun onAppForeground(startReason: String?) {
             try {
-                if (!isSDKInitSuccess()) return
-                checkNotNull(mContext) { "Call ROIQuery.initSDK first" }
-                EventDateAdapter.getInstance()?.isAppForeground = true
-                AnalyticsImp.getInstance(mContext).trackAppStateChanged()
+                PropertyManager.instance.updateIsForeground(true,startReason)
+                LogUtils.d("trackAppStateChanged","onAppForeground")
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppForeground()
                 }
@@ -239,25 +209,20 @@ open class ROIQueryAnalytics {
          */
         internal fun onAppBackground() {
             try {
-                if (!isSDKInitSuccess()) return
-                checkNotNull(mContext) { "Call ROIQuerySDK.init first" }
-                EventDateAdapter.getInstance()?.isAppForeground = false
-                AnalyticsImp.getInstance(mContext).trackAppStateChanged()
+                PropertyManager.instance.updateIsForeground(false)
+                LogUtils.d("trackAppStateChanged","onAppBackground")
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppBackground()
                 }
             } catch (e: Exception) {
                 LogUtils.printStackTrace("RoiqueryAnalytics", e)
             }
-
         }
 
 
         internal fun getContext(): Context? {
             return try {
-                if (!isSDKInitSuccess()) return null
-                checkNotNull(mContext) { "Call ROIQuerySDK.init first" }
-                mContext as Context
+                AdtUtil.getInstance().applicationContext
             } catch (e: Exception) {
                 LogUtils.printStackTrace("RoiqueryAnalytics", e)
                 null
@@ -273,7 +238,7 @@ open class ROIQueryAnalytics {
         /**
          * sdk 是否初始化成功
          */
-        internal fun isSDKInitSuccess(): Boolean = AbstractAnalytics.mSDKConfigInit
+        internal fun isSDKInitSuccess(): Boolean = AnalyticsImp.getInstance().isInitSuccess()
 
     }
 }

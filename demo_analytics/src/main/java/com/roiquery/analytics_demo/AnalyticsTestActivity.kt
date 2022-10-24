@@ -6,11 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.jraska.console.Console
 import com.roiquery.analytics.ROIQueryAnalytics
-import com.roiquery.analytics.api.ServerTimeListener
-import com.roiquery.analytics.utils.LogUtils
-import org.json.JSONObject
 
 
 class AnalyticsTestActivity : AppCompatActivity() {
@@ -48,7 +44,6 @@ class AnalyticsTestActivity : AppCompatActivity() {
 //            ROIQueryAnalytics.trackAppClose()
         }
 
-        ROIQueryAnalytics.setFCMToken("sdfsdfdfsdf")
     }
 
 

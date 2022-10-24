@@ -27,6 +27,8 @@ class DataParams private constructor(packageName: String) {
         const val CONFIG_ENABLE_UPLOADS = "enable_upload"
         const val CONFIG_ENABLE_TRACK = "enable_track"
         const val CONFIG_FIRST_OPEN = "first_open"
+        const val CONFIG_APP_INSTALL_INSERT_STATE = "app_install_insert_state"
+        const val CONFIG_FIRST_SESSION_START_INSERT_STATE = "first_session_start_insert_state"
         const val CONFIG_IS_FOREGROUND = "is_foreground"
         const val CLOUD_CONFIG_AES_KEY = "cloud_config_aes_key"
         const val USER_AGENT_WEBVIEW = "user_agent_webview"

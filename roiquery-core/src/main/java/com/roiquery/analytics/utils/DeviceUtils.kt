@@ -52,12 +52,7 @@ object DeviceUtils {
         get() = if (TextUtils.isEmpty(Build.BRAND)) "UNKNOWN" else Build.BRAND.trim { it <= ' ' }
 
 
-    fun getROIQueryID(dataAdapter: EventDateAdapter?): String{
-        if (dataAdapter?.rqid.isNullOrEmpty()) {
-            return UUID.randomUUID().toString().replace("-", "").apply { dataAdapter?.rqid = this }
-        }
-        return  dataAdapter?.rqid ?: ""
-    }
+
 
 
     /**
@@ -143,8 +138,8 @@ object DeviceUtils {
      * @return androidID
      */
     @SuppressLint("HardwareIds")
-    fun getAndroidID(context: Context): String? {
-        var androidID: String? = ""
+    fun getAndroidID(context: Context): String {
+        var androidID = ""
         try {
             androidID =
                 Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)

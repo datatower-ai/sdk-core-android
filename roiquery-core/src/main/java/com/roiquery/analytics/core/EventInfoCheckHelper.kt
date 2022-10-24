@@ -1,9 +1,7 @@
 package com.roiquery.analytics.core
 
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.ROIQueryAnalytics
 import com.roiquery.analytics.data.EventDateAdapter
-import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.TimeCalibration
 import org.json.JSONArray
 import org.json.JSONException
@@ -21,27 +19,26 @@ class EventInfoCheckHelper private constructor() {
             EventInfoCheckHelper()
         }
     }
-
-    fun correctEventTime(data: String, correctFinish: (info: String) -> Unit) {
+    fun  correctEventInfo(data: String, correctFinish: (info: String) -> Unit){
         try {
 
             val jsonArray = JSONArray(data)
             val length = jsonArray.length()
             if (length == 0) {
+                correctFinish.invoke("")
                 return
             }
             val correctedEventInfo = JSONArray()
 
             for (index in 0 until length) {
                 jsonArray.getJSONObject(index)?.let { it ->
-                    if (isNewFormatData(it)) {
-                        correctNewFormatData(it, correctedEventInfo)
-                    } else {
-                        correctedEventInfo.put(it)
-                    }
+                 correctEventIdInfo(it)?.let {
+                     correctEventTime(it)?.let { correctData->
+                         correctedEventInfo.put(correctData)
+                     }
+                 }
                 }
             }
-
             correctFinish.invoke(correctedEventInfo.toString())
 
         } catch (e: JSONException) {
@@ -49,14 +46,60 @@ class EventInfoCheckHelper private constructor() {
         }
     }
 
-    private fun correctNewFormatData(
-        jsonEventBody: JSONObject,
-        correctedEventInfo: JSONArray
-    ) {
-        jsonEventBody.optJSONObject(Constant.EVENT_BODY)?.let { eventInfo ->
-            val presetEventName = eventNameForPreset(eventInfo)
+    private fun correctEventTime(data: JSONObject): JSONObject? {
+        return try {
+            if (isNewFormatData(data)) {
+                correctNewFormatData(data)
+            } else {
+                data
+            }
+        } catch (e: JSONException) {
+            null
+        }
+    }
 
-            if (!correctAttributeFirstOpenTimeInfo(presetEventName, eventInfo)) return
+    private fun correctEventIdInfo(data: JSONObject):JSONObject? {
+        try {
+            val androidId = PropertyManager.instance.getAndroidId()
+            val dtId = PropertyManager.instance.getDTID()
+            val gaid = PropertyManager.instance.getGAID()
+            if ((androidId.isEmpty()&& gaid.isEmpty()) || dtId.isEmpty() ) {
+                return null
+            }
+
+            (if (isNewFormatData(data)) data.optJSONObject(Constant.EVENT_BODY) else data)?.let { eventInfo ->
+                if (eventInfo.optString(Constant.EVENT_INFO_DT_ID).isEmpty()) {
+                    eventInfo.put(Constant.EVENT_INFO_DT_ID, dtId)
+                }
+                if (eventInfo.optString(Constant.EVENT_INFO_GAID).isEmpty()&&gaid.isNotEmpty()) {
+                    eventInfo.put(Constant.EVENT_INFO_GAID, gaid)
+                }
+                if (eventInfo.optString(Constant.EVENT_INFO_ANDROID_ID).isEmpty()&&eventInfo.optString(Constant.EVENT_INFO_GAID).isEmpty()) {
+                    eventInfo.put(Constant.EVENT_INFO_ANDROID_ID, androidId)
+                }
+                if (eventInfo.optString(Constant.EVENT_INFO_DT_ID)
+                        .isNotEmpty() && (eventInfo.optString(
+                        Constant.EVENT_INFO_ANDROID_ID
+                    ).isNotEmpty() || eventInfo.optString(Constant.EVENT_INFO_GAID)
+                        .isNotEmpty())
+                ) {
+                        return data
+                }
+            }
+
+        } catch (e: JSONException) {
+           return null
+        }
+        return null
+    }
+
+    private fun correctNewFormatData(
+        jsonEventBody: JSONObject
+    ):JSONObject? {
+        jsonEventBody.optJSONObject(Constant.EVENT_BODY)?.let { eventInfo ->
+//            val presetEventName = eventNameForPreset(eventInfo)
+
+//            if (!correctAttributeFirstOpenTimeInfo(presetEventName, eventInfo)) return
 
             val infoTime = eventInfo.optLong(Constant.EVENT_INFO_TIME)
 
@@ -71,25 +114,15 @@ class EventInfoCheckHelper private constructor() {
                         Constant.EVENT_INFO_TIME,
                         verifyTimeAsyncByGapTime
                     )
-
-                    if (presetEventName == Constant.PRESET_EVENT_APP_FIRST_OPEN) saveFirstOpenTime(
-                        verifyTimeAsyncByGapTime
-                    )
-
-                    correctedEventInfo.put(eventInfo)
-
+                    return eventInfo
                 } else {
                 }
             } else {
                 eventInfo.put(Constant.EVENT_INFO_TIME, infoTime)
-
-                if (presetEventName == Constant.PRESET_EVENT_APP_FIRST_OPEN) saveFirstOpenTime(
-                    infoTime
-                )
-
-                correctedEventInfo.put(eventInfo)
+                return eventInfo
             }
         }
+        return null
     }
 
     private fun eventNameForPreset(eventInfo: JSONObject) =
@@ -98,31 +131,11 @@ class EventInfoCheckHelper private constructor() {
         ) else eventInfo.getString(Constant.EVENT_INFO_NAME)
 
 
-    private fun correctAttributeFirstOpenTimeInfo(
-        eventName: String,
-        eventInfo: JSONObject
-    ): Boolean {
-        if (eventName == Constant.PRESET_EVENT_APP_ATTRIBUTE && eventInfo.optLong(Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME) == 0L) {
-            if (EventDateAdapter.getInstance()?.firstOpenTime == 0L) {
-                return false
-            } else {
-                eventInfo.getJSONObject(Constant.EVENT_INFO_PROPERTIES).put(
-                    Constant.ATTRIBUTE_PROPERTY_FIRST_OPEN_TIME,
-                    EventDateAdapter.getInstance()?.firstOpenTime.toString()
-                )
-            }
-        }
-        return true
-    }
+
 
     private fun isNewFormatData(eventInfo: JSONObject) =
         eventInfo.has(Constant.EVENT_TIME_CALIBRATED) && eventInfo.has(Constant.EVENT_BODY)
 
-    private fun saveFirstOpenTime(firstOpenTime: Long) {
-        EventDateAdapter.getInstance()?.firstOpenTime = firstOpenTime
-        ROIQueryAnalytics.userSetOnce(JSONObject().apply {
-            put(Constant.USER_PROPERTY_ACTIVE_EVENT_TIME, firstOpenTime.toString())
-        })
-    }
+
 
 }

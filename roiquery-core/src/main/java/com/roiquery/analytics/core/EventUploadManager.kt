@@ -1,6 +1,5 @@
 package com.roiquery.analytics.core
 
-import android.content.Context
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
@@ -13,6 +12,7 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
+import com.roiquery.analytics.utils.AdtUtil
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
 import com.roiquery.analytics.utils.TimeCalibration
@@ -22,15 +22,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
-import kotlin.collections.HashMap
 
 
 /**
- * 管理内部事件采集、上报
+ * 管理内部事件上报
  */
-class AnalyticsManager private constructor(
-    var mContext: Context,
-//    var mAnalyticsDataAPI: AnalyticsImp
+class EventUploadManager private constructor(
 ) : ROIQueryCoroutineScope() {
     private val mWorker: Worker = Worker()
     private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
@@ -38,7 +35,7 @@ class AnalyticsManager private constructor(
     private var mDisableUploadCount = 0
 
 
-    fun enqueueEventMessage(name: String, eventJson: JSONObject, eventSyn: String) {
+    fun enqueueEventMessage(name: String, eventJson: JSONObject, eventSyn: String, insertHandler: ((code: Int, msg: String) -> Unit)? = null) {
         if (mDateAdapter == null) return
         synchronized(mDateAdapter) {
             scope.launch {
@@ -46,7 +43,7 @@ class AnalyticsManager private constructor(
                     //插入数据库
                     val insertCode = mDateAdapter.addJSON(eventJson, eventSyn)
                     //检测插入结果
-                    checkInsertResult(insertCode, name, eventJson, eventSyn)
+                    checkInsertResult(insertCode, name, eventJson, eventSyn, insertHandler)
                     //发送上报的message
                     Message.obtain().apply {
                         //上报标志
@@ -59,6 +56,7 @@ class AnalyticsManager private constructor(
                         ROIQueryErrorParams.CODE_INIT_DB_ERROR,
                         "event name: $name ," + e.stackTraceToString(),ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR
                     )
+                    insertHandler?.invoke(ROIQueryErrorParams.CODE_INIT_DB_ERROR, ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR)
                 }
 
             }
@@ -82,8 +80,9 @@ class AnalyticsManager private constructor(
         }
     }
 
-    private fun checkInsertResult(insertCode: Int, eventName: String, eventJson: JSONObject, eventSyn: String){
+    private fun checkInsertResult(insertCode: Int, eventName: String, eventJson: JSONObject, eventSyn: String, insertHandler: ((code: Int, msg: String) -> Unit)? = null){
         val msg = if (insertCode < 0) " Failed to insert the event " else " the event: $eventName  has been inserted to db，code = $insertCode  "
+        insertHandler?.invoke(insertCode, msg)
         if (insertCode < 0) {
             if (!mErrorInsertDataMap.containsKey(eventSyn) && mErrorInsertDataMap.size < 20) {
                 mErrorInsertDataMap[eventSyn] = eventJson
@@ -131,7 +130,7 @@ class AnalyticsManager private constructor(
     private fun enableUploadData(): Boolean {
         try {
             //无网络
-            if (!isNetworkAvailable(mContext)) {
+            if (!isNetworkAvailable(AdtUtil.getInstance().applicationContext)) {
                 LogUtils.d(TAG, "NetworkAvailable，disable upload")
                 return false
             }
@@ -195,7 +194,7 @@ class AnalyticsManager private constructor(
         scope.launch(Dispatchers.IO) {
             //事件主体，json格式
             eventsData?.let {
-                EventInfoCheckHelper.instance.correctEventTime(it) { info ->
+                EventInfoCheckHelper.instance.correctEventInfo(it) { info ->
                     launch(Dispatchers.Main) {
                         try {
                             if (info.isNotEmpty()) {
@@ -373,29 +372,15 @@ class AnalyticsManager private constructor(
         private const val FLUSH_QUEUE = 3
         private const val FLUSH_DELAY = 1000L
         private const val DELETE_ALL = 4
-        private val S_INSTANCES: MutableMap<Context, AnalyticsManager> = HashMap()
 
+        private var instancessss: EventUploadManager? = null
 
-        /**
-         * 获取 AnalyticsMessages 对象
-         *
-         * @param messageContext Context
-         */
-        fun getInstance(
-            messageContext: Context,
-//            analyticsAPI: AnalyticsImp
-        ): AnalyticsManager? {
-            synchronized(S_INSTANCES) {
-                val appContext: Context = messageContext.applicationContext
-                val ret: AnalyticsManager?
-                if (!S_INSTANCES.containsKey(appContext)) {
-                    ret = AnalyticsManager(appContext)
-                    S_INSTANCES[appContext] = ret
-                } else {
-                    ret = S_INSTANCES[appContext]
-                }
-                return ret
+        @Synchronized
+        fun getInstance(): EventUploadManager?{
+            if(null == instancessss){
+                instancessss = EventUploadManager()
             }
+            return this.instancessss
         }
     }
 
