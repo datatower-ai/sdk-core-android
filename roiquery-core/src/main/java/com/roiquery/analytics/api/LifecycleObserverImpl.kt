@@ -78,7 +78,9 @@ class LifecycleObserverImpl : ActivityLifecycleCallbacks {
                             )
                         }
                     }
-                    startReasonJsonObj.put("data", data)
+                    if (data.toString() != "{}") {
+                        startReasonJsonObj.put("data", data)
+                    }
                 }
             }
             }
