@@ -92,13 +92,13 @@ public class MemoryUtils {
     }
 
 
-    public static String getMemoryUsed(Context context) {
+    private static String getMemoryUsed(Context context) {
         StorageBean bean = new StorageBean();
         getMemoryInfo(context, bean);
         return bean.getUsedMemory() + " / " + bean.getTotalMemory();
     }
 
-    public static String getStorageUsed(Context context) {
+    private static String getStorageUsed(Context context) {
         StorageBean bean = new StorageBean();
         getStoreInfo(context, bean);
         return bean.getUsedStore() + " / " + bean.getTotalStore();

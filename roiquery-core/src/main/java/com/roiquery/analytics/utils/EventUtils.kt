@@ -144,6 +144,13 @@ object EventUtils {
                 Constant.USER_PROPERTY_ACTIVE_DIMS_DPI,
                 DeviceUtils.getDensityDpi(context)
             )
+            put(
+                Constant.USER_PROPERTY_ACTIVE_MEMORY_USED,
+                MemoryUtils.getRAM(context))
+
+            put(
+                Constant.USER_PROPERTY_ACTIVE_STORAGE_USED,
+                MemoryUtils.getDisk(context,false))
 
             put(
                 Constant.USER_PROPERTY_ACTIVE_NETWORK_TYPE,
