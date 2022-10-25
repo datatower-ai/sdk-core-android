@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, AdReportActivity::class.java))
         }
 
-
         findViewById<View>(R.id.button_iap_report).setOnClickListener {
             startActivity(Intent(this, IapReportActivity::class.java))
         }

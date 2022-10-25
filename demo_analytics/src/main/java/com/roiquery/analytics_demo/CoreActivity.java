@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.roiquery.analytics.DTAnalytics;
 import com.roiquery.analytics.ROIQueryAnalytics;
 
 import org.json.JSONArray;
@@ -48,40 +50,40 @@ public class CoreActivity extends AppCompatActivity {
 
 
         findViewById(R.id.button_set_acid).setOnClickListener(v -> {
-            ROIQueryAnalytics.setAccountId(acid);
+            DTAnalytics.setAccountId(acid);
         });
 
         findViewById(R.id.button_set_fiid).setOnClickListener(v -> {
-            ROIQueryAnalytics.setFirebaseAppInstanceId(fiid);
+            DTAnalytics.setFirebaseAppInstanceId(fiid);
         });
 
         findViewById(R.id.button_fcm).setOnClickListener(v -> {
         });
 
         findViewById(R.id.button_afid).setOnClickListener(v -> {
-            ROIQueryAnalytics.setAppsFlyerId(afid);
+            DTAnalytics.setAppsFlyerId(afid);
         });
 
         findViewById(R.id.button_asid).setOnClickListener(v -> {
         });
 
         findViewById(R.id.button_set_koid).setOnClickListener(v -> {
-            ROIQueryAnalytics.setKochavaId(koid);
+            DTAnalytics.setKochavaId(koid);
         });
 
         findViewById(R.id.button_track).setOnClickListener(v -> {
-            ROIQueryAnalytics.track("dt_track_simple");
+            DTAnalytics.track("dt_track_simple");
         });
 
         findViewById(R.id.button_track_illegal_event_name).setOnClickListener(v -> {
-            ROIQueryAnalytics.track("#dt_track_simple");
+            DTAnalytics.track("#dt_track_simple");
         });
 
         findViewById(R.id.button_track_illegal_property_1).setOnClickListener(v -> {
             try {
                 JSONObject property = new JSONObject();
                 property.put("#property_1","sdf");
-                ROIQueryAnalytics.track("dt_track_simple_2", property);
+                DTAnalytics.track("dt_track_simple_2", property);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -91,7 +93,7 @@ public class CoreActivity extends AppCompatActivity {
             try {
                 JSONObject property = new JSONObject();
                 property.put("$property_2","sdf");
-                ROIQueryAnalytics.track("dt_track_simple_3", property);
+                DTAnalytics.track("dt_track_simple_3", property);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -103,7 +105,7 @@ public class CoreActivity extends AppCompatActivity {
                 JSONObject jsonObject  = new JSONObject();
                 jsonObject.put("test_property_3", false);
                 jsonObject.put("test_property_4", 2.3);
-                ROIQueryAnalytics.userSet(jsonObject);
+                DTAnalytics.userSet(jsonObject);
             }catch (Exception ignored){
 
             }
@@ -115,7 +117,7 @@ public class CoreActivity extends AppCompatActivity {
                 JSONObject jsonObject  = new JSONObject();
                 jsonObject.put("test_property_3", false);
                 jsonObject.put("test_property_4", 2.3);
-                ROIQueryAnalytics.userSetOnce(jsonObject);
+                DTAnalytics.userSetOnce(jsonObject);
             }catch (Exception ignored){
 
             }
@@ -126,7 +128,7 @@ public class CoreActivity extends AppCompatActivity {
                 JSONObject jsonObject  = new JSONObject();
                 jsonObject.put("test_property_3", false);
                 jsonObject.put("test_property_4", 2.3);
-                ROIQueryAnalytics.userAdd(jsonObject);
+                DTAnalytics.userAdd(jsonObject);
             }catch (Exception ignored){
 
             }
@@ -137,7 +139,7 @@ public class CoreActivity extends AppCompatActivity {
                 JSONObject jsonObject  = new JSONObject();
                 jsonObject.put("test_property_3", false);
                 jsonObject.put("test_property_4", 2.3);
-                ROIQueryAnalytics.userUnset("key","key2","key3");
+                DTAnalytics.userUnset("key","key2","key3");
             }catch (Exception ignored){
 
             }
@@ -145,7 +147,7 @@ public class CoreActivity extends AppCompatActivity {
 
         findViewById(R.id.delete).setOnClickListener(v -> {
             try {
-                ROIQueryAnalytics.userDelete();
+                DTAnalytics.userDelete();
             }catch (Exception ignored){
 
             }
@@ -157,7 +159,7 @@ public class CoreActivity extends AppCompatActivity {
                 list.put("orage");
                 JSONObject properties = new JSONObject();
                 properties.put("user_list", list);
-                ROIQueryAnalytics.userAppend(properties);
+                DTAnalytics.userAppend(properties);
             }catch (Exception ignored){
 
             }

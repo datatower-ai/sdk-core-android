@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.roiquery.ad.AdPlatform
 import com.roiquery.ad.AdType
+import com.roiquery.ad.DTAdReport
 import com.roiquery.ad.ROIQueryAdReport
 
 
@@ -32,7 +33,7 @@ class AdReportActivity : AppCompatActivity() {
                 put("property_2", "combo-123")
             }
 
-            ROIQueryAdReport.reportLoadBegin(
+            DTAdReport.reportLoadBegin(
                 ad_unit,
                 ad_type,
                 ad_platform,
@@ -42,7 +43,7 @@ class AdReportActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.button_track_load_end).setOnClickListener {
-            ROIQueryAdReport.reportLoadEnd(
+            DTAdReport.reportLoadEnd(
                 ad_unit,
                 ad_type,
                 ad_platform,
@@ -54,7 +55,7 @@ class AdReportActivity : AppCompatActivity() {
 
 
         findViewById<View>(R.id.button_track_to_show).setOnClickListener {
-            ROIQueryAdReport.reportToShow(
+            DTAdReport.reportToShow(
                 ad_unit,
                 ad_type,
                 AdPlatform.IDLE,
@@ -66,7 +67,7 @@ class AdReportActivity : AppCompatActivity() {
 
 
         findViewById<View>(R.id.button_track_show).setOnClickListener {
-            ROIQueryAdReport.reportShow(
+            DTAdReport.reportShow(
                 ad_unit,
                 ad_type,
                 ad_platform,
@@ -76,7 +77,7 @@ class AdReportActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.button_track_paid).setOnClickListener {
-            ROIQueryAdReport.reportPaid(
+            DTAdReport.reportPaid(
                 ad_unit,
                 ad_type,
                 ad_platform,
@@ -89,7 +90,7 @@ class AdReportActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.button_track_show_failed).setOnClickListener {
-            ROIQueryAdReport.reportShowFailed(
+            DTAdReport.reportShowFailed(
                 ad_unit,
                 ad_type,
                 ad_platform,
@@ -102,7 +103,7 @@ class AdReportActivity : AppCompatActivity() {
 
 
         findViewById<View>(R.id.button_track_click).setOnClickListener {
-            ROIQueryAdReport.reportClick(
+            DTAdReport.reportClick(
                 ad_unit,
                 ad_type,
                 ad_platform,
@@ -110,7 +111,7 @@ class AdReportActivity : AppCompatActivity() {
                 ad_seq
             )
 
-            ROIQueryAdReport.reportConversionByClick(
+            DTAdReport.reportConversionByClick(
                 ad_unit,
                 ad_type,
                 ad_platform,
@@ -121,7 +122,7 @@ class AdReportActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.button_track_close).setOnClickListener {
-            ROIQueryAdReport.reportClose(
+            DTAdReport.reportClose(
                 "4",
                 AdType.REWARDED_INTERSTITIAL,
                 AdPlatform.ADX,
@@ -133,7 +134,7 @@ class AdReportActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.button_track_left).setOnClickListener {
 
-            ROIQueryAdReport.reportLeftApp(
+            DTAdReport.reportLeftApp(
                 ad_unit,
                 ad_type,
                 ad_platform,
@@ -141,7 +142,7 @@ class AdReportActivity : AppCompatActivity() {
                 ad_seq
             )
 
-            ROIQueryAdReport.reportConversionByLeftApp(
+            DTAdReport.reportConversionByLeftApp(
                 ad_unit,
                 ad_type,
                 ad_platform,
@@ -152,7 +153,7 @@ class AdReportActivity : AppCompatActivity() {
 
 
         findViewById<View>(R.id.button_track_rewarded).setOnClickListener {
-            ROIQueryAdReport.reportRewarded(
+            DTAdReport.reportRewarded(
                 ad_unit,
                 ad_type,
                 ad_platform,
@@ -160,7 +161,7 @@ class AdReportActivity : AppCompatActivity() {
                 ad_seq
             )
 
-            ROIQueryAdReport.reportConversionByRewarded(
+            DTAdReport.reportConversionByRewarded(
                 ad_unit,
                 ad_type,
                 ad_platform,

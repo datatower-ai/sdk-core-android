@@ -20,6 +20,11 @@
     public <methods>;
 }
 
+-keep class com.roiquery.analytics.DTAnalyticsUtils{*;}
+-keep class com.roiquery.analytics.DTAnalyticsUtils$Companion{
+    public <methods>;
+}
+
 
 -keep class com.roiquery.analytics.ROIQueryChannel{*;}
 -keep class com.roiquery.analytics.DTChannel{*;}
