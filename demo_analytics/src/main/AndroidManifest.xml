@@ -20,8 +20,8 @@
         android:theme="@style/Theme.ROIQuerySDK">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
             android:exported="true"
+            android:label="@string/app_name"
             android:theme="@style/Theme.ROIQuerySDK.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,9 +47,13 @@
         <activity
             android:name=".IasReportActivity"
             android:theme="@style/Theme.ROIQuerySDK.NoActionBar" />
+        <activity
+            android:name=".UtilsActivity"
+            android:theme="@style/Theme.ROIQuerySDK.NoActionBar" />
 
-        <service android:name=".SubProcessService"
-            android:process=":subProcessService"/>
+        <service
+            android:name=".SubProcessService"
+            android:process=":subProcessService" />
 
     </application>
 

@@ -4,8 +4,7 @@ import com.roiquery.ad.api.AdReportImp
 import com.roiquery.ad.utils.AdPlatformUtils
 import com.roiquery.ad.utils.UUIDUtils
 
-@Deprecated("this class will be remove, Replace With \'DTAdReport\'",ReplaceWith("DTAdReport"))
-open class ROIQueryAdReport {
+open class DTAdReport {
     companion object {
 
 

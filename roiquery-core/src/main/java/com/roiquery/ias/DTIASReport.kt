@@ -8,8 +8,7 @@ import com.roiquery.ad.utils.UUIDUtils
  * description:
  * version：1.0
  */
-@Deprecated("this class will be remove,Replace With \'DTIASReport\'",ReplaceWith("DTIASReport"))
-open class ROIQueryIasReport {
+open class DTIASReport {
     companion object {
         @JvmStatic
         @JvmOverloads

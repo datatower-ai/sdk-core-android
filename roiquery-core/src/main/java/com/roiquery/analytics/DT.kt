@@ -5,8 +5,7 @@ import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.utils.LogUtils
 import org.json.JSONObject
 
-@Deprecated("this class will be remove, Replace With \'DT\'",ReplaceWith("DT"))
-class ROIQuery {
+class DT {
     companion object {
 
         /**

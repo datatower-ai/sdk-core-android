@@ -4,6 +4,7 @@ import android.os.SystemClock
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.TIME_FROM_ROI_NET_BODY
 import com.roiquery.analytics.ROIQueryAnalytics
+import com.roiquery.analytics.core.EventUploadManager
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
@@ -39,7 +40,7 @@ class TimeCalibration private constructor() {
                         _latestSystemElapsedRealtime = getSystemHibernateTimeGap()
                         //避免因为时间未同步而造成数据堆积
                         if (ROIQueryAnalytics.isSDKInitSuccess()) {
-                            ROIQueryAnalytics.flush()
+                            EventUploadManager.getInstance()?.flush()
                         }
                     }
 

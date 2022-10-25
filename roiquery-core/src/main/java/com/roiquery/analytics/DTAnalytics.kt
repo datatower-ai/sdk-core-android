@@ -11,8 +11,7 @@ import com.roiquery.analytics.utils.LogUtils
 import org.json.JSONObject
 import java.lang.Exception
 
-@Deprecated("this class will be remove,Replace With \'DTAnalytics\'",ReplaceWith("DTAnalytics"))
-open class ROIQueryAnalytics {
+open class DTAnalytics {
 
     companion object {
 
