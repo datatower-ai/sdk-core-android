@@ -2,7 +2,7 @@ package com.roiquery.analytics
 
 internal object Constant {
 
-    const val LOG_TAG = "ROIQuery"
+    const val LOG_TAG = "DataTower"
 
     //ROIQuery base url
     private val ANALYTICS_BASE_URL = if ("0" == BuildConfig.LINK_SITE) "https://test.roiquery.com" else ( if ("1" == BuildConfig.LINK_SITE)  "https://report-inner.roiquery.com" else "https://report.roiquery.com")
@@ -61,6 +61,7 @@ internal object Constant {
     const val COMMON_PROPERTY_SCREEN_HEIGHT       = "#screen_height"
     const val COMMON_PROPERTY_SCREEN_WIDTH        = "#screen_width"
     const val COMMON_PROPERTY_IS_FOREGROUND       = "#is_foreground"
+    const val COMMON_PROPERTY_EVENT_DURATION      = "#event_duration"
 
     //latest
     const val USER_PROPERTY_LATEST_DEBUG                = "#latest_debug"
@@ -140,7 +141,11 @@ internal object Constant {
 
 }
 
-
+@Deprecated("this class will be remove",ReplaceWith("DTChannel"))
 object ROIQueryChannel{
+    const val GP = "gp"
+}
+
+object DTChannel{
     const val GP = "gp"
 }

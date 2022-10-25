@@ -1,5 +1,6 @@
 package com.roiquery.analytics.core
 
+import com.google.android.a.c
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.ROIQueryErrorParams
@@ -129,21 +130,8 @@ class EventTrackManager {
             //事件属性, 常规事件与用户属性类型区分
             val eventProperties = if (eventType == Constant.EVENT_TYPE_TRACK) {
                 JSONObject(PropertyManager.instance.getCommonProperties()).apply {
-                    //fps
-                    put(
-                        Constant.COMMON_PROPERTY_FPS,
-                        MemoryUtils.getFPS()
-                    )
-                    //硬盘使用率
-                    put(
-                        Constant.COMMON_PROPERTY_STORAGE_USED,
-                        MemoryUtils.getDisk(AdtUtil.getInstance().applicationContext,false)
-                    )
-                    //内存使用率
-                    put(
-                        Constant.COMMON_PROPERTY_MEMORY_USED,
-                        MemoryUtils.getRAM(AdtUtil.getInstance().applicationContext)
-                    )
+                    //添加动态属性
+                    appendDynamicProperties(eventName, this)
                     //合并用户自定义属性和通用属性
                     DataUtils.mergeJSONObject(properties, this, null)
                 }
@@ -178,6 +166,46 @@ class EventTrackManager {
         }
     }
 
+
+    private fun appendDynamicProperties(eventName :String , properties: JSONObject){
+        properties.apply {
+            //fps
+            put(
+                Constant.COMMON_PROPERTY_FPS,
+                MemoryUtils.getFPS()
+            )
+            //硬盘使用率
+            put(
+                Constant.COMMON_PROPERTY_STORAGE_USED,
+                MemoryUtils.getDisk(AdtUtil.getInstance().applicationContext,false)
+            )
+            //内存使用率
+            put(
+                Constant.COMMON_PROPERTY_MEMORY_USED,
+                MemoryUtils.getRAM(AdtUtil.getInstance().applicationContext)
+            )
+            //事件时长
+            EventTimerManager.instance.getEventTimer(eventName)?.duration()?.let {
+               if (it > 0) {
+                   this.put(
+                       Constant.COMMON_PROPERTY_EVENT_DURATION,
+                       it
+                   )
+               }
+            }
+        }
+    }
+
+
+    fun addTrackEventTask(task: Runnable){
+        mTrackTaskManager?.let {
+            try {
+                it.execute(task)
+            } catch (e: Exception) {
+                trackQualityEvent("addTrackEventTask Exception")
+            }
+        }
+    }
 
 
     private fun trackQualityEvent(qualityInfo: String) {

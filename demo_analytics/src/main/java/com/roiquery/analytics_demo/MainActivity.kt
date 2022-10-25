@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.button_test_memory).setOnClickListener {
-
+            startActivity(Intent(this, UtilsActivity::class.java))
         }
     }
 

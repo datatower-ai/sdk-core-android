@@ -119,14 +119,47 @@ interface IAnalytics {
 
 
     /**
-     * 将所有本地缓存的日志发送到  Analytics.
+     * 初始化事件的计时器，计时单位为毫秒。
+     *
+     * @param eventName 事件的名称
      */
-    fun flush()
+    fun trackTimerStart(eventName: String)
 
     /**
-     * 删除本地缓存的全部事件
+     * 暂停事件计时器，计时单位为毫秒。
+     *
+     * @param eventName 事件的名称
      */
-    fun deleteAll()
+    fun trackTimerPause(eventName: String)
+
+    /**
+     * 恢复事件计时器，计时单位为毫秒。
+     *
+     * @param eventName 事件的名称
+     */
+    fun trackTimerResume(eventName: String)
+
+    /**
+     * 停止事件计时器
+     *
+     * @param eventName 事件的名称
+     * @param properties 事件的属性
+     */
+    fun trackTimerEnd(eventName: String, properties: JSONObject)
+
+
+    /**
+     * 删除事件的计时器
+     *
+     * @param eventName 事件名称
+     */
+    fun removeTimer(eventName: String)
+
+    /**
+     * 清除所有事件计时器
+     */
+    fun clearTrackTimer()
+
 
 
 }

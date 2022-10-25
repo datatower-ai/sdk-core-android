@@ -3,8 +3,8 @@ package com.roiquery.iap
 import com.roiquery.ad.utils.UUIDUtils
 import com.roiquery.iap.api.IAPReportImp
 
-@Deprecated("this class will be remove,Replace With \'DTIAPReport\'",ReplaceWith("DTIAPReport"))
-open class ROIQueryIAPReport {
+
+open class DTIAPReport {
     companion object {
 
 

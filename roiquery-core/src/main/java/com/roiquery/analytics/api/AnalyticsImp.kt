@@ -1,16 +1,20 @@
 package com.roiquery.analytics.api
 
 import android.content.Context
+import android.os.SystemClock
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.api.AbstractAnalytics.Companion.mConfigOptions
 import com.roiquery.analytics.config.AnalyticsConfig
+import com.roiquery.analytics.core.EventTimer
+import com.roiquery.analytics.core.EventTimerManager
 import com.roiquery.analytics.core.EventTrackManager
-import com.roiquery.analytics.core.EventUploadManager
 import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.utils.EventUtils
+import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONException
-
 import org.json.JSONObject
 
 class AnalyticsImp internal constructor() : AbstractAnalytics() {
@@ -107,14 +111,74 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         trackUser(Constant.PRESET_EVENT_USER_APPEND, properties)
     }
 
-
-    override fun flush() {
-        EventUploadManager.getInstance()?.flush()
+    override fun trackTimerStart(eventName: String) {
+        val startTime = SystemClock.elapsedRealtime()
+        EventTrackManager.instance.addTrackEventTask {
+            try {
+                if (!EventUtils.isValidEventName(eventName)) return@addTrackEventTask
+                EventTimerManager.instance.addEventTimer(eventName, EventTimer(startTime))
+            } catch (e: Exception) {
+                LogUtils.e(e)
+            }
+        }
     }
 
+    override fun trackTimerPause(eventName: String) {
+        val startTime = SystemClock.elapsedRealtime()
+        EventTrackManager.instance.addTrackEventTask {
+            try {
+                if (!EventUtils.isValidEventName(eventName)) return@addTrackEventTask
+                EventTimerManager.instance.updateTimerState(eventName, startTime, true)
+            } catch (e: Exception) {
+                LogUtils.e(e)
+            }
+        }
+    }
 
-    override fun deleteAll() {
+    override fun trackTimerResume(eventName: String) {
+        val startTime = SystemClock.elapsedRealtime()
+        EventTrackManager.instance.addTrackEventTask {
+            try {
+                if (!EventUtils.isValidEventName(eventName)) return@addTrackEventTask
+                EventTimerManager.instance.updateTimerState(eventName, startTime, false)
+            } catch (e: Exception) {
+                LogUtils.e(e)
+            }
+        }
+    }
 
+    override fun trackTimerEnd(eventName: String, properties: JSONObject) {
+        val endTime = SystemClock.elapsedRealtime()
+        EventTrackManager.instance.addTrackEventTask {
+            try {
+                if (!EventUtils.isValidEventName(eventName)) return@addTrackEventTask
+                EventTimerManager.instance.updateEndTime(eventName, endTime)
+                trackNormal(eventName,false, properties)
+            } catch (e: Exception) {
+                LogUtils.e(e)
+            }
+        }
+    }
+
+    override fun removeTimer(eventName: String) {
+        EventTrackManager.instance.addTrackEventTask {
+            try {
+                if (!EventUtils.isValidEventName(eventName)) return@addTrackEventTask
+                EventTimerManager.instance.removeTimer(eventName)
+            } catch (e: java.lang.Exception) {
+                LogUtils.e(e)
+            }
+        }
+    }
+
+    override fun clearTrackTimer() {
+        EventTrackManager.instance.addTrackEventTask {
+            try {
+                EventTimerManager.instance.clearTimers()
+            } catch (e: java.lang.Exception) {
+                LogUtils.e(e)
+            }
+        }
     }
 
     companion object {
