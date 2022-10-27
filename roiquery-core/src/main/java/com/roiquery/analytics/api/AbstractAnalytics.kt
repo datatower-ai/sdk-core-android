@@ -118,12 +118,10 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
      * 监听应用生命周期
      */
     private fun registerAppLifecycleListener(context: Context) {
-        if (ProcessUtils.isInMainProcess(context)) {
-            ThreadUtils.runOnUiThread {
-                (context.applicationContext as Application).registerActivityLifecycleCallbacks(
-                    LifecycleObserverImpl()
-                )
-            }
+        ThreadUtils.runOnUiThread {
+            (context.applicationContext as Application).registerActivityLifecycleCallbacks(
+                LifecycleObserverImpl()
+            )
         }
     }
 
