@@ -33,13 +33,14 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
     private val isInitRunning = AtomicBoolean(false)
 
     companion object {
-        const val TAG = "AnalyticsApi"
+        const val TAG = Constant.LOG_TAG
+
         // 配置
         internal var mConfigOptions: AnalyticsConfig? = null
     }
 
-    fun init(context: Context){
-        if(isInitRunning.get() || hasInit.get()){
+    fun init(context: Context) {
+        if (isInitRunning.get() || hasInit.get()) {
             return
         }
         isInitRunning.set(true)
@@ -48,7 +49,7 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
     }
 
 
-    fun internalInit(context: Context){
+    fun internalInit(context: Context) {
         try {
             initConfig(context)
             initLocalData(context)
@@ -67,17 +68,17 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
     /**
      * 初始化本成功
      */
-    private fun onInitSuccess(){
+    private fun onInitSuccess() {
         hasInit.set(true)
         isInitRunning.set(false)
         EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_APP_INITIALIZE)
-        LogUtils.d("ROIQuery", "init succeed")
+        LogUtils.d(TAG, "init succeed")
     }
 
     /**
      * 初始化失败
      */
-    private fun onInitFailed(errorMessage: String?){
+    private fun onInitFailed(errorMessage: String?) {
         isInitRunning.set(false)
         ROIQueryQualityHelper.instance.reportQualityMessage(
             ROIQueryErrorParams.CODE_INIT_EXCEPTION,
@@ -85,6 +86,7 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
             ROIQueryErrorParams.INIT_EXCEPTION,
             ROIQueryErrorParams.TYPE_ERROR
         )
+        LogUtils.d(TAG, "init Failed: $errorMessage")
     }
 
     fun isInitSuccess() = hasInit.get()
@@ -109,7 +111,11 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
      */
     private fun registerAppLifecycleListener(context: Context) {
         if (ProcessUtils.isInMainProcess(context)) {
-            (context.applicationContext as Application).registerActivityLifecycleCallbacks(LifecycleObserverImpl())
+            ThreadUtils.runOnUiThread {
+                (context.applicationContext as Application).registerActivityLifecycleCallbacks(
+                    LifecycleObserverImpl()
+                )
+            }
         }
     }
 
@@ -192,7 +198,6 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
                 }
             })
     }
-
 
 
 }

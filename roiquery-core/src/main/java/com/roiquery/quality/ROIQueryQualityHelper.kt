@@ -1,5 +1,7 @@
 package com.roiquery.quality
 
+import android.provider.MediaStore.MediaColumns.INSTANCE_ID
+import android.provider.UserDictionary.Words.APP_ID
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.network.HttpCallback
@@ -15,6 +17,8 @@ import org.json.JSONObject
  * version：1.0
  */
 internal class ROIQueryQualityHelper private constructor() {
+
+    private val TAG = Constant.LOG_TAG
 
     private var mJsonParams: MutableMap<String, Any?>? = null
 
@@ -34,11 +38,11 @@ internal class ROIQueryQualityHelper private constructor() {
                 .callback(object :
                     HttpCallback.JsonCallback() {
                     override fun onFailure(code: Int, errorMessage: String?) {
-                        LogUtils.d("ROIQueryQuality onFailure", errorMessage)
+                        LogUtils.d(TAG,"Quality onFailure: $errorMessage")
                     }
 
                     override fun onResponse(response: JSONObject?) {
-                        LogUtils.d("ROIQueryQuality onResponse", response.toString())
+                        LogUtils.d(TAG,"Quality onResponse: "+ response.toString())
                     }
 
                     override fun onAfter() {
