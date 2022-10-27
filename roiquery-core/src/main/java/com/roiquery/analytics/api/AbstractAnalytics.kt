@@ -12,6 +12,7 @@ import com.roiquery.analytics.core.PresetEventManager
 import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
+import com.roiquery.analytics.utils.NetworkUtil.registerNetworkStatusChangedListener
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import kotlinx.coroutines.CoroutineScope
@@ -33,13 +34,14 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
     private val isInitRunning = AtomicBoolean(false)
 
     companion object {
-        const val TAG = "AnalyticsApi"
+        const val TAG = Constant.LOG_TAG
+
         // 配置
         internal var mConfigOptions: AnalyticsConfig? = null
     }
 
-    fun init(context: Context){
-        if(isInitRunning.get() || hasInit.get()){
+    fun init(context: Context) {
+        if (isInitRunning.get() || hasInit.get()) {
             return
         }
         isInitRunning.set(true)
@@ -48,14 +50,14 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
     }
 
 
-    fun internalInit(context: Context){
+    private fun internalInit(context: Context) {
         try {
             initConfig(context)
             initLocalData(context)
             initTracker()
+            initProperties(context)
             registerAppLifecycleListener(context)
-            initProperties(context, dataTowerIdHandler = {
-                registerNetworkStatusChangedListener(context)
+            getDataTowerId(context, dataTowerIdHandler = {
                 trackPresetEvent(context)
                 onInitSuccess()
             })
@@ -65,19 +67,19 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
     }
 
     /**
-     * 初始化本成功
+     * 初始化成功
      */
-    private fun onInitSuccess(){
+    private fun onInitSuccess() {
         hasInit.set(true)
         isInitRunning.set(false)
         EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_APP_INITIALIZE)
-        LogUtils.d("ROIQuery", "init succeed")
+        LogUtils.d(TAG, "init succeed")
     }
 
     /**
      * 初始化失败
      */
-    private fun onInitFailed(errorMessage: String?){
+    private fun onInitFailed(errorMessage: String?) {
         isInitRunning.set(false)
         ROIQueryQualityHelper.instance.reportQualityMessage(
             ROIQueryErrorParams.CODE_INIT_EXCEPTION,
@@ -85,6 +87,7 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
             ROIQueryErrorParams.INIT_EXCEPTION,
             ROIQueryErrorParams.TYPE_ERROR
         )
+        LogUtils.d(TAG, "init Failed: $errorMessage")
     }
 
     fun isInitSuccess() = hasInit.get()
@@ -98,10 +101,17 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
     }
 
     /**
-     * 初始化预置、通用属性, 并获取DT id
+     * 初始化预置、通用属性
      */
-    private fun initProperties(context: Context, dataTowerIdHandler: (dtid: String) -> Unit) {
-        PropertyManager.instance.init(context, mConfigOptions, dataTowerIdHandler)
+    private fun initProperties(context: Context) {
+        PropertyManager.instance.init(context, mConfigOptions)
+    }
+
+    /**
+     * 获取DT id
+     */
+    private fun getDataTowerId(context: Context, dataTowerIdHandler: (dtid: String) -> Unit){
+        PropertyManager.instance.getDataTowerId(context, dataTowerIdHandler)
     }
 
     /**
@@ -109,7 +119,11 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
      */
     private fun registerAppLifecycleListener(context: Context) {
         if (ProcessUtils.isInMainProcess(context)) {
-            (context.applicationContext as Application).registerActivityLifecycleCallbacks(LifecycleObserverImpl())
+            ThreadUtils.runOnUiThread {
+                (context.applicationContext as Application).registerActivityLifecycleCallbacks(
+                    LifecycleObserverImpl()
+                )
+            }
         }
     }
 
@@ -174,24 +188,6 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
         }
     }
 
-    /**
-     * 网络状态监控
-     */
-    private fun registerNetworkStatusChangedListener(context: Context) {
-        NetworkUtil.registerNetworkStatusChangedListener(
-            context,
-            object : NetworkUtil.OnNetworkStatusChangedListener {
-                override fun onDisconnected() {
-                    PropertyManager.instance.updateNetworkType(NetworkUtil.NetworkType.NETWORK_NO)
-                }
-
-                override fun onConnected(networkType: NetworkUtil.NetworkType?) {
-                    LogUtils.i("onNetConnChanged", networkType)
-                    PropertyManager.instance.updateNetworkType(networkType)
-                    EventUploadManager.getInstance()?.flush()
-                }
-            })
-    }
 
 
 

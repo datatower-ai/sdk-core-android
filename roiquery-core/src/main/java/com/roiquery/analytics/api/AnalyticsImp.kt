@@ -205,7 +205,7 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             if (instance == null) {
                 mConfigOptions = configOptions
                 instance = getInstance().apply {
-                    internalInit(context)
+                    init(context)
                 }
             }
         }

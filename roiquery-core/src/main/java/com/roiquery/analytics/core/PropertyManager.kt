@@ -47,16 +47,17 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
     fun init(
         context: Context,
         initConfig: AnalyticsConfig?,
-        dataTowerIdHandler: (id: String) -> Unit
     ) {
         dataAdapter = EventDateAdapter.getInstance(context)
         initEventInfo(context)
         initCommonProperties(context, initConfig)
-        getDataTowerId(context, dataTowerIdHandler)
+        registerFPSListener()
+        registerNetworkStatusChangedListener(context)
     }
 
-    private fun getDataTowerId(context: Context, dataTowerIdHandler: (id: String) -> Unit) {
+    fun getDataTowerId(context: Context, dataTowerIdHandler: (id: String) -> Unit) {
         scope.launch {
+            //这里每次更新，因为 gaid 或者Android id 有可能会变
             val originalId = getOriginalId(context)
             dataAdapter?.dtId?.let {
                 if (it.isNotEmpty()) {
@@ -68,66 +69,6 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
             dataTowerIdHandler.invoke(initDTId(originalId))
         }
     }
-
-
-    /**
-     * 获取并配置 事件一些基本属性
-     *
-     * @return
-     */
-    private fun initEventInfo(context: Context) {
-        eventInfo = EventUtils.getEventInfo(context, dataAdapter)
-    }
-
-    private fun updateEventInfo(key: String, value: String) {
-        eventInfo?.put(key, value)
-    }
-
-    fun getEventInfo() = eventInfo?.toMutableMap() ?: mutableMapOf()
-
-    /**
-     * 获取并配置 事件通用属性
-     *
-     * @return
-     */
-    private fun initCommonProperties(context: Context, initConfig: AnalyticsConfig?) {
-        initFPSListener()
-        commonProperties = EventUtils.getCommonProperties(context, dataAdapter)
-        initConfig?.let { config ->
-            if (config.mCommonProperties != null) {
-                val iterator = config.mCommonProperties!!.keys()
-                while (iterator.hasNext()) {
-                    val key = iterator.next()
-                    try {
-                        val value = config.mCommonProperties!![key]
-                        updateCommonProperties(key, value.toString())
-                    } catch (e: Exception) {
-                        LogUtils.printStackTrace(e)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun initFPSListener() {
-        if (null == Looper.myLooper()) {
-            Looper.prepare()
-        }
-        MemoryUtils.listenFPS()
-    }
-
-
-    private fun updateCommonProperties(key: String, value: Any?) {
-        commonProperties?.put(key, value)
-    }
-
-    private fun removeCommonProperty(key: String) {
-        if (commonProperties?.containsKey(key) == true) {
-            commonProperties?.remove(key)
-        }
-    }
-
-    fun getCommonProperties() = commonProperties?.toMutableMap() ?: mutableMapOf()
 
     private suspend fun getOriginalId(context: Context) =
         suspendCoroutine<String> {
@@ -175,6 +116,86 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
             )
             return ""
         }
+    }
+
+    /**
+     * 获取并配置 事件一些基本属性
+     *
+     * @return
+     */
+    private fun initEventInfo(context: Context) {
+        eventInfo = EventUtils.getEventInfo(context, dataAdapter)
+    }
+
+    private fun updateEventInfo(key: String, value: String) {
+        eventInfo?.put(key, value)
+    }
+
+    fun getEventInfo() = eventInfo?.toMutableMap() ?: mutableMapOf()
+
+    /**
+     * 获取并配置 事件通用属性
+     *
+     * @return
+     */
+    private fun initCommonProperties(context: Context, initConfig: AnalyticsConfig?) {
+        commonProperties = EventUtils.getCommonProperties(context, dataAdapter)
+        initConfig?.let { config ->
+            if (config.mCommonProperties != null) {
+                val iterator = config.mCommonProperties!!.keys()
+                while (iterator.hasNext()) {
+                    val key = iterator.next()
+                    try {
+                        val value = config.mCommonProperties!![key]
+                        updateCommonProperties(key, value.toString())
+                    } catch (e: Exception) {
+                        LogUtils.printStackTrace(e)
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun updateCommonProperties(key: String, value: Any?) {
+        commonProperties?.put(key, value)
+    }
+
+    private fun removeCommonProperty(key: String) {
+        if (commonProperties?.containsKey(key) == true) {
+            commonProperties?.remove(key)
+        }
+    }
+
+    fun getCommonProperties() = commonProperties?.toMutableMap() ?: mutableMapOf()
+
+    /**
+     * FPS状态监控
+     */
+    private fun registerFPSListener() {
+        if (null == Looper.myLooper()) {
+            Looper.prepare()
+        }
+        MemoryUtils.listenFPS()
+    }
+
+    /**
+     * 网络状态监控
+     */
+    private fun registerNetworkStatusChangedListener(context: Context) {
+        NetworkUtil.registerNetworkStatusChangedListener(
+            context,
+            object : NetworkUtil.OnNetworkStatusChangedListener {
+                override fun onDisconnected() {
+                    updateNetworkType(NetworkUtil.NetworkType.NETWORK_NO)
+                }
+
+                override fun onConnected(networkType: NetworkUtil.NetworkType?) {
+                    LogUtils.i("onNetConnChanged", networkType)
+                    updateNetworkType(networkType)
+                    EventUploadManager.getInstance()?.flush()
+                }
+            })
     }
 
     /**
