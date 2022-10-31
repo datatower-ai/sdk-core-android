@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -295,19 +294,23 @@ public class MemoryUtils {
      * */
     @NonNull
     public static String getRAM(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            ActivityManager activityManager = (ActivityManager) context
-                    .getSystemService(ACTIVITY_SERVICE);
-            ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
-            activityManager.getMemoryInfo(memoryInfo);
-            long totalSize = memoryInfo.totalMem;
-            long availableSize = memoryInfo.availMem;
-            double total = formatNumber(totalSize / 1024.0 / 1024.0 / 1024.0);
-            double available = formatNumber(availableSize / 1024.0 / 1024.0 / 1024.0);
-            return available + "/" + total;
-        } else {
-            return "0";
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                ActivityManager activityManager = (ActivityManager) context
+                        .getSystemService(ACTIVITY_SERVICE);
+                ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+                activityManager.getMemoryInfo(memoryInfo);
+                long totalSize = memoryInfo.totalMem;
+                long availableSize = memoryInfo.availMem;
+                double total = formatNumber(totalSize / 1024.0 / 1024.0 / 1024.0);
+                double available = formatNumber(availableSize / 1024.0 / 1024.0 / 1024.0);
+                return available + "/" + total;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return "0";
+
     }
 
     /**
@@ -365,26 +368,30 @@ public class MemoryUtils {
     private static String mStoragePath; //保存手机外置卡路径
 
     public static String getDisk(Context context, boolean isExternal) {
-        if (TextUtils.isEmpty(mStoragePath)) {
-            mStoragePath = getStoragePath(context, isExternal);
-        }
-        if (TextUtils.isEmpty(mStoragePath)) {
-            return "0";
-        }
-        File file = new File(mStoragePath);
-        if (!file.exists()) {
-            return "0";
-        }
-        StatFs statFs = new StatFs(file.getPath());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            long blockCount = statFs.getBlockCountLong();
-            long blockSize = statFs.getBlockSizeLong();
-            long totalSpace = blockSize * blockCount;
-            long availableBlocks = statFs.getAvailableBlocksLong();
-            long availableSpace = availableBlocks * blockSize;
-            double total = formatNumber(totalSpace / 1024.0 / 1024.0 / 1024.0);
-            double available = formatNumber(availableSpace / 1024.0 / 1024.0 / 1024.0);
-            return available + "/" + total;
+        try {
+            if (TextUtils.isEmpty(mStoragePath)) {
+                mStoragePath = getStoragePath(context, isExternal);
+            }
+            if (TextUtils.isEmpty(mStoragePath)) {
+                return "0";
+            }
+            File file = new File(mStoragePath);
+            if (!file.exists()) {
+                return "0";
+            }
+            StatFs statFs = new StatFs(file.getPath());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                long blockCount = statFs.getBlockCountLong();
+                long blockSize = statFs.getBlockSizeLong();
+                long totalSpace = blockSize * blockCount;
+                long availableBlocks = statFs.getAvailableBlocksLong();
+                long availableSpace = availableBlocks * blockSize;
+                double total = formatNumber(totalSpace / 1024.0 / 1024.0 / 1024.0);
+                double available = formatNumber(availableSpace / 1024.0 / 1024.0 / 1024.0);
+                return available + "/" + total;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return "0";
 
