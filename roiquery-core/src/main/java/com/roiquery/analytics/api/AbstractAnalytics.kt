@@ -33,6 +33,8 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
 
     private val isInitRunning = AtomicBoolean(false)
 
+    var firstOpenTime = 0L
+
     companion object {
         const val TAG = Constant.LOG_TAG
 
@@ -54,6 +56,7 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
         try {
             initConfig(context)
             initLocalData(context)
+            generateFirstOpenTime()
             initTracker()
             initProperties(context)
             registerAppLifecycleListener(context)
@@ -91,6 +94,16 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
     }
 
     fun isInitSuccess() = hasInit.get()
+
+
+    /**
+     * 记录首次打开时间，将次时间作为 app_install 的 event_time
+     */
+    private fun generateFirstOpenTime(){
+        if (mDataAdapter?.isAppInstallInserted == false) {
+            firstOpenTime = TimeCalibration.instance.getSystemHibernateTimeGap()
+        }
+    }
 
     /**
      * 初始化本地数据

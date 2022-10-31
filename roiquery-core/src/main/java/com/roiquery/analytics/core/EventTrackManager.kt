@@ -2,6 +2,7 @@ package com.roiquery.analytics.core
 
 import com.google.android.a.c
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
@@ -119,7 +120,7 @@ class EventTrackManager {
                     // 如果时间已校准，则 保存当前时间，否则保存当前时间的系统休眠时间差用做上报时时间校准依据
                     put(
                         Constant.EVENT_INFO_TIME,
-                        if (isTimeVerify) this else TimeCalibration.instance.getSystemHibernateTimeGap()
+                        getEventTime(eventName, isTimeVerify, this)
                     )
                     put(Constant.EVENT_INFO_NAME, eventName)
                     put(Constant.EVENT_INFO_TYPE, eventType)
@@ -165,6 +166,14 @@ class EventTrackManager {
             insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_ERROR, ROIQueryErrorParams.TRACK_GENERATE_EVENT_ERROR)
         }
     }
+
+
+    private fun getEventTime(eventName: String, isTimeVerify: Boolean, now: Long) =
+        if (eventName == Constant.PRESET_EVENT_APP_INSTALL) {
+            AnalyticsImp.getInstance().firstOpenTime
+        } else {
+            if (isTimeVerify) now else TimeCalibration.instance.getSystemHibernateTimeGap()
+        }
 
 
     private fun appendDynamicProperties(eventName :String , properties: JSONObject){

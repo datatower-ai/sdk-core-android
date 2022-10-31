@@ -105,20 +105,30 @@ class EventInfoCheckHelper private constructor() {
 
             //判定时间是否校准，未校准在已获得网络时间的情况下校准则校准
             if (!jsonEventBody.optBoolean(Constant.EVENT_TIME_CALIBRATED)) {
-                val verifyTime =
-                    TimeCalibration.instance.getVerifyTimeAsync()
+                val verifyTime = TimeCalibration.instance.getVerifyTimeAsync()
+
                 if (verifyTime != TimeCalibration.TIME_NOT_VERIFY_VALUE) {
-                    val verifyTimeAsyncByGapTime =
-                        TimeCalibration.instance.getVerifyTimeAsyncByGapTime(infoTime)
+                    val verifyTimeAsyncByGapTime = TimeCalibration.instance.getVerifyTimeAsyncByGapTime(infoTime)
+
                     eventInfo.put(
                         Constant.EVENT_INFO_TIME,
                         verifyTimeAsyncByGapTime
                     )
+                    if (eventInfo.optString(Constant.EVENT_INFO_NAME) == Constant.PRESET_EVENT_APP_INSTALL){
+                        EventDateAdapter.getInstance()?.isFirstOpenTimeVerified = true
+                    }
                     return eventInfo
-                } else {
                 }
             } else {
-                eventInfo.put(Constant.EVENT_INFO_TIME, infoTime)
+                //校准 app_install 的 event_time
+                if (eventInfo.optString(Constant.EVENT_INFO_NAME) == Constant.PRESET_EVENT_APP_INSTALL
+                    && EventDateAdapter.getInstance()?.isFirstOpenTimeVerified == false ){
+                    val time = TimeCalibration.instance.getVerifyTimeAsyncByGapTime(infoTime)
+                    eventInfo.put(Constant.EVENT_INFO_TIME, time)
+                    EventDateAdapter.getInstance()?.isFirstOpenTimeVerified = true
+                }else {
+                    eventInfo.put(Constant.EVENT_INFO_TIME, infoTime)
+                }
                 return eventInfo
             }
         }
