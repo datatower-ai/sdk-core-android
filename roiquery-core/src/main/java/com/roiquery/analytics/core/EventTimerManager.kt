@@ -38,7 +38,7 @@ class EventTimerManager {
         try {
             synchronized(mTrackTimer) {
                 val eventTimer: EventTimer? = mTrackTimer[eventName]
-                if (eventTimer != null && eventTimer.isPaused() !== isPause) {
+                if (eventTimer != null && eventTimer.isPaused() != isPause) {
                     eventTimer.setTimerState(isPause, startTime)
                     LogUtils.d(TAG,"$eventName update Timer State, isPause :$isPause")
                 }

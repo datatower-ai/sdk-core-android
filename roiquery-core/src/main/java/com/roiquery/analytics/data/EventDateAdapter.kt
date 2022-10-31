@@ -79,6 +79,13 @@ class EventDateAdapter private constructor(
         set(value) = setStringConfig(DataParams.CLOUD_CONFIG_AES_KEY,value)
 
     /**
+     * first open time 是否校准, 默认没有校准
+     */
+    var isFirstOpenTimeVerified: Boolean
+        get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_IS_FIRST_OPEN_TIME_VERIFIED,false)}
+        set(value) = setBooleanConfig(DataParams.CONFIG_IS_FIRST_OPEN_TIME_VERIFIED, value)
+
+    /**
      * 是否上报数据，默认是
      */
     var enableUpload: Boolean

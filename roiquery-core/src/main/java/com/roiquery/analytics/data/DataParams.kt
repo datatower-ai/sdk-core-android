@@ -14,6 +14,7 @@ class DataParams private constructor(packageName: String) {
         const val KEY_DATA = "data"
 
         const val CONFIG_FIRST_OPEN_TIME = "first_open_time"
+        const val CONFIG_IS_FIRST_OPEN_TIME_VERIFIED = "is_first_open_time_verified"
         const val CONFIG_GAID = "gaid"
         const val CONFIG_OAID = "oaid"
         const val CONFIG_DT_ID = "dt_id"
