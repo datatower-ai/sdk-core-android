@@ -97,11 +97,18 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
 
 
     /**
-     * 记录首次打开时间，将次时间作为 app_install 的 event_time
+     * 记录首次打开时间，将此时间作为 app_install 的 event_time
      */
     private fun generateFirstOpenTime(){
         if (mDataAdapter?.isAppInstallInserted == false) {
-            firstOpenTime = TimeCalibration.instance.getSystemHibernateTimeGap()
+            val openTime = TimeCalibration.instance.getVerifyTimeAsync()
+            if (openTime == TimeCalibration.TIME_NOT_VERIFY_VALUE){
+                firstOpenTime = TimeCalibration.instance.getSystemHibernateTimeGap()
+                mDataAdapter?.isFirstOpenTimeVerified = false
+            }else{
+                firstOpenTime = openTime
+                mDataAdapter?.isFirstOpenTimeVerified = true
+            }
         }
     }
 
