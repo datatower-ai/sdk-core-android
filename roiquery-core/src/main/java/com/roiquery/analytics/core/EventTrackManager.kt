@@ -1,5 +1,6 @@
 package com.roiquery.analytics.core
 
+import android.util.Log
 import com.google.android.a.c
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AnalyticsImp
@@ -146,7 +147,7 @@ class EventTrackManager {
             //将事件时间是否校准的结果保存至事件信息中，以供上报时校准时间使用
             val data = JSONObject().apply {
                 put(Constant.EVENT_BODY, eventInfo)
-                put(Constant.EVENT_TIME_CALIBRATED, isTimeVerify)
+                put(Constant.EVENT_TIME_CALIBRATED, isTimeVerifyByEventName(isTimeVerify,eventName))
             }
 
             mAnalyticsManager?.enqueueEventMessage(
@@ -168,13 +169,27 @@ class EventTrackManager {
     }
 
 
-    private fun getEventTime(eventName: String, isTimeVerify: Boolean, now: Long) =
-        if (eventName == Constant.PRESET_EVENT_APP_INSTALL) {
-            AnalyticsImp.getInstance().firstOpenTime
-        } else {
-            if (isTimeVerify) now else TimeCalibration.instance.getSystemHibernateTimeGap()
+    // 设置 PRESET_EVENT_SESSION_START 与  PRESET_EVENT_APP_INSTALL 时间为未校准状态，保证数据上报时用同一个网络时间校准
+    private fun isTimeVerifyByEventName(isTimeVerify: Boolean,eventName: String): Boolean {
+      return  when(eventName){
+            Constant.PRESET_EVENT_SESSION_START ->
+                false
+            Constant.PRESET_EVENT_APP_INSTALL->
+                false
+            else -> isTimeVerify
         }
+    }
 
+
+    private fun getEventTime(eventName: String, isTimeVerify: Boolean, now: Long) =
+       when(eventName){
+          Constant.PRESET_EVENT_APP_INSTALL ->
+               AnalyticsImp.getInstance().firstOpenTime
+           Constant.PRESET_EVENT_SESSION_START ->
+               TimeCalibration.instance.getSystemHibernateTimeGap()
+           else ->
+               if (isTimeVerify) now else TimeCalibration.instance.getSystemHibernateTimeGap()
+       }
 
     private fun appendDynamicProperties(eventName :String , properties: JSONObject){
         properties.apply {
