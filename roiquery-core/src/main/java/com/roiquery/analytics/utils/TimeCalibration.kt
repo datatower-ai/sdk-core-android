@@ -32,11 +32,17 @@ class TimeCalibration {
         EventDateAdapter.getInstance()?.latestGapTime = TIME_NOT_VERIFY_VALUE
     }
     @Volatile
-    var _latestTime =  TIME_NOT_VERIFY_VALUE
+    private var _latestTime =  TIME_NOT_VERIFY_VALUE
     @Volatile
     private var _latestSystemElapsedRealtime = 0L
     fun getReferenceTime() {
         if (_latestTime == 0L) {
+            //子进程只读取主进程的时间，不获取服务器时间
+            if (!ProcessUtils.isInMainProcess(AdtUtil.getInstance().applicationContext)){
+                _latestTime = EventDateAdapter.getInstance()?.latestNetTime ?: TIME_NOT_VERIFY_VALUE
+                _latestSystemElapsedRealtime = EventDateAdapter.getInstance()?.latestGapTime ?: TIME_NOT_VERIFY_VALUE
+                return
+            }
             RequestHelper.Builder(HttpMethod.POST_ASYNC, Constant.EVENT_REPORT_URL)
                 .jsonData(TIME_FROM_ROI_NET_BODY)
                 .retryCount(Constant.EVENT_REPORT_TRY_COUNT)

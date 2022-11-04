@@ -11,8 +11,8 @@ android {
         applicationId "com.nodetower.android_analytics"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 8
-        versionName "1.1.8"
+        versionCode 10
+        versionName "1.1.10"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
