@@ -2,6 +2,7 @@ package com.roiquery.analytics.data
 
 import android.content.Context
 import android.text.TextUtils
+import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryCoroutineScope
 import com.roiquery.analytics.data.room.ROIQueryAnalyticsDB
 import com.roiquery.analytics.data.room.bean.Configs

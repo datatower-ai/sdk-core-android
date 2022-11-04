@@ -30,6 +30,16 @@ class EventInfoCheckHelper private constructor() {
             }
             val correctedEventInfo = JSONArray()
 
+            for (index in 0 until length){
+                jsonArray.getJSONObject(index)?.let { it ->
+                    it.optJSONObject(Constant.EVENT_BODY)?.let {
+
+                    }
+                }
+            }
+
+
+
             for (index in 0 until length) {
                 jsonArray.getJSONObject(index)?.let { it ->
                  correctEventIdInfo(it)?.let {

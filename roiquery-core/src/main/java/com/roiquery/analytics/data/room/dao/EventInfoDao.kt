@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.roiquery.analytics.Constant
 import com.roiquery.analytics.data.room.bean.Events
 
 /**
@@ -35,4 +36,5 @@ interface EventInfoDao {
 
     @Query("delete  from events")
     suspend fun clearTable()
+
 }

@@ -15,7 +15,7 @@ class MyApp : Application() {
         //init SDK
 //        ROIQuery.initSDK(this,"dt_id_test",ROIQueryChannel.GP,false)
 
-            DT.initSDK(this,"dt_529e9ffca9ea3b49", DTChannel.GP,true)
+            DT.initSDK(this,"dt_461a208fdd075c27", DTChannel.GP,true)
 
 
         //mock data
