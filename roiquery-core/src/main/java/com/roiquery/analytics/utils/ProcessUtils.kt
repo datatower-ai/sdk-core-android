@@ -20,13 +20,13 @@ object ProcessUtils {
     }
 
     private var sProcessName: String? = null
-    fun getProcessName(context: Context): String? {
+    fun getProcessName(context: Context?): String? {
         return if (sProcessName != null) {
             sProcessName
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             processNameAPI28
         } else {
-            val applicationContext = context.applicationContext
+            val applicationContext = context?.applicationContext
             if (applicationContext is Application) {
                 sProcessName = getProcessNameViaReflection(applicationContext)
                 sProcessName

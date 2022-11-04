@@ -7,7 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.roiquery.analytics.ROIQueryAnalytics
+import com.roiquery.analytics.DTAnalytics
 import com.roiquery.analytics.utils.JsonUtils
 import org.json.JSONObject
 import java.lang.ref.WeakReference
@@ -19,9 +19,9 @@ class LifecycleObserverImpl : ActivityLifecycleCallbacks {
         ProcessLifecycleOwner.get().lifecycle.addObserver(object: LifecycleEventObserver {
             override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
                 if (event == Lifecycle.Event.ON_START) {
-                    ROIQueryAnalytics.onAppForeground(getStartReason())
+                    DTAnalytics.onAppForeground(getStartReason())
                 }else if (event == Lifecycle.Event.ON_STOP){
-                    ROIQueryAnalytics.onAppBackground()
+                    DTAnalytics.onAppBackground()
                 }
             }
         })

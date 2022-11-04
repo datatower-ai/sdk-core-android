@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.roiquery.analytics_demo">
 
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -18,6 +17,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ROIQuerySDK">
+        <service
+            android:name=".DemoDebugService"
+            android:enabled="true"
+            android:process=":debug"
+            android:exported="true"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -25,25 +30,24 @@
             android:theme="@style/Theme.ROIQuerySDK.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="com.roiquery.analytics_demo.MainActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".CoreActivity"
             android:theme="@style/Theme.ROIQuerySDK.NoActionBar" />
-
         <activity
             android:name=".AdReportActivity"
             android:theme="@style/Theme.ROIQuerySDK.NoActionBar" />
-
         <activity
             android:name=".IapReportActivity"
             android:theme="@style/Theme.ROIQuerySDK.NoActionBar" />
-
         <activity
             android:name=".IasReportActivity"
             android:theme="@style/Theme.ROIQuerySDK.NoActionBar" />
@@ -54,7 +58,6 @@
         <service
             android:name=".SubProcessService"
             android:process=":subProcessService" />
-
     </application>
 
 </manifest>

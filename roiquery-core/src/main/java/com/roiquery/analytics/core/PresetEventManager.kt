@@ -1,6 +1,7 @@
 package com.roiquery.analytics.core
 
 import android.content.Context
+import android.util.Log
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
@@ -135,6 +136,7 @@ class PresetEventManager {
      */
     private fun trackAppInstallEvent(response: ReferrerDetails, failedReason: String) {
         val isOK = failedReason.isBlank()
+        Log.e("test",ProcessUtils.getProcessName(null)+"---trackAppInstallEvent---")
         EventTrackManager.instance.trackNormalPreset(
             Constant.PRESET_EVENT_APP_INSTALL,
             JSONObject().apply {

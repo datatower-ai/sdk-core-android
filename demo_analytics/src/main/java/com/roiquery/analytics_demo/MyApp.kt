@@ -1,9 +1,12 @@
 package com.roiquery.analytics_demo
 
 import android.app.Application
+import android.content.Intent
+import android.util.Log
 import com.roiquery.ad.DTAdReport
 import com.roiquery.analytics.DT
 import com.roiquery.analytics.DTChannel
+import com.roiquery.analytics.utils.ProcessUtils
 
 
 class MyApp : Application() {
@@ -11,7 +14,9 @@ class MyApp : Application() {
         super.onCreate()
         //init SDK
 //        ROIQuery.initSDK(this,"dt_id_test",ROIQueryChannel.GP,false)
-        DT.initSDK(this,"dt_529e9ffca9ea3b49", DTChannel.GP,true)
+
+            DT.initSDK(this,"dt_529e9ffca9ea3b49", DTChannel.GP,true)
+
 
         //mock data
         if (SharedPreferencesUtils.getParam(this,"first_open",true) as Boolean) {

@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.EventTrackManager
@@ -33,7 +34,7 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
 
     private val isInitRunning = AtomicBoolean(false)
 
-    var firstOpenTime = 0L
+    var firstOpenTime : Long? by NotNullSingleVar()
 
     companion object {
         const val TAG = Constant.LOG_TAG
@@ -56,7 +57,7 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
         try {
             initConfig(context)
             initLocalData(context)
-            generateFirstOpenTime()
+            generateFirstOpenTime(context)
             initTracker()
             initProperties(context)
             registerAppLifecycleListener(context)
@@ -99,16 +100,19 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
     /**
      * 记录首次打开时间，将此时间作为 app_install 的 event_time
      */
-    private fun generateFirstOpenTime(){
-        if (mDataAdapter?.isAppInstallInserted == false) {
-            val openTime = TimeCalibration.instance.getVerifyTimeAsync()
-            if (openTime == TimeCalibration.TIME_NOT_VERIFY_VALUE){
-                firstOpenTime = TimeCalibration.instance.getSystemHibernateTimeGap()
-                mDataAdapter?.isFirstOpenTimeVerified = false
-            }else{
-                firstOpenTime = openTime
-                mDataAdapter?.isFirstOpenTimeVerified = true
-            }
+    private fun generateFirstOpenTime(context: Context){
+        try {
+            if (mDataAdapter?.isAppInstallInserted == false) {
+                val openTime = TimeCalibration.instance.getVerifyTimeAsync()
+                if (openTime == TimeCalibration.TIME_NOT_VERIFY_VALUE){
+                    firstOpenTime = TimeCalibration.instance.getSystemHibernateTimeGap()
+                    mDataAdapter?.isFirstOpenTimeVerified = false
+                }else{
+                    firstOpenTime = openTime
+                    mDataAdapter?.isFirstOpenTimeVerified = true
+                }
+                }
+        } catch (e: Exception) {
         }
     }
 
@@ -210,3 +214,4 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
 
 
 }
+

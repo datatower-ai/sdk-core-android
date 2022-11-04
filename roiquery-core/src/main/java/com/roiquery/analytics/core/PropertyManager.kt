@@ -55,7 +55,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
         registerNetworkStatusChangedListener(context)
     }
 
-    fun getDataTowerId(context: Context, dataTowerIdHandler: (id: String) -> Unit) {
+    internal inline fun getDataTowerId(context: Context, crossinline dataTowerIdHandler: (id: String) -> Unit) {
         scope.launch {
             //这里每次更新，因为 gaid 或者Android id 有可能会变
             val originalId = getOriginalId(context)
