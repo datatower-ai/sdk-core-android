@@ -22,6 +22,5 @@ data class Events(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "_id") val id: Long = 0,
     @ColumnInfo(name = "event_syn") val eventSyn: String?,
     @ColumnInfo(name = "data") val data: String,
-    @ColumnInfo(name = "created_at") val createdAt: Long,
-    @ColumnInfo(name = "event_name")  val eventName:String?
+    @ColumnInfo(name = "created_at") val createdAt: Long
 )

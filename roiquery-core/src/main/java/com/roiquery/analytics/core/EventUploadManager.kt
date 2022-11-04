@@ -41,7 +41,7 @@ class EventUploadManager private constructor(
             scope.launch {
                 try {
                     //插入数据库
-                    val insertCode = mDateAdapter.addJSON(eventJson, eventSyn,name)
+                    val insertCode = mDateAdapter.addJSON(eventJson, eventSyn)
                     //检测插入结果
                     checkInsertResult(insertCode, name, eventJson, eventSyn, insertHandler)
                     //发送上报的message

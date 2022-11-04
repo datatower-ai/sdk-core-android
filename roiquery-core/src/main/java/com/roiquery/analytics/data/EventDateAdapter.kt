@@ -24,11 +24,11 @@ class EventDateAdapter private constructor(
      * @return the number of rows in the table, or DB_OUT_OF_MEMORY_ERROR/DB_UPDATE_ERROR
      * on failure
      */
-    suspend fun addJSON(data: JSONObject?, eventSyn: String,eventName:String)= coroutineScope {
+    suspend fun addJSON(data: JSONObject?, eventSyn: String)= coroutineScope {
         suspendCoroutine<Int> {
             scope.launch {
                 try {
-                    val code = mOperation?.insertData(data, eventSyn,eventName)!!
+                    val code = mOperation?.insertData(data, eventSyn)!!
                     it.resume(code)
                 } catch (e:Exception){
                     it.resume(DataParams.DB_ADD_JSON_ERROR)

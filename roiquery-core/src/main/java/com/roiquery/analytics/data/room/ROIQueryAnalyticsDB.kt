@@ -21,7 +21,7 @@ import com.roiquery.analytics.data.room.dao.EventInfoDao
  */
 
 @Database(
-    version = 3,
+    version = 2,
     entities = [Events::class, Configs::class], exportSchema = true
 )
 abstract class ROIQueryAnalyticsDB : RoomDatabase() {

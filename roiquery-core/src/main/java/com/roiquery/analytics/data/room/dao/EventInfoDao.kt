@@ -37,6 +37,4 @@ interface EventInfoDao {
     @Query("delete  from events")
     suspend fun clearTable()
 
-    @Query("SELECT data FROM events WHERE event_name=:eventName")
-    suspend fun queryDataByEventName(eventName:String):String
 }

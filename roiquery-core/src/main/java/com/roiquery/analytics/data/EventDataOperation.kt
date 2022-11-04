@@ -75,7 +75,7 @@ internal class EventDataOperation(
      * 保存数据
      * 插入成功 返回0 失败返回 error code
      */
-    suspend fun insertData(jsonObject: JSONObject?, eventSyn: String,eventName:String) =
+    suspend fun insertData(jsonObject: JSONObject?, eventSyn: String) =
         suspendCoroutine<Int> {
             scope.launch(insertDataNormalError) {
 
@@ -90,8 +90,7 @@ internal class EventDataOperation(
                                 data =
                                 jsonObject.toString() + "\t" + jsonObject.toString()
                                     .hashCode(),
-                                eventSyn = eventSyn,
-                                eventName = eventName
+                                eventSyn = eventSyn
                             )
                         )
                         it.resume(if(result == -1L) DataParams.DB_INSERT_ERROR else DataParams.DB_INSERT_SUCCEED)
@@ -155,8 +154,6 @@ internal class EventDataOperation(
             jsonData.append("[")
             scope.launch(Dispatchers.IO) {
                 try {
-                    val installEvent=analyticsDB?.getEventsDao()?.queryDataByEventName(Constant.PRESET_EVENT_APP_INSTALL)
-
                     val queryEventData = analyticsDB?.getEventsDao()?.queryEventData(limit)
                     queryEventData?.let { it ->
                         val size = it.size
