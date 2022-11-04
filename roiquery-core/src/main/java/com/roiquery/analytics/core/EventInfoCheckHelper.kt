@@ -30,6 +30,16 @@ class EventInfoCheckHelper private constructor() {
             }
             val correctedEventInfo = JSONArray()
 
+            for (index in 0 until length){
+                jsonArray.getJSONObject(index)?.let { it ->
+                    it.optJSONObject(Constant.EVENT_BODY)?.let {
+
+                    }
+                }
+            }
+
+
+
             for (index in 0 until length) {
                 jsonArray.getJSONObject(index)?.let { it ->
                  correctEventIdInfo(it)?.let {
@@ -98,6 +108,7 @@ class EventInfoCheckHelper private constructor() {
     ):JSONObject? {
         jsonEventBody.optJSONObject(Constant.EVENT_BODY)?.let { eventInfo ->
             val infoTime = eventInfo.optLong(Constant.EVENT_INFO_TIME)
+            eventInfo.put("NetTime",TimeCalibration.instance._latestTime)
             //校准 app_install 的 event_time
             if (eventInfo.optString(Constant.EVENT_INFO_NAME) == Constant.PRESET_EVENT_APP_INSTALL) {
                 return correctAppStartTime(eventInfo, infoTime)

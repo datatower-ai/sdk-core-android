@@ -136,7 +136,6 @@ class PresetEventManager {
      */
     private fun trackAppInstallEvent(response: ReferrerDetails, failedReason: String) {
         val isOK = failedReason.isBlank()
-        Log.e("test",ProcessUtils.getProcessName(null)+"---trackAppInstallEvent---")
         EventTrackManager.instance.trackNormalPreset(
             Constant.PRESET_EVENT_APP_INSTALL,
             JSONObject().apply {

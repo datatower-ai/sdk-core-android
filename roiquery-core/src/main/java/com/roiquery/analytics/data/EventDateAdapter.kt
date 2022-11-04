@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.TextUtils
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryCoroutineScope
+import com.roiquery.analytics.utils.TimeCalibration
 import kotlinx.coroutines.*
 import org.json.JSONObject
 import kotlin.coroutines.resume
@@ -23,11 +24,11 @@ class EventDateAdapter private constructor(
      * @return the number of rows in the table, or DB_OUT_OF_MEMORY_ERROR/DB_UPDATE_ERROR
      * on failure
      */
-    suspend fun addJSON(data: JSONObject?, eventSyn: String)= coroutineScope {
+    suspend fun addJSON(data: JSONObject?, eventSyn: String,eventName:String)= coroutineScope {
         suspendCoroutine<Int> {
             scope.launch {
                 try {
-                    val code = mOperation?.insertData(data, eventSyn)!!
+                    val code = mOperation?.insertData(data, eventSyn,eventName)!!
                     it.resume(code)
                 } catch (e:Exception){
                     it.resume(DataParams.DB_ADD_JSON_ERROR)
@@ -113,6 +114,13 @@ class EventDateAdapter private constructor(
         set(value) = setStringConfig(DataParams.CONFIG_DT_ID,value)
         get() = runBlocking {   getStringConfig(DataParams.CONFIG_DT_ID)  }
 
+    var latestNetTime :Long
+        set(value) = setLongConfig(DataParams.LATEST_NET_TIME,value)
+        get() = runBlocking {   getLongConfig(DataParams.LATEST_NET_TIME,TimeCalibration.TIME_NOT_VERIFY_VALUE)  }
+
+    var latestGapTime:Long
+        set(value) = setLongConfig(DataParams.LATEST_GAP_TIME,value)
+        get() = runBlocking {   getLongConfig(DataParams.LATEST_GAP_TIME,TimeCalibration.TIME_NOT_VERIFY_VALUE)  }
 
     private suspend fun getBooleanConfig(key: String,default:Boolean = true): Boolean{
         val values = mOperation?.queryConfig(key)
@@ -169,17 +177,16 @@ class EventDateAdapter private constructor(
         )
     }
 
-    private suspend fun getLongConfig(key: String):Long {
+    private suspend fun getLongConfig(key: String,default:Long = 0L):Long {
         val value = mOperation?.queryConfig(key)
-        var longValue = 0L
         try {
             if (value != null && value.isNotEmpty() && value != "null") {
-                longValue = value.toLong()
+             return   value.toLong()
             }
         } catch (e: NumberFormatException) {
 
         }
-        return longValue
+        return default
     }
 
     private fun setLongConfig(key:String,value: Long){

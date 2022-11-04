@@ -3,6 +3,7 @@ package com.roiquery.analytics.data.room
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -20,7 +21,7 @@ import com.roiquery.analytics.data.room.dao.EventInfoDao
  */
 
 @Database(
-    version = 2,
+    version = 3,
     entities = [Events::class, Configs::class], exportSchema = true
 )
 abstract class ROIQueryAnalyticsDB : RoomDatabase() {
@@ -43,7 +44,7 @@ abstract class ROIQueryAnalyticsDB : RoomDatabase() {
                     ROIQueryAnalyticsDB::class.java,
                     DATABASE_NAME
                 )
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .setJournalMode(JournalMode.WRITE_AHEAD_LOGGING)
                     .build()
             } catch (e: Exception){

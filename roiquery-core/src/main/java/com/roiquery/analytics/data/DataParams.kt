@@ -33,6 +33,8 @@ class DataParams private constructor(packageName: String) {
         const val CONFIG_IS_FOREGROUND = "is_foreground"
         const val CLOUD_CONFIG_AES_KEY = "cloud_config_aes_key"
         const val USER_AGENT_WEBVIEW = "user_agent_webview"
+        const val LATEST_NET_TIME = "latest_net_time"
+        const val LATEST_GAP_TIME = "latest_gap_time"
 
 
 

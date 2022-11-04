@@ -126,6 +126,8 @@ class EventTrackManager {
                     put(Constant.EVENT_INFO_NAME, eventName)
                     put(Constant.EVENT_INFO_TYPE, eventType)
                     put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
+                    put("process",ProcessUtils.getProcessName(null))
+                    put("gapTime",getEventTime(eventName, isTimeVerify, this))
                 }
             }
 

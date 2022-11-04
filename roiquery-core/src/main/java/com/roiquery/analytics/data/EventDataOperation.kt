@@ -2,6 +2,7 @@ package com.roiquery.analytics.data
 
 import android.content.Context
 import android.text.TextUtils
+import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryCoroutineScope
 import com.roiquery.analytics.data.room.ROIQueryAnalyticsDB
 import com.roiquery.analytics.data.room.bean.Configs
@@ -74,7 +75,7 @@ internal class EventDataOperation(
      * 保存数据
      * 插入成功 返回0 失败返回 error code
      */
-    suspend fun insertData(jsonObject: JSONObject?, eventSyn: String) =
+    suspend fun insertData(jsonObject: JSONObject?, eventSyn: String,eventName:String) =
         suspendCoroutine<Int> {
             scope.launch(insertDataNormalError) {
 
@@ -89,7 +90,8 @@ internal class EventDataOperation(
                                 data =
                                 jsonObject.toString() + "\t" + jsonObject.toString()
                                     .hashCode(),
-                                eventSyn = eventSyn
+                                eventSyn = eventSyn,
+                                eventName = eventName
                             )
                         )
                         it.resume(if(result == -1L) DataParams.DB_INSERT_ERROR else DataParams.DB_INSERT_SUCCEED)
@@ -153,6 +155,8 @@ internal class EventDataOperation(
             jsonData.append("[")
             scope.launch(Dispatchers.IO) {
                 try {
+                    val installEvent=analyticsDB?.getEventsDao()?.queryDataByEventName(Constant.PRESET_EVENT_APP_INSTALL)
+
                     val queryEventData = analyticsDB?.getEventsDao()?.queryEventData(limit)
                     queryEventData?.let { it ->
                         val size = it.size
