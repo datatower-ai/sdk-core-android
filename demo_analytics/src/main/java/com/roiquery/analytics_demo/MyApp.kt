@@ -27,6 +27,8 @@ class MyApp : Application() {
             SharedPreferencesUtils.setParam(this,"afid","afid-" + DTAdReport.generateUUID())
             SharedPreferencesUtils.setParam(this,"asid","asid-" + DTAdReport.generateUUID())
             SharedPreferencesUtils.setParam(this,"koid","koid-" + DTAdReport.generateUUID())
+            SharedPreferencesUtils.setParam(this,"adjustId","adjustId-" + DTAdReport.generateUUID())
+
 
             SharedPreferencesUtils.setParam(this,"first_open",false)
         }

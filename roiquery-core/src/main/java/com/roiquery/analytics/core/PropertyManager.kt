@@ -390,5 +390,15 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
         )
     }
 
+    fun updateAdjustId(adjustId:String?){
+        if (adjustId?.isEmpty() == true) return
+        EventTrackManager.instance.trackUser(
+            Constant.PRESET_EVENT_USER_SET,
+            JSONObject().apply {
+                put(Constant.USER_PROPERTY_LATEST_ADJUST_ID, adjustId)
+            }
+        )
+    }
+
 
 }

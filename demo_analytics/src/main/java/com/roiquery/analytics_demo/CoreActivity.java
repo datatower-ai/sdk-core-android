@@ -1,11 +1,13 @@
 package com.roiquery.analytics_demo;
 
 
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.roiquery.analytics.DT;
 import com.roiquery.analytics.DTAnalytics;
 import com.roiquery.analytics.ROIQueryAnalytics;
 
@@ -33,6 +35,7 @@ public class CoreActivity extends AppCompatActivity {
         String afid = (String) SharedPreferencesUtils.Companion.getParam(this, "afid", "");
         String asid = (String) SharedPreferencesUtils.Companion.getParam(this, "asid", "");
         String koid = (String) SharedPreferencesUtils.Companion.getParam(this, "koid", "");
+        String adjustId = (String) SharedPreferencesUtils.Companion.getParam(this,"adjustId","");
 
         TextView tv_acid = findViewById(R.id.tv_acid);
         TextView tv_fiid = findViewById(R.id.tv_fiid);
@@ -40,6 +43,7 @@ public class CoreActivity extends AppCompatActivity {
         TextView tv_afid = findViewById(R.id.tv_afid);
         TextView tv_asid = findViewById(R.id.tv_asid);
         TextView tv_koid = findViewById(R.id.tv_koid);
+        TextView tvAdjust =findViewById(R.id.tv_adjust);
 
         tv_acid.setText(acid);
         tv_fiid.setText(fiid);
@@ -47,6 +51,7 @@ public class CoreActivity extends AppCompatActivity {
         tv_afid.setText(afid);
         tv_asid.setText(asid);
         tv_koid.setText(koid);
+        tvAdjust.setText(adjustId);
 
 
         findViewById(R.id.button_set_acid).setOnClickListener(v -> {
@@ -70,6 +75,12 @@ public class CoreActivity extends AppCompatActivity {
         findViewById(R.id.button_set_koid).setOnClickListener(v -> {
             DTAnalytics.setKochavaId(koid);
         });
+
+        findViewById(R.id.button_set_adjust_id).setOnClickListener(
+                v -> {
+                    DTAnalytics.setAdjustId(adjustId);
+                }
+        );
 
         findViewById(R.id.button_track).setOnClickListener(v -> {
             DTAnalytics.track("dt_track_simple");

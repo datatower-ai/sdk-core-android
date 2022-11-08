@@ -61,6 +61,11 @@ interface IAnalytics {
     fun setKochavaId(id: String?)
 
     /**
+     * 设置AdjustId
+     */
+    fun setAdjustId(id:String?)
+
+    /**
      * 是否上报数据，默认是 true
      *
      * @return 是否上报数据
