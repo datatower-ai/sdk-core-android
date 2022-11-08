@@ -41,6 +41,10 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         PropertyManager.instance.updateKOID(id)
     }
 
+    override fun setAdjustId(id: String?) {
+        PropertyManager.instance.updateAdjustId(id)
+    }
+
     override var enableUpload: Boolean?
         get() = EventDateAdapter.getInstance()?.enableUpload == true
         set(value) {

@@ -70,6 +70,7 @@ internal object Constant {
     const val USER_PROPERTY_LATEST_KOCHAVA_ID           = "#latest_kochava_id"
     const val USER_PROPERTY_LATEST_APP_VERSION_CODE     = "#latest_app_version_code"
     const val USER_PROPERTY_LATEST_APP_VERSION_NAME     = "#latest_app_version_name"
+    const val USER_PROPERTY_LATEST_ADJUST_ID            =  "#latest_adjust_id"
 
     //active
     const val USER_PROPERTY_ACTIVE_GAID                = "#active_gaid"

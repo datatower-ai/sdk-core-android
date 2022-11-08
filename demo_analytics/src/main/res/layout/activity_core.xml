@@ -172,6 +172,28 @@
                 android:layout_marginTop="5dp"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/tv_adjust"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="sdfsdfsd" />
+
+                <Button
+                    android:id="@+id/button_set_adjust_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="setAdjustId"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
 
                 <TextView
                     android:layout_width="wrap_content"

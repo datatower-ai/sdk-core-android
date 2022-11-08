@@ -144,6 +144,15 @@ open class DTAnalytics {
             AnalyticsImp.getInstance().setKochavaId(id)
         }
 
+        /**
+         * 设置 adjust id
+         * @param id adjust id
+         */
+        @JvmStatic
+        fun  setAdjustId(id:String?){
+            AnalyticsImp.getInstance().setAdjustId(id)
+        }
+
 
         /******************** internal *******************/
 
