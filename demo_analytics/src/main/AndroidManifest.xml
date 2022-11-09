@@ -20,8 +20,8 @@
         <service
             android:name=".DemoDebugService"
             android:enabled="true"
-            android:process=":debug"
-            android:exported="true"/>
+            android:exported="true"
+            android:process=":debug" />
 
         <activity
             android:name=".MainActivity"
@@ -58,6 +58,9 @@
         <service
             android:name=".SubProcessService"
             android:process=":subProcessService" />
+        <activity
+            android:name=".ThirdPartyShareActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

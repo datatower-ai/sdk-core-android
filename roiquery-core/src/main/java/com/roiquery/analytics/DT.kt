@@ -2,7 +2,11 @@ package com.roiquery.analytics
 
 import android.content.Context
 import com.roiquery.analytics.config.AnalyticsConfig
+import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.utils.LogUtils
+import com.roiquery.thirdparty.ThirdPartShareDataFactory
+import com.roiquery.thirdparty.ThirdSDKShareType
+import kotlinx.coroutines.delay
 import org.json.JSONObject
 
 class DT {
@@ -82,6 +86,16 @@ class DT {
                 logLevel,
                 JSONObject()
             )
+        }
+
+        fun enableThirdShare(type: ThirdSDKShareType) {
+            try {
+            ThirdPartShareDataFactory.createThirdInstance(type).
+                    synThirdDTIdData(PropertyManager.instance.getDTID())
+            }catch (error:Exception){
+                LogUtils.d("please impl ${type.name}")
+            }
+
         }
 
     }

@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.nodetower.roiquery_sdk",
-  "variantName": "processReleaseResources",
+  "applicationId": "com.nodetower.android_analytics",
+  "variantName": "processDebugResources",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "versionCode": 8,
       "versionName": "1.1.8",
-      "outputFile": "app-release.apk"
+      "outputFile": "demo_analytics-debug.apk"
     }
   ]
 }
