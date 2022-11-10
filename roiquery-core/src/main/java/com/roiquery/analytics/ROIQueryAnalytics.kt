@@ -154,8 +154,10 @@ open class ROIQueryAnalytics {
          * @param context 上下文
          * @param configOptions 配置
          */
-        internal fun init(context: Context?, configOptions: AnalyticsConfig?) {
-            AnalyticsImp.init(context, configOptions)
+        internal fun init(context: Context?, configOptions: AnalyticsConfig?,
+                          sdkInitialSuccess:()->Unit = fun () {},
+                          sdkInitialFail:() -> Unit = fun () {}) {
+            AnalyticsImp.init(context, configOptions, initSuccess = sdkInitialSuccess, initFail = sdkInitialFail)
         }
 
         /**

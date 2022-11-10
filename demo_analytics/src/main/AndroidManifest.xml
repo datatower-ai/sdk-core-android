@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.roiquery.analytics_demo">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -20,8 +19,8 @@
         <service
             android:name=".DemoDebugService"
             android:enabled="true"
-            android:process=":debug"
-            android:exported="true"/>
+            android:exported="true"
+            android:process=":debug" />
 
         <activity
             android:name=".MainActivity"
@@ -58,6 +57,9 @@
         <service
             android:name=".SubProcessService"
             android:process=":subProcessService" />
+        <activity
+            android:name=".ThirdPartyShareActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

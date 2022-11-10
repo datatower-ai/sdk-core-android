@@ -43,17 +43,20 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
         internal var mConfigOptions: AnalyticsConfig? = null
     }
 
-    fun init(context: Context) {
+    fun init(context: Context ,initSuccess:(()-> Unit)?,
+             initFail:(()-> Unit)?
+    ) {
         if (isInitRunning.get() || hasInit.get()) {
             return
         }
         isInitRunning.set(true)
         //real init
-        internalInit(context)
+        internalInit(context,initSuccess,initFail)
     }
 
 
-    private fun internalInit(context: Context) {
+    private fun internalInit(context: Context,initSuccess:(()-> Unit)?,
+                             initFail:(()-> Unit)?) {
         try {
             initConfig(context)
             initLocalData(context)
@@ -63,10 +66,12 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
             registerAppLifecycleListener(context)
             getDataTowerId(context, dataTowerIdHandler = {
                 trackPresetEvent(context)
+                initSuccess?.invoke()
                 onInitSuccess()
             })
         } catch (e: Exception) {
             onInitFailed(e.message)
+            initFail?.invoke()
         }
     }
 

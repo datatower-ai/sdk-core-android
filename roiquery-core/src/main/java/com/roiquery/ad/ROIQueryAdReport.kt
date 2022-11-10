@@ -421,12 +421,6 @@ open class ROIQueryAdReport {
         ) = AdReportImp.getInstance()
             .reportLeftApp(id, type.value, platform.value, location, seq, properties, entrance)
 
-        /**
-         * 上报 访问广告链接，回到当前app(页面)
-         */
-        @JvmStatic
-        fun reportReturnApp() = AdReportImp.getInstance()
-            .reportReturnApp()
 
 
         /**

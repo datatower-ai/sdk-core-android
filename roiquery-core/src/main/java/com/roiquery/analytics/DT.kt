@@ -2,7 +2,11 @@ package com.roiquery.analytics
 
 import android.content.Context
 import com.roiquery.analytics.config.AnalyticsConfig
+import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.utils.LogUtils
+import com.roiquery.thirdparty.ThirdPartShareDataFactory
+import com.roiquery.thirdparty.ThirdSDKShareType
+import kotlinx.coroutines.delay
 import org.json.JSONObject
 
 class DT {
@@ -20,12 +24,14 @@ class DT {
         @JvmStatic
         @JvmOverloads
         fun initSDK(
-            context: Context?,
-            appId: String?,
+            context: Context,
+            appId: String,
             channel: String = "",
             isDebug: Boolean = false,
             logLevel: Int = LogUtils.V,
-            commonProperties: JSONObject = JSONObject()
+            commonProperties: JSONObject = JSONObject(),
+            sdkInitialSuccess:()->Unit = fun () {},
+            sdkInitialFail:() -> Unit = fun () {}
         ) {
             ROIQueryAnalytics.init(context,
                 AnalyticsConfig(appId)
@@ -45,8 +51,8 @@ class DT {
          */
         @JvmStatic
         fun initSDK(
-            context: Context?,
-            appId: String?,
+            context: Context,
+            appId: String,
             isDebug: Boolean = false,
         ){
             this.initSDK(
@@ -69,8 +75,8 @@ class DT {
          */
         @JvmStatic
         fun initSDK(
-            context: Context?,
-            appId: String?,
+            context: Context,
+            appId: String,
             isDebug: Boolean = false,
             logLevel: Int = LogUtils.V,
         ){
@@ -82,6 +88,16 @@ class DT {
                 logLevel,
                 JSONObject()
             )
+        }
+
+        fun enableThirdShare(type: ThirdSDKShareType) {
+            try {
+            ThirdPartShareDataFactory.createThirdInstance(type).
+                    synThirdDTIdData(PropertyManager.instance.getDTID())
+            }catch (error:Exception){
+                LogUtils.d("please impl ${type.name}")
+            }
+
         }
 
     }

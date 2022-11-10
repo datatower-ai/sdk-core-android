@@ -26,13 +26,17 @@ class ROIQuery {
             channel: String = "",
             isDebug: Boolean = false,
             logLevel: Int = LogUtils.V,
-            commonProperties: JSONObject = JSONObject()
+            commonProperties: JSONObject = JSONObject(),
+            sdkInitialSuccess:()->Unit = fun () {},
+            sdkInitialFail:() -> Unit = fun () {}
         ) {
             ROIQueryAnalytics.init(context,
                 AnalyticsConfig(appId)
                     .setDebug(isDebug, logLevel)
                     .setChannel(channel)
                     .addCommonProperties(commonProperties)
+            ,sdkInitialSuccess = sdkInitialSuccess,
+                sdkInitialFail = sdkInitialFail
             )
         }
 

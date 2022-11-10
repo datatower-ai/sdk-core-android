@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("test","MainActivity --")
 
         startService(Intent(this,DemoDebugService::class.java))
 
@@ -41,6 +40,9 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.button_test_memory).setOnClickListener {
             startActivity(Intent(this, UtilsActivity::class.java))
+        }
+        findViewById<View>(R.id.button_test_third_data_share).setOnClickListener {
+            startActivity(Intent(this,ThirdPartyShareActivity::class.java))
         }
     }
 

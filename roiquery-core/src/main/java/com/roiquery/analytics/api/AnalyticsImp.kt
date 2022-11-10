@@ -199,9 +199,20 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             }
         }
 
+       private var sdkInitSuccess = fun (){
+            LogUtils.d("sdkInitSuccess")
+        }
+
+        private var sdkInitFail = fun (){
+            LogUtils.d("sdkInitFail")
+
+        }
+
         internal fun init(
             context: Context?,
-            configOptions: AnalyticsConfig?
+            configOptions: AnalyticsConfig?,
+            initSuccess:()-> Unit = sdkInitSuccess,
+            initFail:()->Unit  = sdkInitFail
         ) {
             if (context == null || configOptions == null) {
                 throw IllegalStateException("call ROIQuerySDK.init() first")
@@ -209,7 +220,7 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             if (instance == null) {
                 mConfigOptions = configOptions
                 instance = getInstance().apply {
-                    init(context)
+                    init(context,initSuccess,initFail)
                 }
             }
         }
