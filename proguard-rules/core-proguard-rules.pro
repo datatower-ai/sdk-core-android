@@ -49,7 +49,4 @@
 
 -keep class com.roiquery.thirdparty.ThirdSDKShareType{*;}
 
--keeppackagenames com.roiquery.iap
--keeppackagenames com.roiquery.ad
--keeppackagenames com.roiquery.analytics
--keeppackagenames com.roiquery.ias
+-keeppackagenames com.roiquery.*
