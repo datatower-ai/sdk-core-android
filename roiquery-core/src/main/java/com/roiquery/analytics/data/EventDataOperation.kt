@@ -130,12 +130,14 @@ internal class EventDataOperation(
      */
     suspend fun queryConfig(name: String) =
         suspendCoroutine<String?> {
-            scope.launch(Dispatchers.IO) {
-                try {
-                    it.resume(analyticsDB?.getConfigDao()?.queryValueByName(name))
-                } catch (e: Exception) {
-                    queryDbException.handleException(this.coroutineContext, e)
-                    it.resume(null)
+            scope.launch(queryDbException) {
+                withContext(Dispatchers.IO){
+                    try {
+                        it.resume(analyticsDB?.getConfigDao()?.queryValueByName(name))
+                    } catch (e: Exception) {
+                        queryDbException.handleException(this.coroutineContext, e)
+                        it.resume(null)
+                    }
                 }
             }
 
@@ -152,21 +154,23 @@ internal class EventDataOperation(
             val jsonData = StringBuilder()
             val suffix = ","
             jsonData.append("[")
-            scope.launch(Dispatchers.IO) {
-                try {
-                    val queryEventData = analyticsDB?.getEventsDao()?.queryEventData(limit)
-                    queryEventData?.let { it ->
-                        val size = it.size
-                        for (i in 0 until size) {
-                            jsonData.append(parseData(it[i]))
-                                .append(if (i != size - 1) suffix else "")
+            scope.launch(queryDbException) {
+                withContext(Dispatchers.IO){
+                    try {
+                        val queryEventData = analyticsDB?.getEventsDao()?.queryEventData(limit)
+                        queryEventData?.let { it ->
+                            val size = it.size
+                            for (i in 0 until size) {
+                                jsonData.append(parseData(it[i]))
+                                    .append(if (i != size - 1) suffix else "")
+                            }
                         }
+                    } catch (e: Exception) {
+                        queryDbException.handleException(this.coroutineContext, e)
+                    } finally {
+                        jsonData.append("]")
+                        it.resume(jsonData.toString())
                     }
-                } catch (e: Exception) {
-                    queryDbException.handleException(this.coroutineContext, e)
-                } finally {
-                    jsonData.append("]")
-                    it.resume(jsonData.toString())
                 }
             }
         }
@@ -176,17 +180,18 @@ internal class EventDataOperation(
      * 查询数据条数
      * @return 条数
      */
-    suspend fun queryDataCount() = suspendCoroutine<Int> {
-        scope.launch(Dispatchers.IO) {
-            try {
-                it.resume(
-                    analyticsDB?.getEventsDao()?.dataCount() ?: 0
-                )
-            } catch (e: Exception) {
-                queryDbException.handleException(this.coroutineContext, e)
+    private suspend fun queryDataCount() = suspendCoroutine<Int> {
+        scope.launch(queryDbException) {
+            withContext(Dispatchers.IO){
+                try {
+                    it.resume(
+                        analyticsDB?.getEventsDao()?.dataCount() ?: 0
+                    )
+                } catch (e: Exception) {
+                    queryDbException.handleException(this.coroutineContext, e)
+                }
             }
         }
-
     }
 
     /**
@@ -232,35 +237,39 @@ internal class EventDataOperation(
      */
     private suspend fun deleteDataWhenOverMaxRows() =
         suspendCoroutine<Boolean> {
-            scope.launch(Dispatchers.IO) {
-                if (queryDataCount() >= DataParams.CONFIG_MAX_ROWS) {
-                    LogUtils.i(
-                        TAG,
-                        "There is not enough space left on the device to store events, so will delete ${DataParams.CONFIG_MAX_ROWS / 2} oldest events"
-                    )
+            scope.launch(insertOutOfRowError) {
+                withContext(Dispatchers.IO){
+                    if (queryDataCount() >= DataParams.CONFIG_MAX_ROWS) {
+                        LogUtils.i(
+                            TAG,
+                            "There is not enough space left on the device to store events, so will delete ${DataParams.CONFIG_MAX_ROWS / 2} oldest events"
+                        )
 
-                    try {
-                        deleteTheOldestData(DataParams.CONFIG_MAX_ROWS / 2)
-                    } catch (e: Exception) {
-                        insertOutOfRowError.handleException(this.coroutineContext,e)
-                        it.resume(false)
+                        try {
+                            deleteTheOldestData(DataParams.CONFIG_MAX_ROWS / 2)
+                        } catch (e: Exception) {
+                            insertOutOfRowError.handleException(this.coroutineContext,e)
+                            it.resume(false)
+                        }
+                        //数据库较满时，删除成功 it.resume(true)
+                        //删除失败 it.resume(false)
+                        it.resume(true)
+                    } else {
+                        it.resume(true)
                     }
-                    //数据库较满时，删除成功 it.resume(true)
-                    //删除失败 it.resume(false)
-                    it.resume(true)
-                } else {
-                    it.resume(true)
                 }
             }
         }
 
 
     fun deleteAllEventData() {
-        scope.launch(Dispatchers.IO) {
-            try {
-                analyticsDB?.getEventsDao()?.clearTable()
-            } catch (e: Exception) {
-                deleteDbException.handleException(this.coroutineContext,e)
+        scope.launch(deleteDbException) {
+            withContext(Dispatchers.IO){
+                try {
+                    analyticsDB?.getEventsDao()?.clearTable()
+                } catch (e: Exception) {
+                    deleteDbException.handleException(this.coroutineContext,e)
+                }
             }
         }
     }
