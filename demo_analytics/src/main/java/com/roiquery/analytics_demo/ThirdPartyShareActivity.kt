@@ -16,7 +16,7 @@ class ThirdPartyShareActivity : AppCompatActivity() {
             DT.enableThirdShare(ThirdSDKShareType.ADJUST)
         }
         findViewById<Button>(R.id.btn_appsflyer).setOnClickListener {
-            DT.enableThirdShare(ThirdSDKShareType.APPSFly)
+//            DT.enableThirdShare(ThirdSDKShareType.APPSFly)
         }
     }
 }

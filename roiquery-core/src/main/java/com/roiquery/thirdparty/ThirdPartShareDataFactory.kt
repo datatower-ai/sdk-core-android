@@ -5,7 +5,7 @@ class ThirdPartShareDataFactory {
         fun createThirdInstance(type:ThirdSDKShareType):SyncThirdPartDataImpl{
            return when(type){
                 ThirdSDKShareType.ADJUST-> AdjustSyncThirdData()
-                ThirdSDKShareType.APPSFly->AppsFlyerSyncThirdData()
+//                ThirdSDKShareType.APPSFly->AppsFlyerSyncThirdData()
             }
         }
     }
