@@ -47,6 +47,8 @@
 -keep class com.roiquery.ias.DTIASReport{*;}
 -keep class com.roiquery.ias.DTIASReport$Companion{*;}
 
+-keep class com.roiquery.thirdparty.ThirdSDKShareType{*;}
+
 -keeppackagenames com.roiquery.iap
 -keeppackagenames com.roiquery.ad
 -keeppackagenames com.roiquery.analytics

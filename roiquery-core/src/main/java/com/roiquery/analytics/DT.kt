@@ -24,12 +24,14 @@ class DT {
         @JvmStatic
         @JvmOverloads
         fun initSDK(
-            context: Context?,
-            appId: String?,
+            context: Context,
+            appId: String,
             channel: String = "",
             isDebug: Boolean = false,
             logLevel: Int = LogUtils.V,
-            commonProperties: JSONObject = JSONObject()
+            commonProperties: JSONObject = JSONObject(),
+            sdkInitialSuccess:()->Unit = fun () {},
+            sdkInitialFail:() -> Unit = fun () {}
         ) {
             ROIQueryAnalytics.init(context,
                 AnalyticsConfig(appId)
@@ -49,8 +51,8 @@ class DT {
          */
         @JvmStatic
         fun initSDK(
-            context: Context?,
-            appId: String?,
+            context: Context,
+            appId: String,
             isDebug: Boolean = false,
         ){
             this.initSDK(
@@ -73,8 +75,8 @@ class DT {
          */
         @JvmStatic
         fun initSDK(
-            context: Context?,
-            appId: String?,
+            context: Context,
+            appId: String,
             isDebug: Boolean = false,
             logLevel: Int = LogUtils.V,
         ){
