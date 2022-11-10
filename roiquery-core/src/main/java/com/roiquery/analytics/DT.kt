@@ -37,7 +37,9 @@ class DT {
                 AnalyticsConfig(appId)
                     .setDebug(isDebug, logLevel)
                     .setChannel(channel)
-                    .addCommonProperties(commonProperties)
+                    .addCommonProperties(commonProperties),
+                sdkInitialSuccess = sdkInitialSuccess,
+                sdkInitialFail = sdkInitialFail
             )
         }
 
@@ -90,6 +92,7 @@ class DT {
             )
         }
 
+        @JvmStatic
         fun enableThirdShare(type: ThirdSDKShareType) {
             try {
             ThirdPartShareDataFactory.createThirdInstance(type).
