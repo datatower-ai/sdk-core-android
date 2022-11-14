@@ -10,7 +10,10 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
+import com.roiquery.quality.ROIQueryErrorParams
+import com.roiquery.quality.ROIQueryQualityHelper
 import java.util.concurrent.atomic.AtomicLong
+import kotlin.math.abs
 
 /**
  * author: xiaosailing
@@ -76,14 +79,26 @@ class TimeCalibration {
     }
 
 
-    fun getVerifyTimeAsync() =
+    fun getVerifyTimeAsync(): Long{
         if (_latestTime == TIME_NOT_VERIFY_VALUE) {
-            TIME_NOT_VERIFY_VALUE
+            return TIME_NOT_VERIFY_VALUE
         } else {
-            getSystemHibernateTimeGap() - _latestSystemElapsedRealtime + _latestTime
+            val time = getSystemHibernateTimeGap() - _latestSystemElapsedRealtime + _latestTime
+            judgeIllegalTime(time,0L,"Async")
+            return time
         }
+    }
 
-    fun  getVerifyTimeAsyncByGapTime(gapTime:Long)= if (_latestSystemElapsedRealtime-gapTime>0) _latestTime-(_latestSystemElapsedRealtime-gapTime) else getVerifyTimeAsync()
+
+    fun  getVerifyTimeAsyncByGapTime(gapTime:Long): Long{
+        val time = if (_latestSystemElapsedRealtime-gapTime > 0){
+            _latestTime-(_latestSystemElapsedRealtime-gapTime)
+        } else {
+            getVerifyTimeAsync()
+        }
+        judgeIllegalTime(time, gapTime, "GapTime")
+        return time
+    }
 
 
     /**
@@ -91,4 +106,22 @@ class TimeCalibration {
      *
      */
     fun getSystemHibernateTimeGap() = SystemClock.elapsedRealtime()
+
+
+    //just for debug
+    private val oneWeekMs =  7 * 24 * 60 * 60 * 1000
+
+    private fun judgeIllegalTime(time: Long, gapTime: Long, type: String){
+        // 以2022.11.15(1668441600000)为基准， 这个时间一周前的，以及这个时间未来一周的时间，都认为非法
+        if (abs(time - 1668441600000) > oneWeekMs){
+            val processName = ProcessUtils.getProcessName(AdtUtil.getInstance().applicationContext)
+            val msg = "processName: $processName, type: $type, time: $time, gapTime: $gapTime, serverTime: $_latestTime, systemHibernateTime: $_latestSystemElapsedRealtime"
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_ILLEGAL_TIME_ERROR,
+                msg,
+                ROIQueryErrorParams.ILLEGAL_TIME_ERROR
+            )
+        }
+
+    }
 }
