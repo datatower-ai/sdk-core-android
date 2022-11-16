@@ -1,6 +1,7 @@
 package com.roiquery.analytics.utils
 
 import android.os.SystemClock
+import android.util.Log
 import com.google.android.gms.common.util.ProcessUtils
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.TIME_FROM_ROI_NET_BODY
@@ -10,6 +11,7 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
+import java.util.concurrent.atomic.AtomicLong
 
 /**
  * author: xiaosailing
@@ -75,25 +77,14 @@ class TimeCalibration {
     }
 
 
-    fun getVerifyTimeAsync(): Long {
-        return if (_latestTime == TIME_NOT_VERIFY_VALUE) {
+    fun getVerifyTimeAsync() =
+        if (_latestTime == TIME_NOT_VERIFY_VALUE) {
             TIME_NOT_VERIFY_VALUE
         } else {
-            //            judgeIllegalTime(time, 0L, "Async")
             getSystemHibernateTimeGap() - _latestSystemElapsedRealtime + _latestTime
         }
-    }
 
-
-    fun getVerifyTimeAsyncByGapTime(gapTime: Long): Long {
-        val time = if (_latestSystemElapsedRealtime - gapTime > 0) {
-            _latestTime - (_latestSystemElapsedRealtime - gapTime)
-        } else {
-            getVerifyTimeAsync()
-        }
-//        judgeIllegalTime(time, gapTime, "GapTime")
-        return time
-    }
+    fun  getVerifyTimeAsyncByGapTime(gapTime:Long)= if (_latestSystemElapsedRealtime-gapTime>0) _latestTime-(_latestSystemElapsedRealtime-gapTime) else getVerifyTimeAsync()
 
 
     /**
@@ -101,23 +92,4 @@ class TimeCalibration {
      *
      */
     fun getSystemHibernateTimeGap() = SystemClock.elapsedRealtime()
-
-
-//    //just for debug
-//    private val oneWeekMs = 7 * 24 * 60 * 60 * 1000
-//
-//    private fun judgeIllegalTime(time: Long, gapTime: Long, type: String) {
-//        // 以2022.11.15(1668441600000)为基准， 这个时间一周前的，以及这个时间未来一周的时间，都认为非法
-//        if (abs(time - 1668441600000) > oneWeekMs) {
-//            val processName = ProcessUtils.getProcessName(AdtUtil.getInstance().applicationContext)
-//            val msg =
-//                "processName: $processName, type: $type, time: $time, gapTime: $gapTime, serverTime: $_latestTime, systemHibernateTime: $_latestSystemElapsedRealtime"
-//            ROIQueryQualityHelper.instance.reportQualityMessage(
-//                ROIQueryErrorParams.CODE_ILLEGAL_TIME_ERROR,
-//                msg,
-//                ROIQueryErrorParams.ILLEGAL_TIME_ERROR
-//            )
-//        }
-//
-//    }
 }

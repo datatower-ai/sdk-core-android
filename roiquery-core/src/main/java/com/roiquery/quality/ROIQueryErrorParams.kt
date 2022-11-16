@@ -12,31 +12,30 @@ import androidx.annotation.StringDef
 internal object ROIQueryErrorParams {
 
     //init
-    const val CODE_INIT_CONFIG_ERROR            = 1001
-    const val CODE_INIT_EXCEPTION               = 1002
-    const val CODE_GET_ORIGINAL_ID_EXCEPTION    = 1003
-    const val CODE_INIT_DTID_EXCEPTION          = 1004
-    const val CODE_SHA1_DTID_EXCEPTION          = 1005
+    const val CODE_INIT_CONFIG_ERROR = 1001
+    const val CODE_INIT_EXCEPTION = 1002
+    const val CODE_GET_ORIGINAL_ID_EXCEPTION = 1003
+    const val CODE_INIT_DTID_EXCEPTION = 1004
+    const val CODE_SHA1_DTID_EXCEPTION = 1005
 
     //track
-    const val CODE_TRACK_ERROR                  = 2001
-    const val CODE_TRACK_EVENT_NAME_EMPTY       = 2011
-    const val CODE_TRACK_EVENT_ILLEGAL          = 2012
-    const val CODE_INIT_DB_ERROR                = 2007
-    const val CODE_INSERT_DB_NORMAL_ERROR       = 2003
-    const val CODE_INSERT_DB_OUT_OF_ROW_ERROR   = 2004
-    const val CODE_INSERT_DB_EXCEPTION          = 2005
-    const val CODE_INSERT_JSON_EXCEPTION        = 2006
-    const val CODE_INSERT_DATA_EXCEPTION        = 2008
-    const val CODE_QUERY_DB_ERROR               = 2009
-    const val CODE_QUERY_DB_EXCEPTION           = 2010
-    const val CODE_ILLEGAL_TIME_ERROR           = 2011
+    const val CODE_TRACK_ERROR = 2001
+    const val CODE_TRACK_EVENT_NAME_EMPTY = 2011
+    const val CODE_TRACK_EVENT_ILLEGAL = 2012
+    const val CODE_INIT_DB_ERROR = 2007
+    const val CODE_INSERT_DB_NORMAL_ERROR = 2003
+    const val CODE_INSERT_DB_OUT_OF_ROW_ERROR = 2004
+    const val CODE_INSERT_DB_EXCEPTION = 2005
+    const val CODE_INSERT_JSON_EXCEPTION = 2006
+    const val CODE_INSERT_DATA_EXCEPTION = 2008
+    const val CODE_QUERY_DB_ERROR = 2009
+    const val CODE_QUERY_DB_EXCEPTION = 2010
 
     //upload
-    const val CODE_HANDLE_UPLOAD_MESSAGE_ERROR      = 3001
-    const val CODE_CHECK_ENABLE_UPLOAD_EXCEPTION    = 3002
-    const val CODE_REPORT_ERROR_ON_FAIL             = 3003
-    const val CODE_REPORT_ERROR_ON_RESPONSE         = 3004
+    const val CODE_HANDLE_UPLOAD_MESSAGE_ERROR = 3001
+    const val CODE_CHECK_ENABLE_UPLOAD_EXCEPTION = 3002
+    const val CODE_REPORT_ERROR_ON_FAIL = 3003
+    const val CODE_REPORT_ERROR_ON_RESPONSE = 3004
 
 
     @IntDef(
@@ -56,7 +55,6 @@ internal object ROIQueryErrorParams {
         CODE_INSERT_DATA_EXCEPTION,
         CODE_QUERY_DB_ERROR,
         CODE_QUERY_DB_EXCEPTION,
-        CODE_ILLEGAL_TIME_ERROR,
 
         CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
         CODE_CHECK_ENABLE_UPLOAD_EXCEPTION,
@@ -80,20 +78,19 @@ internal object ROIQueryErrorParams {
     annotation class ROIQueryErrorLevel
 
 
-    const val INIT_CONFIG_ERROR             = "can not get config "
-    const val INIT_EXCEPTION                = "throw exception when sdk init "
-    const val TRACK_MANAGER_ERROR           = "track task manager throws exception "
-    const val TRACK_GENERATE_EVENT_ERROR    = " throw exception when generate event info "
-    const val INIT_DB_ERROR                 = "can not get db instance "
-    const val INSERT_DB_NORMAL_ERROR        = "insert data failed "
-    const val INSERT_DB_OUT_OF_ROW_ERROR    = "data counts over 500 "
-    const val INSERT_DB_EXCEPTION           = "throw exception when insert data "
-    const val INSERT_JSON_EXCEPTION         = "throw exception when add json data "
-    const val INSERT_OLD_DATA_EXCEPTION     = "throw exception when try to insert old data "
-    const val DELETE_DB_EXCEPTION           = "throw exception when delete data "
-    const val HANDLE_UPLOAD_MESSAGE_ERROR   = "throw exception when send meassage to upload data "
+    const val INIT_CONFIG_ERROR = "can not get config "
+    const val INIT_EXCEPTION = "throw exception when sdk init "
+    const val TRACK_MANAGER_ERROR = "track task manager throws exception "
+    const val TRACK_GENERATE_EVENT_ERROR = " throw exception when generate event info "
+    const val INIT_DB_ERROR = "can not get db instance "
+    const val INSERT_DB_NORMAL_ERROR = "insert data failed "
+    const val INSERT_DB_OUT_OF_ROW_ERROR = "data counts over 500 "
+    const val INSERT_DB_EXCEPTION = "throw exception when insert data "
+    const val INSERT_JSON_EXCEPTION = "throw exception when add json data "
+    const val INSERT_OLD_DATA_EXCEPTION = "throw exception when try to insert old data "
+    const val DELETE_DB_EXCEPTION = "throw exception when delete data "
+    const val HANDLE_UPLOAD_MESSAGE_ERROR = "throw exception when send meassage to upload data "
     const val CHECK_ENABLE_UPLOAD_EXCEPTION = "throw exception when check upload "
-    const val ILLEGAL_TIME_ERROR            = "illegal time, "
 
 
     @StringDef(
@@ -109,8 +106,7 @@ internal object ROIQueryErrorParams {
         INSERT_OLD_DATA_EXCEPTION,
         DELETE_DB_EXCEPTION,
         HANDLE_UPLOAD_MESSAGE_ERROR,
-        CHECK_ENABLE_UPLOAD_EXCEPTION,
-        ILLEGAL_TIME_ERROR
+        CHECK_ENABLE_UPLOAD_EXCEPTION
     )
     @Retention(AnnotationRetention.SOURCE)
     annotation class ROIQueryErrorMsg
