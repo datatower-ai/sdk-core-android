@@ -1,12 +1,9 @@
 package com.roiquery.analytics_demo
 
 import android.app.Application
-import android.content.Intent
-import android.util.Log
 import com.roiquery.ad.DTAdReport
 import com.roiquery.analytics.DT
 import com.roiquery.analytics.DTChannel
-import com.roiquery.analytics.utils.ProcessUtils
 import com.roiquery.thirdparty.ThirdSDKShareType
 
 

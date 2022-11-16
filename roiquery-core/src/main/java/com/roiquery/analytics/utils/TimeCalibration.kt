@@ -2,6 +2,7 @@ package com.roiquery.analytics.utils
 
 import android.os.SystemClock
 import android.util.Log
+import com.google.android.gms.common.util.ProcessUtils
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.TIME_FROM_ROI_NET_BODY
 import com.roiquery.analytics.ROIQueryAnalytics
@@ -38,7 +39,7 @@ class TimeCalibration {
     fun getReferenceTime() {
         if (_latestTime == 0L) {
             //子进程只读取主进程的时间，不获取服务器时间
-            if (!ProcessUtils.isInMainProcess(AdtUtil.getInstance().applicationContext)){
+            if (!ProcessUtil.isMainProcess(AdtUtil.getInstance().applicationContext)){
                 _latestTime = EventDateAdapter.getInstance()?.latestNetTime ?: TIME_NOT_VERIFY_VALUE
                 _latestSystemElapsedRealtime = EventDateAdapter.getInstance()?.latestGapTime ?: TIME_NOT_VERIFY_VALUE
                 return

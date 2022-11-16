@@ -165,10 +165,7 @@ object EventUtils {
                 Constant.USER_PROPERTY_ACTIVE_SIMULATOR,
                 EmulatorDetector.isEmulator()
             )
-            put(
-                Constant.USER_PROPERTY_ACTIVE_USER_AGENT,
-                DeviceUtils.getUserAgent(context)
-            )
+
 
         }
 
