@@ -1,7 +1,7 @@
 package com.roiquery.analytics.utils
 
 import android.os.SystemClock
-import android.util.Log
+import com.google.android.gms.common.util.ProcessUtils
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.TIME_FROM_ROI_NET_BODY
 import com.roiquery.analytics.ROIQueryAnalytics
@@ -10,10 +10,6 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
-import com.roiquery.quality.ROIQueryErrorParams
-import com.roiquery.quality.ROIQueryQualityHelper
-import java.util.concurrent.atomic.AtomicLong
-import kotlin.math.abs
 
 /**
  * author: xiaosailing
@@ -41,7 +37,7 @@ class TimeCalibration {
     fun getReferenceTime() {
         if (_latestTime == 0L) {
             //子进程只读取主进程的时间，不获取服务器时间
-            if (!ProcessUtils.isInMainProcess(AdtUtil.getInstance().applicationContext)){
+            if (!ProcessUtil.isMainProcess(AdtUtil.getInstance().applicationContext)){
                 _latestTime = EventDateAdapter.getInstance()?.latestNetTime ?: TIME_NOT_VERIFY_VALUE
                 _latestSystemElapsedRealtime = EventDateAdapter.getInstance()?.latestGapTime ?: TIME_NOT_VERIFY_VALUE
                 return
@@ -79,24 +75,23 @@ class TimeCalibration {
     }
 
 
-    fun getVerifyTimeAsync(): Long{
-        if (_latestTime == TIME_NOT_VERIFY_VALUE) {
-            return TIME_NOT_VERIFY_VALUE
+    fun getVerifyTimeAsync(): Long {
+        return if (_latestTime == TIME_NOT_VERIFY_VALUE) {
+            TIME_NOT_VERIFY_VALUE
         } else {
-            val time = getSystemHibernateTimeGap() - _latestSystemElapsedRealtime + _latestTime
-            judgeIllegalTime(time,0L,"Async")
-            return time
+            //            judgeIllegalTime(time, 0L, "Async")
+            getSystemHibernateTimeGap() - _latestSystemElapsedRealtime + _latestTime
         }
     }
 
 
-    fun  getVerifyTimeAsyncByGapTime(gapTime:Long): Long{
-        val time = if (_latestSystemElapsedRealtime-gapTime > 0){
-            _latestTime-(_latestSystemElapsedRealtime-gapTime)
+    fun getVerifyTimeAsyncByGapTime(gapTime: Long): Long {
+        val time = if (_latestSystemElapsedRealtime - gapTime > 0) {
+            _latestTime - (_latestSystemElapsedRealtime - gapTime)
         } else {
             getVerifyTimeAsync()
         }
-        judgeIllegalTime(time, gapTime, "GapTime")
+//        judgeIllegalTime(time, gapTime, "GapTime")
         return time
     }
 
@@ -108,20 +103,21 @@ class TimeCalibration {
     fun getSystemHibernateTimeGap() = SystemClock.elapsedRealtime()
 
 
-    //just for debug
-    private val oneWeekMs =  7 * 24 * 60 * 60 * 1000
-
-    private fun judgeIllegalTime(time: Long, gapTime: Long, type: String){
-        // 以2022.11.15(1668441600000)为基准， 这个时间一周前的，以及这个时间未来一周的时间，都认为非法
-        if (abs(time - 1668441600000) > oneWeekMs){
-            val processName = ProcessUtils.getProcessName(AdtUtil.getInstance().applicationContext)
-            val msg = "processName: $processName, type: $type, time: $time, gapTime: $gapTime, serverTime: $_latestTime, systemHibernateTime: $_latestSystemElapsedRealtime"
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_ILLEGAL_TIME_ERROR,
-                msg,
-                ROIQueryErrorParams.ILLEGAL_TIME_ERROR
-            )
-        }
-
-    }
+//    //just for debug
+//    private val oneWeekMs = 7 * 24 * 60 * 60 * 1000
+//
+//    private fun judgeIllegalTime(time: Long, gapTime: Long, type: String) {
+//        // 以2022.11.15(1668441600000)为基准， 这个时间一周前的，以及这个时间未来一周的时间，都认为非法
+//        if (abs(time - 1668441600000) > oneWeekMs) {
+//            val processName = ProcessUtils.getProcessName(AdtUtil.getInstance().applicationContext)
+//            val msg =
+//                "processName: $processName, type: $type, time: $time, gapTime: $gapTime, serverTime: $_latestTime, systemHibernateTime: $_latestSystemElapsedRealtime"
+//            ROIQueryQualityHelper.instance.reportQualityMessage(
+//                ROIQueryErrorParams.CODE_ILLEGAL_TIME_ERROR,
+//                msg,
+//                ROIQueryErrorParams.ILLEGAL_TIME_ERROR
+//            )
+//        }
+//
+//    }
 }

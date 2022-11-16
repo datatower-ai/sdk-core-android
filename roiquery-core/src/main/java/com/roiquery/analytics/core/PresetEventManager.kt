@@ -1,16 +1,16 @@
 package com.roiquery.analytics.core
 
+import android.app.Application.getProcessName
 import android.content.Context
 import android.util.Log
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
+import com.google.android.gms.common.util.ProcessUtils
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.data.EventDateAdapter
-import com.roiquery.analytics.utils.EventUtils
-import com.roiquery.analytics.utils.LogUtils
-import com.roiquery.analytics.utils.ProcessUtils
+import com.roiquery.analytics.utils.*
 import org.json.JSONObject
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -31,10 +31,10 @@ class PresetEventManager {
     @Synchronized
     fun trackPresetEvent(context: Context) {
         //子进程不采集
-        if (!ProcessUtils.isInMainProcess(context)) {
+        if (!ProcessUtil.isMainProcess(context)) {
             LogUtils.i(
                 "trackPresetEvent",
-                ProcessUtils.getProcessName(context) + "is not main process"
+                ProcessUtil.getCurrentProcessName(context) + "is not main process"
             )
             return
         }
@@ -70,6 +70,24 @@ class PresetEventManager {
             Constant.PRESET_EVENT_USER_SET_ONCE,
             activeUserProperties
         )
+
+        setActiveUserAgent(context)
+    }
+
+    //主线程获取ua 可能引发anr
+    private fun setActiveUserAgent(context: Context) {
+        Thread {
+            val ua = DeviceUtils.getUserAgent(context)
+            EventTrackManager.instance.trackUser(
+                Constant.PRESET_EVENT_USER_SET_ONCE,
+                JSONObject().apply {
+                    put(
+                        Constant.USER_PROPERTY_ACTIVE_USER_AGENT,
+                        ua
+                    )
+                }
+            )
+        }.start()
     }
 
     private fun startAppAttribute(context: Context) {
