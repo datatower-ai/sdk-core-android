@@ -56,6 +56,8 @@ class DT {
             context: Context,
             appId: String,
             isDebug: Boolean = false,
+            sdkInitialSuccess:()->Unit = fun () {},
+            sdkInitialFail:() -> Unit = fun () {}
         ){
             this.initSDK(
                 context,
@@ -63,7 +65,9 @@ class DT {
                 channel = "",
                 isDebug,
                 LogUtils.V,
-                JSONObject()
+                JSONObject(),
+                sdkInitialSuccess,
+                sdkInitialFail
             )
         }
 
@@ -81,6 +85,8 @@ class DT {
             appId: String,
             isDebug: Boolean = false,
             logLevel: Int = LogUtils.V,
+            sdkInitialSuccess:()->Unit = fun () {},
+            sdkInitialFail:() -> Unit = fun () {}
         ){
             this.initSDK(
                 context,
@@ -88,7 +94,9 @@ class DT {
                 channel = "",
                 isDebug,
                 logLevel,
-                JSONObject()
+                JSONObject(),
+                sdkInitialSuccess,
+                sdkInitialFail
             )
         }
 

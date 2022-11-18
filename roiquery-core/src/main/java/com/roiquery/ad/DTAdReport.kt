@@ -16,8 +16,7 @@ open class DTAdReport {
          * @param type 广告类型
          * @param platform 广告平台
          * @param seq 系列行为标识
-         * @param properties 额外事件属性
-         * @param entrance 广告入口
+         * @param properties 自定义事件属性
          */
         @JvmOverloads
         @JvmStatic
@@ -42,7 +41,9 @@ open class DTAdReport {
          * @param duration 广告加载时长
          * @param result 广告加载结果
          * @param seq 系列行为标识
-         * @param properties 额外事件属性
+         * @param errorCode 失败错误码
+         * @param errorMessage 失败错误信息
+         * @param properties 自定义事件属性
          */
         @JvmOverloads
         @JvmStatic

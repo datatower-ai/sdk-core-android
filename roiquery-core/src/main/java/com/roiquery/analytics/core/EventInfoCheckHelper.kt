@@ -1,5 +1,6 @@
 package com.roiquery.analytics.core
 
+import android.os.SystemClock
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.TimeCalibration
@@ -107,7 +108,7 @@ class EventInfoCheckHelper private constructor() {
         jsonEventBody: JSONObject
     ):JSONObject? {
         jsonEventBody.optJSONObject(Constant.EVENT_BODY)?.let { eventInfo ->
-            val infoTime = eventInfo.optLong(Constant.EVENT_INFO_TIME)
+            val infoTime = eventInfo.optLong(Constant.EVENT_INFO_TIME, SystemClock.elapsedRealtime())
             //校准 app_install 的 event_time
             if (eventInfo.optString(Constant.EVENT_INFO_NAME) == Constant.PRESET_EVENT_APP_INSTALL) {
                 return correctAppStartTime(eventInfo, infoTime)
