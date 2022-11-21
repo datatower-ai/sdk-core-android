@@ -1,6 +1,7 @@
 package com.roiquery.analytics
 
 import android.content.Context
+import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.utils.LogUtils
@@ -30,16 +31,17 @@ class DT {
             isDebug: Boolean = false,
             logLevel: Int = LogUtils.V,
             commonProperties: JSONObject = JSONObject(),
-            sdkInitialSuccess:()->Unit = fun () {},
-            sdkInitialFail:() -> Unit = fun () {}
+            sdkInitialSuccess: () -> Unit = fun() {},
+            sdkInitialFail: () -> Unit = fun() {}
         ) {
-            ROIQueryAnalytics.init(context,
+            AnalyticsImp.init(
+                context,
                 AnalyticsConfig(appId)
                     .setDebug(isDebug, logLevel)
                     .setChannel(channel)
                     .addCommonProperties(commonProperties),
-                sdkInitialSuccess = sdkInitialSuccess,
-                sdkInitialFail = sdkInitialFail
+                initSuccess = sdkInitialSuccess,
+                initFail = sdkInitialFail
             )
         }
 
@@ -56,9 +58,9 @@ class DT {
             context: Context,
             appId: String,
             isDebug: Boolean = false,
-            sdkInitialSuccess:()->Unit = fun () {},
-            sdkInitialFail:() -> Unit = fun () {}
-        ){
+            sdkInitialSuccess: () -> Unit = fun() {},
+            sdkInitialFail: () -> Unit = fun() {}
+        ) {
             this.initSDK(
                 context,
                 appId,
@@ -85,9 +87,9 @@ class DT {
             appId: String,
             isDebug: Boolean = false,
             logLevel: Int = LogUtils.V,
-            sdkInitialSuccess:()->Unit = fun () {},
-            sdkInitialFail:() -> Unit = fun () {}
-        ){
+            sdkInitialSuccess: () -> Unit = fun() {},
+            sdkInitialFail: () -> Unit = fun() {}
+        ) {
             this.initSDK(
                 context,
                 appId,
@@ -103,9 +105,9 @@ class DT {
         @JvmStatic
         fun enableThirdShare(type: ThirdSDKShareType) {
             try {
-            ThirdPartShareDataFactory.createThirdInstance(type).
-                    synThirdDTIdData(PropertyManager.instance.getDTID())
-            }catch (error:Exception){
+                ThirdPartShareDataFactory.createThirdInstance(type)
+                    .synThirdDTIdData(PropertyManager.instance.getDTID())
+            } catch (error: Exception) {
                 LogUtils.d("please impl ${type.name}")
             }
 

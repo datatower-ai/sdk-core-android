@@ -189,6 +189,7 @@ internal class EventDataOperation(
                     )
                 } catch (e: Exception) {
                     queryDbException.handleException(this.coroutineContext, e)
+                    it.resume(0)
                 }
             }
         }

@@ -150,3 +150,8 @@ object ROIQueryChannel{
 object DTChannel{
     const val GP = "gp"
 }
+
+enum class DTServer(val value: Int) {
+    URL0(0),
+    URL1(1),
+}
