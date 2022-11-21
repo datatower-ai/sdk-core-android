@@ -1,17 +1,14 @@
 package com.roiquery.analytics.utils
 
 import android.os.SystemClock
-import android.util.Log
-import com.google.android.gms.common.util.ProcessUtils
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.TIME_FROM_ROI_NET_BODY
-import com.roiquery.analytics.ROIQueryAnalytics
+import com.roiquery.analytics.DTAnalytics
 import com.roiquery.analytics.core.EventUploadManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
-import java.util.concurrent.atomic.AtomicLong
 
 /**
  * author: xiaosailing
@@ -65,7 +62,7 @@ class TimeCalibration {
                                 }
                             }
                             //避免因为时间未同步而造成数据堆积
-                            if (ROIQueryAnalytics.isSDKInitSuccess()) {
+                            if (DTAnalytics.isSDKInitSuccess()) {
                                 EventUploadManager.getInstance()?.flush()
                             }
                         }
