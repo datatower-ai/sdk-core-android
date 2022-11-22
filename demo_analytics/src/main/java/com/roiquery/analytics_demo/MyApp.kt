@@ -13,7 +13,7 @@ class MyApp : Application() {
         //init SDK
 //        ROIQuery.initSDK(this,"dt_id_test",ROIQueryChannel.GP,false)
 
-            DT.initSDK(this,"dt_461a208fdd075c27", DTChannel.GP,false, sdkInitialSuccess = {
+            DT.initSDK(this,"dt_461a208fdd075c27", DTChannel.GP,true, sdkInitialSuccess = {
                 DT.enableThirdShare(ThirdSDKShareType.ADJUST)
             })
 

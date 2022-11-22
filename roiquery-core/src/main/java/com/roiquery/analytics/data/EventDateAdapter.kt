@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.TextUtils
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryCoroutineScope
+import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.TimeCalibration
 import kotlinx.coroutines.*
 import org.json.JSONObject
@@ -24,16 +25,23 @@ class EventDateAdapter private constructor(
      * @return the number of rows in the table, or DB_OUT_OF_MEMORY_ERROR/DB_UPDATE_ERROR
      * on failure
      */
-    suspend fun addJSON(data: JSONObject?, eventSyn: String)= coroutineScope {
-        suspendCoroutine<Int> {
-            scope.launch {
-                try {
-                    val code = mOperation?.insertData(data, eventSyn)!!
-                    it.resume(code)
-                } catch (e:Exception){
-                    it.resume(DataParams.DB_ADD_JSON_ERROR)
-                }
-            }
+     fun addJSON(data: JSONObject?, eventSyn: String): Int {
+//        suspendCoroutine<Int> {
+//            scope.launch {
+//                try {
+//                    val code = mOperation?.insertData(data, eventSyn)!!
+//                    it.resume(code)
+//                } catch (e:Exception){
+//                    it.resume(DataParams.DB_ADD_JSON_ERROR)
+//                }
+//            }
+//        }
+
+        return try {
+            val code = mOperation?.insertData(data, eventSyn)!!
+            (code)
+        } catch (e:Exception){
+            (DataParams.DB_ADD_JSON_ERROR)
         }
     }
 

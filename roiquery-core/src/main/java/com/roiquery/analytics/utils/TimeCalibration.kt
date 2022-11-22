@@ -59,6 +59,8 @@ class TimeCalibration private constructor() {
         }
     }
 
+
+
     private fun setVerifyTime(time: Long){
         calibratedTimeLock.writeLock().lock()
         if (_latestTime == TIME_NOT_VERIFY_VALUE){
@@ -100,7 +102,6 @@ class TimeCalibration private constructor() {
         calibratedTimeLock.readLock().unlock()
         return time
     }
-
 
     /**
      * Get system hibernate time gap

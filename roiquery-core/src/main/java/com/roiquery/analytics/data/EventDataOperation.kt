@@ -75,32 +75,53 @@ internal class EventDataOperation(
      * 保存数据
      * 插入成功 返回0 失败返回 error code
      */
-    suspend fun insertData(jsonObject: JSONObject?, eventSyn: String) =
-        suspendCoroutine<Int> {
-            scope.launch(insertDataNormalError) {
+    fun insertData(jsonObject: JSONObject?, eventSyn: String) : Int {
+//        if (!deleteDataWhenOverMaxRows()){
+//            return DataParams.DB_OUT_OF_ROW_ERROR
+//        }
 
-                if (!deleteDataWhenOverMaxRows())
-                    it.resume(DataParams.DB_OUT_OF_ROW_ERROR)
-                withContext(Dispatchers.IO) {
-                    try {
-                        //return the SQLite row id or -1 if no row is inserted
-                       val result = analyticsDB?.getEventsDao()?.insertEvent(
-                            Events(
-                                createdAt = System.currentTimeMillis(),
-                                data =
-                                jsonObject.toString() + "\t" + jsonObject.toString()
-                                    .hashCode(),
-                                eventSyn = eventSyn
-                            )
-                        )
-                        it.resume(if(result == -1L) DataParams.DB_INSERT_ERROR else DataParams.DB_INSERT_SUCCEED)
-                    } catch (e: Exception){
-                        insertDataException.handleException(this.coroutineContext,e)
-                        it.resume(DataParams.DB_INSERT_EXCEPTION)
-                    }
-                }
-            }
+        try {
+            //return the SQLite row id or -1 if no row is inserted
+            val result = analyticsDB?.getEventsDao()?.insertEvent(
+                Events(
+                    createdAt = System.currentTimeMillis(),
+                    data =
+                    jsonObject.toString() + "\t" + jsonObject.toString()
+                        .hashCode(),
+                    eventSyn = eventSyn
+                )
+            )
+            return  (if (result == -1L) DataParams.DB_INSERT_ERROR else DataParams.DB_INSERT_SUCCEED)
+        } catch (e: Exception) {
+//            insertDataException.handleException(this.coroutineContext, e)
+            return  (DataParams.DB_INSERT_EXCEPTION)
         }
+    }
+//        suspendCoroutine<Int> {
+//            scope.launch(insertDataNormalError) {
+//
+//                if (!deleteDataWhenOverMaxRows())
+//                    it.resume(DataParams.DB_OUT_OF_ROW_ERROR)
+//                withContext(Dispatchers.IO) {
+//                    try {
+//                        //return the SQLite row id or -1 if no row is inserted
+//                       val result = analyticsDB?.getEventsDao()?.insertEvent(
+//                            Events(
+//                                createdAt = System.currentTimeMillis(),
+//                                data =
+//                                jsonObject.toString() + "\t" + jsonObject.toString()
+//                                    .hashCode(),
+//                                eventSyn = eventSyn
+//                            )
+//                        )
+//                        it.resume(if(result == -1L) DataParams.DB_INSERT_ERROR else DataParams.DB_INSERT_SUCCEED)
+//                    } catch (e: Exception){
+//                        insertDataException.handleException(this.coroutineContext,e)
+//                        it.resume(DataParams.DB_INSERT_EXCEPTION)
+//                    }
+//                }
+//            }
+
 
 
     /**

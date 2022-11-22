@@ -15,6 +15,7 @@ import com.roiquery.analytics.network.RequestHelper
 import com.roiquery.analytics.utils.AdtUtil
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
+import com.roiquery.analytics.utils.ThreadUtils
 import com.roiquery.analytics.utils.TimeCalibration
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
@@ -38,7 +39,7 @@ class EventUploadManager private constructor(
     fun enqueueEventMessage(name: String, eventJson: JSONObject, eventSyn: String, insertHandler: ((code: Int, msg: String) -> Unit)? = null) {
         if (mDateAdapter == null) return
         synchronized(mDateAdapter) {
-            scope.launch {
+//            scope.launch {
                 try {
                     //插入数据库
                     val insertCode = mDateAdapter.addJSON(eventJson, eventSyn)
@@ -59,7 +60,7 @@ class EventUploadManager private constructor(
                     insertHandler?.invoke(ROIQueryErrorParams.CODE_INIT_DB_ERROR, ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR)
                 }
 
-            }
+//            }
         }
     }
 
