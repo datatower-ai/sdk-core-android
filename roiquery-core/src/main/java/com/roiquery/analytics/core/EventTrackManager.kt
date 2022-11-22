@@ -1,5 +1,6 @@
 package com.roiquery.analytics.core
 
+import android.os.SystemClock
 import android.util.Log
 import com.google.android.a.c
 import com.roiquery.analytics.Constant
@@ -25,7 +26,7 @@ class EventTrackManager {
     //采集 、上报管理
     private var mAnalyticsManager: EventUploadManager? = null
 
-    fun init(){
+    fun init() {
         mTrackTaskManager = Executors.newSingleThreadExecutor()
         mAnalyticsManager = EventUploadManager.getInstance()
         initTime()
@@ -52,7 +53,7 @@ class EventTrackManager {
      * 用于 track 非预置事件
      *
      * */
-    fun trackNormal(eventName: String?, properties: JSONObject? = JSONObject()){
+    fun trackNormal(eventName: String?, properties: JSONObject? = JSONObject()) {
         trackInternal(eventName, Constant.EVENT_TYPE_TRACK, false, properties)
     }
 
@@ -60,28 +61,63 @@ class EventTrackManager {
      * 用于 track 预置事件
      *
      * */
-    fun trackNormalPreset(eventName: String?, properties: JSONObject? = JSONObject(), insertHandler: ((code: Int, msg: String) -> Unit)? = null){
+    fun trackNormalPreset(
+        eventName: String?,
+        properties: JSONObject? = JSONObject(),
+        insertHandler: ((code: Int, msg: String) -> Unit)? = null
+    ) {
         trackInternal(eventName, Constant.EVENT_TYPE_TRACK, true, properties, insertHandler)
     }
 
-    fun trackUser(eventName: String?, properties: JSONObject? = JSONObject()){
+    fun trackUser(eventName: String?, properties: JSONObject? = JSONObject()) {
         trackInternal(eventName, Constant.EVENT_TYPE_USER, true, properties)
     }
 
-    fun trackUserWithPropertyCheck(eventName: String?, properties: JSONObject? = JSONObject()){
-        if(!EventUtils.isValidProperty(properties)) return
+    fun trackUserWithPropertyCheck(eventName: String?, properties: JSONObject? = JSONObject()) {
+        if (!EventUtils.isValidProperty(properties)) return
         trackInternal(eventName, Constant.EVENT_TYPE_USER, true, properties)
     }
 
-    private fun trackInternal(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?, insertHandler: ((code: Int, msg: String) -> Unit)? = null) {
+    private fun trackInternal(
+        eventName: String?,
+        eventType: String,
+        isPreset: Boolean,
+        properties: JSONObject?,
+        insertHandler: ((code: Int, msg: String) -> Unit)? = null
+    ) {
         trackEvent(eventName, eventType, isPreset, properties, insertHandler)
     }
 
-    private fun trackEvent(eventName: String?, eventType: String, isPreset: Boolean, properties: JSONObject?, insertHandler: ((code: Int, msg: String) -> Unit)? = null){
-        mTrackTaskManager?.let {
+    private fun trackEvent(
+        eventName: String?,
+        eventType: String,
+        isPreset: Boolean,
+        properties: JSONObject?,
+        insertHandler: ((code: Int, msg: String) -> Unit)? = null
+    ) {
+        if (mTrackTaskManager != null) {
             try {
-                it.execute {
-                    addEventTask(eventName, eventType, isPreset, properties, insertHandler)
+                //事件名判空
+                if (eventName.isNullOrEmpty()) {
+                    insertHandler?.invoke(
+                        ROIQueryErrorParams.CODE_TRACK_EVENT_NAME_EMPTY,
+                        "event name isNullOrEmpty"
+                    )
+                    return
+                }
+                //事件时间
+                val (eventTime, isTimeVerify) = getEventTime(eventName)
+
+                //加入线程池
+                mTrackTaskManager?.execute {
+                    addEventTask(
+                        eventName,
+                        eventTime,
+                        eventType,
+                        isPreset,
+                        isTimeVerify,
+                        properties,
+                        insertHandler)
                 }
             } catch (e: Exception) {
                 LogUtils.printStackTrace(e)
@@ -89,44 +125,35 @@ class EventTrackManager {
                     ROIQueryErrorParams.CODE_TRACK_ERROR,
                     "event name: $eventName "
                 )
-                insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_ERROR,"trackEvent Exception")
+                insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_ERROR, "trackEvent Exception")
             }
+        } else {
+            insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_ERROR, "TrackTaskManager is null")
         }
     }
 
     private fun addEventTask(
-        eventName: String?,
+        eventName: String,
+        eventTime: Long,
         eventType: String,
         isPreset: Boolean,
+        isTimeVerify: Boolean,
         properties: JSONObject? = null,
         insertHandler: ((code: Int, msg: String) -> Unit)? = null
     ) {
         try {
-            if (eventName.isNullOrEmpty()){
-                insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_EVENT_NAME_EMPTY,"event name isNullOrEmpty")
+            //事件名、属性名规则校验
+            if (!isPreset && !assertEvent(eventName, properties)) {
+                insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_EVENT_ILLEGAL, "event illegal")
                 return
             }
-
-            if (!isPreset && !assertEvent(eventName, properties)){
-                insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_EVENT_ILLEGAL,"event illegal")
-                return
-            }
-
-            var isTimeVerify: Boolean
 
             //设置事件的基本信息
             val eventInfo = JSONObject(PropertyManager.instance.getEventInfo()).apply {
-                TimeCalibration.instance.getVerifyTimeAsync().apply {
-                    isTimeVerify = this != TimeCalibration.TIME_NOT_VERIFY_VALUE
-                    // 如果时间已校准，则 保存当前时间，否则保存当前时间的系统休眠时间差用做上报时时间校准依据
-                    put(
-                        Constant.EVENT_INFO_TIME,
-                        getEventTime(eventName, isTimeVerify, this)
-                    )
-                    put(Constant.EVENT_INFO_NAME, eventName)
-                    put(Constant.EVENT_INFO_TYPE, eventType)
-                    put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
-                }
+                put(Constant.EVENT_INFO_TIME, eventTime)
+                put(Constant.EVENT_INFO_NAME, eventName)
+                put(Constant.EVENT_INFO_TYPE, eventType)
+                put(Constant.EVENT_INFO_SYN, DataUtils.getUUID())
             }
 
             //事件属性, 常规事件与用户属性类型区分
@@ -147,7 +174,10 @@ class EventTrackManager {
             //将事件时间是否校准的结果保存至事件信息中，以供上报时校准时间使用
             val data = JSONObject().apply {
                 put(Constant.EVENT_BODY, eventInfo)
-                put(Constant.EVENT_TIME_CALIBRATED, isTimeVerifyByEventName(isTimeVerify,eventName))
+                put(
+                    Constant.EVENT_TIME_CALIBRATED,
+                    isTimeVerify
+                )
             }
 
             mAnalyticsManager?.enqueueEventMessage(
@@ -164,34 +194,26 @@ class EventTrackManager {
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
             trackQualityEvent("trackEvent&&$eventName&& ${e.message}")
-            insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_ERROR, ROIQueryErrorParams.TRACK_GENERATE_EVENT_ERROR)
+            insertHandler?.invoke(
+                ROIQueryErrorParams.CODE_TRACK_ERROR,
+                ROIQueryErrorParams.TRACK_GENERATE_EVENT_ERROR
+            )
         }
     }
 
+    private fun getEventTime(eventName: String): Pair<Long, Boolean> {
+        var time = TimeCalibration.instance.getVerifyTimeAsync()
+        val isTimeVerify = time != TimeCalibration.TIME_NOT_VERIFY_VALUE
 
-    // 设置 PRESET_EVENT_SESSION_START 与  PRESET_EVENT_APP_INSTALL 时间为未校准状态，保证数据上报时用同一个网络时间校准
-    private fun isTimeVerifyByEventName(isTimeVerify: Boolean,eventName: String): Boolean {
-      return  when(eventName){
-            Constant.PRESET_EVENT_SESSION_START ->
-                false
-            Constant.PRESET_EVENT_APP_INSTALL->
-                false
-            else -> isTimeVerify
+        time = if (eventName == Constant.PRESET_EVENT_APP_INSTALL) {
+            AnalyticsImp.getInstance().firstOpenTime ?: SystemClock.elapsedRealtime()
+        } else {
+            if (isTimeVerify) time else TimeCalibration.instance.getSystemHibernateTimeGap()
         }
+        return Pair(time, isTimeVerify)
     }
 
-
-    private fun getEventTime(eventName: String, isTimeVerify: Boolean, now: Long) =
-       when(eventName){
-          Constant.PRESET_EVENT_APP_INSTALL ->
-               AnalyticsImp.getInstance().firstOpenTime
-           Constant.PRESET_EVENT_SESSION_START ->
-               TimeCalibration.instance.getSystemHibernateTimeGap()
-           else ->
-               if (isTimeVerify) now else TimeCalibration.instance.getSystemHibernateTimeGap()
-       }
-
-    private fun appendDynamicProperties(eventName :String , properties: JSONObject){
+    private fun appendDynamicProperties(eventName: String, properties: JSONObject) {
         properties.apply {
             //fps
             put(
@@ -201,7 +223,7 @@ class EventTrackManager {
             //硬盘使用率
             put(
                 Constant.COMMON_PROPERTY_STORAGE_USED,
-                MemoryUtils.getDisk(AdtUtil.getInstance().applicationContext,false)
+                MemoryUtils.getDisk(AdtUtil.getInstance().applicationContext, false)
             )
             //内存使用率
             put(
@@ -210,18 +232,18 @@ class EventTrackManager {
             )
             //事件时长
             EventTimerManager.instance.getEventTimer(eventName)?.duration()?.let {
-               if (it > 0) {
-                   this.put(
-                       Constant.COMMON_PROPERTY_EVENT_DURATION,
-                       it
-                   )
-               }
+                if (it > 0) {
+                    this.put(
+                        Constant.COMMON_PROPERTY_EVENT_DURATION,
+                        it
+                    )
+                }
             }
         }
     }
 
 
-    fun addTrackEventTask(task: Runnable){
+    fun addTrackEventTask(task: Runnable) {
         mTrackTaskManager?.let {
             try {
                 it.execute(task)

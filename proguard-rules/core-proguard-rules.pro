@@ -28,6 +28,7 @@
 
 -keep class com.roiquery.analytics.ROIQueryChannel{*;}
 -keep class com.roiquery.analytics.DTChannel{*;}
+-keep class com.roiquery.analytics.DTServer{*;}
 
 -keep enum com.roiquery.ad.*{*;}
 -keep class com.roiquery.ad.ROIQueryAdReport{*;}

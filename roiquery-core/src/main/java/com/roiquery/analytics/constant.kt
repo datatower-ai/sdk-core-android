@@ -7,10 +7,14 @@ internal object Constant {
     //ROIQuery base url
     private val ANALYTICS_BASE_URL = if ("0" == BuildConfig.LINK_SITE) "https://test.roiquery.com" else ( if ("1" == BuildConfig.LINK_SITE)  "https://report-inner.roiquery.com" else "https://report.roiquery.com")
 
-    //upload url
-    val EVENT_REPORT_URL = "$ANALYTICS_BASE_URL/report"
+    const val SERVER_URL_TEST       = "https://test.roiquery.com"
+    const val SERVER_URL_INNER      = "https://report-inner.roiquery.com"
+    const val SERVER_URL_EXTERNAL   = "https://report.roiquery.com"
 
-    const val ERROR_REPORT_URL="https://debug.roiquery.com/debug"
+    //upload url
+    const val EVENT_REPORT_PATH = "/report"
+
+    const val ERROR_REPORT_URL = "https://debug.roiquery.com/debug"
 
     //event upload size
     const val EVENT_REPORT_SIZE = 10
@@ -149,4 +153,9 @@ object ROIQueryChannel{
 
 object DTChannel{
     const val GP = "gp"
+}
+
+object DTServer{
+    const val URL0 = 0
+    const val URL1 = 1
 }

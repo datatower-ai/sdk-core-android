@@ -41,6 +41,13 @@ abstract class AbstractAnalyticsConfig {
      */
     var mAppId: String? = null
 
+
+    /**
+     * mServerUrl
+     */
+    var mServerUrl: String? = ""
+
+
     /**
      * 数据采集，默认开启数据采集
      */

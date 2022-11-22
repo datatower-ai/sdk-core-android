@@ -29,10 +29,6 @@ class PresetEventManager {
     fun trackPresetEvent(context: Context) {
         //子进程不采集
         if (!ProcessUtil.isMainProcess(context)) {
-            LogUtils.i(
-                "trackPresetEvent",
-                ProcessUtil.getCurrentProcessName(context) + "is not main process"
-            )
             return
         }
         mDataAdapter = EventDateAdapter.getInstance()

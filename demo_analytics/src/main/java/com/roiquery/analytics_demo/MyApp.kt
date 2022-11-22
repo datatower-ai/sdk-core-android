@@ -4,6 +4,7 @@ import android.app.Application
 import com.roiquery.ad.DTAdReport
 import com.roiquery.analytics.DT
 import com.roiquery.analytics.DTChannel
+import com.roiquery.analytics.DTServer
 import com.roiquery.thirdparty.ThirdSDKShareType
 
 
@@ -13,7 +14,13 @@ class MyApp : Application() {
         //init SDK
 //        ROIQuery.initSDK(this,"dt_id_test",ROIQueryChannel.GP,false)
 
-            DT.initSDK(this,"dt_461a208fdd075c27", DTChannel.GP,false, sdkInitialSuccess = {
+            DT.initSDK(
+                this,
+                "dt_461a208fdd075c27",
+                DTChannel.GP,
+                true,
+                serverUrl = DTServer.URL0,
+                sdkInitialSuccess = {
                 DT.enableThirdShare(ThirdSDKShareType.ADJUST)
             })
 

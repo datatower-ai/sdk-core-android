@@ -169,8 +169,8 @@ internal class EventDataOperation(
                         queryDbException.handleException(this.coroutineContext, e)
                     } finally {
                         jsonData.append("]")
-                        it.resume(jsonData.toString())
                     }
+                    it.resume(jsonData.toString())
                 }
             }
         }
@@ -189,6 +189,7 @@ internal class EventDataOperation(
                     )
                 } catch (e: Exception) {
                     queryDbException.handleException(this.coroutineContext, e)
+                    it.resume(0)
                 }
             }
         }

@@ -6,6 +6,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.roiquery.analytics.DTAnalytics
 import com.roiquery.analytics.ROIQueryAnalytics
 import org.json.JSONObject
 import org.koin.android.ext.koin.ERROR_MSG

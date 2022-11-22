@@ -68,9 +68,4 @@ ext {
     VERSION = rootProject.ext.core.coreVersionName
     DEPENDENCE_TYPE = dependence_type
 }
-
-if ("$appLinkSite" == "2") {
-    apply from: "../maven-public.gradle"
-} else {
-    apply from: "../maven-publish.gradle"
-}
+apply from: "../maven-public.gradle"

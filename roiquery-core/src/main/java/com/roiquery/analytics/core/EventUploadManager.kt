@@ -8,6 +8,7 @@ import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.Constant.PRE_EVENT_INFO_SYN
 import com.roiquery.analytics.ROIQueryCoroutineScope
+import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
@@ -141,8 +142,6 @@ class EventUploadManager private constructor(
                 return false
             } else {
                 mDateAdapter?.enableUpload = false
-//                LogUtils.d(TAG, "enableUpload = false 147")
-
                 mDisableUploadCount = 0
             }
         } catch (e: Exception) {
@@ -199,12 +198,10 @@ class EventUploadManager private constructor(
                         try {
                             if (info.isNotEmpty()) {
                                 mDateAdapter.enableUpload = false
-//                                LogUtils.d(TAG, "enableUpload = false 200")
                                 //http 请求
                                 uploadDataToNet(info, mDateAdapter)
                             } else {
                                 mDateAdapter.enableUpload = true
-//                                LogUtils.d(TAG, "enableUpload = true 205")
                             }
                         } catch (e: Exception){
                             mDateAdapter.enableUpload = true
@@ -226,7 +223,7 @@ class EventUploadManager private constructor(
     ) {
         RequestHelper.Builder(
             HttpMethod.POST_ASYNC,
-            Constant.EVENT_REPORT_URL
+            getEventUploadUrl()
         )
             .jsonData(event)
             .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
@@ -291,6 +288,14 @@ class EventUploadManager private constructor(
             mDateAdapter.deleteAllEvents()
         } finally {
         }
+    }
+
+    fun getEventUploadUrl(): String {
+        val url = AbstractAnalytics.mConfigOptions?.mServerUrl
+        if (url.isNullOrEmpty()) {
+            return Constant.SERVER_URL_EXTERNAL + Constant.EVENT_REPORT_PATH
+        }
+        return url + Constant.EVENT_REPORT_PATH
     }
 
     private inner class Worker {
