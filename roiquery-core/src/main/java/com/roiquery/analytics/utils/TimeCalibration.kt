@@ -9,6 +9,7 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
 /**
@@ -33,18 +34,26 @@ class TimeCalibration private constructor() {
 
     private val calibratedTimeLock = ReentrantReadWriteLock()
 
+    private var isVerifyTimeRunning = AtomicBoolean(false)
+
     fun getReferenceTime() {
         if (_latestTime == 0L) {
+            if (isVerifyTimeRunning.get()) {
+                return
+            }
+            isVerifyTimeRunning.set(true)
             //子进程只读取主进程的时间，不获取服务器时间
             if (!ProcessUtil.isMainProcess(AdtUtil.getInstance().applicationContext)){
                 setVerifyTimeForSubProcess()
+                isVerifyTimeRunning.set(false)
                 return
             }
-            RequestHelper.Builder(HttpMethod.POST_ASYNC, Constant.EVENT_REPORT_URL)
+            RequestHelper.Builder(HttpMethod.POST_ASYNC, EventUploadManager.getInstance()?.getEventUploadUrl())
                 .jsonData(TIME_FROM_ROI_NET_BODY)
                 .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
                 .callback(object : HttpCallback.TimeCallback() {
                     override fun onFailure(code: Int, errorMessage: String?) {
+                        isVerifyTimeRunning.set(false)
                     }
 
                     override fun onResponse(response: Long) {
@@ -53,6 +62,7 @@ class TimeCalibration private constructor() {
                         if (DTAnalytics.isSDKInitSuccess()) {
                             EventUploadManager.getInstance()?.flush()
                         }
+                        isVerifyTimeRunning.set(false)
                     }
 
                 }).execute()

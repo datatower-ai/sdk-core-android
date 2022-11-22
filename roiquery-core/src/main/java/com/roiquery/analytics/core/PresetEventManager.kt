@@ -1,12 +1,9 @@
 package com.roiquery.analytics.core
 
-import android.app.Application.getProcessName
 import android.content.Context
-import android.util.Log
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
-import com.google.android.gms.common.util.ProcessUtils
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.data.EventDateAdapter
@@ -28,10 +25,6 @@ class PresetEventManager {
     fun trackPresetEvent(context: Context) {
         //子进程不采集
         if (!ProcessUtil.isMainProcess(context)) {
-            LogUtils.i(
-                "trackPresetEvent",
-                ProcessUtil.getCurrentProcessName(context) + "is not main process"
-            )
             return
         }
         mDataAdapter = EventDateAdapter.getInstance()

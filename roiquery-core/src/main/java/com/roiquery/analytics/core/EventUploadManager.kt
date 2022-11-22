@@ -8,6 +8,7 @@ import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.Constant.PRE_EVENT_INFO_SYN
 import com.roiquery.analytics.ROIQueryCoroutineScope
+import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
@@ -15,7 +16,6 @@ import com.roiquery.analytics.network.RequestHelper
 import com.roiquery.analytics.utils.AdtUtil
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
-import com.roiquery.analytics.utils.ThreadUtils
 import com.roiquery.analytics.utils.TimeCalibration
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
@@ -39,7 +39,7 @@ class EventUploadManager private constructor(
     fun enqueueEventMessage(name: String, eventJson: JSONObject, eventSyn: String, insertHandler: ((code: Int, msg: String) -> Unit)? = null) {
         if (mDateAdapter == null) return
         synchronized(mDateAdapter) {
-//            scope.launch {
+            scope.launch {
                 try {
                     //插入数据库
                     val insertCode = mDateAdapter.addJSON(eventJson, eventSyn)
@@ -60,7 +60,7 @@ class EventUploadManager private constructor(
                     insertHandler?.invoke(ROIQueryErrorParams.CODE_INIT_DB_ERROR, ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR)
                 }
 
-//            }
+            }
         }
     }
 
@@ -142,8 +142,6 @@ class EventUploadManager private constructor(
                 return false
             } else {
                 mDateAdapter?.enableUpload = false
-//                LogUtils.d(TAG, "enableUpload = false 147")
-
                 mDisableUploadCount = 0
             }
         } catch (e: Exception) {
@@ -200,12 +198,10 @@ class EventUploadManager private constructor(
                         try {
                             if (info.isNotEmpty()) {
                                 mDateAdapter.enableUpload = false
-//                                LogUtils.d(TAG, "enableUpload = false 200")
                                 //http 请求
                                 uploadDataToNet(info, mDateAdapter)
                             } else {
                                 mDateAdapter.enableUpload = true
-//                                LogUtils.d(TAG, "enableUpload = true 205")
                             }
                         } catch (e: Exception){
                             mDateAdapter.enableUpload = true
@@ -227,7 +223,7 @@ class EventUploadManager private constructor(
     ) {
         RequestHelper.Builder(
             HttpMethod.POST_ASYNC,
-            Constant.EVENT_REPORT_URL
+            getEventUploadUrl()
         )
             .jsonData(event)
             .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
@@ -292,6 +288,14 @@ class EventUploadManager private constructor(
             mDateAdapter.deleteAllEvents()
         } finally {
         }
+    }
+
+    fun getEventUploadUrl(): String {
+        val url = AbstractAnalytics.mConfigOptions?.mServerUrl
+        if (url.isNullOrEmpty()) {
+            return Constant.SERVER_URL_EXTERNAL + Constant.EVENT_REPORT_PATH
+        }
+        return url + Constant.EVENT_REPORT_PATH
     }
 
     private inner class Worker {

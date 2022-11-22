@@ -1,12 +1,5 @@
 #!/bin/bash
 
-modifyMavenType(){
-  app_link_site=$(cat -v ./gradle.properties  | grep appLinkSite |awk -F "=" '{print $2}')
-  echo ${app_link_site}
-  sed -i.bak "s/appLinkSite.*=.*${app_link_site}/appLinkSite = ${mavenType}/g" gradle.properties
-  rm -rf gradle.properties.bak
-}
-
 
 modifyDependenceType(){
   #获取当前 maven 仓库的type
@@ -46,41 +39,17 @@ modifyVersionName(){
 }
 
 
-modifyVersionCode(){
-  aar_version_code=$1
-  aar_type=$2
-  versionCode="${aar_type}VersionCode"
-  #获取aar 版本号
-  # shellcheck disable=SC2128
-  version_code=$(cat -v ./conf.gradle | grep  "${versionCode}")
-  old_version_code=$(echo "${version_code##*versionCode}" |awk -F ":" '{print $2}' |awk -F "," '{print $1}')
-
-
-  #比较输入的版本号，不同则修改
-  if [ "${aar_version_code}" != "${old_version_code}" ]; then
-      # shellcheck disable=SC2128
-      sed -i.bak "s/${version_code}/\t\t\t${versionCode}      :${aar_version_code},/g" conf.gradle
-      rm -rf conf.gradle.bak
-  fi
-
-}
-
-
 mavenAarByType(){
   aar_type=$(echo  ${project_name} | awk -F "-"  '{print $2}')
   echo ---------------------${aar_type}  start --------------------------
 
   modifyVersionName "${aar_version_name}"  "${aar_type}"
-  modifyVersionCode  "${aar_version_code}" "${aar_type}"
 
     # shellcheck disable=SC2164
   cd roiquery-"${aar_type}"
   gradle clean
-  if [ $type = 0 ]; then
-      gradle assembleRelease
-  else
-    gradle publish
-  fi
+  gradle assembleRelease
+  gradle publish
     if [  $? -ne 0 ]; then
         exit
     fi
@@ -106,17 +75,11 @@ copyMappingFile(){
 }
 
 aar_version_name=$1
-aar_version_code=$2
-type=$3
+type=$2
 project_name=roiquery-core
-mavenType=$4
 echo "aar_version_name:"${aar_version_name}
-echo "aar_version_code"${aar_version_code}
 echo "type:"${type}
-echo "mavenType:"${mavenType}
 
-modifyMavenType
-#modifyDependenceType
 if [  $? -ne 0 ]; then
     exit
 fi

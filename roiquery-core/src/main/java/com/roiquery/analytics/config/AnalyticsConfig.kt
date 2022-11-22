@@ -1,5 +1,7 @@
 package com.roiquery.analytics.config
 
+import com.roiquery.analytics.Constant
+import com.roiquery.analytics.DTServer
 import com.roiquery.analytics.utils.LogUtils
 import org.json.JSONObject
 
@@ -36,6 +38,15 @@ class AnalyticsConfig : AbstractAnalyticsConfig {
         return this
     }
 
+    fun setServerUrl(serverUrlType: Int): AnalyticsConfig {
+        mServerUrl = when (serverUrlType) {
+            DTServer.URL0 -> Constant.SERVER_URL_INNER
+            DTServer.URL1 -> Constant.SERVER_URL_EXTERNAL
+            -1 -> Constant.SERVER_URL_TEST
+            else -> Constant.SERVER_URL_EXTERNAL
+        }
+        return this
+    }
 
     /**
      * 设置两次数据发送的最小时间间隔，最小值 5 秒

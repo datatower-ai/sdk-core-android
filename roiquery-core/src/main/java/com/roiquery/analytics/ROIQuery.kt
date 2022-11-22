@@ -26,12 +26,14 @@ class ROIQuery {
             channel: String = "",
             isDebug: Boolean = false,
             logLevel: Int = LogUtils.V,
-            commonProperties: JSONObject = JSONObject(),
+            serverUrl: Int = DTServer.URL1,
             sdkInitialSuccess:()->Unit = fun () {},
-            sdkInitialFail:() -> Unit = fun () {}
+            sdkInitialFail:() -> Unit = fun () {},
+            commonProperties: JSONObject = JSONObject(),
         ) {
             ROIQueryAnalytics.init(context,
                 AnalyticsConfig(appId)
+                    .setServerUrl(serverUrl)
                     .setDebug(isDebug, logLevel)
                     .setChannel(channel)
                     .addCommonProperties(commonProperties)
@@ -53,6 +55,8 @@ class ROIQuery {
             context: Context?,
             appId: String?,
             isDebug: Boolean = false,
+            sdkInitialSuccess: () -> Unit = fun() {},
+            sdkInitialFail: () -> Unit = fun() {}
         ){
             this.initSDK(
                 context,
@@ -60,6 +64,9 @@ class ROIQuery {
                 channel = "",
                 isDebug,
                 LogUtils.V,
+                serverUrl = DTServer.URL1,
+                sdkInitialSuccess,
+                sdkInitialFail,
                 JSONObject()
             )
         }
@@ -78,6 +85,8 @@ class ROIQuery {
             appId: String?,
             isDebug: Boolean = false,
             logLevel: Int = LogUtils.V,
+            sdkInitialSuccess: () -> Unit = fun() {},
+            sdkInitialFail: () -> Unit = fun() {}
         ){
             this.initSDK(
                 context,
@@ -85,6 +94,9 @@ class ROIQuery {
                 channel = "",
                 isDebug,
                 logLevel,
+                serverUrl = DTServer.URL1,
+                sdkInitialSuccess,
+                sdkInitialFail,
                 JSONObject()
             )
         }

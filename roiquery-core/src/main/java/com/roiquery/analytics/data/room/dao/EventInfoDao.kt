@@ -20,7 +20,7 @@ interface EventInfoDao {
     suspend fun queryEventData(limit: Int): Array<String>
 
     @Insert
-    fun insertEvent(events: Events): Long
+    suspend fun insertEvent(events: Events): Long
 
     @Delete
     suspend fun delete(event: Events)
