@@ -12,7 +12,7 @@ import com.roiquery.ad.AdReportConstant.PROPERTY_AD_SHOW_ERROR_MESSAGE
 import com.roiquery.ad.AdType
 import com.roiquery.ad.utils.AdEventProperty
 import com.roiquery.ad.utils.AdPlatformUtils
-import com.roiquery.analytics.ROIQueryAnalytics
+import com.roiquery.analytics.DTAnalytics
 import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.AppLifecycleHelper.OnAppStatusListener
 import com.roiquery.analytics.utils.EventUtils
@@ -456,7 +456,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         eventName: String,
         properties: JSONObject?,
     ) {
-        ROIQueryAnalytics.trackInternal(eventName, properties)
+        DTAnalytics.trackInternal(eventName, properties)
     }
 
     private fun generateAdReportJson(seq: String) =
@@ -492,7 +492,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         if (!mIsMainProcess) {
             return
         }
-        ROIQueryAnalytics.addAppStatusListener(object : OnAppStatusListener {
+        DTAnalytics.addAppStatusListener(object : OnAppStatusListener {
             override fun onAppForeground() {
                 reportReturnApp()
                 LogUtils.d("AdReport", "onAppForegrounded")
@@ -580,7 +580,7 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         internal fun getInstance(context: Context? = null): AdReportImp {
             var pContext = context
             if (pContext == null) {
-                pContext = ROIQueryAnalytics.getContext()
+                pContext = DTAnalytics.getContext()
             }
             return instance ?: synchronized(this) {
                 instance ?: AdReportImp(pContext).also { instance = it }

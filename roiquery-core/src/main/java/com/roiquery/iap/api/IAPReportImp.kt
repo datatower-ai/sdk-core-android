@@ -3,9 +3,8 @@ package com.roiquery.iap.api
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.roiquery.analytics.ROIQueryAnalytics
+import com.roiquery.analytics.DTAnalytics
 import com.roiquery.iap.Constant
-import com.roiquery.iap.ROIQueryIAPReport
 
 class IAPReportImp : IIapReport {
 
@@ -98,7 +97,7 @@ class IAPReportImp : IIapReport {
         placement: String? = null,
         msg: String? = null
     ) {
-        ROIQueryAnalytics.trackInternal(
+        DTAnalytics.trackInternal(
             eventName, generateAdReportMap(
                 order,sku, price, currency,seq, code, placement, msg
             )
