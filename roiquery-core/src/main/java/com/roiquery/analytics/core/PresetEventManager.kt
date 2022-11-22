@@ -1,17 +1,15 @@
 package com.roiquery.analytics.core
 
-import android.app.Application.getProcessName
 import android.content.Context
-import android.util.Log
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
-import com.google.android.gms.common.util.ProcessUtils
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
 import org.json.JSONObject
+import java.util.concurrent.atomic.AtomicBoolean
 
 class PresetEventManager {
     companion object {
@@ -22,9 +20,12 @@ class PresetEventManager {
 
     private var mDataAdapter: EventDateAdapter? = null
 
+    private val isAppInstallTrackRunning = AtomicBoolean(false)
+
     /**
      * 采集app 预置事件
      */
+    @Synchronized
     fun trackPresetEvent(context: Context) {
         //子进程不采集
         if (!ProcessUtil.isMainProcess(context)) {
@@ -153,6 +154,12 @@ class PresetEventManager {
      * 采集 app_install 事件
      */
     private fun trackAppInstallEvent(response: ReferrerDetails, failedReason: String) {
+        //如果 app_install 事件已插入或者正在插入，则不处理
+        if (mDataAdapter?.isAppInstallInserted == true || isAppInstallTrackRunning.get()) {
+            return
+        }
+        isAppInstallTrackRunning.set(true)
+
         val isOK = failedReason.isBlank()
         EventTrackManager.instance.trackNormalPreset(
             Constant.PRESET_EVENT_APP_INSTALL,
@@ -189,6 +196,7 @@ class PresetEventManager {
                 if (code == 0) {
                     EventDateAdapter.getInstance()?.isAppInstallInserted = true
                 }
+                isAppInstallTrackRunning.set(false)
             }
         )
 
