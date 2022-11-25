@@ -2,6 +2,7 @@ package com.roiquery.analytics.utils
 
 import android.os.SystemClock
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.Constant.LOG_TAG
 import com.roiquery.analytics.Constant.TIME_FROM_ROI_NET_BODY
 import com.roiquery.analytics.DTAnalytics
 import com.roiquery.analytics.core.EventUploadManager
@@ -9,6 +10,8 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
 
 /**
  * author: xiaosailing
@@ -52,9 +55,11 @@ class TimeCalibration private constructor() {
                 .callback(object : HttpCallback.TimeCallback() {
                     override fun onFailure(code: Int, errorMessage: String?) {
                         isVerifyTimeRunning.set(false)
+                        LogUtils.e(LOG_TAG, errorMessage)
                     }
 
                     override fun onResponse(response: Long) {
+                        LogUtils.d(LOG_TAG,"server time : $response")
                         setVerifyTime(response)
                         //避免因为时间未同步而造成数据堆积
                         if (DTAnalytics.isSDKInitSuccess()) {

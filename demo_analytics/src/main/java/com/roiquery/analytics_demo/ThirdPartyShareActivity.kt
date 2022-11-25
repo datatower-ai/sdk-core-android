@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.roiquery.analytics.DT
+import com.roiquery.analytics.DTAnalytics
 import com.roiquery.thirdparty.ThirdSDKShareType
 
 class ThirdPartyShareActivity : AppCompatActivity() {
@@ -13,7 +14,7 @@ class ThirdPartyShareActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_third_party_share)
         findViewById<Button>(R.id.btn_adjust).setOnClickListener{
-            DT.enableThirdShare(ThirdSDKShareType.ADJUST)
+            DTAnalytics.enableThirdShare(ThirdSDKShareType.ADJUST)
         }
         findViewById<Button>(R.id.btn_appsflyer).setOnClickListener {
 //            DT.enableThirdShare(ThirdSDKShareType.APPSFly)

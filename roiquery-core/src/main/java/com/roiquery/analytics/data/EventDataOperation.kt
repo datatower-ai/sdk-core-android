@@ -56,7 +56,7 @@ internal class EventDataOperation(
     private val deleteDbException = CoroutineExceptionHandler { _, exception ->
         run {
             ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_INSERT_DATA_EXCEPTION,
+                ROIQueryErrorParams.CODE_DELETE_DB_EXCEPTION,
                 exception.message,ROIQueryErrorParams.DELETE_DB_EXCEPTION
             )
         }
