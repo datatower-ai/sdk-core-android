@@ -11,9 +11,9 @@ import com.roiquery.thirdparty.ThirdSDKShareType
 class MyApp : Application() {
 
     //ROIQuery base url
-     val SERVER_URL_TEST       = "https://test.roiquery.com"
-     val SERVER_URL_INNER      = "https://report-inner.roiquery.com"
-     val SERVER_URL_EXTERNAL   = "https://report.roiquery.com"
+    private val SERVER_URL_TEST       = "https://test.roiquery.com"
+    private val SERVER_URL_INNER      = "https://report-inner.roiquery.com"
+    private val SERVER_URL_EXTERNAL   = "https://report.roiquery.com"
     override fun onCreate() {
         super.onCreate()
         DT.initSDK(
@@ -22,7 +22,8 @@ class MyApp : Application() {
             SERVER_URL_TEST,
             DTChannel.GP,
             true,
-            initCallback = object : InitCallback {
+            Log.VERBOSE,
+            object : InitCallback {
                 override fun onInitComplete(isSuccess: Boolean, msg: String) {
                     if (isSuccess) {
                         DTAnalytics.enableThirdShare(ThirdSDKShareType.ADJUST)

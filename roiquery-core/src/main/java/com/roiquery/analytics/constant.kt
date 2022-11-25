@@ -154,10 +154,6 @@ object DTChannel{
     const val GP = "gp"
 }
 
-object DTServer{
-    const val URL0 = 0
-    const val URL1 = 1
-}
 
 interface InitCallback {
     fun onInitComplete(isSuccess: Boolean, msg: String = "")

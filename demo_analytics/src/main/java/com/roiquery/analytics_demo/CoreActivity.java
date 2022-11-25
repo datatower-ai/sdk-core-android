@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.roiquery.analytics.DT;
 import com.roiquery.analytics.DTAnalytics;
 import com.roiquery.analytics.DTChannel;
-import com.roiquery.analytics.DTServer;
 
 
 import org.json.JSONArray;
