@@ -7,7 +7,8 @@ import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.utils.AdtUtil
 import com.roiquery.analytics.utils.AppLifecycleHelper
 import com.roiquery.analytics.utils.LogUtils
-
+import com.roiquery.thirdparty.ThirdPartShareDataFactory
+import com.roiquery.thirdparty.ThirdSDKShareType
 import org.json.JSONObject
 import java.lang.Exception
 
@@ -145,20 +146,21 @@ open class ROIQueryAnalytics {
             AnalyticsImp.getInstance().setKochavaId(id)
         }
 
+        /**
+         * 透传 dt_id 至三方归因平台
+         * @param type 归因平台
+         */
+        @JvmStatic
+        fun enableThirdShare(type: ThirdSDKShareType) {
+            try {
+                ThirdPartShareDataFactory.createThirdInstance(type)
+                    .synThirdDTIdData(PropertyManager.instance.getDTID())
+            } catch (error: Exception) {
+                LogUtils.d("please impl ${type.name}")
+            }
+        }
 
         /******************** internal *******************/
-
-        /**
-         * 初始化
-         *
-         * @param context 上下文
-         * @param configOptions 配置
-         */
-        internal fun init(context: Context?, configOptions: AnalyticsConfig?,
-                          sdkInitialSuccess:()->Unit = fun () {},
-                          sdkInitialFail:() -> Unit = fun () {}) {
-            AnalyticsImp.init(context, configOptions, initSuccess = sdkInitialSuccess, initFail = sdkInitialFail)
-        }
 
         /**
          * 调用 track 接口，追踪一个带有属性的事件

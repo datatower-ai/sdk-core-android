@@ -241,9 +241,8 @@ class EventUploadManager private constructor(
                     LogUtils.json("$TAG upload event data ", event)
                     LogUtils.json("$TAG upload event result ", response)
                     if (response?.getInt(ResponseDataKey.KEY_CODE) == 0) {
-
+                        //上报成功后，删除数据库数据
                         deleteEventAfterReport(event, mDateAdapter)
-
                         //避免事件积压，成功后再次上报
                         flush(FLUSH_DELAY)
                     } else {
@@ -261,7 +260,6 @@ class EventUploadManager private constructor(
 
                 override fun onAfter() {
                     mDateAdapter.enableUpload = true
-//                    LogUtils.d(TAG, "enableUpload = true 257")
                 }
             }).execute()
     }
@@ -284,9 +282,10 @@ class EventUploadManager private constructor(
                 }
             }
         } catch (e: Exception) {
-            // 保证数据不会重复上传
-            mDateAdapter.deleteAllEvents()
-        } finally {
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_DELETE_UPLOADED_EXCEPTION,
+                e.message, ROIQueryErrorParams.DELETE_DB_EXCEPTION
+            )
         }
     }
 

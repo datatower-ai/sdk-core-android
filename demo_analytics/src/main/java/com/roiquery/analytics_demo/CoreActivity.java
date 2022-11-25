@@ -3,17 +3,24 @@ package com.roiquery.analytics_demo;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.roiquery.analytics.DT;
 import com.roiquery.analytics.DTAnalytics;
-import com.roiquery.analytics.ROIQueryAnalytics;
+import com.roiquery.analytics.DTChannel;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import kotlin.Function;
+import kotlin.Unit;
 
 
 public class CoreActivity extends AppCompatActivity {
@@ -175,6 +182,21 @@ public class CoreActivity extends AppCompatActivity {
 
             }
         });
+
+        DT.initSDK(
+                this,
+                "dt_461a208fdd075c27",
+                "",
+                DTChannel.GP,
+                true,
+                Log.VERBOSE,
+                (isSuccess, msg) -> {
+
+                }
+        );
+
     }
+
+
 
 }

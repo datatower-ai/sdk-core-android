@@ -4,35 +4,30 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.InitCallback
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.EventTrackManager
-import com.roiquery.analytics.core.EventUploadManager
 import com.roiquery.analytics.core.PresetEventManager
 import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
-import com.roiquery.analytics.utils.NetworkUtil.registerNetworkStatusChangedListener
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicBoolean
-import kotlin.coroutines.CoroutineContext
 
 
-abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
-
-    override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
+abstract class AbstractAnalytics : IAnalytics {
 
     //本地数据适配器，包括sp、db的操作
-    private var mDataAdapter: EventDateAdapter? = null
+    private var dataAdapter: EventDateAdapter? = null
 
     private val hasInit = AtomicBoolean(false)
 
     private val isInitRunning = AtomicBoolean(false)
+
+    private val initCallbacks: ConcurrentLinkedQueue<InitCallback?> = ConcurrentLinkedQueue()
 
     var firstOpenTime : Long? by NotNullSingleVar()
 
@@ -43,20 +38,27 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
         internal var mConfigOptions: AnalyticsConfig? = null
     }
 
-    fun init(context: Context ,initSuccess:(()-> Unit)?,
-             initFail:(()-> Unit)?
-    ) {
-        if (isInitRunning.get() || hasInit.get()) {
+    fun init(context: Context, initCallback: InitCallback?) {
+        if (hasInit.get()) {
+            initCallback?.onInitComplete(true)
+            return
+        }
+        if (isInitRunning.get()) {
+            initCallback?.let {
+                initCallbacks.add(it)
+            }
             return
         }
         isInitRunning.set(true)
+        initCallback?.let {
+            initCallbacks.add(it)
+        }
         //real init
-        internalInit(context,initSuccess,initFail)
+        internalInit(context)
     }
 
 
-    private fun internalInit(context: Context,initSuccess:(()-> Unit)?,
-                             initFail:(()-> Unit)?) {
+    private fun internalInit(context: Context) {
         try {
             initConfig(context)
             initLocalData(context)
@@ -66,12 +68,10 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
             registerAppLifecycleListener(context)
             getDataTowerId(context, dataTowerIdHandler = {
                 trackPresetEvent(context)
-                initSuccess?.invoke()
                 onInitSuccess()
             })
         } catch (e: Exception) {
             onInitFailed(e.message)
-            initFail?.invoke()
         }
     }
 
@@ -82,7 +82,15 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
         hasInit.set(true)
         isInitRunning.set(false)
         EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_APP_INITIALIZE)
+        onSuccessCallback()
         LogUtils.d(TAG, "init succeed")
+    }
+
+    private fun onSuccessCallback() {
+        initCallbacks.forEach { callback ->
+            callback?.onInitComplete(true)
+        }
+        initCallbacks.clear()
     }
 
     /**
@@ -96,7 +104,15 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
             ROIQueryErrorParams.INIT_EXCEPTION,
             ROIQueryErrorParams.TYPE_ERROR
         )
+        onErrorCallback(errorMessage)
         LogUtils.d(TAG, "init Failed: $errorMessage")
+    }
+
+    private fun onErrorCallback(errorMessage: String?) {
+        initCallbacks.forEach { callback ->
+            callback?.onInitComplete(false, errorMessage ?: "")
+        }
+        initCallbacks.clear()
     }
 
     fun isInitSuccess() = hasInit.get()
@@ -107,14 +123,14 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
      */
     private fun generateFirstOpenTime(context: Context){
         try {
-            if (mDataAdapter?.isAppInstallInserted == false) {
+            if (dataAdapter?.isAppInstallInserted == false) {
                 val openTime = TimeCalibration.instance.getVerifyTimeAsync()
                 if (openTime == TimeCalibration.TIME_NOT_VERIFY_VALUE){
                     firstOpenTime = TimeCalibration.instance.getSystemHibernateTimeGap()
-                    mDataAdapter?.isFirstOpenTimeVerified = false
+                    dataAdapter?.isFirstOpenTimeVerified = false
                 }else{
                     firstOpenTime = openTime
-                    mDataAdapter?.isFirstOpenTimeVerified = true
+                    dataAdapter?.isFirstOpenTimeVerified = true
                 }
                 }
         } catch (e: Exception) {
@@ -125,8 +141,8 @@ abstract class AbstractAnalytics : IAnalytics, CoroutineScope {
      * 初始化本地数据
      */
     private fun initLocalData(context: Context) {
-        mDataAdapter = EventDateAdapter.getInstance(context)
-        mDataAdapter?.enableUpload = true
+        dataAdapter = EventDateAdapter.getInstance(context)
+        dataAdapter?.enableUpload = true
     }
 
     /**

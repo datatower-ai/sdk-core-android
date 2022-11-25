@@ -2,8 +2,9 @@ package com.roiquery.analytics.api
 
 import android.content.Context
 import android.os.SystemClock
+import android.util.Log
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.api.AbstractAnalytics.Companion.mConfigOptions
+import com.roiquery.analytics.InitCallback
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.EventTimer
 import com.roiquery.analytics.core.EventTimerManager
@@ -52,7 +53,6 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
                 EventDateAdapter.getInstance()?.enableUpload = it
                 mConfigOptions?.mEnableUpload = it
             }
-
         }
 
 
@@ -192,37 +192,26 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
 
         internal fun getInstance(): AnalyticsImp {
             if (mConfigOptions == null) {
-                throw IllegalStateException("call ROIQuerySDK.init() first")
+                throw IllegalStateException("call DT.initSDK() first")
             }
             return instance ?: synchronized(this) {
                 instance ?: AnalyticsImp().also { instance = it }
             }
         }
 
-       private var sdkInitSuccess = fun (){
-            LogUtils.d("sdkInitSuccess")
-        }
-
-        private var sdkInitFail = fun (){
-            LogUtils.d("sdkInitFail")
-
-        }
-
         internal fun init(
             context: Context?,
             configOptions: AnalyticsConfig?,
-            initSuccess:()-> Unit = sdkInitSuccess,
-            initFail:()->Unit  = sdkInitFail
+            initCallback: InitCallback?
         ) {
             if (context == null || configOptions == null) {
-                throw IllegalStateException("call ROIQuerySDK.init() first")
+                throw IllegalStateException("call DT.init() first")
             }
             if (instance == null) {
                 mConfigOptions = configOptions
-                instance = getInstance().apply {
-                    init(context,initSuccess,initFail)
-                }
+                instance = getInstance()
             }
+            instance?.init(context, initCallback)
         }
 
     }

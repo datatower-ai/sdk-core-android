@@ -1,12 +1,11 @@
 package com.roiquery.analytics
 
+
 internal object Constant {
 
     const val LOG_TAG = "DataTower"
 
     //ROIQuery base url
-    private val ANALYTICS_BASE_URL = if ("0" == BuildConfig.LINK_SITE) "https://test.roiquery.com" else ( if ("1" == BuildConfig.LINK_SITE)  "https://report-inner.roiquery.com" else "https://report.roiquery.com")
-
     const val SERVER_URL_TEST       = "https://test.roiquery.com"
     const val SERVER_URL_INNER      = "https://report-inner.roiquery.com"
     const val SERVER_URL_EXTERNAL   = "https://report.roiquery.com"
@@ -155,7 +154,7 @@ object DTChannel{
     const val GP = "gp"
 }
 
-object DTServer{
-    const val URL0 = 0
-    const val URL1 = 1
+
+interface InitCallback {
+    fun onInitComplete(isSuccess: Boolean, msg: String = "")
 }

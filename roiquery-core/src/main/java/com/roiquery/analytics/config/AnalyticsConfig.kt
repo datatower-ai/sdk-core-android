@@ -1,7 +1,5 @@
 package com.roiquery.analytics.config
 
-import com.roiquery.analytics.Constant
-import com.roiquery.analytics.DTServer
 import com.roiquery.analytics.utils.LogUtils
 import org.json.JSONObject
 
@@ -38,13 +36,8 @@ class AnalyticsConfig : AbstractAnalyticsConfig {
         return this
     }
 
-    fun setServerUrl(serverUrlType: Int): AnalyticsConfig {
-        mServerUrl = when (serverUrlType) {
-            DTServer.URL0 -> Constant.SERVER_URL_INNER
-            DTServer.URL1 -> Constant.SERVER_URL_EXTERNAL
-            -1 -> Constant.SERVER_URL_TEST
-            else -> Constant.SERVER_URL_EXTERNAL
-        }
+    fun setServerUrl(serverUrl: String): AnalyticsConfig {
+        mServerUrl = serverUrl
         return this
     }
 
