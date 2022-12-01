@@ -4,7 +4,6 @@ import android.app.Application
 import android.util.Log
 import com.roiquery.ad.DTAdReport
 import com.roiquery.analytics.*
-import com.roiquery.analytics.utils.ProcessUtil
 import com.roiquery.thirdparty.ThirdSDKShareType
 
 

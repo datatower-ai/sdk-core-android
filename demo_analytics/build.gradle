@@ -64,5 +64,5 @@ dependencies {
     }
 
     //对外sdk依赖
-//    implementation 'com.lovinjoy:datatowerai-core:1.3.2-beta'
+//    implementation 'com.lovinjoy:datatowerai-core:1.3.1'
 }
