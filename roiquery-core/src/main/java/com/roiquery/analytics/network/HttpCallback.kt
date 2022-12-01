@@ -17,15 +17,12 @@
 package com.roiquery.analytics.network
 
 import android.os.Handler
-import com.roiquery.analytics.network.RealResponse
 import android.text.TextUtils
-import com.roiquery.analytics.network.HttpCallback
 import org.json.JSONObject
 import org.json.JSONException
 import android.os.Looper
-import com.roiquery.analytics.ROIQueryAnalytics
-import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.utils.LogUtils
+import com.roiquery.analytics.utils.ThreadUtils
 
 abstract class HttpCallback<T> {
     fun onError(response: RealResponse) {
@@ -38,18 +35,18 @@ abstract class HttpCallback<T> {
         } else {
             "unknown error"
         }
-        sMainHandler.post {
+//        sMainHandler.post {
             onFailure(response.code, errorMessage)
             onAfter()
-        }
+//        }
     }
 
     fun onSuccess(response: RealResponse) {
         val obj: T = onParseResponse(response,response.result)
-        sMainHandler.post {
+//        sMainHandler.post {
             onResponse(obj)
             onAfter()
-        }
+//        }
     }
 
     /**
@@ -61,7 +58,7 @@ abstract class HttpCallback<T> {
     abstract fun onParseResponse(response: RealResponse,result: String): T
 
     /**
-     * 访问网络失败后被调用，执行在 UI 线程
+     * 访问网络失败后被调用，执行在 子 线程
      *
      * @param code 请求返回的错误 code
      * @param errorMessage 错误信息
@@ -69,7 +66,7 @@ abstract class HttpCallback<T> {
     abstract fun onFailure(code: Int, errorMessage: String?)
 
     /**
-     * 访问网络成功后被调用，执行在 UI 线程
+     * 访问网络成功后被调用，执行在 子 线程
      *
      * @param response 处理后的对象
      */

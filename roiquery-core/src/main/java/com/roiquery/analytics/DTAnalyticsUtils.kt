@@ -49,5 +49,18 @@ open class DTAnalyticsUtils {
             AnalyticsImp.getInstance().trackTimerEnd(eventName, properties)
         }
 
+
+        /**
+         * 停止事件计时器
+         *
+         * @param eventName 事件的名称
+         * @param properties 事件的属性
+         */
+        @JvmStatic
+        fun trackTimerEnd(eventName: String,  properties: Map<String, Any>){
+            AnalyticsImp.getInstance().trackTimerEnd(eventName, JSONObject(properties.toMutableMap() ?: mutableMapOf<String, Any?>()))
+        }
+
+
     }
 }

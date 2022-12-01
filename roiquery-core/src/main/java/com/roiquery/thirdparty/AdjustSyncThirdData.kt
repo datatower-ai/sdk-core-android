@@ -4,7 +4,6 @@ import com.roiquery.analytics.utils.LogUtils
 
 class AdjustSyncThirdData: SyncThirdPartDataImpl{
     override fun synThirdDTIdData(id: String) {
-        LogUtils.d("开始同步Adjust数据")
         try {
             val mAdjustClazz = Class.forName("com.adjust.sdk.Adjust")
             val addSessionParameterMethod = mAdjustClazz
@@ -15,9 +14,8 @@ class AdjustSyncThirdData: SyncThirdPartDataImpl{
                     Constant.SHARE_DATA_DT_ID,
                     id
                 )
-            LogUtils.i("Adjust数据同步成功")
+            LogUtils.i(com.roiquery.analytics.Constant.LOG_TAG,"Adjust数据同步成功")
         } catch (e: Exception) {
-            LogUtils.i("Adjust数据同步异常:" + e.message)
         }
     }
 

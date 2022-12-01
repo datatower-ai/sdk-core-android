@@ -190,9 +190,7 @@ public class CoreActivity extends AppCompatActivity {
                 DTChannel.GP,
                 true,
                 Log.VERBOSE,
-                (isSuccess, msg) -> {
-
-                }
+                null
         );
 
     }

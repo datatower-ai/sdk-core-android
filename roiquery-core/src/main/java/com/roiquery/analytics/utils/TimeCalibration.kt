@@ -5,6 +5,7 @@ import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.LOG_TAG
 import com.roiquery.analytics.Constant.TIME_FROM_ROI_NET_BODY
 import com.roiquery.analytics.DTAnalytics
+import com.roiquery.analytics.api.AnalyticsImp.Companion.init
 import com.roiquery.analytics.core.EventUploadManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
@@ -73,16 +74,15 @@ class TimeCalibration private constructor() {
     }
 
 
-
     private fun setVerifyTime(time: Long){
         calibratedTimeLock.writeLock().lock()
         if (_latestTime == TIME_NOT_VERIFY_VALUE){
             if (time - (EventDateAdapter.getInstance()?.latestNetTime ?: TIME_NOT_VERIFY_VALUE) > 5000){
                 _latestTime = time
+                _latestSystemElapsedRealtime = SystemClock.elapsedRealtime()
                 EventDateAdapter.getInstance()?.latestNetTime = _latestTime
-                _latestSystemElapsedRealtime = getSystemHibernateTimeGap()
                 EventDateAdapter.getInstance()?.latestGapTime = _latestSystemElapsedRealtime
-            }else{
+            } else {
                 _latestTime = EventDateAdapter.getInstance()?.latestNetTime ?: TIME_NOT_VERIFY_VALUE
                 _latestSystemElapsedRealtime = EventDateAdapter.getInstance()?.latestGapTime ?: TIME_NOT_VERIFY_VALUE
             }
@@ -102,7 +102,8 @@ class TimeCalibration private constructor() {
         val time = if (_latestTime == TIME_NOT_VERIFY_VALUE) {
             TIME_NOT_VERIFY_VALUE
         } else {
-            getSystemHibernateTimeGap() - _latestSystemElapsedRealtime + _latestTime
+            if (_latestSystemElapsedRealtime == 0L) _latestTime
+            else SystemClock.elapsedRealtime() - _latestSystemElapsedRealtime + _latestTime
         }
         calibratedTimeLock.readLock().unlock()
         return time
@@ -111,7 +112,14 @@ class TimeCalibration private constructor() {
 
     fun getVerifyTimeAsyncByGapTime(gapTime:Long) : Long {
         calibratedTimeLock.readLock().lock()
-        val time = if (_latestSystemElapsedRealtime - gapTime > 0) _latestTime - (_latestSystemElapsedRealtime - gapTime) else getVerifyTimeAsync()
+        if (_latestSystemElapsedRealtime == 0L) {
+            _latestSystemElapsedRealtime = SystemClock.elapsedRealtime()
+        }
+        var tempGapTime = gapTime
+        if (gapTime == 0L){
+            tempGapTime = SystemClock.elapsedRealtime()
+        }
+        val time = if (_latestSystemElapsedRealtime - tempGapTime > 0) _latestTime - (_latestSystemElapsedRealtime - tempGapTime) else getVerifyTimeAsync()
         calibratedTimeLock.readLock().unlock()
         return time
     }
