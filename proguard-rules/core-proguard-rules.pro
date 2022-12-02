@@ -28,7 +28,7 @@
 
 -keep class com.roiquery.analytics.ROIQueryChannel{*;}
 -keep class com.roiquery.analytics.DTChannel{*;}
--keep class com.roiquery.analytics.DTShareType{*;}
+-keep class com.roiquery.analytics.DTThirdPartyShareType{*;}
 -keep class com.roiquery.analytics.InitCallback{*;}
 
 -keep enum com.roiquery.ad.*{*;}

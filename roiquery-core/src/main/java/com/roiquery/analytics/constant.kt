@@ -153,7 +153,7 @@ object ROIQueryChannel{
 object DTChannel{
     const val GP = "gp"
 }
-object DTShareType {
+object DTThirdPartyShareType {
     const val ADJUST = 1
 }
 
