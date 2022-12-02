@@ -6,6 +6,7 @@ import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AbstractAnalytics
+import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
 import org.json.JSONObject
@@ -63,24 +64,6 @@ class PresetEventManager {
             Constant.PRESET_EVENT_USER_SET_ONCE,
             activeUserProperties
         )
-
-        setActiveUserAgent(context)
-    }
-
-    //主线程获取ua 可能引发anr
-    private fun setActiveUserAgent(context: Context) {
-        Thread {
-            val ua = DeviceUtils.getUserAgent(context)
-            EventTrackManager.instance.trackUser(
-                Constant.PRESET_EVENT_USER_SET_ONCE,
-                JSONObject().apply {
-                    put(
-                        Constant.USER_PROPERTY_ACTIVE_USER_AGENT,
-                        ua
-                    )
-                }
-            )
-        }.start()
     }
 
     private fun startAppAttribute(context: Context) {
@@ -160,7 +143,7 @@ class PresetEventManager {
         EventTrackManager.instance.trackNormalPreset(
             Constant.PRESET_EVENT_APP_INSTALL,
             JSONObject().apply {
-                val cnl = AbstractAnalytics.mConfigOptions?.mChannel ?: ""
+                val cnl = AnalyticsConfig.instance.mChannel
                 put(
                     Constant.ATTRIBUTE_PROPERTY_REFERRER_URL,
                     if (isOK) response.installReferrer + "&cnl=$cnl" else "cnl=$cnl"
@@ -195,7 +178,6 @@ class PresetEventManager {
                 isAppInstallTrackRunning.set(false)
             }
         )
-
     }
 
 }

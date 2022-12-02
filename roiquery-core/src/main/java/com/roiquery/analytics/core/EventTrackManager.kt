@@ -2,6 +2,7 @@ package com.roiquery.analytics.core
 
 import android.os.SystemClock
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.utils.*
@@ -27,7 +28,9 @@ class EventTrackManager {
     private var mAnalyticsManager: EventUploadManager? = null
 
     fun init() {
-        mTrackTaskManager = Executors.newSingleThreadExecutor(ThreadFactoryWithName("TrackTaskManager"))
+        mTrackTaskManager = Executors.newSingleThreadExecutor(
+            TrackThreadFactory()
+        )
         mAnalyticsManager = EventUploadManager.getInstance()
         initTime()
     }
@@ -261,14 +264,13 @@ class EventTrackManager {
         )
     }
 
-    internal class ThreadFactoryWithName(private val name: String) : ThreadFactory {
+    internal class TrackThreadFactory : ThreadFactory {
         override fun newThread(r: Runnable): Thread {
-            val thread = Thread(r, name)
-            thread.uncaughtExceptionHandler =
-                Thread.UncaughtExceptionHandler { t: Thread?, e: Throwable? ->
+            return Thread(r, "TrackTaskManager").apply {
+                this.uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { t: Thread?, e: Throwable? ->
                     LogUtils.e(e?.message)
                 }
-            return thread
+            }
         }
     }
 }

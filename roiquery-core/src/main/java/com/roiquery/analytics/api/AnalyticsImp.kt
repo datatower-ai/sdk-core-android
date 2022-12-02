@@ -2,7 +2,6 @@ package com.roiquery.analytics.api
 
 import android.content.Context
 import android.os.SystemClock
-import android.util.Log
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.InitCallback
 import com.roiquery.analytics.config.AnalyticsConfig
@@ -51,7 +50,7 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         set(value) {
             value?.let {
                 EventDateAdapter.getInstance()?.enableUpload = it
-                mConfigOptions?.mEnableUpload = it
+                configOptions?.mEnableUpload = it
             }
         }
 
