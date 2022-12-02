@@ -15,6 +15,9 @@ import com.roiquery.analytics.utils.*
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.ThreadFactory
 import java.util.concurrent.atomic.AtomicBoolean
 
 
@@ -31,11 +34,15 @@ abstract class AbstractAnalytics : IAnalytics {
 
     var firstOpenTime : Long? by NotNullSingleVar()
 
+    var configOptions: AnalyticsConfig? = null
+
+    private var initTaskManager: ExecutorService? = null
+
+    private var initTaskExceptionHandler: Thread.UncaughtExceptionHandler? = null
+
     companion object {
         const val TAG = Constant.LOG_TAG
-
-        // 配置
-        internal var mConfigOptions: AnalyticsConfig? = null
+        internal var mHasInit: Boolean? = null
     }
 
     fun init(context: Context, initCallback: InitCallback?) {
@@ -53,8 +60,7 @@ abstract class AbstractAnalytics : IAnalytics {
         initCallback?.let {
             initCallbacks.add(it)
         }
-        //real init
-        internalInit(context)
+        initWithTaskManager(context)
     }
 
 
@@ -67,11 +73,27 @@ abstract class AbstractAnalytics : IAnalytics {
             initProperties(context)
             registerAppLifecycleListener(context)
             getDataTowerId(context, dataTowerIdHandler = {
-                trackPresetEvent(context)
                 onInitSuccess()
+                trackPresetEvent(context)
             })
         } catch (e: Exception) {
             onInitFailed(e.message)
+        }
+    }
+
+    private fun initWithTaskManager(context: Context){
+        if (initTaskManager == null) {
+            initTaskExceptionHandler = Thread.UncaughtExceptionHandler { t, e ->
+                onInitFailed(e.message)
+            }.also {
+                initTaskManager = Executors.newSingleThreadExecutor(
+                    InitThreadFactory(it)
+                )
+            }
+        }
+        initTaskManager?.execute {
+            //real init
+            internalInit(context)
         }
     }
 
@@ -81,6 +103,7 @@ abstract class AbstractAnalytics : IAnalytics {
     private fun onInitSuccess() {
         hasInit.set(true)
         isInitRunning.set(false)
+        mHasInit = true
         EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_APP_INITIALIZE)
         onSuccessCallback()
         LogUtils.d(TAG, "init succeed")
@@ -149,7 +172,7 @@ abstract class AbstractAnalytics : IAnalytics {
      * 初始化预置、通用属性
      */
     private fun initProperties(context: Context) {
-        PropertyManager.instance.init(context, mConfigOptions)
+        PropertyManager.instance.init(context, configOptions)
     }
 
     /**
@@ -188,6 +211,7 @@ abstract class AbstractAnalytics : IAnalytics {
      * 初始化SDK传递进来的配置
      */
     private fun initConfig(context: Context) {
+        configOptions = AnalyticsConfig.instance
         var configBundle: Bundle? = null
         try {
             context.let {
@@ -209,7 +233,7 @@ abstract class AbstractAnalytics : IAnalytics {
             configBundle = Bundle()
         }
 
-        mConfigOptions?.let { configOptions ->
+        configOptions?.let { configOptions ->
             configLog(configOptions.mEnabledDebug, configOptions.mLogLevel)
         }
     }
@@ -220,8 +244,8 @@ abstract class AbstractAnalytics : IAnalytics {
      * @param logLevel log 级别
      */
     private fun configLog(
-        enable: Boolean = mConfigOptions?.mEnabledDebug ?: false,
-        logLevel: Int = mConfigOptions?.mLogLevel ?: LogUtils.V
+        enable: Boolean = configOptions?.mEnabledDebug ?: false,
+        logLevel: Int = configOptions?.mLogLevel ?: LogUtils.V
     ) {
         LogUtils.getConfig().apply {
             isLogSwitch = enable
@@ -231,7 +255,14 @@ abstract class AbstractAnalytics : IAnalytics {
         }
     }
 
-
+    internal class InitThreadFactory(
+        private val exceptionHandler: Thread.UncaughtExceptionHandler) : ThreadFactory {
+        override fun newThread(r: Runnable): Thread {
+            return Thread(r, "InitTaskManager").apply {
+                this.uncaughtExceptionHandler = exceptionHandler
+            }
+        }
+    }
 
 
 }

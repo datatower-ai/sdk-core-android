@@ -18,6 +18,7 @@
 package com.roiquery.analytics.network;
 
 
+import com.roiquery.analytics.utils.LogUtils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -30,7 +31,7 @@ class HttpTaskManager {
     /**
      * 创建一个可重用固定线程数的线程池
      */
-    private static final int POOL_SIZE = 2;
+    private static final int POOL_SIZE = 1;
 
     /**
      * 创建一个可重用固定线程数的线程池
@@ -72,7 +73,11 @@ class HttpTaskManager {
 
         @Override
         public Thread newThread(Runnable r) {
-            return new Thread(r, name);
+            Thread thread = new Thread(r, name);
+            thread.setUncaughtExceptionHandler((t, e) -> {
+                LogUtils.e(e.getMessage());
+            });
+            return thread;
         }
     }
 }

@@ -36,7 +36,9 @@ class ROIQuery {
         ) {
             AnalyticsImp.init(
                 context,
-                AnalyticsConfig(appId)
+                AnalyticsConfig.instance
+                    .setContext(context.applicationContext)
+                    .setAppId(appId)
                     .setServerUrl(serverUrl)
                     .setDebug(isDebug, logLevel)
                     .setChannel(channel)

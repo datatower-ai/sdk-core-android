@@ -9,6 +9,7 @@ import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.Constant.PRE_EVENT_INFO_SYN
 import com.roiquery.analytics.ROIQueryCoroutineScope
 import com.roiquery.analytics.api.AbstractAnalytics
+import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
@@ -131,7 +132,7 @@ class EventUploadManager private constructor(
     private fun enableUploadData(): Boolean {
         try {
             //无网络
-            if (!isNetworkAvailable(AdtUtil.getInstance().applicationContext)) {
+            if (!isNetworkAvailable(AnalyticsConfig.instance.mContext)) {
                 LogUtils.d(TAG, "NetworkAvailable，disable upload")
                 return false
             }
@@ -290,7 +291,7 @@ class EventUploadManager private constructor(
     }
 
     fun getEventUploadUrl(): String {
-        val url = AbstractAnalytics.mConfigOptions?.mServerUrl
+        val url = AnalyticsConfig.instance.mServerUrl
         if (url.isNullOrEmpty()) {
             return Constant.SERVER_URL_EXTERNAL + Constant.EVENT_REPORT_PATH
         }

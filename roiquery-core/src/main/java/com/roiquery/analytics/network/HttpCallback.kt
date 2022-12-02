@@ -35,18 +35,18 @@ abstract class HttpCallback<T> {
         } else {
             "unknown error"
         }
-//        sMainHandler.post {
+        sMainHandler.post {
             onFailure(response.code, errorMessage)
             onAfter()
-//        }
+        }
     }
 
     fun onSuccess(response: RealResponse) {
         val obj: T = onParseResponse(response,response.result)
-//        sMainHandler.post {
+        sMainHandler.post {
             onResponse(obj)
             onAfter()
-//        }
+        }
     }
 
     /**

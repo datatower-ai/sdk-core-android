@@ -6,6 +6,7 @@ import android.text.TextUtils
 import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AbstractAnalytics
+import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import org.json.JSONArray
 import org.json.JSONException
@@ -34,7 +35,7 @@ object EventUtils {
             //应用唯一标识,后台分配
             put(
                 Constant.EVENT_INFO_APP_ID,
-                AbstractAnalytics.mConfigOptions?.mAppId
+                AnalyticsConfig.instance.mAppId
             )
             //包名
             put(
@@ -42,7 +43,7 @@ object EventUtils {
                 context.packageName
             )
             //debug 标志
-            if (AbstractAnalytics.mConfigOptions?.mEnabledDebug == true) {
+            if (AnalyticsConfig.instance.mEnabledDebug) {
                 put(Constant.EVENT_INFO_DEBUG, true)
             }
             //dt_id (gaid/androidId + appId)
@@ -62,7 +63,7 @@ object EventUtils {
             //debug 标志
             put(
                 Constant.USER_PROPERTY_LATEST_DEBUG,
-                AbstractAnalytics.mConfigOptions?.mEnabledDebug
+                AnalyticsConfig.instance.mEnabledDebug
             )
             put(
                 Constant.USER_PROPERTY_LATEST_APP_VERSION_NAME,
@@ -166,6 +167,10 @@ object EventUtils {
                 EmulatorDetector.isEmulator()
             )
 
+            put(
+                Constant.USER_PROPERTY_ACTIVE_USER_AGENT,
+                DeviceUtils.getUserAgent(context)
+            )
 
         }
 

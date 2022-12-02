@@ -55,44 +55,61 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
         registerNetworkStatusChangedListener(context)
     }
 
-    internal inline fun getDataTowerId(context: Context, crossinline dataTowerIdHandler: (id: String) -> Unit) {
-        scope.launch {
-            //这里每次更新，因为 gaid 或者Android id 有可能会变
-            val originalId = getOriginalId(context)
-            dataAdapter?.dtId?.let {
-                if (it.isNotEmpty()) {
-                    updateDTID(it)
-                    dataTowerIdHandler.invoke(it)
-                    return@launch
-                }
+    internal fun getDataTowerId(context: Context, dataTowerIdHandler: (id: String) -> Unit) {
+        //这里每次更新，因为 gaid 或者Android id 有可能会变
+        val originalId = getOriginalId(context)
+        dataAdapter?.dtId?.let {
+            if (it.isNotEmpty()) {
+                updateDTID(it)
+                dataTowerIdHandler.invoke(it)
+                return
             }
-            dataTowerIdHandler.invoke(initDTId(originalId))
         }
+        dataTowerIdHandler.invoke(initDTId(originalId))
     }
 
-    private suspend fun getOriginalId(context: Context) =
-        suspendCoroutine<String> {
-            scope.launch {
-                try {
-                    getGAIDFromClient(context)
-                    val gaid = getGAID()
-                    if (gaid.isEmpty() || limitAdTrackingEnabled) {
-                        val androidId = DeviceUtils.getAndroidID(context)
-                        updateAndroidId(androidId)
-                        it.resume(androidId)
-                    } else {
-                        it.resume(gaid)
-                    }
-                } catch (e: Exception) {
-                    ROIQueryQualityHelper.instance.reportQualityMessage(
-                        ROIQueryErrorParams.CODE_GET_ORIGINAL_ID_EXCEPTION,
-                        e.message,
-                        ROIQueryErrorParams.INIT_EXCEPTION
-                    )
-                    it.resume("")
-                }
+    private fun getOriginalId(context: Context) =
+        try {
+            getGAIDFromClient(context)
+            val gaid = getGAID()
+            if (gaid.isEmpty() || limitAdTrackingEnabled) {
+                val androidId = DeviceUtils.getAndroidID(context)
+                updateAndroidId(androidId)
+                androidId
+            } else {
+                gaid
             }
+        } catch (e: Exception) {
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_GET_ORIGINAL_ID_EXCEPTION,
+                e.message,
+                ROIQueryErrorParams.INIT_EXCEPTION
+            )
+            ""
         }
+
+//        suspendCoroutine<String> {
+//            scope.launch {
+//                try {
+//                    getGAIDFromClient(context)
+//                    val gaid = getGAID()
+//                    if (gaid.isEmpty() || limitAdTrackingEnabled) {
+//                        val androidId = DeviceUtils.getAndroidID(context)
+//                        updateAndroidId(androidId)
+//                        it.resume(androidId)
+//                    } else {
+//                        it.resume(gaid)
+//                    }
+//                } catch (e: Exception) {
+//                    ROIQueryQualityHelper.instance.reportQualityMessage(
+//                        ROIQueryErrorParams.CODE_GET_ORIGINAL_ID_EXCEPTION,
+//                        e.message,
+//                        ROIQueryErrorParams.INIT_EXCEPTION
+//                    )
+//                    it.resume("")
+//                }
+//            }
+//        }
 
 
     /**
@@ -103,7 +120,7 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
             if (originalId.isEmpty()) {
                 return ""
             }
-            val appId = AbstractAnalytics.mConfigOptions?.mAppId
+            val appId = AnalyticsConfig.instance.mAppId
             val dtIdOriginal = originalId.plus("+$appId")
             val dtId = DataEncryption.instance.str2Sha1Str(dtIdOriginal)
             updateDTID(dtId)
@@ -201,16 +218,14 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
     /**
      * gaid 获取，异步
      */
-    private suspend fun getGAIDFromClient(context: Context) {
-        withContext(Dispatchers.IO) {
-            try {
-                val info = AdvertisingIdClient.getAdvertisingIdInfo(context)
-                val id = info.id ?: ""
-                limitAdTrackingEnabled = info.isLimitAdTrackingEnabled
-                updateGAID(id)
-            } catch (exception: Exception) {
-                LogUtils.d("getGAID", "onException:" + exception.message.toString())
-            }
+    private fun getGAIDFromClient(context: Context) {
+        try {
+            val info = AdvertisingIdClient.getAdvertisingIdInfo(context)
+            val id = info.id ?: ""
+            limitAdTrackingEnabled = info.isLimitAdTrackingEnabled
+            updateGAID(id)
+        } catch (exception: Exception) {
+            LogUtils.d("getGAID", "onException:" + exception.message.toString())
         }
     }
 

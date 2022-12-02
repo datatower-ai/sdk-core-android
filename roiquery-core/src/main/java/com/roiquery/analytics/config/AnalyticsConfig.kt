@@ -1,26 +1,27 @@
 package com.roiquery.analytics.config
 
+import android.content.Context
 import com.roiquery.analytics.utils.LogUtils
 import org.json.JSONObject
 
 
-class AnalyticsConfig : AbstractAnalyticsConfig {
+class AnalyticsConfig
+/**
+ * 私有构造函数
+ */
+private constructor() : AbstractAnalyticsConfig() {
 
-    /**
-     * 私有构造函数
-     */
-    private constructor()
-
-    /**
-     * 获取 OptionsConfig 实例
-     *
-     * @param serverUrl，数据上报服务器地址
-     */
-    constructor(appId: String?) {
-        mAppId = appId
+    companion object {
+        val instance by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+            AnalyticsConfig()
+        }
     }
 
 
+    fun setContext(context: Context): AnalyticsConfig{
+        mContext = context
+        return this
+    }
 
     /**
      * 设置调试模式
