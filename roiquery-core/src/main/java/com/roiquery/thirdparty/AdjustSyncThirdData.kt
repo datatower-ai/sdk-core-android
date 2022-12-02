@@ -14,8 +14,9 @@ class AdjustSyncThirdData: SyncThirdPartDataImpl{
                     Constant.SHARE_DATA_DT_ID,
                     id
                 )
-            LogUtils.i(com.roiquery.analytics.Constant.LOG_TAG,"Adjust数据同步成功")
+            LogUtils.i(com.roiquery.analytics.Constant.LOG_TAG,"Adjust share data succeed")
         } catch (e: Exception) {
+            LogUtils.i(com.roiquery.analytics.Constant.LOG_TAG,"Adjust share data error: ${e.message}")
         }
     }
 

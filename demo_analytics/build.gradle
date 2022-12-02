@@ -60,7 +60,7 @@ dependencies {
     if(dependence_type == "0"){
         implementation(project(":roiquery-core"))
     }else {
-        implementation 'com.roiquery.android:core:'   + rootProject.ext.core.coreVersionName
+        implementation 'com.lovinjoy:datatowerai-core:'   + rootProject.ext.core.coreVersionName
     }
 
     //对外sdk依赖
