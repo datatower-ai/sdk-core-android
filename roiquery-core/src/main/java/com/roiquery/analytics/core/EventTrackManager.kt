@@ -1,16 +1,16 @@
 package com.roiquery.analytics.core
 
 import android.os.SystemClock
-import android.util.Log
-import com.google.android.a.c
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AnalyticsImp
+import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONObject
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.ThreadFactory
 
 
 class EventTrackManager {
@@ -27,7 +27,7 @@ class EventTrackManager {
     private var mAnalyticsManager: EventUploadManager? = null
 
     fun init() {
-        mTrackTaskManager = Executors.newSingleThreadExecutor()
+        mTrackTaskManager = Executors.newSingleThreadExecutor(ThreadFactoryWithName("TrackTaskManager"))
         mAnalyticsManager = EventUploadManager.getInstance()
         initTime()
     }
@@ -223,12 +223,12 @@ class EventTrackManager {
             //硬盘使用率
             put(
                 Constant.COMMON_PROPERTY_STORAGE_USED,
-                MemoryUtils.getDisk(AdtUtil.getInstance().applicationContext, false)
+                MemoryUtils.getDisk(AnalyticsConfig.instance.mContext, false)
             )
             //内存使用率
             put(
                 Constant.COMMON_PROPERTY_MEMORY_USED,
-                MemoryUtils.getRAM(AdtUtil.getInstance().applicationContext)
+                MemoryUtils.getRAM(AnalyticsConfig.instance.mContext)
             )
             //事件时长
             EventTimerManager.instance.getEventTimer(eventName)?.duration()?.let {
@@ -261,5 +261,14 @@ class EventTrackManager {
         )
     }
 
-
+    internal class ThreadFactoryWithName(private val name: String) : ThreadFactory {
+        override fun newThread(r: Runnable): Thread {
+            val thread = Thread(r, name)
+            thread.uncaughtExceptionHandler =
+                Thread.UncaughtExceptionHandler { t: Thread?, e: Throwable? ->
+                    LogUtils.e(e?.message)
+                }
+            return thread
+        }
+    }
 }

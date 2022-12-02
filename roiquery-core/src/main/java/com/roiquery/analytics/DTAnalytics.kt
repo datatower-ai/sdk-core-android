@@ -231,7 +231,7 @@ open class DTAnalytics {
 
         internal fun getContext(): Context? {
             return try {
-                AdtUtil.getInstance().applicationContext
+                AnalyticsConfig.instance.mContext
             } catch (e: Exception) {
                 LogUtils.printStackTrace("RoiqueryAnalytics", e)
                 null

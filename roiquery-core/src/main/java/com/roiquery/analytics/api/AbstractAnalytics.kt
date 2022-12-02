@@ -31,11 +31,11 @@ abstract class AbstractAnalytics : IAnalytics {
 
     var firstOpenTime : Long? by NotNullSingleVar()
 
+    var mConfigOptions: AnalyticsConfig? = null
+
     companion object {
         const val TAG = Constant.LOG_TAG
-
-        // 配置
-        internal var mConfigOptions: AnalyticsConfig? = null
+        internal var mHasInit: Boolean? = null
     }
 
     fun init(context: Context, initCallback: InitCallback?) {
@@ -81,6 +81,7 @@ abstract class AbstractAnalytics : IAnalytics {
     private fun onInitSuccess() {
         hasInit.set(true)
         isInitRunning.set(false)
+        mHasInit = true
         EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_APP_INITIALIZE)
         onSuccessCallback()
         LogUtils.d(TAG, "init succeed")
@@ -188,6 +189,7 @@ abstract class AbstractAnalytics : IAnalytics {
      * 初始化SDK传递进来的配置
      */
     private fun initConfig(context: Context) {
+        mConfigOptions = AnalyticsConfig.instance
         var configBundle: Bundle? = null
         try {
             context.let {

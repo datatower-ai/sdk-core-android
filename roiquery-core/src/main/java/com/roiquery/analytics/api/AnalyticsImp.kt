@@ -191,7 +191,7 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         private var instance: AnalyticsImp? = null
 
         internal fun getInstance(): AnalyticsImp {
-            if (mConfigOptions == null) {
+            if (mHasInit == null) {
                 throw IllegalStateException("call DT.initSDK() first")
             }
             return instance ?: synchronized(this) {
@@ -208,8 +208,7 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
                 throw IllegalStateException("call DT.init() first")
             }
             if (instance == null) {
-                mConfigOptions = configOptions
-                instance = getInstance()
+                instance = AnalyticsImp()
             }
             instance?.init(context, initCallback)
         }

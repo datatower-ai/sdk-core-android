@@ -1,5 +1,6 @@
 package com.roiquery.analytics.config
 
+import android.content.Context
 import com.roiquery.analytics.utils.LogUtils
 import org.json.JSONObject
 
@@ -35,6 +36,11 @@ abstract class AbstractAnalyticsConfig {
      * 网络上传策略
      */
     var mNetworkTypePolicy: Int = 0
+
+    /**
+     * mAppId
+     */
+    lateinit var mContext: Context
 
     /**
      * mAppId

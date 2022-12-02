@@ -6,6 +6,7 @@ import com.roiquery.analytics.Constant.LOG_TAG
 import com.roiquery.analytics.Constant.TIME_FROM_ROI_NET_BODY
 import com.roiquery.analytics.DTAnalytics
 import com.roiquery.analytics.api.AnalyticsImp.Companion.init
+import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.EventUploadManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
@@ -45,7 +46,7 @@ class TimeCalibration private constructor() {
             }
             isVerifyTimeRunning.set(true)
             //子进程只读取主进程的时间，不获取服务器时间
-            if (!ProcessUtil.isMainProcess(AdtUtil.getInstance().applicationContext)){
+            if (!ProcessUtil.isMainProcess(AnalyticsConfig.instance.mContext)){
                 setVerifyTimeForSubProcess()
                 isVerifyTimeRunning.set(false)
                 return
