@@ -24,7 +24,7 @@ class MyApp : Application() {
             object : InitCallback {
                 override fun onInitComplete(isSuccess: Boolean, msg: String) {
                     if (isSuccess) {
-                        DTAnalytics.enableThirdShare(0)
+                        DTAnalytics.enableThirdPartySharing(0)
                     }
                 }
             }
