@@ -13,7 +13,7 @@ class ThirdPartyShareActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_third_party_share)
         findViewById<Button>(R.id.btn_adjust).setOnClickListener{
-            DTAnalytics.enableThirdShare(DTThirdPartyShareType.ADJUST)
+            DTAnalytics.enableThirdPartySharing(DTThirdPartyShareType.ADJUST)
         }
         findViewById<Button>(R.id.btn_appsflyer).setOnClickListener {
 //            DT.enableThirdShare(ThirdSDKShareType.APPSFly)

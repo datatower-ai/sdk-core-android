@@ -155,10 +155,10 @@ open class DTAnalytics {
 
         /**
          * 透传 dt_id 至三方归因平台
-         * @param type 归因平台 DTShareType.ADJUST
+         * @param type 归因平台 DTThirdPartyShareType.ADJUST
          */
         @JvmStatic
-        fun enableThirdShare(type: Int) {
+        fun enableThirdPartySharing(type: Int) {
             try {
                 ThirdPartShareDataFactory.createThirdInstance(type)
                     ?.synThirdDTIdData(PropertyManager.instance.getDTID())
