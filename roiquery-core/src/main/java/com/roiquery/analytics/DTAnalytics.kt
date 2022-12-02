@@ -4,11 +4,9 @@ import android.content.Context
 import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.utils.AdtUtil
 import com.roiquery.analytics.utils.AppLifecycleHelper
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.thirdparty.ThirdPartShareDataFactory
-import com.roiquery.thirdparty.ThirdSDKShareType
 
 import org.json.JSONObject
 import java.lang.Exception
@@ -157,15 +155,15 @@ open class DTAnalytics {
 
         /**
          * 透传 dt_id 至三方归因平台
-         * @param type 归因平台
+         * @param type 归因平台 DTShareType.ADJUST
          */
         @JvmStatic
-        fun enableThirdShare(type: ThirdSDKShareType) {
+        fun enableThirdShare(type: Int) {
             try {
                 ThirdPartShareDataFactory.createThirdInstance(type)
-                    .synThirdDTIdData(PropertyManager.instance.getDTID())
+                    ?.synThirdDTIdData(PropertyManager.instance.getDTID())
             } catch (error: Exception) {
-                LogUtils.d("please impl ${type.name}")
+                LogUtils.d(Constant.LOG_TAG,"Third Share error: ${error.message}")
             }
         }
 

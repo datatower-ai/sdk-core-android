@@ -153,6 +153,9 @@ object ROIQueryChannel{
 object DTChannel{
     const val GP = "gp"
 }
+object DTShareType {
+    const val ADJUST = 1
+}
 
 
 interface InitCallback {

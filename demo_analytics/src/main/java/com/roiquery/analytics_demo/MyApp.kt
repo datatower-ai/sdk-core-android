@@ -4,7 +4,6 @@ import android.app.Application
 import android.util.Log
 import com.roiquery.ad.DTAdReport
 import com.roiquery.analytics.*
-import com.roiquery.thirdparty.ThirdSDKShareType
 
 
 class MyApp : Application() {
@@ -25,12 +24,14 @@ class MyApp : Application() {
             object : InitCallback {
                 override fun onInitComplete(isSuccess: Boolean, msg: String) {
                     if (isSuccess) {
-                        DTAnalytics.enableThirdShare(ThirdSDKShareType.ADJUST)
+                        DTAnalytics.enableThirdShare(0)
                     }
                 }
             }
+
         )
 
+        Log.DEBUG
 
         //mock data
         if (SharedPreferencesUtils.getParam(this, "first_open", true) as Boolean) {

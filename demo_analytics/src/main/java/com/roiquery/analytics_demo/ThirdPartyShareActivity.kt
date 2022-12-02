@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import com.roiquery.analytics.DT
 import com.roiquery.analytics.DTAnalytics
-import com.roiquery.thirdparty.ThirdSDKShareType
+import com.roiquery.analytics.DTShareType
 
 class ThirdPartyShareActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -14,7 +14,7 @@ class ThirdPartyShareActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_third_party_share)
         findViewById<Button>(R.id.btn_adjust).setOnClickListener{
-            DTAnalytics.enableThirdShare(ThirdSDKShareType.ADJUST)
+            DTAnalytics.enableThirdShare(DTShareType.ADJUST)
         }
         findViewById<Button>(R.id.btn_appsflyer).setOnClickListener {
 //            DT.enableThirdShare(ThirdSDKShareType.APPSFly)
