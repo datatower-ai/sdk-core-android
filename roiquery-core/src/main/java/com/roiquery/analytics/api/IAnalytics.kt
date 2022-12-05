@@ -78,15 +78,24 @@ interface IAnalytics {
      *
      * @param eventName 事件的名称
      * @param isPreset 是否是预置事件
-     * @param eventType 事件的类型
+     * @param properties 事件属性
      */
     fun trackNormal(eventName: String?, isPreset: Boolean, properties: JSONObject? = JSONObject())
 
-     /**
+    /**
+     * 调用 track 接口，追踪一个带有属性的事件
+     *
+     * @param eventName 事件的名称
+     * @param isPreset 是否是预置事件
+     * @param properties 事件属性
+     */
+    fun trackNormal(eventName: String?, isPreset: Boolean, properties: Map<String, Any>?)
+
+    /**
      * 调用 track 用户属性接口，追踪一个带有属性的事件
      *
      * @param eventName 事件的名称
-     * @param eventType 事件的类型
+     * @param properties 事件属性
      */
     fun trackUser(eventName: String, properties: JSONObject? = JSONObject())
 
@@ -165,7 +174,17 @@ interface IAnalytics {
      */
     fun clearTrackTimer()
 
+    fun userSet(properties: JSONObject?)
 
+    fun userSetOnce(properties: JSONObject?)
+
+    fun userAdd(properties: JSONObject?)
+
+    fun userUnset(vararg properties: String?)
+
+    fun userDelete()
+
+    fun userAppend(properties: JSONObject?)
 
 }
 
