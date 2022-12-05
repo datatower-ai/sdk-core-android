@@ -2,6 +2,7 @@ package com.roiquery.analytics.api
 
 import android.content.Context
 import android.os.SystemClock
+import android.util.Log
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.InitCallback
 import com.roiquery.analytics.config.AnalyticsConfig
@@ -64,7 +65,7 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         else EventTrackManager.instance.trackNormal(eventName, properties)
     }
 
-    fun trackNormal(eventName: String?, isPreset: Boolean, properties: Map<String, Any>?) {
+    override fun trackNormal(eventName: String?, isPreset: Boolean, properties: Map<String, Any>?) {
         try {
             trackNormal(
                 eventName,
@@ -80,19 +81,19 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         }
     }
 
-    fun userSet(properties: JSONObject?) {
+    override fun userSet(properties: JSONObject?) {
         trackUser(Constant.PRESET_EVENT_USER_SET, properties)
     }
 
-    fun userSetOnce(properties: JSONObject?) {
+    override fun userSetOnce(properties: JSONObject?) {
         trackUser(Constant.PRESET_EVENT_USER_SET_ONCE, properties)
     }
 
-    fun userAdd(properties: JSONObject?) {
+    override fun userAdd(properties: JSONObject?) {
         trackUser(Constant.PRESET_EVENT_USER_ADD, properties)
     }
 
-    fun userUnset(vararg properties: String?) {
+    override fun userUnset(vararg properties: String?) {
         val props = JSONObject()
         for (s in properties) {
             try {
@@ -106,11 +107,11 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         }
     }
 
-    fun userDelete() {
+    override fun userDelete() {
         trackUser(Constant.PRESET_EVENT_USER_DEL, JSONObject())
     }
 
-    fun userAppend(properties: JSONObject?) {
+    override fun userAppend(properties: JSONObject?) {
         trackUser(Constant.PRESET_EVENT_USER_APPEND, properties)
     }
 
@@ -189,9 +190,10 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         @Volatile
         private var instance: AnalyticsImp? = null
 
-        internal fun getInstance(): AnalyticsImp {
-            if (mHasInit == null) {
-                throw IllegalStateException("call DT.initSDK() first")
+        internal fun getInstance(): AbstractAnalytics {
+            if (mHasInit == null || mHasInit == false) {
+                Log.e(Constant.LOG_TAG,"Call DT.init() and use function after initCallback")
+                return AnalyticsEmptyImp()
             }
             return instance ?: synchronized(this) {
                 instance ?: AnalyticsImp().also { instance = it }
@@ -204,7 +206,7 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             initCallback: InitCallback?
         ) {
             if (context == null || configOptions == null) {
-                throw IllegalStateException("call DT.init() first")
+                throw IllegalStateException("Context and configOptions can not be null")
             }
             if (instance == null) {
                 instance = AnalyticsImp()

@@ -121,6 +121,7 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun onInitFailed(errorMessage: String?) {
         isInitRunning.set(false)
+        mHasInit = false
         ROIQueryQualityHelper.instance.reportQualityMessage(
             ROIQueryErrorParams.CODE_INIT_EXCEPTION,
             errorMessage,
