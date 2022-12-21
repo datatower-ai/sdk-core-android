@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.SystemClock
 import android.util.Log
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.InitCallback
+import com.roiquery.analytics.OnDataTowerIdListener
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.EventTimer
 import com.roiquery.analytics.core.EventTimerManager
@@ -28,7 +28,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             }
         }
 
-    override fun getDTId(): String? = EventDateAdapter.getInstance()?.dtId
+    override fun getDTId(onDataTowerIDListener: OnDataTowerIdListener) {
+        PropertyManager.instance.getDataTowerId(onDataTowerIDListener)
+    }
 
     override fun setFirebaseInstanceId(id: String?) {
         PropertyManager.instance.updateFireBaseInstanceId(id)
@@ -191,7 +193,7 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         private var instance: AnalyticsImp? = null
 
         internal fun getInstance(): AbstractAnalytics {
-            if (mHasInit == null || mHasInit == false) {
+            if (!mHasInit.get()) {
                 Log.e(Constant.LOG_TAG,"Call DT.init() and use function after initCallback")
                 return AnalyticsEmptyImp()
             }
@@ -203,7 +205,6 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         internal fun init(
             context: Context?,
             configOptions: AnalyticsConfig?,
-            initCallback: InitCallback?
         ) {
             if (context == null || configOptions == null) {
                 throw IllegalStateException("Context and configOptions can not be null")
@@ -211,7 +212,7 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             if (instance == null) {
                 instance = AnalyticsImp()
             }
-            instance?.init(context, initCallback)
+            instance?.init(context)
         }
 
     }

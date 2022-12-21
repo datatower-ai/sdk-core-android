@@ -2,15 +2,12 @@ package com.roiquery.analytics.core
 
 import android.os.SystemClock
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONObject
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
 
 
@@ -22,15 +19,16 @@ class EventTrackManager {
     }
 
     //事件采集管理线程池
-    private var mTrackTaskManager: ExecutorService? = null
+    private var mTrackTaskManager: TrackTaskManager? = null
 
     //采集 、上报管理
     private var mAnalyticsManager: EventUploadManager? = null
+    private var mTrackTaskManagerThread: TrackTaskManagerThread? = null
 
     fun init() {
-        mTrackTaskManager = Executors.newSingleThreadExecutor(
-            TrackThreadFactory()
-        )
+        mTrackTaskManager = TrackTaskManager.getInstance()
+        mTrackTaskManagerThread = TrackTaskManagerThread()
+        Thread(mTrackTaskManagerThread, "DT.TaskQueueThread").start()
         mAnalyticsManager = EventUploadManager.getInstance()
         initTime()
     }
@@ -42,6 +40,7 @@ class EventTrackManager {
     private fun initTime() {
         TimeCalibration.instance.getReferenceTime()
     }
+
 
     /**
      * 事件校验
@@ -108,17 +107,16 @@ class EventTrackManager {
                     )
                     return
                 }
-                //事件时间
-                val (eventTime, isTimeVerify) = getEventTime(eventName)
+                //事件时间，开机时长
+                val eventTime = SystemClock.elapsedRealtime()
 
                 //加入线程池
-                mTrackTaskManager?.execute {
+                mTrackTaskManager?.addTrackEventTask {
                     addEventTask(
                         eventName,
                         eventTime,
                         eventType,
                         isPreset,
-                        isTimeVerify,
                         properties,
                         insertHandler)
                 }
@@ -137,10 +135,9 @@ class EventTrackManager {
 
     private fun addEventTask(
         eventName: String,
-        eventTime: Long,
+        eventTimeUpTime: Long,
         eventType: String,
         isPreset: Boolean,
-        isTimeVerify: Boolean,
         properties: JSONObject? = null,
         insertHandler: ((code: Int, msg: String) -> Unit)? = null
     ) {
@@ -150,7 +147,8 @@ class EventTrackManager {
                 insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_EVENT_ILLEGAL, "event illegal")
                 return
             }
-
+            // 事件时间
+            val (eventTime,isTimeVerify) = getEventTime(eventName, eventTimeUpTime)
             //设置事件的基本信息
             val eventInfo = JSONObject(PropertyManager.instance.getEventInfo()).apply {
                 put(Constant.EVENT_INFO_TIME, eventTime)
@@ -204,14 +202,21 @@ class EventTrackManager {
         }
     }
 
-    private fun getEventTime(eventName: String): Pair<Long, Boolean> {
-        var time = TimeCalibration.instance.getVerifyTimeAsync()
-        val isTimeVerify = time != TimeCalibration.TIME_NOT_VERIFY_VALUE
+    private fun getEventTime(eventName: String, eventSystemUpTime: Long): Pair<Long, Boolean> {
+        //服务器时间
+        val serverTime = TimeCalibration.instance.getServerTime()
+        //更新服务器时开机时间
+        val updateSystemUpTime = TimeCalibration.instance.getUpdateSystemUpTime()
+        //是否更新到了服务器时间
+        var isTimeVerify = (serverTime != TimeCalibration.TIME_NOT_VERIFY_VALUE
+                && updateSystemUpTime != TimeCalibration.TIME_NOT_VERIFY_VALUE)
 
-        time = if (eventName == Constant.PRESET_EVENT_APP_INSTALL) {
-            AnalyticsImp.getInstance().firstOpenTime ?: SystemClock.elapsedRealtime()
+        val time = if (eventName == Constant.PRESET_EVENT_APP_INSTALL) {
+            // app_install 的时间因为一开始初始就记录，没有校准
+            isTimeVerify = false
+            AnalyticsImp.getInstance().firstOpenTime ?: (eventSystemUpTime - 1000)
         } else {
-            if (isTimeVerify) time else TimeCalibration.instance.getSystemHibernateTimeGap()
+            if (isTimeVerify) (eventSystemUpTime - updateSystemUpTime + serverTime) else eventSystemUpTime
         }
         return Pair(time, isTimeVerify)
     }
@@ -249,7 +254,7 @@ class EventTrackManager {
     fun addTrackEventTask(task: Runnable) {
         mTrackTaskManager?.let {
             try {
-                it.execute(task)
+                it.addTrackEventTask(task)
             } catch (e: Exception) {
                 trackQualityEvent("addTrackEventTask Exception")
             }
@@ -266,7 +271,7 @@ class EventTrackManager {
 
     internal class TrackThreadFactory : ThreadFactory {
         override fun newThread(r: Runnable): Thread {
-            return Thread(r, "TrackTaskManager").apply {
+            return Thread(r, "DT.TrackTaskManager").apply {
                 this.uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { t: Thread?, e: Throwable? ->
                     LogUtils.e(e?.message)
                 }

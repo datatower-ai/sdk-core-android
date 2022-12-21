@@ -24,7 +24,7 @@ internal object Constant {
     const val EVENT_INFO_GAID        = "#gaid"
     const val EVENT_INFO_ACID        = "#acid"
     const val EVENT_INFO_DT_ID       = "#dt_id"
-    const val EVENT_INFO_PKG         = "#pkg"
+    const val EVENT_INFO_PKG         = "#bundle_id"
     const val EVENT_INFO_APP_ID      = "#app_id"
     const val EVENT_INFO_DEBUG       = "#debug"
     const val EVENT_INFO_TIME        = "#event_time"
@@ -54,7 +54,7 @@ internal object Constant {
     const val COMMON_PROPERTY_DEVICE_MANUFACTURER = "#device_manufacturer"
     const val COMMON_PROPERTY_DEVICE_BRAND        = "#device_brand"
     const val COMMON_PROPERTY_BUILD_DEVICE        = "#build_device"
-    const val COMMON_PROPERTY_DIMS_DPI            = "#dims_dpi"
+//    const val COMMON_PROPERTY_DIMS_DPI            = "#dims_dpi"
     const val COMMON_PROPERTY_NETWORK_TYPE        = "#network_type"
     const val COMMON_PROPERTY_SIMULATOR           = "#simulator"
     const val COMMON_PROPERTY_MEMORY_USED         = "#memory_used"
@@ -65,6 +65,7 @@ internal object Constant {
     const val COMMON_PROPERTY_SCREEN_WIDTH        = "#screen_width"
     const val COMMON_PROPERTY_IS_FOREGROUND       = "#is_foreground"
     const val COMMON_PROPERTY_EVENT_DURATION      = "#event_duration"
+    const val COMMON_PROPERTY_EVENT_ZONE_OFFSET      = "#zone_offset"
 
     //latest
     const val USER_PROPERTY_LATEST_DEBUG                = "#latest_debug"
@@ -82,7 +83,7 @@ internal object Constant {
     const val USER_PROPERTY_ACTIVE_MNC                 = "#active_mnc"
     const val USER_PROPERTY_ACTIVE_OS_COUNTRY          = "#active_os_country_code"
     const val USER_PROPERTY_ACTIVE_OS_LANG             = "#active_os_lang_code"
-    const val USER_PROPERTY_ACTIVE_PKG                 = "#active_pkg"
+    const val USER_PROPERTY_ACTIVE_PKG                 = "#active_bundle_id"
     const val USER_PROPERTY_ACTIVE_APP_VERSION_CODE    = "#active_app_version_code"
     const val USER_PROPERTY_ACTIVE_APP_VERSION_NAME    = "#active_app_version_name"
     const val USER_PROPERTY_ACTIVE_SDK_TYPE            = "#active_sdk_type"
@@ -95,7 +96,7 @@ internal object Constant {
     const val USER_PROPERTY_ACTIVE_DEVICE_MODEL        = "#active_device_model"
     const val USER_PROPERTY_ACTIVE_SCREEN_HEIGHT       = "#active_screen_height"
     const val USER_PROPERTY_ACTIVE_SCREEN_WIDTH        = "#active_screen_width"
-    const val USER_PROPERTY_ACTIVE_DIMS_DPI            = "#active_dims_dpi"
+//    const val USER_PROPERTY_ACTIVE_DIMS_DPI            = "#active_dims_dpi"
     const val USER_PROPERTY_ACTIVE_MEMORY_USED         = "#active_memory_used"
     const val USER_PROPERTY_ACTIVE_STORAGE_USED        = "#active_storage_used"
     const val USER_PROPERTY_ACTIVE_NETWORK_TYPE        = "#active_network_type"
@@ -158,6 +159,6 @@ object DTThirdPartyShareType {
 }
 
 
-interface InitCallback {
-    fun onInitComplete(isSuccess: Boolean, msg: String = "")
+interface OnDataTowerIdListener {
+    fun onDataTowerIdCompleted(dataTowerId: String)
 }

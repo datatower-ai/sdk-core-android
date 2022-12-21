@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import com.roiquery.ad.DTAdReport
 import com.roiquery.analytics.*
+import java.lang.Long
 
 
 class MyApp : Application() {
@@ -20,19 +21,14 @@ class MyApp : Application() {
             SERVER_URL_TEST,
             DTChannel.GP,
             true,
-            Log.VERBOSE,
-            object : InitCallback {
-                override fun onInitComplete(isSuccess: Boolean, msg: String) {
-                    if (isSuccess) {
-                        DTAnalytics.enableThirdPartySharing(0)
-                    }
-                }
-            }
-
+            Log.VERBOSE
         )
-
-        Log.DEBUG
-
+        DTAnalytics.getDataTowerId(object : OnDataTowerIdListener {
+            override fun onDataTowerIdCompleted(dataTowerId: String) {
+                Log.d("DataTowerId",dataTowerId)
+            }
+        })
+        DTAnalyticsUtils.trackTimerStart("initApp")
         //mock data
         if (SharedPreferencesUtils.getParam(this, "first_open", true) as Boolean) {
 
@@ -51,11 +47,9 @@ class MyApp : Application() {
                 "adjustId",
                 "adjustId-" + DTAdReport.generateUUID()
             )
-
-
             SharedPreferencesUtils.setParam(this, "first_open", false)
         }
-
+        DTAnalyticsUtils.trackTimerEnd("initApp")
     }
 
 }

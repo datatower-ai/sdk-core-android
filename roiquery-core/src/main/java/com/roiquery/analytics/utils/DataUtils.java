@@ -82,6 +82,12 @@ public final class DataUtils {
         return uuid;
     }
 
+    // 返回当前时区偏移，单位毫秒
+    public static double getTimezoneOffset(long time, TimeZone timeZone) {
+        TimeZone tz = (null == timeZone) ? TimeZone.getDefault() : timeZone;
+        return tz.getOffset(time) / (1000.0 * 60 * 60);
+    }
+
     public static void mergeJSONObject(final JSONObject source, JSONObject dest, TimeZone timeZone)
             throws JSONException {
         Iterator<String> sourceIterator = source.keys();

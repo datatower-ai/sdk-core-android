@@ -37,10 +37,10 @@ object EventUtils {
                 Constant.EVENT_INFO_APP_ID,
                 AnalyticsConfig.instance.mAppId
             )
-            //包名
+            //包名或者进程名
             put(
                 Constant.EVENT_INFO_PKG,
-                context.packageName
+                ProcessUtil.getCurrentProcessName(context)
             )
             //debug 标志
             if (AnalyticsConfig.instance.mEnabledDebug) {
@@ -98,7 +98,7 @@ object EventUtils {
             )//系统语言
             put(
                 Constant.USER_PROPERTY_ACTIVE_PKG,
-                context.packageName
+                ProcessUtil.getCurrentProcessName(context)
             )//包名
             put(
                 Constant.USER_PROPERTY_ACTIVE_APP_VERSION_CODE,
@@ -145,11 +145,11 @@ object EventUtils {
                 Constant.USER_PROPERTY_ACTIVE_SCREEN_HEIGHT,
                 size[1]
             )//屏幕高度
-
-            put(
-                Constant.USER_PROPERTY_ACTIVE_DIMS_DPI,
-                DeviceUtils.getDensityDpi(context)
-            )
+//
+//            put(
+//                Constant.USER_PROPERTY_ACTIVE_DIMS_DPI,
+//                DeviceUtils.getDensityDpi(context)
+//            )
             put(
                 Constant.USER_PROPERTY_ACTIVE_MEMORY_USED,
                 MemoryUtils.getRAM(context))
@@ -271,21 +271,6 @@ object EventUtils {
                 Constant.COMMON_PROPERTY_SCREEN_HEIGHT,
                 size[1]
             )
-            //像素密度
-            put(
-                Constant.COMMON_PROPERTY_DIMS_DPI,
-                DeviceUtils.getDensityDpi(context)
-            )
-//            //内存使用率
-//            put(
-//                Constant.COMMON_PROPERTY_MEMORY_USED,
-//                MemoryUtils.getMemoryUsed(context)
-//            )
-//            //硬盘使用率
-//            put(
-//                Constant.COMMON_PROPERTY_STORAGE_USED,
-//                MemoryUtils.getStorageUsed(context)
-//            )
             //网络状态
             put(
                 Constant.COMMON_PROPERTY_NETWORK_TYPE,
@@ -296,8 +281,11 @@ object EventUtils {
                 Constant.COMMON_PROPERTY_SIMULATOR,
                 EmulatorDetector.isEmulator()
             )
-
-
+            //时区便宜
+            put(
+                Constant.COMMON_PROPERTY_EVENT_ZONE_OFFSET,
+                DataUtils.getTimezoneOffset(Date().time,null)
+            )
         }
 
     fun isValidEventName(name: String?): Boolean {

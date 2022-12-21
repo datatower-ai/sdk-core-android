@@ -1,5 +1,6 @@
 package com.roiquery.analytics.api
 
+import com.roiquery.analytics.OnDataTowerIdListener
 import org.json.JSONObject
 
 interface IAnalytics {
@@ -43,7 +44,7 @@ interface IAnalytics {
     /**
      * DataTower id
      */
-    fun  getDTId(): String?
+    fun  getDTId(onDataTowerIDListener: OnDataTowerIdListener)
 
      /**
      * 设置当前用户Firebase的app_instance_id
