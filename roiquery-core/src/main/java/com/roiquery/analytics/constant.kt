@@ -25,6 +25,7 @@ internal object Constant {
     const val EVENT_INFO_ACID        = "#acid"
     const val EVENT_INFO_DT_ID       = "#dt_id"
     const val EVENT_INFO_PKG         = "#pkg"
+    const val EVENT_INFO_BUNDLE_ID   = "#bundle_id"
     const val EVENT_INFO_APP_ID      = "#app_id"
     const val EVENT_INFO_DEBUG       = "#debug"
     const val EVENT_INFO_TIME        = "#event_time"
@@ -54,7 +55,6 @@ internal object Constant {
     const val COMMON_PROPERTY_DEVICE_MANUFACTURER = "#device_manufacturer"
     const val COMMON_PROPERTY_DEVICE_BRAND        = "#device_brand"
     const val COMMON_PROPERTY_BUILD_DEVICE        = "#build_device"
-//    const val COMMON_PROPERTY_DIMS_DPI            = "#dims_dpi"
     const val COMMON_PROPERTY_NETWORK_TYPE        = "#network_type"
     const val COMMON_PROPERTY_SIMULATOR           = "#simulator"
     const val COMMON_PROPERTY_MEMORY_USED         = "#memory_used"
@@ -65,7 +65,7 @@ internal object Constant {
     const val COMMON_PROPERTY_SCREEN_WIDTH        = "#screen_width"
     const val COMMON_PROPERTY_IS_FOREGROUND       = "#is_foreground"
     const val COMMON_PROPERTY_EVENT_DURATION      = "#event_duration"
-    const val COMMON_PROPERTY_EVENT_ZONE_OFFSET      = "#zone_offset"
+    const val COMMON_PROPERTY_EVENT_ZONE_OFFSET   = "#zone_offset"
 
     //latest
     const val USER_PROPERTY_LATEST_DEBUG                = "#latest_debug"
@@ -96,7 +96,6 @@ internal object Constant {
     const val USER_PROPERTY_ACTIVE_DEVICE_MODEL        = "#active_device_model"
     const val USER_PROPERTY_ACTIVE_SCREEN_HEIGHT       = "#active_screen_height"
     const val USER_PROPERTY_ACTIVE_SCREEN_WIDTH        = "#active_screen_width"
-//    const val USER_PROPERTY_ACTIVE_DIMS_DPI            = "#active_dims_dpi"
     const val USER_PROPERTY_ACTIVE_MEMORY_USED         = "#active_memory_used"
     const val USER_PROPERTY_ACTIVE_STORAGE_USED        = "#active_storage_used"
     const val USER_PROPERTY_ACTIVE_NETWORK_TYPE        = "#active_network_type"
