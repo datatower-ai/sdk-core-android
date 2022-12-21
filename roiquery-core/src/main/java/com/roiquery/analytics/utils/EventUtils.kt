@@ -37,10 +37,10 @@ object EventUtils {
                 Constant.EVENT_INFO_APP_ID,
                 AnalyticsConfig.instance.mAppId
             )
-            //包名或者进程名
+            //包名
             put(
                 Constant.EVENT_INFO_PKG,
-                ProcessUtil.getCurrentProcessName(context)
+                context.packageName
             )
             //debug 标志
             if (AnalyticsConfig.instance.mEnabledDebug) {
@@ -98,7 +98,7 @@ object EventUtils {
             )//系统语言
             put(
                 Constant.USER_PROPERTY_ACTIVE_PKG,
-                ProcessUtil.getCurrentProcessName(context)
+                context.packageName
             )//包名
             put(
                 Constant.USER_PROPERTY_ACTIVE_APP_VERSION_CODE,

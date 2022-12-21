@@ -24,7 +24,7 @@ internal object Constant {
     const val EVENT_INFO_GAID        = "#gaid"
     const val EVENT_INFO_ACID        = "#acid"
     const val EVENT_INFO_DT_ID       = "#dt_id"
-    const val EVENT_INFO_PKG         = "#bundle_id"
+    const val EVENT_INFO_PKG         = "#pkg"
     const val EVENT_INFO_APP_ID      = "#app_id"
     const val EVENT_INFO_DEBUG       = "#debug"
     const val EVENT_INFO_TIME        = "#event_time"
@@ -74,7 +74,7 @@ internal object Constant {
     const val USER_PROPERTY_LATEST_KOCHAVA_ID           = "#latest_kochava_id"
     const val USER_PROPERTY_LATEST_APP_VERSION_CODE     = "#latest_app_version_code"
     const val USER_PROPERTY_LATEST_APP_VERSION_NAME     = "#latest_app_version_name"
-    const val USER_PROPERTY_LATEST_ADJUST_ID            =  "#latest_adjust_id"
+    const val USER_PROPERTY_LATEST_ADJUST_ID            = "#latest_adjust_id"
 
     //active
     const val USER_PROPERTY_ACTIVE_GAID                = "#active_gaid"
@@ -83,7 +83,7 @@ internal object Constant {
     const val USER_PROPERTY_ACTIVE_MNC                 = "#active_mnc"
     const val USER_PROPERTY_ACTIVE_OS_COUNTRY          = "#active_os_country_code"
     const val USER_PROPERTY_ACTIVE_OS_LANG             = "#active_os_lang_code"
-    const val USER_PROPERTY_ACTIVE_PKG                 = "#active_bundle_id"
+    const val USER_PROPERTY_ACTIVE_PKG                 = "#active_pkg"
     const val USER_PROPERTY_ACTIVE_APP_VERSION_CODE    = "#active_app_version_code"
     const val USER_PROPERTY_ACTIVE_APP_VERSION_NAME    = "#active_app_version_name"
     const val USER_PROPERTY_ACTIVE_SDK_TYPE            = "#active_sdk_type"
