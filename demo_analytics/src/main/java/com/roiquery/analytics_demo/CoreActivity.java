@@ -182,17 +182,6 @@ public class CoreActivity extends AppCompatActivity {
 
             }
         });
-
-        DT.initSDK(
-                this,
-                "dt_461a208fdd075c27",
-                "",
-                DTChannel.GP,
-                true,
-                Log.VERBOSE,
-                null
-        );
-
     }
 
 
