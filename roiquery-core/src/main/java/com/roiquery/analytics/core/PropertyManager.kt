@@ -10,6 +10,7 @@ import com.roiquery.analytics.ROIQueryCoroutineScope
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
+import com.roiquery.analytics.utils.NetworkUtil.registerNetworkStatusChangedListener
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONObject
@@ -62,15 +63,15 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
 
     private fun getDataTowerId(context: Context) {
         //这里每次更新，因为 gaid 或者Android id 有可能会变
-        var justUpdateGAID = false
+        var justUpdateOriginalId = false
         dataAdapter?.dtId?.let {
             if (it.isNotEmpty()) {
                 updateDTID(it)
                 onDataTowerIdCallback(it)
-                justUpdateGAID = true
+                justUpdateOriginalId = true
             }
         }
-        initDTIdOrUpdateGAID(context, justUpdateGAID)
+        initDTIdOrUpdateOriginalId(context, justUpdateOriginalId)
     }
 
     fun getDataTowerId(callBack: OnDataTowerIdListener){
@@ -88,22 +89,24 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
         dtidCallbacks.clear()
     }
 
-    private fun initDTIdOrUpdateGAID(context: Context, justUpdateGAID: Boolean) {
+    private fun initDTIdOrUpdateOriginalId(context: Context, justUpdateOriginalId: Boolean) {
         try {
             EventTrackManager.instance.addTrackEventTask{
                 try {
                     val info = AdvertisingIdClient.getAdvertisingIdInfo(context)
                     val gaid = info.id ?: ""
                     limitAdTrackingEnabled = info.isLimitAdTrackingEnabled
-                    updateGAID(gaid)
-                    if (!justUpdateGAID){
-                        val originalId = if (gaid.isEmpty() || limitAdTrackingEnabled) {
-                            val androidId = DeviceUtils.getAndroidID(context)
-                            updateAndroidId(androidId)
-                            androidId
-                        } else {
-                            gaid
-                        }
+                    var originalId = ""
+                    //gaid 不可用
+                    if (gaid.isEmpty() || limitAdTrackingEnabled || gaid == "00000000-0000-0000-0000-000000000000") {
+                        originalId = DeviceUtils.getAndroidID(context)
+                        updateAndroidId(originalId)
+                    }else {
+                        originalId = gaid
+                        updateGAID(originalId)
+                    }
+                    //生成dtid
+                    if (!justUpdateOriginalId){
                         val dtid = initDTId(originalId)
                         onDataTowerIdCallback(dtid)
                     }

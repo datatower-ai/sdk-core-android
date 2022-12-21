@@ -42,6 +42,11 @@ object EventUtils {
                 Constant.EVENT_INFO_PKG,
                 context.packageName
             )
+            //进程名
+            put(
+                Constant.EVENT_INFO_BUNDLE_ID,
+                ProcessUtil.getCurrentProcessName(context)
+            )
             //debug 标志
             if (AnalyticsConfig.instance.mEnabledDebug) {
                 put(Constant.EVENT_INFO_DEBUG, true)

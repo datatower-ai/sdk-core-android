@@ -1,6 +1,7 @@
 package com.roiquery.analytics_demo
 
 import android.app.Application
+import android.os.SystemClock
 import android.util.Log
 import com.roiquery.ad.DTAdReport
 import com.roiquery.analytics.*
@@ -17,7 +18,7 @@ class MyApp : Application() {
         super.onCreate()
         DT.initSDK(
             this,
-            "dt_461a208fdd075c27",
+            "dt_53ecce7c85c3daab",
             SERVER_URL_TEST,
             DTChannel.GP,
             true,

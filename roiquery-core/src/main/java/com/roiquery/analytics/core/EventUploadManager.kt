@@ -195,7 +195,7 @@ class EventUploadManager private constructor(
         eventsData?.let {
             EventInfoCheckHelper.instance.correctEventInfo(it) { info ->
                 try {
-                    if (info.isNotEmpty()) {
+                    if (info.isNotEmpty() && info != "[]" ) {
                         mDateAdapter.enableUpload = false
                         //http 请求
                         uploadDataToNet(info, mDateAdapter)
