@@ -33,9 +33,11 @@ class PresetEventManager {
             return
         }
         mDataAdapter = EventDateAdapter.getInstance()
-        checkAppInstall(context)
-        setLatestUserProperties(context)
-        setActiveUserProperties(context)
+        EventTrackManager.instance.addTrackEventTask {
+            checkAppInstall(context)
+            setLatestUserProperties(context)
+            setActiveUserProperties(context)
+        }
     }
 
     private fun checkAppInstall(context: Context) {
@@ -64,7 +66,9 @@ class PresetEventManager {
             Constant.PRESET_EVENT_USER_SET_ONCE,
             activeUserProperties
         )
+
     }
+
 
     private fun startAppAttribute(context: Context) {
         try {

@@ -1,5 +1,6 @@
 package com.roiquery.analytics.api
 
+import com.roiquery.analytics.OnDataTowerIdListener
 import org.json.JSONObject
 
 class AnalyticsEmptyImp internal constructor() : AbstractAnalytics() {
@@ -10,7 +11,9 @@ class AnalyticsEmptyImp internal constructor() : AbstractAnalytics() {
 
         }
 
-    override fun getDTId(): String? = ""
+    override fun getDTId(onDataTowerIDListener: OnDataTowerIdListener) {
+    }
+
 
     override fun setFirebaseInstanceId(id: String?) {
     }

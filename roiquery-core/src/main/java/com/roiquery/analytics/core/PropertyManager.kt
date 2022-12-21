@@ -5,19 +5,17 @@ import android.os.Looper
 import android.os.SystemClock
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
+import com.roiquery.analytics.OnDataTowerIdListener
 import com.roiquery.analytics.ROIQueryCoroutineScope
-import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
+import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 
 class PropertyManager private constructor() : ROIQueryCoroutineScope() {
@@ -43,41 +41,75 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
 
     private var sessionStartTime = 0L
 
+    private val dtidCallbacks: ConcurrentLinkedQueue<OnDataTowerIdListener?> = ConcurrentLinkedQueue()
+
 
     fun init(
         context: Context,
         initConfig: AnalyticsConfig?,
     ) {
-        dataAdapter = EventDateAdapter.getInstance(context)
-        initEventInfo(context)
-        initCommonProperties(context, initConfig)
-        registerFPSListener()
-        registerNetworkStatusChangedListener(context)
+        try {
+            dataAdapter = EventDateAdapter.getInstance(context)
+            initEventInfo(context)
+            initCommonProperties(context, initConfig)
+            getDataTowerId(context)
+            registerFPSListener()
+            registerNetworkStatusChangedListener(context)
+        } catch (e:Exception){
+            LogUtils.printStackTrace(e)
+        }
     }
 
-    internal fun getDataTowerId(context: Context, dataTowerIdHandler: (id: String) -> Unit) {
+    private fun getDataTowerId(context: Context) {
         //这里每次更新，因为 gaid 或者Android id 有可能会变
-        val originalId = getOriginalId(context)
+        var justUpdateGAID = false
         dataAdapter?.dtId?.let {
             if (it.isNotEmpty()) {
                 updateDTID(it)
-                dataTowerIdHandler.invoke(it)
-                return
+                onDataTowerIdCallback(it)
+                justUpdateGAID = true
             }
         }
-        dataTowerIdHandler.invoke(initDTId(originalId))
+        initDTIdOrUpdateGAID(context, justUpdateGAID)
     }
 
-    private fun getOriginalId(context: Context) =
+    fun getDataTowerId(callBack: OnDataTowerIdListener){
+        if (getDTID().isNotEmpty()) {
+            callBack.onDataTowerIdCompleted(getDTID())
+        } else {
+            dtidCallbacks.add(callBack)
+        }
+    }
+
+    private fun onDataTowerIdCallback(id: String){
+        dtidCallbacks.forEach { callback ->
+            callback?.onDataTowerIdCompleted(id)
+        }
+        dtidCallbacks.clear()
+    }
+
+    private fun initDTIdOrUpdateGAID(context: Context, justUpdateGAID: Boolean) {
         try {
-            getGAIDFromClient(context)
-            val gaid = getGAID()
-            if (gaid.isEmpty() || limitAdTrackingEnabled) {
-                val androidId = DeviceUtils.getAndroidID(context)
-                updateAndroidId(androidId)
-                androidId
-            } else {
-                gaid
+            EventTrackManager.instance.addTrackEventTask{
+                try {
+                    val info = AdvertisingIdClient.getAdvertisingIdInfo(context)
+                    val gaid = info.id ?: ""
+                    limitAdTrackingEnabled = info.isLimitAdTrackingEnabled
+                    updateGAID(gaid)
+                    if (!justUpdateGAID){
+                        val originalId = if (gaid.isEmpty() || limitAdTrackingEnabled) {
+                            val androidId = DeviceUtils.getAndroidID(context)
+                            updateAndroidId(androidId)
+                            androidId
+                        } else {
+                            gaid
+                        }
+                        val dtid = initDTId(originalId)
+                        onDataTowerIdCallback(dtid)
+                    }
+                } catch (exception: Exception) {
+                    LogUtils.d("getGAID", "onException:" + exception.message.toString())
+                }
             }
         } catch (e: Exception) {
             ROIQueryQualityHelper.instance.reportQualityMessage(
@@ -85,33 +117,8 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
                 e.message,
                 ROIQueryErrorParams.INIT_EXCEPTION
             )
-            ""
         }
-
-//        suspendCoroutine<String> {
-//            scope.launch {
-//                try {
-//                    getGAIDFromClient(context)
-//                    val gaid = getGAID()
-//                    if (gaid.isEmpty() || limitAdTrackingEnabled) {
-//                        val androidId = DeviceUtils.getAndroidID(context)
-//                        updateAndroidId(androidId)
-//                        it.resume(androidId)
-//                    } else {
-//                        it.resume(gaid)
-//                    }
-//                } catch (e: Exception) {
-//                    ROIQueryQualityHelper.instance.reportQualityMessage(
-//                        ROIQueryErrorParams.CODE_GET_ORIGINAL_ID_EXCEPTION,
-//                        e.message,
-//                        ROIQueryErrorParams.INIT_EXCEPTION
-//                    )
-//                    it.resume("")
-//                }
-//            }
-//        }
-
-
+    }
     /**
      * 异常情况下，允许空值，dt_id 为空的数据不会上报，等待 dt_id 有值时再同步dt_id为空的数据
      */
@@ -156,20 +163,31 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
      * @return
      */
     private fun initCommonProperties(context: Context, initConfig: AnalyticsConfig?) {
-        commonProperties = EventUtils.getCommonProperties(context, dataAdapter)
-        initConfig?.let { config ->
-            if (config.mCommonProperties != null) {
-                val iterator = config.mCommonProperties!!.keys()
-                while (iterator.hasNext()) {
-                    val key = iterator.next()
-                    try {
-                        val value = config.mCommonProperties!![key]
-                        updateCommonProperties(key, value.toString())
-                    } catch (e: Exception) {
-                        LogUtils.printStackTrace(e)
+        try {
+            //在子线程获取设备属性
+            val countDownLatch = CountDownLatch(1)
+            EventTrackManager.instance.addTrackEventTask {
+                commonProperties = EventUtils.getCommonProperties(context, dataAdapter)
+                countDownLatch.countDown()
+            }
+            countDownLatch.await(3,TimeUnit.SECONDS)
+            //增加外部出入的属性
+            initConfig?.let { config ->
+                if (config.mCommonProperties != null) {
+                    val iterator = config.mCommonProperties!!.keys()
+                    while (iterator.hasNext()) {
+                        val key = iterator.next()
+                        try {
+                            val value = config.mCommonProperties!![key]
+                            updateCommonProperties(key, value.toString())
+                        } catch (e: Exception) {
+                            LogUtils.printStackTrace(e)
+                        }
                     }
                 }
             }
+        }catch (e :Exception){
+            LogUtils.printStackTrace(e)
         }
     }
 
@@ -213,20 +231,6 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
                     EventUploadManager.getInstance()?.flush()
                 }
             })
-    }
-
-    /**
-     * gaid 获取，异步
-     */
-    private fun getGAIDFromClient(context: Context) {
-        try {
-            val info = AdvertisingIdClient.getAdvertisingIdInfo(context)
-            val id = info.id ?: ""
-            limitAdTrackingEnabled = info.isLimitAdTrackingEnabled
-            updateGAID(id)
-        } catch (exception: Exception) {
-            LogUtils.d("getGAID", "onException:" + exception.message.toString())
-        }
     }
 
 

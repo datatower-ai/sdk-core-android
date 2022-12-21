@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.SystemClock
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.InitCallback
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.core.PresetEventManager
@@ -14,10 +14,6 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
-import java.util.concurrent.ConcurrentLinkedQueue
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.ThreadFactory
 import java.util.concurrent.atomic.AtomicBoolean
 
 
@@ -26,41 +22,24 @@ abstract class AbstractAnalytics : IAnalytics {
     //本地数据适配器，包括sp、db的操作
     private var dataAdapter: EventDateAdapter? = null
 
-    private val hasInit = AtomicBoolean(false)
-
     private val isInitRunning = AtomicBoolean(false)
 
-    private val initCallbacks: ConcurrentLinkedQueue<InitCallback?> = ConcurrentLinkedQueue()
 
     var firstOpenTime : Long? by NotNullSingleVar()
 
     var configOptions: AnalyticsConfig? = null
 
-    private var initTaskManager: ExecutorService? = null
-
-    private var initTaskExceptionHandler: Thread.UncaughtExceptionHandler? = null
-
     companion object {
         const val TAG = Constant.LOG_TAG
-        internal var mHasInit: Boolean? = null
+        internal var mHasInit: AtomicBoolean = AtomicBoolean(false)
     }
 
-    fun init(context: Context, initCallback: InitCallback?) {
-        if (hasInit.get()) {
-            initCallback?.onInitComplete(true)
-            return
-        }
-        if (isInitRunning.get()) {
-            initCallback?.let {
-                initCallbacks.add(it)
-            }
+    fun init(context: Context) {
+        if (mHasInit.get() || isInitRunning.get()) {
             return
         }
         isInitRunning.set(true)
-        initCallback?.let {
-            initCallbacks.add(it)
-        }
-        initWithTaskManager(context)
+        internalInit(context)
     }
 
 
@@ -72,48 +51,21 @@ abstract class AbstractAnalytics : IAnalytics {
             initTracker()
             initProperties(context)
             registerAppLifecycleListener(context)
-            getDataTowerId(context, dataTowerIdHandler = {
-                onInitSuccess()
-                trackPresetEvent(context)
-            })
+            onInitSuccess(context)
         } catch (e: Exception) {
             onInitFailed(e.message)
-        }
-    }
-
-    private fun initWithTaskManager(context: Context){
-        if (initTaskManager == null) {
-            initTaskExceptionHandler = Thread.UncaughtExceptionHandler { t, e ->
-                onInitFailed(e.message)
-            }.also {
-                initTaskManager = Executors.newSingleThreadExecutor(
-                    InitThreadFactory(it)
-                )
-            }
-        }
-        initTaskManager?.execute {
-            //real init
-            internalInit(context)
         }
     }
 
     /**
      * 初始化成功
      */
-    private fun onInitSuccess() {
-        hasInit.set(true)
+    private fun onInitSuccess(context: Context) {
+        mHasInit.set(true)
         isInitRunning.set(false)
-        mHasInit = true
         EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_APP_INITIALIZE)
-        onSuccessCallback()
+        trackPresetEvent(context)
         LogUtils.d(TAG, "init succeed")
-    }
-
-    private fun onSuccessCallback() {
-        initCallbacks.forEach { callback ->
-            callback?.onInitComplete(true)
-        }
-        initCallbacks.clear()
     }
 
     /**
@@ -121,25 +73,19 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun onInitFailed(errorMessage: String?) {
         isInitRunning.set(false)
-        mHasInit = false
+        mHasInit.set(false)
         ROIQueryQualityHelper.instance.reportQualityMessage(
             ROIQueryErrorParams.CODE_INIT_EXCEPTION,
             errorMessage,
             ROIQueryErrorParams.INIT_EXCEPTION,
             ROIQueryErrorParams.TYPE_ERROR
         )
-        onErrorCallback(errorMessage)
         LogUtils.d(TAG, "init Failed: $errorMessage")
     }
 
-    private fun onErrorCallback(errorMessage: String?) {
-        initCallbacks.forEach { callback ->
-            callback?.onInitComplete(false, errorMessage ?: "")
-        }
-        initCallbacks.clear()
-    }
 
-    fun isInitSuccess() = hasInit.get()
+
+    fun isInitSuccess() = mHasInit.get()
 
 
     /**
@@ -148,15 +94,8 @@ abstract class AbstractAnalytics : IAnalytics {
     private fun generateFirstOpenTime(context: Context){
         try {
             if (dataAdapter?.isAppInstallInserted == false) {
-                val openTime = TimeCalibration.instance.getVerifyTimeAsync()
-                if (openTime == TimeCalibration.TIME_NOT_VERIFY_VALUE){
-                    firstOpenTime = TimeCalibration.instance.getSystemHibernateTimeGap()
-                    dataAdapter?.isFirstOpenTimeVerified = false
-                }else{
-                    firstOpenTime = openTime
-                    dataAdapter?.isFirstOpenTimeVerified = true
-                }
-                }
+                firstOpenTime = SystemClock.elapsedRealtime()
+            }
         } catch (e: Exception) {
         }
     }
@@ -174,13 +113,6 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun initProperties(context: Context) {
         PropertyManager.instance.init(context, configOptions)
-    }
-
-    /**
-     * 获取DT id
-     */
-    private fun getDataTowerId(context: Context, dataTowerIdHandler: (dtid: String) -> Unit){
-        PropertyManager.instance.getDataTowerId(context, dataTowerIdHandler)
     }
 
     /**
@@ -255,16 +187,5 @@ abstract class AbstractAnalytics : IAnalytics {
             setConsoleFilter(logLevel)
         }
     }
-
-    internal class InitThreadFactory(
-        private val exceptionHandler: Thread.UncaughtExceptionHandler) : ThreadFactory {
-        override fun newThread(r: Runnable): Thread {
-            return Thread(r, "InitTaskManager").apply {
-                this.uncaughtExceptionHandler = exceptionHandler
-            }
-        }
-    }
-
-
 }
 

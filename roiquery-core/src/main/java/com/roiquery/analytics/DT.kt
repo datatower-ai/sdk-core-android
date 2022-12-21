@@ -18,7 +18,6 @@ class DT {
          * @param channel 渠道，默认为空字符串，可用 ROIQueryChannel.GP，具体联系商务
          * @param isDebug 是否打开调试，调试模式下将打印log,默认关闭
          * @param logLevel log 的级别，默认为 Log.VERBOSE，仅在 isDebug = true 有效
-         * @param initCallback 初始化回调
          */
         @JvmStatic
         @JvmOverloads
@@ -29,7 +28,6 @@ class DT {
             channel: String = "",
             isDebug: Boolean = false,
             logLevel: Int = Log.VERBOSE,
-            initCallback: InitCallback? = null,
             commonProperties: JSONObject = JSONObject(),
         ) {
             AnalyticsImp.init(
@@ -40,8 +38,7 @@ class DT {
                     .setServerUrl(serverUrl)
                     .setDebug(isDebug, logLevel)
                     .setChannel(channel)
-                    .addCommonProperties(commonProperties),
-                initCallback
+                    .addCommonProperties(commonProperties)
             )
         }
 

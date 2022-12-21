@@ -324,48 +324,6 @@ open class DTAdReport {
             .reportPaid(id, type.value, platform.value, location, seq, value, currency, precision, properties,entrance)
 
         /**
-         * 上报 广告展示价值
-         *
-         * @param id 广告最小单元id
-         * @param type 广告类型
-         * @param platform 广告平台
-         * @param adgroupName 广告组名称
-         * @param adgroupType 广告组类别
-         * @param location 广告位
-         * @param seq 系列行为标识
-         * @param mediation 聚合平台
-         * @param mediationId 聚合平台广告id
-         * @param value 价值
-         * @param currency 货币
-         * @param precision 精确度
-         * @param country 国家
-         * @param properties 额外事件属性
-         * @param entrance 广告入口
-         */
-        @JvmOverloads
-        @JvmStatic
-        fun reportPaid(
-            id: String,
-            type: AdType,
-            platform: String,
-            adgroupName: String,
-            adgroupType: String,
-            location: String,
-            seq: String,
-            mediation: AdMediation,
-            mediationId: String,
-            value: String,
-            currency: String,
-            precision: String,
-            country: String,
-            properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
-        ) = AdReportImp.getInstance()
-            .reportPaid(id, type.value, platform, adgroupName, adgroupType, location, seq, mediation.value, mediationId, value, currency, precision, country, properties, entrance)
-
-
-
-        /**
          * 上报 广告展示价值，用于聚合广告平台MAX
          *
          * @param id 广告最小单元id

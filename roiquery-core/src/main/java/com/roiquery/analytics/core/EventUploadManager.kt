@@ -191,28 +191,24 @@ class EventUploadManager private constructor(
             TimeCalibration.instance.getReferenceTime()
             return
         }
-        scope.launch(Dispatchers.IO) {
-            //事件主体，json格式
-            eventsData?.let {
-                EventInfoCheckHelper.instance.correctEventInfo(it) { info ->
-                    launch(Dispatchers.Main) {
-                        try {
-                            if (info.isNotEmpty()) {
-                                mDateAdapter.enableUpload = false
-                                //http 请求
-                                uploadDataToNet(info, mDateAdapter)
-                            } else {
-                                mDateAdapter.enableUpload = true
-                            }
-                        } catch (e: Exception){
-                            mDateAdapter.enableUpload = true
-                            ROIQueryQualityHelper.instance.reportQualityMessage(
-                                ROIQueryErrorParams.CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
-                                e.message,ROIQueryErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,ROIQueryErrorParams.TYPE_WARNING
-                            )
-
-                        }
+        //事件主体，json格式
+        eventsData?.let {
+            EventInfoCheckHelper.instance.correctEventInfo(it) { info ->
+                try {
+                    if (info.isNotEmpty()) {
+                        mDateAdapter.enableUpload = false
+                        //http 请求
+                        uploadDataToNet(info, mDateAdapter)
+                    } else {
+                        mDateAdapter.enableUpload = true
                     }
+                } catch (e: Exception){
+                    mDateAdapter.enableUpload = true
+                    ROIQueryQualityHelper.instance.reportQualityMessage(
+                        ROIQueryErrorParams.CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
+                        e.message,ROIQueryErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,ROIQueryErrorParams.TYPE_WARNING
+                    )
+
                 }
             }
         }
@@ -364,7 +360,7 @@ class EventUploadManager private constructor(
 
         init {
             val thread = HandlerThread(
-                "com.roiquery.analytics.AnalyticsMessages.Worker",
+                "DT.AnalyticsMessagesWorker",
                 Thread.MIN_PRIORITY
             )
             thread.start()

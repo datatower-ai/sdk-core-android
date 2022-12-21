@@ -20,9 +20,9 @@ class EventInfoCheckHelper private constructor() {
             EventInfoCheckHelper()
         }
     }
+    //事件头部属性（dt_id、gaid、android_id）、事件时间校准
     fun  correctEventInfo(data: String, correctFinish: (info: String) -> Unit){
         try {
-
             val jsonArray = JSONArray(data)
             val length = jsonArray.length()
             if (length == 0) {
@@ -30,16 +30,6 @@ class EventInfoCheckHelper private constructor() {
                 return
             }
             val correctedEventInfo = JSONArray()
-
-            for (index in 0 until length){
-                jsonArray.getJSONObject(index)?.let { it ->
-                    it.optJSONObject(Constant.EVENT_BODY)?.let {
-
-                    }
-                }
-            }
-
-
 
             for (index in 0 until length) {
                 jsonArray.getJSONObject(index)?.let { it ->
@@ -109,28 +99,25 @@ class EventInfoCheckHelper private constructor() {
     ):JSONObject? {
         jsonEventBody.optJSONObject(Constant.EVENT_BODY)?.let { eventInfo ->
             val infoTime = eventInfo.optLong(Constant.EVENT_INFO_TIME, SystemClock.elapsedRealtime())
-            //校准 app_install 的 event_time
-            if (eventInfo.optString(Constant.EVENT_INFO_NAME) == Constant.PRESET_EVENT_APP_INSTALL) {
-                return correctAppStartTime(eventInfo, infoTime)
-            }else{
-                //判定时间是否校准，未校准在已获得网络时间的情况下校准则校准
-                if (!jsonEventBody.optBoolean(Constant.EVENT_TIME_CALIBRATED)) {
-                    val verifyTime =
-                        TimeCalibration.instance.getVerifyTimeAsync()
-                    if (verifyTime != TimeCalibration.TIME_NOT_VERIFY_VALUE) {
-                        val verifyTimeAsyncByGapTime =
-                            TimeCalibration.instance.getVerifyTimeAsyncByGapTime(infoTime)
-                        eventInfo.put(
-                            Constant.EVENT_INFO_TIME,
-                            verifyTimeAsyncByGapTime
-                        )
-                        return eventInfo
-                    } else {
-                    }
-                } else {
-                    eventInfo.put(Constant.EVENT_INFO_TIME, infoTime)
+            //判定时间是否校准，未校准在已获得网络时间的情况下校准则校准
+            if (!jsonEventBody.optBoolean(Constant.EVENT_TIME_CALIBRATED)) {
+                //服务器时间
+                val serverTime = TimeCalibration.instance.getServerTime()
+                //更新服务器时开机时间
+                val updateSystemUpTime = TimeCalibration.instance.getUpdateSystemUpTime()
+
+                if (serverTime != TimeCalibration.TIME_NOT_VERIFY_VALUE
+                    && updateSystemUpTime != TimeCalibration.TIME_NOT_VERIFY_VALUE) {
+                    val realTime = infoTime - updateSystemUpTime + serverTime
+                    eventInfo.put(
+                        Constant.EVENT_INFO_TIME,
+                        realTime
+                    )
                     return eventInfo
                 }
+            } else {
+                eventInfo.put(Constant.EVENT_INFO_TIME, infoTime)
+                return eventInfo
             }
         }
         return null
@@ -147,14 +134,17 @@ class EventInfoCheckHelper private constructor() {
                 )
                 return eventInfo
             } else {
-                val verifyTime =
-                    TimeCalibration.instance.getVerifyTimeAsync()
-                if (verifyTime != TimeCalibration.TIME_NOT_VERIFY_VALUE) {
-                    val verifyTimeAsyncByGapTime =
-                        TimeCalibration.instance.getVerifyTimeAsyncByGapTime(infoTime)
+                //服务器时间
+                val serverTime = TimeCalibration.instance.getServerTime()
+                //更新服务器时开机时间
+                val updateSystemUpTime = TimeCalibration.instance.getUpdateSystemUpTime()
+
+                if (serverTime != TimeCalibration.TIME_NOT_VERIFY_VALUE
+                    && updateSystemUpTime != TimeCalibration.TIME_NOT_VERIFY_VALUE) {
+                    val realTime = infoTime - updateSystemUpTime + serverTime
                     eventInfo.put(
                         Constant.EVENT_INFO_TIME,
-                        verifyTimeAsyncByGapTime
+                        realTime
                     )
                     return eventInfo
                 }

@@ -105,7 +105,9 @@ open class DTAnalytics {
          * 获取 DataTower instance id
          */
         @JvmStatic
-        fun getDataTowerId() = AnalyticsImp.getInstance().getDTId()
+        fun getDataTowerId(onDataTowerIDListener: OnDataTowerIdListener) {
+            AnalyticsImp.getInstance().getDTId(onDataTowerIDListener)
+        }
 
         /**
          * 设置自有用户系统的id

@@ -5,8 +5,8 @@ import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.LOG_TAG
 import com.roiquery.analytics.Constant.TIME_FROM_ROI_NET_BODY
 import com.roiquery.analytics.DTAnalytics
-import com.roiquery.analytics.api.AnalyticsImp.Companion.init
 import com.roiquery.analytics.config.AnalyticsConfig
+import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.core.EventUploadManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
@@ -110,7 +110,6 @@ class TimeCalibration private constructor() {
         return time
     }
 
-
     fun getVerifyTimeAsyncByGapTime(gapTime:Long) : Long {
         calibratedTimeLock.readLock().lock()
         if (_latestSystemElapsedRealtime == 0L) {
@@ -124,6 +123,10 @@ class TimeCalibration private constructor() {
         calibratedTimeLock.readLock().unlock()
         return time
     }
+
+    fun getServerTime() = _latestTime
+
+    fun getUpdateSystemUpTime() = _latestSystemElapsedRealtime
 
     /**
      * Get system hibernate time gap
