@@ -28,7 +28,7 @@ class MyApp : Application() {
                 Log.d("DataTowerId",dataTowerId)
             }
         })
-        DTAnalyticsUtils.trackTimerStart("init")
+        DTAnalyticsUtils.trackTimerStart("initApp")
         //mock data
         if (SharedPreferencesUtils.getParam(this, "first_open", true) as Boolean) {
 
@@ -48,9 +48,8 @@ class MyApp : Application() {
                 "adjustId-" + DTAdReport.generateUUID()
             )
             SharedPreferencesUtils.setParam(this, "first_open", false)
-            DTAnalyticsUtils.trackTimerEnd("init")
         }
-
+        DTAnalyticsUtils.trackTimerEnd("initApp")
     }
 
 }
