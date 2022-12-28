@@ -24,6 +24,7 @@ internal class EventDataOperation(
 ) : ROIQueryCoroutineScope() {
     var TAG = "EventDataOperation"
     private var analyticsDB: ROIQueryAnalyticsDB? = ROIQueryAnalyticsDB.getInstance(context = mContext)
+    private var eventCount = -1
 
     private val insertDataNormalError = CoroutineExceptionHandler { _, exception ->
         run {
@@ -93,6 +94,9 @@ internal class EventDataOperation(
                                 eventSyn = eventSyn
                             )
                         )
+                        if(result != -1L){
+                            eventCount += 1
+                        }
                         it.resume(if(result == -1L) DataParams.DB_INSERT_ERROR else DataParams.DB_INSERT_SUCCEED)
                     } catch (e: Exception){
                         insertDataException.handleException(this.coroutineContext,e)
@@ -201,6 +205,9 @@ internal class EventDataOperation(
     suspend fun deleteEventByEventSyn(eventSyn: String) {
         scope.launch(deleteDbException) {
             analyticsDB?.getEventsDao()?.deleteEventByEventSyn(eventSyn)
+            if (eventCount != 0) {
+                eventCount -= 1
+            }
         }
     }
 
@@ -208,6 +215,9 @@ internal class EventDataOperation(
     private suspend fun deleteTheOldestData(num: Int) {
         scope.launch(deleteDbException) {
             analyticsDB?.getEventsDao()?.deleteTheOldestData(num)
+            if (eventCount != 0) {
+                eventCount -= num
+            }
         }
     }
 
@@ -240,7 +250,10 @@ internal class EventDataOperation(
         suspendCoroutine<Boolean> {
             scope.launch(insertOutOfRowError) {
                 withContext(Dispatchers.IO){
-                    if (queryDataCount() >= DataParams.CONFIG_MAX_ROWS) {
+                    if (eventCount < 0) {
+                        eventCount = queryDataCount()
+                    }
+                    if (eventCount >= DataParams.CONFIG_MAX_ROWS) {
                         LogUtils.i(
                             TAG,
                             "There is not enough space left on the device to store events, so will delete ${DataParams.CONFIG_MAX_ROWS / 2} oldest events"
@@ -253,7 +266,7 @@ internal class EventDataOperation(
                             it.resume(false)
                         }
                         //数据库较满时，删除成功 it.resume(true)
-                        //删除失败 it.resume(false)
+                        eventCount -= DataParams.CONFIG_MAX_ROWS / 2
                         it.resume(true)
                     } else {
                         it.resume(true)
@@ -268,6 +281,7 @@ internal class EventDataOperation(
             withContext(Dispatchers.IO){
                 try {
                     analyticsDB?.getEventsDao()?.clearTable()
+                    eventCount = 0
                 } catch (e: Exception) {
                     deleteDbException.handleException(this.coroutineContext,e)
                 }

@@ -5,7 +5,6 @@ import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
@@ -33,7 +32,7 @@ class PresetEventManager {
             return
         }
         mDataAdapter = EventDateAdapter.getInstance()
-        EventTrackManager.instance.addTrackEventTask {
+        EventTrackManager.instance.addTask {
             checkAppInstall(context)
             setLatestUserProperties(context)
             setActiveUserProperties(context)
@@ -86,49 +85,55 @@ class PresetEventManager {
      * 获取 app 归因属性
      */
     private fun getAppAttribute(context: Context) {
+        LogUtils.e("getAppAttribute", ThreadUtils.isMainThread())
+
         val referrerClient: InstallReferrerClient? =
             InstallReferrerClient.newBuilder(context).build()
         referrerClient?.startConnection(object : InstallReferrerStateListener {
 
             override fun onInstallReferrerSetupFinished(responseCode: Int) {
-                try {
-                    when (responseCode) {
-                        InstallReferrerClient.InstallReferrerResponse.OK -> {
-                            // Connection established.
-                            trackAppInstallEvent(referrerClient.installReferrer, "")
+                EventTrackManager.instance.addTask{
+                    try {
+                        when (responseCode) {
+                            InstallReferrerClient.InstallReferrerResponse.OK -> {
+                                // Connection established.
+                                LogUtils.e("InstallReferrerResponse", ThreadUtils.isMainThread())
+
+                                trackAppInstallEvent(referrerClient.installReferrer, "")
+                            }
+                            else -> trackAppInstallEvent(
+                                ReferrerDetails(null),
+                                "responseCode:$responseCode"
+                            )
+
                         }
-                        else -> trackAppInstallEvent(
+                        referrerClient.endConnection()
+                    } catch (e: Exception) {
+                        trackAppInstallEvent(
                             ReferrerDetails(null),
-                            "responseCode:$responseCode"
+                            "responseCode:$responseCode" + ",Exception: " + e.message.toString()
                         )
-
                     }
-                    referrerClient.endConnection()
-                } catch (e: Exception) {
-                    trackAppInstallEvent(
-                        ReferrerDetails(null),
-                        "responseCode:$responseCode" + ",Exception: " + e.message.toString()
-                    )
                 }
-
             }
 
             override fun onInstallReferrerServiceDisconnected() {
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
-                try {
-                    trackAppInstallEvent(
-                        ReferrerDetails(null),
-                        "onInstallReferrerServiceDisconnected"
-                    )
-                    referrerClient.endConnection()
-                } catch (e: Exception) {
-                    trackAppInstallEvent(
-                        ReferrerDetails(null),
-                        "onInstallReferrerServiceDisconnected,Exception: " + e.message.toString()
-                    )
+                EventTrackManager.instance.addTask {
+                    try {
+                        trackAppInstallEvent(
+                            ReferrerDetails(null),
+                            "onInstallReferrerServiceDisconnected"
+                        )
+                        referrerClient.endConnection()
+                    } catch (e: Exception) {
+                        trackAppInstallEvent(
+                            ReferrerDetails(null),
+                            "onInstallReferrerServiceDisconnected,Exception: " + e.message.toString()
+                        )
+                    }
                 }
-
             }
         })
     }

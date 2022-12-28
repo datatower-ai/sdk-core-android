@@ -4,6 +4,8 @@ import android.content.Context
 import android.text.TextUtils
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.ROIQueryCoroutineScope
+import com.roiquery.analytics.utils.LogUtils
+import com.roiquery.analytics.utils.ThreadUtils
 import com.roiquery.analytics.utils.TimeCalibration
 import kotlinx.coroutines.*
 import org.json.JSONObject
@@ -74,18 +76,6 @@ class EventDateAdapter private constructor(
         get() = runBlocking{ getStringConfig(DataParams.CONFIG_ACCOUNT_ID) }
         set(value) = setStringConfig(DataParams.CONFIG_ACCOUNT_ID,value)
 
-
-    var cloudConfigAesKey: String
-        get() = runBlocking{ getStringConfig(DataParams.CLOUD_CONFIG_AES_KEY) }
-        set(value) = setStringConfig(DataParams.CLOUD_CONFIG_AES_KEY,value)
-
-    /**
-     * first open time 是否校准, 默认没有校准
-     */
-    var isFirstOpenTimeVerified: Boolean
-        get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_IS_FIRST_OPEN_TIME_VERIFIED,false)}
-        set(value) = setBooleanConfig(DataParams.CONFIG_IS_FIRST_OPEN_TIME_VERIFIED, value)
-
     /**
      * 是否上报数据，默认是
      */
@@ -97,7 +87,9 @@ class EventDateAdapter private constructor(
      * install 事件的插入数据库状态
      */
     var isAppInstallInserted: Boolean
-        get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE,false) }
+        get() = runBlocking{
+            getBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE,false)
+        }
         set(value) = setBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE, value)
 
     /**
