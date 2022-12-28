@@ -123,40 +123,6 @@ class EventInfoCheckHelper private constructor() {
         return null
     }
 
-    private fun correctAppStartTime(
-        eventInfo: JSONObject,
-        infoTime: Long
-    ): JSONObject? {
-            if (EventDateAdapter.getInstance()?.isFirstOpenTimeVerified == true) {
-                eventInfo.put(
-                    Constant.EVENT_INFO_TIME,
-                    infoTime
-                )
-                return eventInfo
-            } else {
-                //服务器时间
-                val serverTime = TimeCalibration.instance.getServerTime()
-                //更新服务器时开机时间
-                val updateSystemUpTime = TimeCalibration.instance.getUpdateSystemUpTime()
-
-                if (serverTime != TimeCalibration.TIME_NOT_VERIFY_VALUE
-                    && updateSystemUpTime != TimeCalibration.TIME_NOT_VERIFY_VALUE) {
-                    val realTime = infoTime - updateSystemUpTime + serverTime
-                    eventInfo.put(
-                        Constant.EVENT_INFO_TIME,
-                        realTime
-                    )
-                    return eventInfo
-                }
-            }
-        return null
-    }
-
-    private fun eventNameForPreset(eventInfo: JSONObject) =
-        if (eventInfo.optString(Constant.PRE_EVENT_INFO_NAME).isNotEmpty()) eventInfo.optString(
-            Constant.PRE_EVENT_INFO_NAME
-        ) else eventInfo.getString(Constant.EVENT_INFO_NAME)
-
 
 
 

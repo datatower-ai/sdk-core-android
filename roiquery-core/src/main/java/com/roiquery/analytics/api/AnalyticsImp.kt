@@ -119,9 +119,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
 
     override fun trackTimerStart(eventName: String) {
         val startTime = SystemClock.elapsedRealtime()
-        EventTrackManager.instance.addTrackEventTask {
+        EventTrackManager.instance.addTask {
             try {
-                if (!EventUtils.isValidEventName(eventName)) return@addTrackEventTask
+                if (!EventUtils.isValidEventName(eventName)) return@addTask
                 EventTimerManager.instance.addEventTimer(eventName, EventTimer(startTime))
             } catch (e: Exception) {
                 LogUtils.e(e)
@@ -131,9 +131,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
 
     override fun trackTimerPause(eventName: String) {
         val startTime = SystemClock.elapsedRealtime()
-        EventTrackManager.instance.addTrackEventTask {
+        EventTrackManager.instance.addTask {
             try {
-                if (!EventUtils.isValidEventName(eventName)) return@addTrackEventTask
+                if (!EventUtils.isValidEventName(eventName)) return@addTask
                 EventTimerManager.instance.updateTimerState(eventName, startTime, true)
             } catch (e: Exception) {
                 LogUtils.e(e)
@@ -143,9 +143,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
 
     override fun trackTimerResume(eventName: String) {
         val startTime = SystemClock.elapsedRealtime()
-        EventTrackManager.instance.addTrackEventTask {
+        EventTrackManager.instance.addTask {
             try {
-                if (!EventUtils.isValidEventName(eventName)) return@addTrackEventTask
+                if (!EventUtils.isValidEventName(eventName)) return@addTask
                 EventTimerManager.instance.updateTimerState(eventName, startTime, false)
             } catch (e: Exception) {
                 LogUtils.e(e)
@@ -155,9 +155,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
 
     override fun trackTimerEnd(eventName: String, properties: JSONObject) {
         val endTime = SystemClock.elapsedRealtime()
-        EventTrackManager.instance.addTrackEventTask {
+        EventTrackManager.instance.addTask {
             try {
-                if (!EventUtils.isValidEventName(eventName)) return@addTrackEventTask
+                if (!EventUtils.isValidEventName(eventName)) return@addTask
                 EventTimerManager.instance.updateEndTime(eventName, endTime)
                 trackNormal(eventName,false, properties)
             } catch (e: Exception) {
@@ -167,9 +167,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     }
 
     override fun removeTimer(eventName: String) {
-        EventTrackManager.instance.addTrackEventTask {
+        EventTrackManager.instance.addTask {
             try {
-                if (!EventUtils.isValidEventName(eventName)) return@addTrackEventTask
+                if (!EventUtils.isValidEventName(eventName)) return@addTask
                 EventTimerManager.instance.removeTimer(eventName)
             } catch (e: java.lang.Exception) {
                 LogUtils.e(e)
@@ -178,7 +178,7 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     }
 
     override fun clearTrackTimer() {
-        EventTrackManager.instance.addTrackEventTask {
+        EventTrackManager.instance.addTask {
             try {
                 EventTimerManager.instance.clearTimers()
             } catch (e: java.lang.Exception) {

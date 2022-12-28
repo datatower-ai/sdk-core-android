@@ -251,7 +251,7 @@ class EventTrackManager {
     }
 
 
-    fun addTrackEventTask(task: Runnable) {
+    fun addTask(task: Runnable) {
         mTrackTaskManager?.let {
             try {
                 it.addTrackEventTask(task)

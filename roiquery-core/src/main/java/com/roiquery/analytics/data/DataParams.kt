@@ -47,7 +47,7 @@ class DataParams private constructor(packageName: String) {
         const val DB_INSERT_DATA_REPEAT = -5
         const val VALUE = "value"
 
-        const val CONFIG_MAX_ROWS = 500
+        const val CONFIG_MAX_ROWS = 5000
 
         /* 删除所有数据 */
         const val DB_DELETE_ALL = "DB_DELETE_ALL"

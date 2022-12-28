@@ -25,6 +25,8 @@ import java.util.Set;
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 import static android.Manifest.permission.INTERNET;
 
+import com.roiquery.analytics.core.EventTrackManager;
+
 
 /**
  * <pre>
@@ -320,7 +322,22 @@ public final class NetworkUtil {
         @RequiresPermission(ACCESS_NETWORK_STATE)
         void registerListener(final OnNetworkStatusChangedListener listener) {
             if (listener == null) return;
-            ThreadUtils.runOnUiThread(new Runnable() {
+//            ThreadUtils.runOnUiThread(new Runnable() {
+//                @Override
+//                @RequiresPermission(ACCESS_NETWORK_STATE)
+//                public void run() {
+//                    int preSize = mListeners.size();
+//                    mListeners.add(listener);
+//                    if (preSize == 0 && mListeners.size() == 1) {
+//                        mType = getNetworkType(mContext);
+//                        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+//                        mContext.registerReceiver(NetworkChangedReceiver.getInstance(mContext), intentFilter);
+//                    }
+//                }
+//            });
+
+            EventTrackManager.Companion.getInstance().addTask(new Runnable() {
+
                 @Override
                 @RequiresPermission(ACCESS_NETWORK_STATE)
                 public void run() {
@@ -342,7 +359,7 @@ public final class NetworkUtil {
 
         void unregisterListener(final OnNetworkStatusChangedListener listener) {
             if (listener == null) return;
-            ThreadUtils.runOnUiThread(new Runnable() {
+            EventTrackManager.Companion.getInstance().addTask(new Runnable() {
                 @Override
                 public void run() {
                     int preSize = mListeners.size();
@@ -357,8 +374,7 @@ public final class NetworkUtil {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
-                // debouncing
-                ThreadUtils.runOnUiThreadDelayed(new Runnable() {
+                EventTrackManager.Companion.getInstance().addTask(new Runnable() {
                     @Override
                     @RequiresPermission(ACCESS_NETWORK_STATE)
                     public void run() {
@@ -375,7 +391,27 @@ public final class NetworkUtil {
                             }
                         }
                     }
-                }, 1000);
+                });
+
+                // debouncing
+//                ThreadUtils.runOnUiThreadDelayed(new Runnable() {
+//                    @Override
+//                    @RequiresPermission(ACCESS_NETWORK_STATE)
+//                    public void run() {
+//                        NetworkType networkType = NetworkUtil.getNetworkType(mContext);
+//                        if (mType == networkType) return;
+//                        mType = networkType;
+//                        if (networkType == NetworkType.NETWORK_NO) {
+//                            for (OnNetworkStatusChangedListener listener : mListeners) {
+//                                listener.onDisconnected();
+//                            }
+//                        } else {
+//                            for (OnNetworkStatusChangedListener listener : mListeners) {
+//                                listener.onConnected(networkType);
+//                            }
+//                        }
+//                    }
+//                }, 1000);
             }
         }
 

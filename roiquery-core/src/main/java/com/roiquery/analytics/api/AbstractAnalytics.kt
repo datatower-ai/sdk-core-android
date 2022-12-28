@@ -45,9 +45,9 @@ abstract class AbstractAnalytics : IAnalytics {
 
     private fun internalInit(context: Context) {
         try {
+            generateFirstOpenTime()
             initConfig(context)
             initLocalData(context)
-            generateFirstOpenTime(context)
             initTracker()
             initProperties(context)
             registerAppLifecycleListener(context)
@@ -91,13 +91,8 @@ abstract class AbstractAnalytics : IAnalytics {
     /**
      * 记录首次打开时间，将此时间作为 app_install 的 event_time
      */
-    private fun generateFirstOpenTime(context: Context){
-        try {
-            if (dataAdapter?.isAppInstallInserted == false) {
-                firstOpenTime = SystemClock.elapsedRealtime()
-            }
-        } catch (e: Exception) {
-        }
+    private fun generateFirstOpenTime(){
+        firstOpenTime = SystemClock.elapsedRealtime()
     }
 
     /**
