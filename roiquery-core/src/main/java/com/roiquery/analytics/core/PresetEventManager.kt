@@ -85,8 +85,6 @@ class PresetEventManager {
      * 获取 app 归因属性
      */
     private fun getAppAttribute(context: Context) {
-        LogUtils.e("getAppAttribute", ThreadUtils.isMainThread())
-
         val referrerClient: InstallReferrerClient? =
             InstallReferrerClient.newBuilder(context).build()
         referrerClient?.startConnection(object : InstallReferrerStateListener {
@@ -97,8 +95,6 @@ class PresetEventManager {
                         when (responseCode) {
                             InstallReferrerClient.InstallReferrerResponse.OK -> {
                                 // Connection established.
-                                LogUtils.e("InstallReferrerResponse", ThreadUtils.isMainThread())
-
                                 trackAppInstallEvent(referrerClient.installReferrer, "")
                             }
                             else -> trackAppInstallEvent(

@@ -15,15 +15,14 @@ import com.roiquery.analytics.data.room.bean.Configs
 interface ConfigsDao {
 
     @Insert
-    suspend fun insert(vararg config: Configs)
+    fun insert(vararg config: Configs)
 
     @Query("select value from configs where name =:name")
-    suspend fun queryValueByName(name: String): String?
-
+    fun queryValueByName(name: String): String?
 
     @Query("update configs set value = :value where name = :name")
-    suspend fun update(name: String,value:String)
+    fun update(name: String,value:String)
 
     @Query("select count(*) from configs where name = :name")
-    suspend fun existsValue(name: String):Int
+    fun existsValue(name: String):Int
 }

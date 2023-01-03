@@ -19,10 +19,7 @@ import com.roiquery.analytics.utils.EventUtils
 import com.roiquery.analytics.utils.LogUtils
 import org.json.JSONObject
 
-class AdReportImp private constructor(context: Context?) : IAdReport {
-
-    private var mContext: Context? = context
-    private var mIsMainProcess: Boolean = true
+class AdReportImp : IAdReport {
 
     private var mSequenessMap: MutableMap<String, AdEventProperty?> = mutableMapOf()
     private val mMaxSequenessSize = 10
@@ -474,35 +471,8 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
                         put(property.key, property.value)
                     }
                 }
-
             }
         }
-
-    init {
-        initAppStatusListener()
-    }
-
-
-    /**
-     * 监听应用生命周期
-     */
-    private fun initAppStatusListener() {
-        mIsMainProcess =
-            AppInfoUtils.getMainProcessName(mContext) == AppInfoUtils.getMainProcessName(mContext)
-        if (!mIsMainProcess) {
-            return
-        }
-        DTAnalytics.addAppStatusListener(object : OnAppStatusListener {
-            override fun onAppForeground() {
-                reportReturnApp()
-                LogUtils.d("AdReport", "onAppForegrounded")
-            }
-
-            override fun onAppBackground() {
-                LogUtils.d("AdReport", "onAppForegrounded")
-            }
-        })
-    }
 
     private fun checkSeqError(seq: String?) {
         if (TextUtils.isEmpty(seq)) {
@@ -579,11 +549,8 @@ class AdReportImp private constructor(context: Context?) : IAdReport {
         private var instance: AdReportImp? = null
         internal fun getInstance(context: Context? = null): AdReportImp {
             var pContext = context
-            if (pContext == null) {
-                pContext = DTAnalytics.getContext()
-            }
             return instance ?: synchronized(this) {
-                instance ?: AdReportImp(pContext).also { instance = it }
+                instance ?: AdReportImp().also { instance = it }
             }
         }
 
