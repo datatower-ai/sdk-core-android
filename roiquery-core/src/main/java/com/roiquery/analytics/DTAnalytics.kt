@@ -204,7 +204,6 @@ open class DTAnalytics {
         internal fun onAppForeground(startReason: String?) {
             try {
                 PropertyManager.instance.updateIsForeground(true,startReason)
-                LogUtils.d("trackAppStateChanged","onAppForeground")
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppForeground()
                 }
@@ -219,7 +218,6 @@ open class DTAnalytics {
         internal fun onAppBackground() {
             try {
                 PropertyManager.instance.updateIsForeground(false)
-                LogUtils.d("trackAppStateChanged","onAppBackground")
                 for (listener in mAppLifecycleListeners) {
                     listener?.onAppBackground()
                 }

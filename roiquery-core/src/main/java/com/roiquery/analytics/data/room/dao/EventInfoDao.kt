@@ -17,24 +17,24 @@ import com.roiquery.analytics.data.room.bean.Events
 interface EventInfoDao {
 
     @Query("SELECT data FROM events limit 0,:limit ")
-    suspend fun queryEventData(limit: Int): Array<String>
+    fun queryEventData(limit: Int): Array<String>
 
     @Insert
-    suspend fun insertEvent(events: Events): Long
+    fun insertEvent(events: Events): Long
 
     @Delete
-    suspend fun delete(event: Events)
+    fun delete(event: Events)
 
     @Query("select count(*) as num from events")
-    suspend fun dataCount(): Int
+    fun dataCount(): Int
 
     @Query("DELETE FROM events WHERE _id IN ( SELECT t._id FROM ( SELECT _id FROM events ORDER BY _id ASC LIMIT :num ) AS t)")
-    suspend fun deleteTheOldestData(num: Int)
+    fun deleteTheOldestData(num: Int)
 
     @Query("DELETE FROM events WHERE event_syn=:eventSyn")
-    suspend fun deleteEventByEventSyn(eventSyn:String)
+    fun deleteEventByEventSyn(eventSyn:String)
 
     @Query("delete  from events")
-    suspend fun clearTable()
+    fun clearTable()
 
 }
