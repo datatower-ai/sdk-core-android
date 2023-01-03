@@ -21,7 +21,7 @@ import org.json.JSONObject
 class AnalyticsImp internal constructor() : AbstractAnalytics() {
 
     override var accountId: String?
-        get() = EventDateAdapter.getInstance()?.accountId
+        get() = PropertyManager.instance.getACID()
         set(value) {
             if (value != null) {
                 PropertyManager.instance.updateACID(value)
@@ -194,7 +194,7 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
 
         internal fun getInstance(): AbstractAnalytics {
             if (!mHasInit.get()) {
-                Log.e(Constant.LOG_TAG,"Call DT.init() and use function after initCallback")
+                Log.e(Constant.LOG_TAG,"Call DT.init() first")
                 return AnalyticsEmptyImp()
             }
             return instance ?: synchronized(this) {

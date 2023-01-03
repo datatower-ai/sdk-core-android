@@ -6,7 +6,6 @@ import android.os.SystemClock
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.OnDataTowerIdListener
-import com.roiquery.analytics.ROIQueryCoroutineScope
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
@@ -18,7 +17,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 
-class PropertyManager private constructor() : ROIQueryCoroutineScope() {
+class PropertyManager private constructor() {
     companion object {
         val instance by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
             PropertyManager()
@@ -157,7 +156,17 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
      * @return
      */
     private fun initEventInfo(context: Context) {
-        eventInfo = EventUtils.getEventInfo(context, dataAdapter)
+        try {
+            //在子线程获取
+            val countDownLatch = CountDownLatch(1)
+            EventTrackManager.instance.addTask {
+                eventInfo = EventUtils.getEventInfo(context, dataAdapter)
+                countDownLatch.countDown()
+            }
+            countDownLatch.await(3, TimeUnit.SECONDS)
+        }catch (e:Exception){
+
+        }
     }
 
     private fun updateEventInfo(key: String, value: String) {
@@ -333,12 +342,14 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
         if (id.isEmpty()) {
             return
         }
-        if (dataAdapter?.dtId?.isEmpty() == true) {
-            dataAdapter?.dtId = id
+        EventTrackManager.instance.addTask{
+            if (dataAdapter?.dtId?.isEmpty() == true) {
+                dataAdapter?.dtId = id
+            }
+            updateEventInfo(
+                Constant.EVENT_INFO_DT_ID, id
+            )
         }
-        updateEventInfo(
-            Constant.EVENT_INFO_DT_ID, id
-        )
     }
 
     fun getGAID(): String {
@@ -389,8 +400,19 @@ class PropertyManager private constructor() : ROIQueryCoroutineScope() {
 
     fun updateACID(acid: String) {
         if (acid.isEmpty()) return
-        EventDateAdapter.getInstance()?.accountId = acid
-        updateEventInfo(Constant.EVENT_INFO_ACID, acid)
+        EventTrackManager.instance.addTask{
+            EventDateAdapter.getInstance()?.accountId = acid
+            updateEventInfo(Constant.EVENT_INFO_ACID, acid)
+        }
+    }
+
+    fun getACID(): String {
+        (getEventInfo()[Constant.EVENT_INFO_ACID] as String?)?.let {
+            if (it.isNotEmpty()) {
+                return it
+            }
+        }
+        return ""
     }
 
     fun updateFireBaseInstanceId(fiid: String?) {

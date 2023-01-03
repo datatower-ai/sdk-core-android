@@ -1,21 +1,17 @@
 package com.roiquery.analytics.data
 
 import android.content.Context
-import android.text.TextUtils
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.ROIQueryCoroutineScope
+import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.utils.LogUtils
+import com.roiquery.analytics.utils.ProcessUtil
 import com.roiquery.analytics.utils.ThreadUtils
 import com.roiquery.analytics.utils.TimeCalibration
-import kotlinx.coroutines.*
 import org.json.JSONObject
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
-
 
 class EventDateAdapter private constructor(
     context: Context,
-): ROIQueryCoroutineScope()  {
+){
     private var mOperation: EventDataOperation? = EventDataOperation(context.applicationContext)
     /**
      * Adds a JSON string representing an event with properties or a person record
@@ -26,16 +22,11 @@ class EventDateAdapter private constructor(
      * @return the number of rows in the table, or DB_OUT_OF_MEMORY_ERROR/DB_UPDATE_ERROR
      * on failure
      */
-    suspend fun addJSON(data: JSONObject?, eventSyn: String)= coroutineScope {
-        suspendCoroutine<Int> {
-            scope.launch {
-                try {
-                    val code = mOperation?.insertData(data, eventSyn)!!
-                    it.resume(code)
-                } catch (e:Exception){
-                    it.resume(DataParams.DB_ADD_JSON_ERROR)
-                }
-            }
+     fun addJSON(data: JSONObject?, eventSyn: String):Int {
+        return try {
+            mOperation?.insertData(data, eventSyn)!!
+        } catch (e:Exception){
+            DataParams.DB_ADD_JSON_ERROR
         }
     }
 
@@ -53,9 +44,7 @@ class EventDateAdapter private constructor(
      * @return the number of rows in the table
      */
     fun cleanupEvents(eventSyn: String?) {
-        scope.launch(Dispatchers.IO) {
-            eventSyn?.let { mOperation?.deleteEventByEventSyn(it) }
-        }
+        eventSyn?.let { mOperation?.deleteEventByEventSyn(it) }
     }
 
     /**
@@ -63,8 +52,10 @@ class EventDateAdapter private constructor(
      * @param limit 条数限制
      * @return 数据
      */
-    fun generateDataString(limit: Int):String?= runBlocking{
-        mOperation?.queryData(limit)}
+    fun generateDataString(limit: Int):String? {
+        return mOperation?.queryData(limit)
+    }
+
 
 
     /**
@@ -73,30 +64,28 @@ class EventDateAdapter private constructor(
      * @return acountId
      */
     var accountId: String
-        get() = runBlocking{ getStringConfig(DataParams.CONFIG_ACCOUNT_ID) }
+        get() = getStringConfig(DataParams.CONFIG_ACCOUNT_ID)
         set(value) = setStringConfig(DataParams.CONFIG_ACCOUNT_ID,value)
 
     /**
      * 是否上报数据，默认是
      */
     var enableUpload: Boolean
-        get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_ENABLE_UPLOADS,true)}
+        get() = getBooleanConfig(DataParams.CONFIG_ENABLE_UPLOADS,true)
         set(value) = setBooleanConfig(DataParams.CONFIG_ENABLE_UPLOADS,value)
 
     /**
      * install 事件的插入数据库状态
      */
     var isAppInstallInserted: Boolean
-        get() = runBlocking{
-            getBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE,false)
-        }
+        get() = getBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE,false)
         set(value) = setBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE, value)
 
     /**
      * 第一次 session_start 事件的插入数据库状态
      */
     var isFirstSessionStartInserted: Boolean
-        get() = runBlocking{ getBooleanConfig(DataParams.CONFIG_FIRST_SESSION_START_INSERT_STATE,false) }
+        get() = getBooleanConfig(DataParams.CONFIG_FIRST_SESSION_START_INSERT_STATE,false)
         set(value) = setBooleanConfig(DataParams.CONFIG_FIRST_SESSION_START_INSERT_STATE, value)
 
     /**
@@ -104,17 +93,17 @@ class EventDateAdapter private constructor(
      */
     var dtId : String
         set(value) = setStringConfig(DataParams.CONFIG_DT_ID,value)
-        get() = runBlocking {   getStringConfig(DataParams.CONFIG_DT_ID)  }
+        get() = getStringConfig(DataParams.CONFIG_DT_ID)
 
     var latestNetTime :Long
         set(value) = setLongConfig(DataParams.LATEST_NET_TIME,value)
-        get() = runBlocking {   getLongConfig(DataParams.LATEST_NET_TIME,TimeCalibration.TIME_NOT_VERIFY_VALUE)  }
+        get() = getLongConfig(DataParams.LATEST_NET_TIME,TimeCalibration.TIME_NOT_VERIFY_VALUE)
 
     var latestGapTime:Long
         set(value) = setLongConfig(DataParams.LATEST_GAP_TIME,value)
-        get() = runBlocking {   getLongConfig(DataParams.LATEST_GAP_TIME,TimeCalibration.TIME_NOT_VERIFY_VALUE)  }
+        get() = getLongConfig(DataParams.LATEST_GAP_TIME,TimeCalibration.TIME_NOT_VERIFY_VALUE)
 
-    private suspend fun getBooleanConfig(key: String,default:Boolean = true): Boolean{
+    private fun getBooleanConfig(key: String,default:Boolean = true): Boolean{
         val values = mOperation?.queryConfig(key)
         return if (values != null && values.isNotEmpty()) {
             values == "true" || (values == "null" && default)
@@ -150,7 +139,7 @@ class EventDateAdapter private constructor(
 //    }
 
 
-    private suspend fun getStringConfig(key: String): String{
+    private fun getStringConfig(key: String): String{
         val values = mOperation?.queryConfig(key)
         val s = if (values != null && values.isNotEmpty() && values != "null") {
             values
@@ -169,11 +158,12 @@ class EventDateAdapter private constructor(
         )
     }
 
-    private suspend fun getLongConfig(key: String,default:Long = 0L):Long {
+    private fun getLongConfig(key: String,default:Long = 0L):Long {
+
         val value = mOperation?.queryConfig(key)
         try {
             if (value != null && value.isNotEmpty() && value != "null") {
-             return   value.toLong()
+                return  value.toLong()
             }
         } catch (e: NumberFormatException) {
 

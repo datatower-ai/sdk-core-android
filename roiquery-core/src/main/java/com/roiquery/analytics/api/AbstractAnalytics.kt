@@ -100,7 +100,6 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun initLocalData(context: Context) {
         dataAdapter = EventDateAdapter.getInstance(context)
-        dataAdapter?.enableUpload = true
     }
 
     /**

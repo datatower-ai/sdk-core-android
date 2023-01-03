@@ -51,26 +51,19 @@ class TimeCalibration private constructor() {
                 isVerifyTimeRunning.set(false)
                 return
             }
-            RequestHelper.Builder(HttpMethod.POST_ASYNC, EventUploadManager.getInstance()?.getEventUploadUrl())
+            val response = RequestHelper.Builder(HttpMethod.POST_SYNC, EventUploadManager.getInstance()?.getEventUploadUrl())
                 .jsonData(TIME_FROM_ROI_NET_BODY)
                 .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
-                .callback(object : HttpCallback.TimeCallback() {
-                    override fun onFailure(code: Int, errorMessage: String?) {
-                        isVerifyTimeRunning.set(false)
-                        LogUtils.e(LOG_TAG, errorMessage)
-                    }
+                .executeSync()
 
-                    override fun onResponse(response: Long) {
-                        LogUtils.d(LOG_TAG,"server time : $response")
-                        setVerifyTime(response)
-                        //避免因为时间未同步而造成数据堆积
-                        if (DTAnalytics.isSDKInitSuccess()) {
-                            EventUploadManager.getInstance()?.flush()
-                        }
-                        isVerifyTimeRunning.set(false)
-                    }
-
-                }).execute()
+            if (response != null && response.date != 0L) {
+                setVerifyTime(response.date)
+                //避免因为时间未同步而造成数据堆积
+                if (DTAnalytics.isSDKInitSuccess()) {
+                    EventUploadManager.getInstance()?.flush()
+                }
+            }
+            isVerifyTimeRunning.set(false)
         }
     }
 
@@ -135,7 +128,9 @@ class TimeCalibration private constructor() {
     fun getSystemHibernateTimeGap() = SystemClock.elapsedRealtime()
 
     init {
-        EventDateAdapter.getInstance()?.latestNetTime = TIME_NOT_VERIFY_VALUE
-        EventDateAdapter.getInstance()?.latestGapTime = TIME_NOT_VERIFY_VALUE
+        if (ProcessUtil.isMainProcess(AnalyticsConfig.instance.mContext)){
+            EventDateAdapter.getInstance()?.latestNetTime = TIME_NOT_VERIFY_VALUE
+            EventDateAdapter.getInstance()?.latestGapTime = TIME_NOT_VERIFY_VALUE
+        }
     }
 }

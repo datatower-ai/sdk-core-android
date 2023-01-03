@@ -29,11 +29,12 @@ internal class ROIQueryQualityHelper private constructor() {
         @ROIQueryErrorParams.ROIQueryErrorLevel level: Int = ROIQueryErrorParams.TYPE_ERROR
     ) {
         try {
+            val data = getJsonData(errorCode, errorMsg, defaultErrorMsg, level)
             RequestHelper.Builder(
                 HttpMethod.POST_ASYNC,
                 Constant.ERROR_REPORT_URL
             )
-                .jsonData(getJsonData(errorCode, errorMsg, defaultErrorMsg, level))
+                .jsonData(data)
                 .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
                 .callback(object :
                     HttpCallback.JsonCallback() {
@@ -42,7 +43,7 @@ internal class ROIQueryQualityHelper private constructor() {
                     }
 
                     override fun onResponse(response: JSONObject?) {
-                        LogUtils.d(TAG,"Quality onResponse: "+ response.toString())
+                        LogUtils.d(TAG,"Quality onResponse Success: "+ data)
                     }
 
                     override fun onAfter() {

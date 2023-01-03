@@ -4,6 +4,7 @@ import android.os.SystemClock
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.config.AnalyticsConfig
+import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
@@ -38,7 +39,10 @@ class EventTrackManager {
      * 初始化网络时间，保存至内存中
      */
     private fun initTime() {
-        TimeCalibration.instance.getReferenceTime()
+        addTask{
+            TimeCalibration.instance.getReferenceTime()
+            EventDateAdapter.getInstance()?.enableUpload = true
+        }
     }
 
 
