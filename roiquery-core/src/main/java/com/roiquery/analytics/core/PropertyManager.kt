@@ -3,6 +3,7 @@ package com.roiquery.analytics.core
 import android.content.Context
 import android.os.Looper
 import android.os.SystemClock
+import android.util.Log
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.OnDataTowerIdListener
@@ -13,8 +14,6 @@ import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONObject
 import java.util.concurrent.ConcurrentLinkedQueue
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
 
 
 class PropertyManager private constructor() {
@@ -25,10 +24,12 @@ class PropertyManager private constructor() {
     }
 
     // 事件信息，包含事件的基本数据
-    private var eventInfo: MutableMap<String, Any?>? = null
+    private var eventInfo: MutableMap<String, Any?> = mutableMapOf()
 
     // 事件通用属性
-    private var commonProperties: MutableMap<String, Any?>? = null
+    private var commonProperties: MutableMap<String, Any?> = mutableMapOf()
+    //激活时用户属性
+    private var activeProperties: MutableMap<String, Any?> = mutableMapOf()
 
     //本地数据适配器，包括sp、db的操作
     private var dataAdapter: EventDateAdapter? = null
@@ -157,23 +158,19 @@ class PropertyManager private constructor() {
      */
     private fun initEventInfo(context: Context) {
         try {
-            //在子线程获取
-            val countDownLatch = CountDownLatch(1)
             EventTrackManager.instance.addTask {
-                eventInfo = EventUtils.getEventInfo(context, dataAdapter)
-                countDownLatch.countDown()
+                EventUtils.getEventInfo(context, dataAdapter, eventInfo)
+                Log.d(Constant.LOG_TAG, "initEventInfo"+SystemClock.elapsedRealtime().toString())
             }
-            countDownLatch.await(3, TimeUnit.SECONDS)
         }catch (e:Exception){
-
         }
     }
 
     private fun updateEventInfo(key: String, value: String) {
-        eventInfo?.put(key, value)
+        eventInfo[key] = value
     }
 
-    fun getEventInfo() = eventInfo?.toMutableMap() ?: mutableMapOf()
+    fun getEventInfo() = eventInfo.toMutableMap()
 
     /**
      * 获取并配置 事件通用属性
@@ -182,28 +179,26 @@ class PropertyManager private constructor() {
      */
     private fun initCommonProperties(context: Context, initConfig: AnalyticsConfig?) {
         try {
-            //在子线程获取设备属性
-            val countDownLatch = CountDownLatch(1)
             EventTrackManager.instance.addTask {
-                commonProperties = EventUtils.getCommonProperties(context, dataAdapter)
-                countDownLatch.countDown()
-            }
-            countDownLatch.await(3, TimeUnit.SECONDS)
-            //增加外部出入的属性
-            initConfig?.let { config ->
-                if (config.mCommonProperties != null) {
-                    val iterator = config.mCommonProperties!!.keys()
-                    while (iterator.hasNext()) {
-                        val key = iterator.next()
-                        try {
-                            val value = config.mCommonProperties!![key]
-                            updateCommonProperties(key, value.toString())
-                        } catch (e: Exception) {
-                            LogUtils.printStackTrace(e)
+                EventUtils.getCommonProperties(context, commonProperties, activeProperties)
+                Log.d(Constant.LOG_TAG, "initCommonProperties"+SystemClock.elapsedRealtime().toString())
+                //增加外部出入的属性
+                initConfig?.let { config ->
+                    if (config.mCommonProperties != null) {
+                        val iterator = config.mCommonProperties!!.keys()
+                        while (iterator.hasNext()) {
+                            val key = iterator.next()
+                            try {
+                                val value = config.mCommonProperties!![key]
+                                updateCommonProperties(key, value.toString())
+                            } catch (e: Exception) {
+                                LogUtils.printStackTrace(e)
+                            }
                         }
                     }
                 }
             }
+
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }
@@ -211,16 +206,18 @@ class PropertyManager private constructor() {
 
 
     private fun updateCommonProperties(key: String, value: Any?) {
-        commonProperties?.put(key, value)
+        commonProperties[key] = value
     }
 
     private fun removeCommonProperty(key: String) {
-        if (commonProperties?.containsKey(key) == true) {
-            commonProperties?.remove(key)
+        if (commonProperties.containsKey(key)) {
+            commonProperties.remove(key)
         }
     }
 
-    fun getCommonProperties() = commonProperties?.toMutableMap() ?: mutableMapOf()
+    fun getCommonProperties() = commonProperties.toMutableMap()
+
+    fun getActiveProperties() = activeProperties.toMutableMap()
 
     /**
      * FPS状态监控

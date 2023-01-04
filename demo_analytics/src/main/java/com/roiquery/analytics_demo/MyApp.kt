@@ -16,6 +16,8 @@ class MyApp : Application() {
     private val SERVER_URL_EXTERNAL   = "https://report.roiquery.com"
     override fun onCreate() {
         super.onCreate()
+        val initBeginTime = SystemClock.elapsedRealtime()
+        Log.d("initSDK begin", initBeginTime.toString())
         DT.initSDK(
             this,
             "dt_53ecce7c85c3daab",
@@ -24,6 +26,7 @@ class MyApp : Application() {
             true,
             Log.VERBOSE
         )
+        Log.d("initSDK end", (SystemClock.elapsedRealtime() - initBeginTime).toString())
         DTAnalytics.getDataTowerId(object : OnDataTowerIdListener {
             override fun onDataTowerIdCompleted(dataTowerId: String) {
                 Log.d("DataTowerId",dataTowerId)
