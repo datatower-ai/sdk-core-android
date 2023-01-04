@@ -54,7 +54,7 @@ class PresetEventManager {
 
     private fun setActiveUserProperties(context: Context) {
         val activeUserProperties =
-            JSONObject(EventUtils.getActiveUserProperties(context, mDataAdapter)).apply {
+            JSONObject(PropertyManager.instance.getActiveProperties()).apply {
                 PropertyManager.instance.updateSdkVersionProperty(
                     this,
                     Constant.USER_PROPERTY_ACTIVE_SDK_TYPE,
