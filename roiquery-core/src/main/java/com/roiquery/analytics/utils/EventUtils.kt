@@ -279,8 +279,9 @@ object EventUtils {
 
         activeProperties[Constant.USER_PROPERTY_ACTIVE_STORAGE_USED] = MemoryUtils.getDisk(context, false)
 
-        activeProperties[Constant.USER_PROPERTY_ACTIVE_USER_AGENT] = DeviceUtils.getUserAgent(context)
-
+        if (ProcessUtil.isMainProcess(context)) {
+            activeProperties[Constant.USER_PROPERTY_ACTIVE_USER_AGENT] = DeviceUtils.getUserAgent(context)
+        }
         activeProperties[Constant.USER_PROPERTY_ACTIVE_PKG] = context.packageName
     }
 
