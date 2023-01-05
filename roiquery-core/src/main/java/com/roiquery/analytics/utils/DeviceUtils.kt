@@ -4,6 +4,7 @@ package com.roiquery.analytics.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Point
 import android.os.Build
 import android.provider.Settings
@@ -13,7 +14,8 @@ import android.view.Surface
 import android.view.WindowManager
 import android.webkit.WebSettings
 import android.webkit.WebView
-import com.roiquery.analytics.data.EventDateAdapter
+import androidx.core.os.ConfigurationCompat
+import androidx.core.os.LocaleListCompat
 import java.util.*
 
 
@@ -170,10 +172,32 @@ object DeviceUtils {
         return ""
     }
 
-    fun getLocalCountry(context: Context):String {
-        return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) context.resources.configuration.locales[0].country
-            else context.resources.configuration.locale.country
-     }
+//    fun getLocalCountry(context: Context):String {
+//        return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) context.resources.configuration.locales[0].country
+//            else context.resources.configuration.locale.country
+//     }
+
+    fun getLocalCountry(context: Context): String {
+        val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        var country = tm.simCountryIso
+        if (TextUtils.isEmpty(country)) {
+            country = getLocale().country
+        }
+        if (TextUtils.isEmpty(country)) {
+            country = ""
+        }
+        return country.uppercase(Locale.US)
+    }
+
+    private fun getLocale(): Locale {
+        val locale: Locale = try {
+            val listCompat: LocaleListCompat = ConfigurationCompat.getLocales(Resources.getSystem().configuration)
+            listCompat.get(0)
+        } catch (e: Exception) {
+            Locale.getDefault()
+        }
+        return locale
+    }
 
     fun getLocaleLanguage():String{
         return Locale.getDefault().language
