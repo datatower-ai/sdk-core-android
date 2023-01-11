@@ -40,19 +40,28 @@ class PresetEventManager {
     }
 
     private fun checkAppInstall(context: Context) {
+        if (AnalyticsConfig.instance.isSdkDisable()) {
+            return
+        }
         if (mDataAdapter?.isAppInstallInserted == false) {
             startAppAttribute(context)
         }
     }
 
     private fun setLatestUserProperties(context: Context) {
+        if (AnalyticsConfig.instance.isSdkDisable()) {
+            return
+        }
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET,
-            JSONObject(EventUtils.getLatestUserProperties(context, mDataAdapter))
+            JSONObject(EventUtils.getLatestUserProperties(context, PropertyManager.instance.getDisableList()))
         )
     }
 
     private fun setActiveUserProperties(context: Context) {
+        if (AnalyticsConfig.instance.isSdkDisable()) {
+            return
+        }
         val activeUserProperties =
             JSONObject(PropertyManager.instance.getActiveProperties()).apply {
                 PropertyManager.instance.updateSdkVersionProperty(

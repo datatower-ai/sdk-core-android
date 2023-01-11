@@ -188,52 +188,6 @@ open class ROIQueryAnalytics {
             AnalyticsImp.getInstance().trackNormal(eventName, true, properties)
 
 
-        /**
-         * app 进入前台
-         *
-         */
-        internal fun onAppForeground(startReason: String?) {
-            try {
-                PropertyManager.instance.updateIsForeground(true,startReason)
-                LogUtils.d("trackAppStateChanged","onAppForeground")
-                for (listener in mAppLifecycleListeners) {
-                    listener?.onAppForeground()
-                }
-            } catch (e: Exception) {
-                LogUtils.printStackTrace("RoiqueryAnalytics", e)
-            }
-        }
-
-        /**
-         * app 进入后台
-         */
-        internal fun onAppBackground() {
-            try {
-                PropertyManager.instance.updateIsForeground(false)
-                LogUtils.d("trackAppStateChanged","onAppBackground")
-                for (listener in mAppLifecycleListeners) {
-                    listener?.onAppBackground()
-                }
-            } catch (e: Exception) {
-                LogUtils.printStackTrace("RoiqueryAnalytics", e)
-            }
-        }
-
-
-        internal fun getContext(): Context? {
-            return try {
-                AnalyticsConfig.instance.mContext
-            } catch (e: Exception) {
-                LogUtils.printStackTrace("RoiqueryAnalytics", e)
-                null
-            }
-        }
-
-
-        internal fun addAppStatusListener(listener: AppLifecycleHelper.OnAppStatusListener?) {
-            if (!isSDKInitSuccess()) return
-            mAppLifecycleListeners.add(listener)
-        }
 
         /**
          * sdk 是否初始化成功

@@ -1,0 +1,61 @@
+<resources>
+    <string-array name="DTDisPresetProperties">
+<!--   预置事件属性     -->
+<!--        <item>#gaid</item>-->
+<!--        <item>#android_id</item>-->
+<!--        <item>#is_foreground</item>-->
+<!--        <item>#bundle_id</item>-->
+<!--        <item>#app_version_code</item>-->
+<!--        <item>#app_version_name</item>-->
+<!--        <item>#sdk_type</item>-->
+<!--        <item>#sdk_version_name</item>-->
+<!--        <item>#os</item>-->
+<!--        <item>#os_version_code</item>-->
+<!--        <item>#os_version_name</item>-->
+<!--        <item>#os_country_code</item>-->
+<!--        <item>#os_lang_code</item>-->
+<!--        <item>#screen_height</item>-->
+<!--        <item>#screen_width</item>-->
+<!--        <item>#device_brand</item>-->
+<!--        <item>#device_manufacturer</item>-->
+<!--        <item>#device_model</item>-->
+<!--        <item>#build_device</item>-->
+<!--        <item>#memory_used</item>-->
+<!--        <item>#storage_used</item>-->
+<!--        <item>#simulator</item>-->
+<!--        <item>#network_type</item>-->
+<!--        <item>#mcc</item>-->
+<!--        <item>#mnc</item>-->
+<!--        <item>#fps</item>-->
+<!--        <item>#zone_offset</item>-->
+<!--&lt;!&ndash;   预置用户属性     &ndash;&gt;-->
+<!--        <item>#active_android_id</item>-->
+<!--        <item>#active_gaid</item>-->
+<!--        <item>#active_mcc</item>-->
+<!--        <item>#active_mcc</item>-->
+<!--        <item>#active_mnc</item>-->
+<!--        <item>#active_os_country_code</item>-->
+<!--        <item>#active_os_lang_code</item>-->
+<!--        <item>#active_bundle_id</item>-->
+<!--        <item>#active_app_version_code</item>-->
+<!--        <item>#active_app_version_name</item>-->
+<!--        <item>#active_sdk_type</item>-->
+<!--        <item>#active_sdk_version_name</item>-->
+<!--        <item>#active_os</item>-->
+<!--        <item>#active_os_version_name</item>-->
+<!--        <item>#active_device_manufacturer</item>-->
+<!--        <item>#active_os_version_code</item>-->
+<!--        <item>#active_build_device</item>-->
+<!--        <item>#active_device_brand</item>-->
+<!--        <item>#active_device_model</item>-->
+<!--        <item>#active_screen_height</item>-->
+<!--        <item>#active_screen_width</item>-->
+<!--        <item>#active_memory_used</item>-->
+<!--        <item>#active_storage_used</item>-->
+<!--        <item>#active_network_type</item>-->
+<!--        <item>#active_simulator</item>-->
+            <item>#latest_app_version_code</item>
+            <item>#latest_app_version_name</item>
+
+    </string-array>
+</resources>

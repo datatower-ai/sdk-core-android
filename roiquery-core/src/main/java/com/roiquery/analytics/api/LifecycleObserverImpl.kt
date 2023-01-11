@@ -8,7 +8,10 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.roiquery.analytics.DTAnalytics
+import com.roiquery.analytics.utils.AdtUtil
 import com.roiquery.analytics.utils.JsonUtils
+import com.roiquery.analytics.utils.LogUtils
+import com.roiquery.analytics.utils.ProcessUtil
 import org.json.JSONObject
 import java.lang.ref.WeakReference
 
@@ -18,10 +21,9 @@ class LifecycleObserverImpl : ActivityLifecycleCallbacks {
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(object: LifecycleEventObserver {
             override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                LogUtils.d("registerAppLifecycleListener", ProcessUtil.getCurrentProcessName(AdtUtil.getInstance().applicationContext))
                 if (event == Lifecycle.Event.ON_START) {
-                    DTAnalytics.onAppForeground(getStartReason())
                 }else if (event == Lifecycle.Event.ON_STOP){
-                    DTAnalytics.onAppBackground()
                 }
             }
         })

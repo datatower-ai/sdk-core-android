@@ -19,19 +19,24 @@ object EventUtils {
     private val KEY_PATTERN =
         Pattern.compile("^[a-zA-Z][a-zA-Z\\d_#]{0,49}", Pattern.CASE_INSENSITIVE)
 
-    fun getEventInfo(context: Context, dataAdapter: EventDateAdapter?,eventInfo: MutableMap<String, Any?>) {
+    fun getEventInfo(context: Context,
+                     dataAdapter: EventDateAdapter?,
+                     eventInfo: MutableMap<String, Any?>,
+                     disableList: ArrayList<String>
+    ) {
         //登录账号id
         dataAdapter?.accountId?.let {
             if (it.isNotEmpty()) {
                 eventInfo[Constant.EVENT_INFO_ACID] = it
             }
         }
+        if (!disableList.contains(Constant.EVENT_INFO_BUNDLE_ID)) {
+            //进程名
+            eventInfo[Constant.EVENT_INFO_BUNDLE_ID] = ProcessUtil.getCurrentProcessName(context)
+        }
         //应用唯一标识,后台分配
         eventInfo[Constant.EVENT_INFO_APP_ID] = AnalyticsConfig.instance.mAppId
-        //包名
-        eventInfo[Constant.EVENT_INFO_PKG] = context.packageName
-        //进程名
-        eventInfo[Constant.EVENT_INFO_BUNDLE_ID] = ProcessUtil.getCurrentProcessName(context)
+
         //debug 标志
         if (AnalyticsConfig.instance.mEnabledDebug) {
             eventInfo[Constant.EVENT_INFO_DEBUG] = true
@@ -45,244 +50,229 @@ object EventUtils {
     }
 
 
-    fun getLatestUserProperties(context: Context, dataAdapter: EventDateAdapter?) =
+    fun getLatestUserProperties(context: Context, disableList: List<String>) =
         mutableMapOf<String, Any?>().apply {
             //debug 标志
             put(
                 Constant.USER_PROPERTY_LATEST_DEBUG,
                 AnalyticsConfig.instance.mEnabledDebug
             )
-            put(
-                Constant.USER_PROPERTY_LATEST_APP_VERSION_NAME,
-                AppInfoUtils.getAppVersionName(context)
-            )
-            put(
-                Constant.USER_PROPERTY_LATEST_APP_VERSION_CODE,
-                AppInfoUtils.getAppVersionCode(context)
-            )
-        }
+            if (!disableList.contains(Constant.USER_PROPERTY_LATEST_APP_VERSION_NAME)){
+                put(
+                    Constant.USER_PROPERTY_LATEST_APP_VERSION_NAME,
+                    AppInfoUtils.getAppVersionName(context)
+                )
+            }
 
-//    fun getActiveUserProperties(context: Context, dataAdapter: EventDateAdapter?) =
-//        mutableMapOf<String, Any?>().apply {
-//
-//            DeviceUtils.getMcc(context).let {
-//                if (it.isNotEmpty()) {
-//                    put(Constant.USER_PROPERTY_ACTIVE_MCC, it)
-//                }
-//            }
-//            DeviceUtils.getMnc(context).let {
-//                if (it.isNotEmpty()) {
-//                    put(Constant.USER_PROPERTY_ACTIVE_MNC, it)
-//                }
-//            }
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_OS_COUNTRY,
-//                DeviceUtils.getLocalCountry(context)
-//            )//系统国家
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_OS_LANG,
-//                DeviceUtils.getLocaleLanguage()
-//            )//系统语言
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_PKG,
-//                context.packageName
-//            )//包名
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_APP_VERSION_CODE,
-//                AppInfoUtils.getAppVersionCode(context)
-//            )//应用版本号
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_APP_VERSION_NAME,
-//                AppInfoUtils.getAppVersionName(context)
-//            )//应用版本名
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_OS,
-//                Constant.SDK_TYPE_ANDROID
-//            )//如 Android、iOS 等
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_OS_VERSION_NAME,
-//                DeviceUtils.oS
-//            )//操作系统版本,iOS 11.2.2、Android 8.0.0 等
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_OS_VERSION_CODE,
-//                Build.VERSION.SDK_INT
-//            )
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_DEVICE_MANUFACTURER,
-//                DeviceUtils.manufacturer
-//            )//用户设备的制造商，如 Apple，vivo 等
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_DEVICE_BRAND,
-//                DeviceUtils.brand
-//            )//设备品牌,如 Galaxy、Pixel
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_BUILD_DEVICE,
-//                Build.DEVICE
-//            )
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_DEVICE_MODEL,
-//                DeviceUtils.model
-//            )//设备型号,用户设备的型号，如 iPhone 8 等
-//            val size = DeviceUtils.getDeviceSize(context)
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_SCREEN_WIDTH,
-//                size[0]
-//            )//屏幕宽度
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_SCREEN_HEIGHT,
-//                size[1]
-//            )//屏幕高度
-////
-////            put(
-////                Constant.USER_PROPERTY_ACTIVE_DIMS_DPI,
-////                DeviceUtils.getDensityDpi(context)
-////            )
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_MEMORY_USED,
-//                MemoryUtils.getRAM(context)
-//            )
-//
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_STORAGE_USED,
-//                MemoryUtils.getDisk(context, false)
-//            )
-//
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_NETWORK_TYPE,
-//                NetworkUtil.getNetworkTypeString(context)
-//            )
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_SIMULATOR,
-//                EmulatorDetector.isEmulator()
-//            )
-//
-//            put(
-//                Constant.USER_PROPERTY_ACTIVE_USER_AGENT,
-//                DeviceUtils.getUserAgent(context)
-//            )
-//
-//        }
+            if (!disableList.contains(Constant.USER_PROPERTY_LATEST_APP_VERSION_CODE)){
+                put(
+                    Constant.USER_PROPERTY_LATEST_APP_VERSION_CODE,
+                    AppInfoUtils.getAppVersionCode(context)
+                )
+            }
+        }
 
     fun getCommonProperties(
         context: Context,
         commonProperties: MutableMap<String, Any?>,
-        activeProperties: MutableMap<String, Any?>
+        activeProperties: MutableMap<String, Any?>,
+        disableList: List<String>
     ) {
         //移动信号国家码
         DeviceUtils.getMcc(context).let {
             if (it.isNotEmpty()) {
-                commonProperties[Constant.COMMON_PROPERTY_MCC] = it
-                activeProperties[Constant.USER_PROPERTY_ACTIVE_MCC] = it
+                if (!disableList.contains(Constant.COMMON_PROPERTY_MCC)) {
+                    commonProperties[Constant.COMMON_PROPERTY_MCC] = it
+                }
+                if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_MCC)) {
+                    activeProperties[Constant.USER_PROPERTY_ACTIVE_MCC] = it
+                }
             }
         }
         //移动信号网络码
         DeviceUtils.getMnc(context).let {
             if (it.isNotEmpty()) {
-                commonProperties[Constant.COMMON_PROPERTY_MNC] = it
-                activeProperties[Constant.USER_PROPERTY_ACTIVE_MNC] = it
+                if (!disableList.contains(Constant.COMMON_PROPERTY_MNC)) {
+                    commonProperties[Constant.COMMON_PROPERTY_MNC] = it
+                }
+                if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_MNC)) {
+                    activeProperties[Constant.USER_PROPERTY_ACTIVE_MNC] = it
+                }
             }
         }
         //系统国家
         DeviceUtils.getLocalCountry(context).let {
             if (it.isNotEmpty()) {
-                commonProperties[Constant.COMMON_PROPERTY_OS_COUNTRY] = it
-                activeProperties[Constant.USER_PROPERTY_ACTIVE_OS_COUNTRY] = it
+                if (!disableList.contains(Constant.COMMON_PROPERTY_OS_COUNTRY)) {
+                    commonProperties[Constant.COMMON_PROPERTY_OS_COUNTRY] = it
+                }
+                if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_OS_COUNTRY)) {
+                    activeProperties[Constant.USER_PROPERTY_ACTIVE_OS_COUNTRY] = it
+                }
             }
         }
         //系统语言
         DeviceUtils.getLocaleLanguage().let {
-            commonProperties[Constant.COMMON_PROPERTY_OS_LANG] = it
-            activeProperties[Constant.USER_PROPERTY_ACTIVE_OS_LANG] = it
+            if (!disableList.contains(Constant.COMMON_PROPERTY_OS_LANG)) {
+                commonProperties[Constant.COMMON_PROPERTY_OS_LANG] = it
+            }
+            if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_OS_LANG)) {
+                activeProperties[Constant.USER_PROPERTY_ACTIVE_OS_LANG] = it
+            }
         }
 
         //应用版本号
         AppInfoUtils.getAppVersionCode(context).let {
-            commonProperties[Constant.COMMON_PROPERTY_APP_VERSION_CODE] = it
-            activeProperties[Constant.USER_PROPERTY_ACTIVE_APP_VERSION_CODE] = it
+            if (!disableList.contains(Constant.COMMON_PROPERTY_APP_VERSION_CODE)) {
+                commonProperties[Constant.COMMON_PROPERTY_APP_VERSION_CODE] = it
+            }
+            if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_APP_VERSION_CODE)) {
+                activeProperties[Constant.USER_PROPERTY_ACTIVE_APP_VERSION_CODE] = it
+            }
         }
 
-        //应用版本号
+        //应用版本名
         AppInfoUtils.getAppVersionName(context).let {
-            commonProperties[Constant.COMMON_PROPERTY_APP_VERSION_NAME] = it
-            activeProperties[Constant.USER_PROPERTY_ACTIVE_APP_VERSION_NAME] = it
+            if (!disableList.contains(Constant.COMMON_PROPERTY_APP_VERSION_NAME)) {
+                commonProperties[Constant.COMMON_PROPERTY_APP_VERSION_NAME] = it
+            }
+            if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_APP_VERSION_NAME)) {
+                activeProperties[Constant.USER_PROPERTY_ACTIVE_APP_VERSION_NAME] = it
+            }
         }
 
         //接入 SDK 的类型，如 Android，iOS,Unity
-        commonProperties[Constant.COMMON_PROPERTY_SDK_TYPE] = Constant.SDK_TYPE_ANDROID
-        activeProperties[Constant.USER_PROPERTY_ACTIVE_SDK_TYPE] = Constant.SDK_TYPE_ANDROID
+        if (!disableList.contains(Constant.COMMON_PROPERTY_SDK_TYPE)) {
+            commonProperties[Constant.COMMON_PROPERTY_SDK_TYPE] = Constant.SDK_TYPE_ANDROID
+        }
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_SDK_TYPE)) {
+            activeProperties[Constant.USER_PROPERTY_ACTIVE_SDK_TYPE] = Constant.SDK_TYPE_ANDROID
+        }
 
         //SDK 版本,如 1.1.2
-        commonProperties[Constant.COMMON_PROPERTY_SDK_VERSION] = BuildConfig.VERSION_NAME
-        activeProperties[Constant.USER_PROPERTY_ACTIVE_SDK_VERSION] = BuildConfig.VERSION_NAME
+        if (!disableList.contains(Constant.COMMON_PROPERTY_SDK_VERSION)) {
+            commonProperties[Constant.COMMON_PROPERTY_SDK_VERSION] = BuildConfig.VERSION_NAME
+        }
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_SDK_VERSION)) {
+            activeProperties[Constant.USER_PROPERTY_ACTIVE_SDK_VERSION] = BuildConfig.VERSION_NAME
+        }
 
         //如 Android、iOS 等
-        commonProperties[Constant.COMMON_PROPERTY_OS] = Constant.SDK_TYPE_ANDROID
-        activeProperties[Constant.USER_PROPERTY_ACTIVE_OS] = Constant.SDK_TYPE_ANDROID
+        if (!disableList.contains(Constant.COMMON_PROPERTY_OS)) {
+            commonProperties[Constant.COMMON_PROPERTY_OS] = Constant.SDK_TYPE_ANDROID
+        }
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_OS)) {
+            activeProperties[Constant.USER_PROPERTY_ACTIVE_OS] = Constant.SDK_TYPE_ANDROID
+        }
 
         //操作系统版本名, Android 8.0.0 等
         DeviceUtils.oS.let {
-            commonProperties[Constant.COMMON_PROPERTY_OS_VERSION_NAME] = it
-            activeProperties[Constant.USER_PROPERTY_ACTIVE_OS_VERSION_NAME] = it
+            if (!disableList.contains(Constant.COMMON_PROPERTY_OS_VERSION_NAME)) {
+                commonProperties[Constant.COMMON_PROPERTY_OS_VERSION_NAME] = it
+            }
+            if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_OS_VERSION_NAME)) {
+                activeProperties[Constant.USER_PROPERTY_ACTIVE_OS_VERSION_NAME] = it
+            }
         }
 
         //操作系统版本号, 如 31
-        commonProperties[Constant.COMMON_PROPERTY_OS_VERSION_CODE] = Build.VERSION.SDK_INT
-        activeProperties[Constant.USER_PROPERTY_ACTIVE_OS_VERSION_CODE] = Build.VERSION.SDK_INT
+        if (!disableList.contains(Constant.COMMON_PROPERTY_OS_VERSION_CODE)) {
+            commonProperties[Constant.COMMON_PROPERTY_OS_VERSION_CODE] = Build.VERSION.SDK_INT
+        }
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_OS_VERSION_CODE)) {
+            activeProperties[Constant.USER_PROPERTY_ACTIVE_OS_VERSION_CODE] = Build.VERSION.SDK_INT
+        }
 
         //用户设备的制造商，如 Apple，vivo 等
         DeviceUtils.manufacturer.let {
-            commonProperties[Constant.COMMON_PROPERTY_DEVICE_MANUFACTURER] = it
-            activeProperties[Constant.USER_PROPERTY_ACTIVE_DEVICE_MANUFACTURER] = it
+            if (!disableList.contains(Constant.COMMON_PROPERTY_DEVICE_MANUFACTURER)) {
+                commonProperties[Constant.COMMON_PROPERTY_DEVICE_MANUFACTURER] = it
+            }
+            if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_DEVICE_MANUFACTURER)) {
+                activeProperties[Constant.USER_PROPERTY_ACTIVE_DEVICE_MANUFACTURER] = it
+            }
         }
 
         //设备品牌,如 Galaxy、Pixel
         DeviceUtils.brand.let {
-            commonProperties[Constant.COMMON_PROPERTY_DEVICE_BRAND] = it
-            activeProperties[Constant.USER_PROPERTY_ACTIVE_DEVICE_BRAND] = it
+            if (!disableList.contains(Constant.COMMON_PROPERTY_DEVICE_BRAND)) {
+                commonProperties[Constant.COMMON_PROPERTY_DEVICE_BRAND] = it
+            }
+            if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_DEVICE_BRAND)) {
+                activeProperties[Constant.USER_PROPERTY_ACTIVE_DEVICE_BRAND] = it
+            }
         }
 
-        commonProperties[Constant.COMMON_PROPERTY_BUILD_DEVICE] = Build.DEVICE
-        activeProperties[Constant.USER_PROPERTY_ACTIVE_BUILD_DEVICE] = Build.DEVICE
+        //build_device
+        if (!disableList.contains(Constant.COMMON_PROPERTY_BUILD_DEVICE)) {
+            commonProperties[Constant.COMMON_PROPERTY_BUILD_DEVICE] = Build.DEVICE
+        }
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_BUILD_DEVICE)) {
+            activeProperties[Constant.USER_PROPERTY_ACTIVE_BUILD_DEVICE] = Build.DEVICE
+        }
 
         //设备型号,用户设备的型号，如 iPhone 8 等
         DeviceUtils.model.let {
-            commonProperties[Constant.COMMON_PROPERTY_DEVICE_MODEL] = it
-            activeProperties[Constant.USER_PROPERTY_ACTIVE_DEVICE_MODEL] = it
+            if (!disableList.contains(Constant.COMMON_PROPERTY_DEVICE_MODEL)) {
+                commonProperties[Constant.COMMON_PROPERTY_DEVICE_MODEL] = it
+            }
+            if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_DEVICE_MODEL)) {
+                activeProperties[Constant.USER_PROPERTY_ACTIVE_DEVICE_MODEL] = it
+            }
         }
 
         val size = DeviceUtils.getDeviceSize(context)
         //屏幕高度
-        commonProperties[Constant.COMMON_PROPERTY_SCREEN_WIDTH] = size[0]
-        activeProperties[Constant.USER_PROPERTY_ACTIVE_SCREEN_WIDTH] = size[0]
+        if (!disableList.contains(Constant.COMMON_PROPERTY_SCREEN_WIDTH)) {
+            commonProperties[Constant.COMMON_PROPERTY_SCREEN_WIDTH] = size[0]
+        }
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_SCREEN_WIDTH)) {
+            activeProperties[Constant.USER_PROPERTY_ACTIVE_SCREEN_WIDTH] = size[0]
+        }
 
         //屏幕宽度
-        commonProperties[Constant.COMMON_PROPERTY_SCREEN_HEIGHT] = size[1]
-        activeProperties[Constant.USER_PROPERTY_ACTIVE_SCREEN_HEIGHT] = size[1]
+        if (!disableList.contains(Constant.COMMON_PROPERTY_SCREEN_HEIGHT)) {
+            commonProperties[Constant.COMMON_PROPERTY_SCREEN_HEIGHT] = size[1]
+        }
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_SCREEN_HEIGHT)) {
+            activeProperties[Constant.USER_PROPERTY_ACTIVE_SCREEN_HEIGHT] = size[1]
+        }
 
         //网络状态
         NetworkUtil.getNetworkTypeString(context).let {
-            commonProperties[Constant.COMMON_PROPERTY_NETWORK_TYPE] = it
-            activeProperties[Constant.USER_PROPERTY_ACTIVE_NETWORK_TYPE] = it
+            if (!disableList.contains(Constant.COMMON_PROPERTY_NETWORK_TYPE)) {
+                commonProperties[Constant.COMMON_PROPERTY_NETWORK_TYPE] = it
+            }
+            if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_NETWORK_TYPE)) {
+                activeProperties[Constant.USER_PROPERTY_ACTIVE_NETWORK_TYPE] = it
+            }
         }
 
         //是否是模拟器
         EmulatorDetector.isEmulator().let {
-            commonProperties[Constant.COMMON_PROPERTY_SIMULATOR] = it
-            activeProperties[Constant.USER_PROPERTY_ACTIVE_SIMULATOR] = it
+            if (!disableList.contains(Constant.COMMON_PROPERTY_SIMULATOR)) {
+                commonProperties[Constant.COMMON_PROPERTY_SIMULATOR] = it
+            }
+            if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_SIMULATOR)) {
+                activeProperties[Constant.USER_PROPERTY_ACTIVE_SIMULATOR] = it
+            }
         }
 
         //时区
-        commonProperties[Constant.COMMON_PROPERTY_EVENT_ZONE_OFFSET] =
-            DataUtils.getTimezoneOffset(Date().time, null)
-
-        activeProperties[Constant.USER_PROPERTY_ACTIVE_MEMORY_USED] = MemoryUtils.getRAM(context)
-
-        activeProperties[Constant.USER_PROPERTY_ACTIVE_STORAGE_USED] = MemoryUtils.getDisk(context, false)
-
-        if (ProcessUtil.isMainProcess(context)) {
-            activeProperties[Constant.USER_PROPERTY_ACTIVE_USER_AGENT] = DeviceUtils.getUserAgent(context)
+        if (!disableList.contains(Constant.COMMON_PROPERTY_EVENT_ZONE_OFFSET)) {
+            commonProperties[Constant.COMMON_PROPERTY_EVENT_ZONE_OFFSET] =
+                DataUtils.getTimezoneOffset(Date().time, null)
         }
-        activeProperties[Constant.USER_PROPERTY_ACTIVE_PKG] = context.packageName
+
+        //ram
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_MEMORY_USED)) {
+            activeProperties[Constant.USER_PROPERTY_ACTIVE_MEMORY_USED] = MemoryUtils.getRAM(context)
+        }
+        //disk
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_STORAGE_USED)) {
+            activeProperties[Constant.USER_PROPERTY_ACTIVE_STORAGE_USED] = MemoryUtils.getDisk(context, false)
+        }
+
     }
 
     fun isValidEventName(name: String?): Boolean {

@@ -29,22 +29,37 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         }
 
     override fun getDTId(onDataTowerIDListener: OnDataTowerIdListener) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         PropertyManager.instance.getDataTowerId(onDataTowerIDListener)
     }
 
     override fun setFirebaseInstanceId(id: String?) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         PropertyManager.instance.updateFireBaseInstanceId(id)
     }
 
     override fun setAppsFlyersId(id: String?) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         PropertyManager.instance.updateAFID(id)
     }
 
     override fun setKochavaId(id: String?) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         PropertyManager.instance.updateKOID(id)
     }
 
     override fun setAdjustId(id: String?) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         PropertyManager.instance.updateAdjustId(id)
     }
 
@@ -59,15 +74,24 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
 
 
     override fun trackUser(eventName: String, properties: JSONObject?) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         EventTrackManager.instance.trackUserWithPropertyCheck(eventName, properties)
     }
 
     override fun trackNormal(eventName: String?, isPreset: Boolean, properties: JSONObject?) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         if (isPreset) EventTrackManager.instance.trackNormalPreset(eventName, properties)
         else EventTrackManager.instance.trackNormal(eventName, properties)
     }
 
     override fun trackNormal(eventName: String?, isPreset: Boolean, properties: Map<String, Any>?) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         try {
             trackNormal(
                 eventName,
@@ -84,18 +108,30 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     }
 
     override fun userSet(properties: JSONObject?) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         trackUser(Constant.PRESET_EVENT_USER_SET, properties)
     }
 
     override fun userSetOnce(properties: JSONObject?) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         trackUser(Constant.PRESET_EVENT_USER_SET_ONCE, properties)
     }
 
     override fun userAdd(properties: JSONObject?) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         trackUser(Constant.PRESET_EVENT_USER_ADD, properties)
     }
 
     override fun userUnset(vararg properties: String?) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         val props = JSONObject()
         for (s in properties) {
             try {
@@ -110,14 +146,23 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     }
 
     override fun userDelete() {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         trackUser(Constant.PRESET_EVENT_USER_DEL, JSONObject())
     }
 
     override fun userAppend(properties: JSONObject?) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         trackUser(Constant.PRESET_EVENT_USER_APPEND, properties)
     }
 
     override fun trackTimerStart(eventName: String) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         val startTime = SystemClock.elapsedRealtime()
         EventTrackManager.instance.addTask {
             try {
@@ -130,6 +175,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     }
 
     override fun trackTimerPause(eventName: String) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         val startTime = SystemClock.elapsedRealtime()
         EventTrackManager.instance.addTask {
             try {
@@ -142,6 +190,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     }
 
     override fun trackTimerResume(eventName: String) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         val startTime = SystemClock.elapsedRealtime()
         EventTrackManager.instance.addTask {
             try {
@@ -154,6 +205,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     }
 
     override fun trackTimerEnd(eventName: String, properties: JSONObject) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         val endTime = SystemClock.elapsedRealtime()
         EventTrackManager.instance.addTask {
             try {
@@ -167,6 +221,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     }
 
     override fun removeTimer(eventName: String) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         EventTrackManager.instance.addTask {
             try {
                 if (!EventUtils.isValidEventName(eventName)) return@addTask
@@ -178,6 +235,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     }
 
     override fun clearTrackTimer() {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
         EventTrackManager.instance.addTask {
             try {
                 EventTimerManager.instance.clearTimers()
@@ -195,6 +255,10 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         internal fun getInstance(): AbstractAnalytics {
             if (!mHasInit.get()) {
                 Log.e(Constant.LOG_TAG,"Call DT.init() first")
+                return AnalyticsEmptyImp()
+            }
+            if (AnalyticsConfig.instance.isSdkDisable()) {
+//                Log.e(Constant.LOG_TAG,"sdk is disable")
                 return AnalyticsEmptyImp()
             }
             return instance ?: synchronized(this) {

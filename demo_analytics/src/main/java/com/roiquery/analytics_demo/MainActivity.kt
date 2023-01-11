@@ -40,6 +40,14 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.button_test_third_data_share).setOnClickListener {
             startActivity(Intent(this,ThirdPartyShareActivity::class.java))
         }
+
+         findViewById<View>(R.id.sub_process_activity).setOnClickListener {
+            startActivity(Intent(this, SubProcessActivity::class.java).apply {
+                putExtra("from","main")
+                putExtra("ok",false)
+            })
+        }
+
     }
 
 

@@ -11,9 +11,9 @@ import java.lang.Long
 class MyApp : Application() {
 
     //ROIQuery base url
-    private val SERVER_URL_TEST       = "https://test.roiquery.com"
-    private val SERVER_URL_INNER      = "https://report-inner.roiquery.com"
-    private val SERVER_URL_EXTERNAL   = "https://report.roiquery.com"
+    private val SERVER_URL_TEST = "https://test.roiquery.com"
+    private val SERVER_URL_INNER = "https://report-inner.roiquery.com"
+    private val SERVER_URL_EXTERNAL = "https://report.roiquery.com"
     override fun onCreate() {
         super.onCreate()
         val initBeginTime = SystemClock.elapsedRealtime()
@@ -29,9 +29,10 @@ class MyApp : Application() {
         Log.d("initSDK end", (SystemClock.elapsedRealtime() - initBeginTime).toString())
         DTAnalytics.getDataTowerId(object : OnDataTowerIdListener {
             override fun onDataTowerIdCompleted(dataTowerId: String) {
-                Log.d("DataTowerId",dataTowerId)
+                Log.d("DataTowerId", dataTowerId)
             }
         })
+
         DTAnalyticsUtils.trackTimerStart("initApp")
         //mock data
         if (SharedPreferencesUtils.getParam(this, "first_open", true) as Boolean) {

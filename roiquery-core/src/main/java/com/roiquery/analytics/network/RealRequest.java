@@ -45,7 +45,6 @@ class RealRequest {
      */
     RealResponse getData(String requestURL, Map<String, String> headerMap) {
         try {
-            LogUtils.i(TAG, String.format("url:%s,\nmethod:GET", requestURL));
             sRequestURL = requestURL;
             HttpURLConnection conn;
             conn = getHttpURLConnection(requestURL, "GET");

@@ -3,7 +3,6 @@ package com.roiquery.analytics.core
 import android.content.Context
 import android.os.Looper
 import android.os.SystemClock
-import android.util.Log
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.OnDataTowerIdListener
@@ -13,6 +12,7 @@ import com.roiquery.analytics.utils.*
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONObject
+import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
 
 
@@ -31,10 +31,13 @@ class PropertyManager private constructor() {
     //激活时用户属性
     private var activeProperties: MutableMap<String, Any?> = mutableMapOf()
 
+    //预置属性过滤列表.
+    private val disableList: ArrayList<String> = ArrayList()
+
     //本地数据适配器，包括sp、db的操作
     private var dataAdapter: EventDateAdapter? = null
 
-    private var resumeFromBackground = false
+//    private var resumeFromBackground = false
 
     //检索用户是否启用了限制广告跟踪
     private var limitAdTrackingEnabled = false
@@ -51,6 +54,7 @@ class PropertyManager private constructor() {
     ) {
         try {
             dataAdapter = EventDateAdapter.getInstance(context)
+            initDisableList(context)
             initEventInfo(context)
             initCommonProperties(context, initConfig)
             getDataTowerId(context)
@@ -152,6 +156,31 @@ class PropertyManager private constructor() {
     }
 
     /**
+     * 初始预置属性过滤列表.
+     */
+    private fun initDisableList(context: Context) {
+        synchronized(disableList) {
+            if (disableList.isEmpty()) {
+                try {
+                    val resources = context.resources
+                    val array = resources.getStringArray(
+                        resources.getIdentifier(
+                            "DTDisPresetProperties",
+                            "array",
+                            context.packageName
+                        )
+                    )
+                    disableList.addAll(listOf(*array))
+                } catch (e: NoClassDefFoundError) {
+                    LogUtils.e(Constant.LOG_TAG, e.toString())
+                } catch (e: Exception) {
+                    LogUtils.e(Constant.LOG_TAG, e.toString())
+                }
+            }
+        }
+    }
+
+    /**
      * 获取并配置 事件一些基本属性
      *
      * @return
@@ -159,8 +188,7 @@ class PropertyManager private constructor() {
     private fun initEventInfo(context: Context) {
         try {
             EventTrackManager.instance.addTask {
-                EventUtils.getEventInfo(context, dataAdapter, eventInfo)
-                Log.d(Constant.LOG_TAG, "initEventInfo"+SystemClock.elapsedRealtime().toString())
+                EventUtils.getEventInfo(context, dataAdapter, eventInfo, disableList)
             }
         }catch (e:Exception){
         }
@@ -180,8 +208,7 @@ class PropertyManager private constructor() {
     private fun initCommonProperties(context: Context, initConfig: AnalyticsConfig?) {
         try {
             EventTrackManager.instance.addTask {
-                EventUtils.getCommonProperties(context, commonProperties, activeProperties)
-                Log.d(Constant.LOG_TAG, "initCommonProperties"+SystemClock.elapsedRealtime().toString())
+                EventUtils.getCommonProperties(context, commonProperties, activeProperties, disableList)
                 //增加外部出入的属性
                 initConfig?.let { config ->
                     if (config.mCommonProperties != null) {
@@ -218,6 +245,8 @@ class PropertyManager private constructor() {
     fun getCommonProperties() = commonProperties.toMutableMap()
 
     fun getActiveProperties() = activeProperties.toMutableMap()
+
+    fun getDisableList() = disableList.toMutableList()
 
     /**
      * FPS状态监控
@@ -271,7 +300,7 @@ class PropertyManager private constructor() {
     }
 
 
-    fun updateIsForeground(isForeground: Boolean, startReason: String? = "") {
+    fun updateIsForeground(isForeground: Boolean, resumeFromBackground: Boolean, startReason: String? = "") {
         EventTrackManager.instance.addTask {
             updateCommonProperties(
                 Constant.COMMON_PROPERTY_IS_FOREGROUND,
@@ -295,7 +324,7 @@ class PropertyManager private constructor() {
                             Constant.SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND,
                             resumeFromBackground
                         )
-                        startReason?.isNotEmpty().let {
+                        if (startReason != "" && startReason != "{}"){
                             put(Constant.SESSION_START_PROPERTY_START_REASON, startReason)
                         }
                     },
@@ -306,7 +335,6 @@ class PropertyManager private constructor() {
                     }
                 )
             } else {
-                resumeFromBackground = true
                 EventTrackManager.instance.trackNormalPreset(
                     Constant.PRESET_EVENT_SESSION_END,
                     JSONObject().apply {
@@ -358,16 +386,38 @@ class PropertyManager private constructor() {
         return ""
     }
 
+    fun getSDKVersion(): String {
+        (getCommonProperties()[Constant.COMMON_PROPERTY_SDK_VERSION] as String?)?.let {
+            if (it.isNotEmpty()) {
+                return it
+            }
+        }
+        return ""
+    }
+
+    fun getSDKType(): String {
+        (getCommonProperties()[Constant.COMMON_PROPERTY_SDK_TYPE] as String?)?.let {
+            if (it.isNotEmpty()) {
+                return it
+            }
+        }
+        return ""
+    }
+
     private fun updateGAID(id: String) {
         if (id.isEmpty() || limitAdTrackingEnabled) {
             return
         }
-        updateEventInfo(Constant.EVENT_INFO_GAID, id)
+        if (!disableList.contains(Constant.EVENT_INFO_GAID)) {
+            updateEventInfo(Constant.EVENT_INFO_GAID, id)
+        }
 
-        EventTrackManager.instance.trackUser(
-            Constant.PRESET_EVENT_USER_SET_ONCE, JSONObject().apply {
-                put(Constant.USER_PROPERTY_ACTIVE_GAID, id)
-            })
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_GAID)) {
+            EventTrackManager.instance.trackUser(
+                Constant.PRESET_EVENT_USER_SET_ONCE, JSONObject().apply {
+                    put(Constant.USER_PROPERTY_ACTIVE_GAID, id)
+                })
+        }
     }
 
     fun getAndroidId(): String {
@@ -381,11 +431,15 @@ class PropertyManager private constructor() {
 
     private fun updateAndroidId(id: String) {
         if (id.isEmpty()) return
-        updateEventInfo(Constant.EVENT_INFO_ANDROID_ID, id)
-        EventTrackManager.instance.trackUser(
-            Constant.PRESET_EVENT_USER_SET_ONCE, JSONObject().apply {
-                put(Constant.USER_PROPERTY_ACTIVE_ANDROID_ID, id)
-            })
+        if (!disableList.contains(Constant.EVENT_INFO_ANDROID_ID)) {
+            updateEventInfo(Constant.EVENT_INFO_ANDROID_ID, id)
+        }
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_ANDROID_ID)) {
+            EventTrackManager.instance.trackUser(
+                Constant.PRESET_EVENT_USER_SET_ONCE, JSONObject().apply {
+                    put(Constant.USER_PROPERTY_ACTIVE_ANDROID_ID, id)
+                })
+        }
     }
 
     fun updateNetworkType(networkType: NetworkUtil.NetworkType?) {
