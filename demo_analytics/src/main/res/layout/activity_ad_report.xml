@@ -18,29 +18,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <Button
-        android:id="@+id/button_track_load_begin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:text="ad_load_begin"
-        android:textAllCaps="false" />
-
-    <Button
-        android:id="@+id/button_track_load_end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:text="ad_load_end"
-        android:textAllCaps="false" />
-
-    <Button
-        android:id="@+id/button_track_to_show"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:text="ad_to_show"
-        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/button_track_show"
@@ -50,56 +27,13 @@
         android:text="ad_show"
         android:textAllCaps="false" />
 
+
     <Button
-        android:id="@+id/button_track_paid"
+        android:id="@+id/button_track_conversion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
-        android:text="add_paid"
-        android:textAllCaps="false" />
-
-    <Button
-        android:id="@+id/button_track_show_failed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:text="ad_show_failed"
-        android:textAllCaps="false" />
-
-
-    <Button
-        android:id="@+id/button_track_click"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:text="ad_click &amp; ad_conversion (by_click)"
-        android:textAllCaps="false" />
-
-
-    <Button
-        android:id="@+id/button_track_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:text="ad_left_app &amp; ad_conversion (by_left_app)"
-        android:textAllCaps="false" />
-
-
-    <Button
-        android:id="@+id/button_track_rewarded"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:text="ad_rewarded &amp; ad_conversion (by_rewarded)"
-        android:textAllCaps="false" />
-
-
-    <Button
-        android:id="@+id/button_track_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:text="ad_close"
+        android:text="ad_conversion"
         android:textAllCaps="false" />
 
 

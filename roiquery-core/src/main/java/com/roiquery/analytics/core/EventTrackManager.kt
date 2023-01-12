@@ -91,6 +91,13 @@ class EventTrackManager {
         properties: JSONObject?,
         insertHandler: ((code: Int, msg: String) -> Unit)? = null
     ) {
+        if (AnalyticsConfig.instance.isSdkDisable()) {
+            insertHandler?.invoke(
+                ROIQueryErrorParams.CODE_TRACK_EVENT_ILLEGAL,
+                "sdk is disable"
+            )
+            return
+        }
         trackEvent(eventName, eventType, isPreset, properties, insertHandler)
     }
 

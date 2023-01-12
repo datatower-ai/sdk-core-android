@@ -15,7 +15,6 @@ open class DTAnalytics {
 
     companion object {
 
-        private var mAppLifecycleListeners = mutableListOf<AppLifecycleHelper.OnAppStatusListener?>()
 
         /**
          * 调用 track 接口，追踪一个带有属性的事件
@@ -197,50 +196,6 @@ open class DTAnalytics {
             AnalyticsImp.getInstance().trackNormal(eventName, true, properties)
 
 
-        /**
-         * app 进入前台
-         *
-         */
-        internal fun onAppForeground(startReason: String?) {
-            try {
-                PropertyManager.instance.updateIsForeground(true,startReason)
-                for (listener in mAppLifecycleListeners) {
-                    listener?.onAppForeground()
-                }
-            } catch (e: Exception) {
-                LogUtils.printStackTrace("RoiqueryAnalytics", e)
-            }
-        }
-
-        /**
-         * app 进入后台
-         */
-        internal fun onAppBackground() {
-            try {
-                PropertyManager.instance.updateIsForeground(false)
-                for (listener in mAppLifecycleListeners) {
-                    listener?.onAppBackground()
-                }
-            } catch (e: Exception) {
-                LogUtils.printStackTrace("RoiqueryAnalytics", e)
-            }
-        }
-
-
-        internal fun getContext(): Context? {
-            return try {
-                AnalyticsConfig.instance.mContext
-            } catch (e: Exception) {
-                LogUtils.printStackTrace("RoiqueryAnalytics", e)
-                null
-            }
-        }
-
-
-        internal fun addAppStatusListener(listener: AppLifecycleHelper.OnAppStatusListener?) {
-            if (!isSDKInitSuccess()) return
-            mAppLifecycleListeners.add(listener)
-        }
 
         /**
          * sdk 是否初始化成功

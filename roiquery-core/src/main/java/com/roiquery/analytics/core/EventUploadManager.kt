@@ -126,6 +126,9 @@ class EventUploadManager private constructor(
      * 主动上报
      */
     fun flush(timeDelayMills: Long = 0L) {
+        if (AnalyticsConfig.instance.isSdkDisable()) {
+            return
+        }
         Message.obtain().apply {
             what = FLUSH_QUEUE
             if (timeDelayMills == 0L) mWorker.runMessage(this)
@@ -144,6 +147,9 @@ class EventUploadManager private constructor(
      */
     private fun enableUploadData(): Boolean {
         try {
+            if (AnalyticsConfig.instance.isSdkDisable()) {
+                return false
+            }
             //无网络
             if (!isNetworkAvailable(AnalyticsConfig.instance.mContext)) {
                 LogUtils.d(TAG, "NetworkAvailable，disable upload")
@@ -271,6 +277,8 @@ class EventUploadManager private constructor(
                     mDateAdapter.enableUpload = true
                     //避免事件积压，成功后再次上报
                     flush(FLUSH_DELAY)
+                    //如果远程控制之前获取失败，这里再次获取
+                    AnalyticsConfig.instance.getRemoteConfig()
                 }
             }else {
                 mDateAdapter.enableUpload = true
@@ -306,8 +314,8 @@ class EventUploadManager private constructor(
     }
 
     fun getEventUploadUrl(): String {
-        val url = AnalyticsConfig.instance.mServerUrl
-        if (url.isNullOrEmpty()) {
+        val url = AnalyticsConfig.instance.reportUrl()
+        if (url.isEmpty()) {
             return Constant.SERVER_URL_EXTERNAL + Constant.EVENT_REPORT_PATH
         }
         return url + Constant.EVENT_REPORT_PATH

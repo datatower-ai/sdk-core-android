@@ -1,9 +1,13 @@
 package com.roiquery.thirdparty
 
+import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.utils.LogUtils
 
 class AppsFlyerSyncThirdData : SyncThirdPartDataImpl {
     override fun synThirdDTIdData(id: String) {
+        if (AnalyticsConfig.instance.isSdkDisable()) {
+            return
+        }
         LogUtils.d( "开始同步Appsflyer数据")
         val maps: MutableMap<String, Any> = HashMap()
         maps[Constant.SHARE_DATA_DT_ID] = id

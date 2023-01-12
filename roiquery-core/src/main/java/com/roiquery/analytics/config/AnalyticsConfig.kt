@@ -1,8 +1,21 @@
 package com.roiquery.analytics.config
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.text.TextUtils
+import com.roiquery.analytics.BuildConfig
+import com.roiquery.analytics.Constant
+import com.roiquery.analytics.core.PropertyManager
+import com.roiquery.analytics.data.persistence.SharedPreferencesLoader
+import com.roiquery.analytics.data.persistence.StorageDisableFlag
+import com.roiquery.analytics.data.persistence.StorageReportUrl
+import com.roiquery.analytics.network.HttpCallback
+import com.roiquery.analytics.network.HttpMethod
+import com.roiquery.analytics.network.RequestHelper
+import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.LogUtils
 import org.json.JSONObject
+import java.util.concurrent.Future
 
 
 class AnalyticsConfig
@@ -17,8 +30,82 @@ private constructor() : AbstractAnalyticsConfig() {
         }
     }
 
+    private val configPreferenceName = "datatower.android.config"
+    private val configUrl = "https://test.roiquery.com/sdk/cfg"
+    private val sPrefsLoader: SharedPreferencesLoader = SharedPreferencesLoader()
 
-    fun setContext(context: Context): AnalyticsConfig{
+    private var sdkDisableStorage: StorageDisableFlag? = null
+    private var reportUrlStorage: StorageReportUrl? = null
+
+    private var sdkDisable: Boolean = false
+    private lateinit var reportUrl: String
+
+    @Volatile
+    private var hasGetRemoteConfig = false
+
+    fun getRemoteConfig() {
+        if (hasGetRemoteConfig) {
+            return
+        }
+        initRemoteConfig()
+        Thread {
+            try {
+                val response = RequestHelper.Builder(HttpMethod.GET_SYNC, configUrl)
+                    .params(mutableMapOf<String, String>().apply {
+                        put("app_id", mAppId ?: "")
+                        put("sdk_version", getSDKVersion())
+                        put("sdk_type", getSDKType())
+                        put("os", Constant.SDK_TYPE_ANDROID)
+                    })
+                    .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
+                    .executeSync()
+
+                if (response != null && response.code == 200 && !TextUtils.isEmpty(response.result)) {
+                    val responseJson = JSONObject(response.result)
+                    if (responseJson.has("is_off")) {
+                        val isOff = responseJson.getBoolean("is_off")
+                        sdkDisableStorage?.put(isOff)
+                        sdkDisable = isOff
+                        LogUtils.d(Constant.LOG_TAG,"sdk disable: $isOff")
+                    }
+                    if (responseJson.has("report_url")) {
+                        val url = responseJson.getString("report_url")
+                        reportUrlStorage?.put(url)
+                        reportUrl = if (!TextUtils.isEmpty(url)) url else mServerUrl
+                    }
+                    hasGetRemoteConfig = true
+                }
+            } catch (e: Exception) {
+
+            }
+        }.start()
+    }
+
+    private fun initRemoteConfig(){
+        val storedSharedPrefs: Future<SharedPreferences> =
+            sPrefsLoader.loadPreferences(
+                mContext,
+                configPreferenceName
+            )
+        //默认为true
+        sdkDisableStorage = StorageDisableFlag(storedSharedPrefs)
+        //默认为空
+        reportUrlStorage = StorageReportUrl(storedSharedPrefs)
+
+        sdkDisable = sdkDisableStorage?.get() ?: false
+        val pReportUrl = reportUrlStorage?.get()
+        reportUrl = if (pReportUrl != null && pReportUrl.isNotEmpty()){
+            pReportUrl
+        }else {
+            mServerUrl
+        }
+    }
+
+    fun isSdkDisable() = sdkDisable
+
+    fun reportUrl() = reportUrl
+
+    fun setContext(context: Context): AnalyticsConfig {
         mContext = context
         return this
     }
@@ -123,7 +210,7 @@ private constructor() : AbstractAnalyticsConfig() {
      *
      * @return NTConfigOptions
      */
-    fun setChannel(channel: String): AnalyticsConfig{
+    fun setChannel(channel: String): AnalyticsConfig {
         mChannel = channel
         return this
     }
@@ -134,6 +221,24 @@ private constructor() : AbstractAnalyticsConfig() {
     fun addCommonProperties(commonProperties: JSONObject): AnalyticsConfig {
         mCommonProperties = commonProperties
         return this
+    }
+
+    fun getSDKVersion():String {
+        mCommonProperties?.let {
+            if (it.has(Constant.COMMON_PROPERTY_SDK_VERSION)) {
+                return it.getString(Constant.COMMON_PROPERTY_SDK_VERSION)
+            }
+        }
+        return BuildConfig.VERSION_NAME
+    }
+
+    fun getSDKType():String {
+        mCommonProperties?.let {
+            if (it.has(Constant.COMMON_PROPERTY_SDK_TYPE)) {
+                return it.getString(Constant.COMMON_PROPERTY_SDK_TYPE)
+            }
+        }
+        return Constant.SDK_TYPE_ANDROID
     }
 
 }
