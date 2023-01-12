@@ -209,23 +209,7 @@ class PropertyManager private constructor() {
         try {
             EventTrackManager.instance.addTask {
                 EventUtils.getCommonProperties(context, commonProperties, activeProperties, disableList)
-                //增加外部出入的属性
-                initConfig?.let { config ->
-                    if (config.mCommonProperties != null) {
-                        val iterator = config.mCommonProperties!!.keys()
-                        while (iterator.hasNext()) {
-                            val key = iterator.next()
-                            try {
-                                val value = config.mCommonProperties!![key]
-                                updateCommonProperties(key, value.toString())
-                            } catch (e: Exception) {
-                                LogUtils.printStackTrace(e)
-                            }
-                        }
-                    }
-                }
             }
-
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
         }

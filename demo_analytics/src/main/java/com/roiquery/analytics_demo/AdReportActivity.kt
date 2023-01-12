@@ -27,146 +27,31 @@ class AdReportActivity : AppCompatActivity() {
         val ad_location = "home"
 
 
-        findViewById<View>(R.id.button_track_load_begin).setOnClickListener {
-            val p1 = mutableMapOf<String, Any>().apply {
-                put("property_1", 3)
-                put("property_2", "combo-123")
-            }
-
-            DTAdReport.reportLoadBegin(
-                ad_unit,
-                ad_type,
-                ad_platform,
-                ad_seq,
-                p1
-            )
-        }
-
-        findViewById<View>(R.id.button_track_load_end).setOnClickListener {
-            DTAdReport.reportLoadEnd(
-                ad_unit,
-                ad_type,
-                ad_platform,
-                1000,
-                true,
-                ad_seq
-            )
-        }
-
-
-        findViewById<View>(R.id.button_track_to_show).setOnClickListener {
-            DTAdReport.reportToShow(
-                ad_unit,
-                ad_type,
-                AdPlatform.IDLE,
-                ad_location,
-                ad_seq
-            )
-        }
-
-
 
         findViewById<View>(R.id.button_track_show).setOnClickListener {
+            val properties: HashMap<String, Any> = HashMap<String, Any>().apply {
+                put("location",ad_location)
+            }
+
             DTAdReport.reportShow(
                 ad_unit,
                 ad_type,
                 ad_platform,
-                ad_location,
-                ad_seq
-            )
-        }
-
-        findViewById<View>(R.id.button_track_paid).setOnClickListener {
-            DTAdReport.reportPaid(
-                ad_unit,
-                ad_type,
-                ad_platform,
-                ad_location,
-                ad_seq,
-                "5000",
-                "USD",
-                "publisher"
-            )
-        }
-
-        findViewById<View>(R.id.button_track_show_failed).setOnClickListener {
-            DTAdReport.reportShowFailed(
-                ad_unit,
-                ad_type,
-                ad_platform,
-                ad_location,
-                ad_seq,
-                12,
-                "network error"
+                properties
             )
         }
 
 
-        findViewById<View>(R.id.button_track_click).setOnClickListener {
-            DTAdReport.reportClick(
+
+        findViewById<View>(R.id.button_track_conversion).setOnClickListener {
+            val properties: HashMap<String, Any> = HashMap<String, Any>().apply {
+                put("seq",ad_seq)
+            }
+            DTAdReport.reportConversion(
                 ad_unit,
                 ad_type,
                 ad_platform,
-                ad_location,
-                ad_seq
-            )
-
-            DTAdReport.reportConversionByClick(
-                ad_unit,
-                ad_type,
-                ad_platform,
-                ad_location,
-                ad_seq
-            )
-
-        }
-
-        findViewById<View>(R.id.button_track_close).setOnClickListener {
-            DTAdReport.reportClose(
-                "4",
-                AdType.REWARDED_INTERSTITIAL,
-                AdPlatform.ADX,
-                "home",
-                ad_seq
-            )
-        }
-
-
-        findViewById<View>(R.id.button_track_left).setOnClickListener {
-
-            DTAdReport.reportLeftApp(
-                ad_unit,
-                ad_type,
-                ad_platform,
-                ad_location,
-                ad_seq
-            )
-
-            DTAdReport.reportConversionByLeftApp(
-                ad_unit,
-                ad_type,
-                ad_platform,
-                ad_location,
-                ad_seq
-            )
-        }
-
-
-        findViewById<View>(R.id.button_track_rewarded).setOnClickListener {
-            DTAdReport.reportRewarded(
-                ad_unit,
-                ad_type,
-                ad_platform,
-                ad_location,
-                ad_seq
-            )
-
-            DTAdReport.reportConversionByRewarded(
-                ad_unit,
-                ad_type,
-                ad_platform,
-                ad_location,
-                ad_seq
+                properties
             )
         }
 

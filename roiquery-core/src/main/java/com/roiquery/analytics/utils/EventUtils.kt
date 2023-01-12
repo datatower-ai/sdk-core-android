@@ -142,19 +142,23 @@ object EventUtils {
         }
 
         //接入 SDK 的类型，如 Android，iOS,Unity
-        if (!disableList.contains(Constant.COMMON_PROPERTY_SDK_TYPE)) {
-            commonProperties[Constant.COMMON_PROPERTY_SDK_TYPE] = Constant.SDK_TYPE_ANDROID
-        }
-        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_SDK_TYPE)) {
-            activeProperties[Constant.USER_PROPERTY_ACTIVE_SDK_TYPE] = Constant.SDK_TYPE_ANDROID
+        AnalyticsConfig.instance.getSDKType().let {
+            if (!disableList.contains(Constant.COMMON_PROPERTY_SDK_TYPE)) {
+                commonProperties[Constant.COMMON_PROPERTY_SDK_TYPE] = it
+            }
+            if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_SDK_TYPE)) {
+                activeProperties[Constant.USER_PROPERTY_ACTIVE_SDK_TYPE] = it
+            }
         }
 
         //SDK 版本,如 1.1.2
-        if (!disableList.contains(Constant.COMMON_PROPERTY_SDK_VERSION)) {
-            commonProperties[Constant.COMMON_PROPERTY_SDK_VERSION] = BuildConfig.VERSION_NAME
-        }
-        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_SDK_VERSION)) {
-            activeProperties[Constant.USER_PROPERTY_ACTIVE_SDK_VERSION] = BuildConfig.VERSION_NAME
+        AnalyticsConfig.instance.getSDKVersion().let {
+            if (!disableList.contains(Constant.COMMON_PROPERTY_SDK_VERSION)) {
+                commonProperties[Constant.COMMON_PROPERTY_SDK_VERSION] = it
+            }
+            if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_SDK_VERSION)) {
+                activeProperties[Constant.USER_PROPERTY_ACTIVE_SDK_VERSION] = it
+            }
         }
 
         //如 Android、iOS 等

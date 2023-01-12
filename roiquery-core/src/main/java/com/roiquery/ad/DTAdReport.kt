@@ -7,12 +7,12 @@ import com.roiquery.ad.utils.UUIDUtils
 open class DTAdReport {
     companion object {
         /**
-         * 上报 广告展示
+         * 广告展示上报
          *
          * @param id 广告最小单元id
          * @param type 广告类型
          * @param platform 广告平台
-         * @param properties 额外事件属性
+         * @param properties 自定义属性
          */
         @JvmOverloads
         @JvmStatic
@@ -20,17 +20,17 @@ open class DTAdReport {
             id: String,
             type: AdType,
             platform: AdPlatform,
-            properties: MutableMap<String, Any>? = mutableMapOf(),
+            properties: MutableMap<String, Any>? = mutableMapOf()
         ) = AdReportImp.getInstance().reportShow(id, type.value, platform.value, properties)
 
 
         /**
-         * 上报 自定义转化
+         * 自定义转化上报
          *
          * @param id 广告最小单元id
          * @param type 广告类型
          * @param platform 广告平台
-         * @param properties 额外事件属性
+         * @param properties 自定义属性
          */
         @JvmOverloads
         @JvmStatic
@@ -38,7 +38,7 @@ open class DTAdReport {
             id: String,
             type: AdType,
             platform: AdPlatform,
-            properties: MutableMap<String, Any>? = mutableMapOf(),
+            properties: MutableMap<String, Any>? = mutableMapOf()
         ) = AdReportImp.getInstance().reportConversion(id, type.value, platform.value, properties)
 
 

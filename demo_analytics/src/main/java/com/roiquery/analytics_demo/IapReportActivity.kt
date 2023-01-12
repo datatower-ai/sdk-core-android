@@ -24,20 +24,13 @@ class IapReportActivity : AppCompatActivity() {
         var order = generateUUID()?:"24234"
         val placement = "me"
 
-        findViewById<View>(R.id.button_report_entrance).setOnClickListener {
-            DTIAPReport.reportEntrance(order,"IDS",4.343,"eu",seq, placement)
-        }
 
-        findViewById<View>(R.id.button_track_to_purchase).setOnClickListener {
-            DTIAPReport.reportToPurchase(order,"IDS",4.343,"usd",seq, placement)
-        }
 
         findViewById<View>(R.id.button_track_purchased).setOnClickListener {
-            DTIAPReport.reportPurchased(order,"IDS",4.343,"usd",seq, placement)
-        }
-
-        findViewById<View>(R.id.button_track_not_purchased).setOnClickListener {
-            DTIAPReport.reportNotToPurchased(order,"IDS",4.343,"usd",seq,"1", placement)
+            val properties: HashMap<String, Any> = HashMap<String, Any>().apply {
+                put("placement",placement)
+            }
+            DTIAPReport.reportPurchaseSuccess(order,"IDS",4.343,"usd", properties)
         }
 
     }

@@ -55,7 +55,7 @@ private constructor() : AbstractAnalyticsConfig() {
                         put("app_id", mAppId ?: "")
                         put("sdk_version", getSDKVersion())
                         put("sdk_type", getSDKType())
-                        put("os_type", Constant.SDK_TYPE_ANDROID)
+                        put("os", Constant.SDK_TYPE_ANDROID)
                     })
                     .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
                     .executeSync()
@@ -223,7 +223,7 @@ private constructor() : AbstractAnalyticsConfig() {
         return this
     }
 
-    private fun getSDKVersion():String {
+    fun getSDKVersion():String {
         mCommonProperties?.let {
             if (it.has(Constant.COMMON_PROPERTY_SDK_VERSION)) {
                 return it.getString(Constant.COMMON_PROPERTY_SDK_VERSION)
@@ -232,7 +232,7 @@ private constructor() : AbstractAnalyticsConfig() {
         return BuildConfig.VERSION_NAME
     }
 
-    private fun getSDKType():String {
+    fun getSDKType():String {
         mCommonProperties?.let {
             if (it.has(Constant.COMMON_PROPERTY_SDK_TYPE)) {
                 return it.getString(Constant.COMMON_PROPERTY_SDK_TYPE)

@@ -124,7 +124,7 @@ public class CoreActivity extends AppCompatActivity {
                 jsonObject.put("test_property_3", false);
                 jsonObject.put("test_property_4", 2.3);
                 DTAnalytics.userSet(jsonObject);
-            }catch (Exception ignored){
+            } catch (Exception ignored){
 
             }
 

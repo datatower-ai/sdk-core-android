@@ -11,108 +11,28 @@ import com.roiquery.ad.utils.UUIDUtils
 @Deprecated("this class will be remove,Replace With \'DTIASReport\'",ReplaceWith("DTIASReport"))
 open class ROIQueryIasReport {
     companion object {
-        @JvmStatic
-        @JvmOverloads
-        fun reportToShow(iasSeq: String, iasEntrance: String?, iasPlacement: String) {
-            ROIQueryIasReportImp.trackIasShowEvent(
-                ROIQueryIasConfig.Builder(iasSeq, iasPlacement).iasEntrance(iasEntrance).build()
-            )
-        }
 
-        @JvmStatic
-        @JvmOverloads
-        fun reportShowSuccess(iasSeq: String, iasEntrance: String?, iasPlacement: String) {
-            ROIQueryIasReportImp.trackIasShowSuccessEvent(
-                ROIQueryIasConfig.Builder(
-                    iasSeq,
-                    iasPlacement
-                ).iasEntrance(entrance = iasEntrance).build()
-            )
-        }
-
-        @JvmStatic
-        @JvmOverloads
-        fun reportShowFail(
-            iasSeq: String,
-            iasEntrance: String? = "",
-            iasPlacement: String,
-            iasCode: String,
-            iasMsg: String? = ""
-        ) {
-            ROIQueryIasReportImp.trackIasShowFailEvent(
-                ROIQueryIasConfig.Builder(
-                    iasSeq,
-                    iasPlacement
-                ).iasEntrance(iasEntrance).iasCode(iasCode).iasMsg(iasMsg).build()
-            )
-
-        }
-
-        @JvmStatic
-        @JvmOverloads
-        fun reportSubscribe(
-            iasSeq: String,
-            iasEntrance: String? = "",
-            iasPlacement: String,
-            iasSku: String,
-            iasOrderId: String,
-            iasPrice: String,
-            iasCurrency: String
-        ) {
-            ROIQueryIasReportImp.trackIasSubEvent(
-                ROIQueryIasConfig.Builder(
-                    iasSeq,
-                    iasPlacement
-                ).iasEntrance(iasEntrance).iasSku(iasSku).iasOrderId(iasOrderId).iasPrice(iasPrice)
-                    .iasCurrency(iasCurrency).build()
-            )
-        }
-
+        /**
+         * 订阅成功上报
+         *
+         * @param originalOrderId 原始订阅订单id
+         * @param orderId 订阅订单id
+         * @param sku 商品ID
+         * @param price 价格， 如 9.9
+         * @param currency 货币类型，如usd
+         * @param properties 自定义属性
+         */
         @JvmStatic
         @JvmOverloads
         fun reportSubscribeSuccess(
-            iasSeq: String,
-            iasEntrance: String? = "",
-            iasPlacement: String,
-            iasSku: String,
-            iasOrderId: String,
-            iasOriginalOrderId: String,
-            iasPrice: String,
-            iasCurrency: String
+            originalOrderId: String,
+            orderId: String,
+            sku: String,
+            price: Double,
+            currency: String,
+            properties: MutableMap<String, Any>? = mutableMapOf()
         ) {
-            ROIQueryIasReportImp.trackIasSubSuccessEvent(
-                ROIQueryIasConfig.Builder(
-                    iasSeq,
-                    iasPlacement
-                ).iasEntrance(iasEntrance).iasSku(iasSku).iasOrderId(iasOrderId).iasPrice(iasPrice)
-                    .iasOriginalOrderId(iasOriginalOrderId).iasCurrency(iasCurrency).build()
-            )
-
-        }
-
-        @JvmStatic
-        @JvmOverloads
-        fun reportSubscribeFail(
-            iasSeq: String,
-            iasEntrance: String? = "",
-            iasPlacement: String,
-            iasSku: String,
-            iasOrderId: String,
-            iasOriginalOrderId: String,
-            iasPrice: String,
-            iasCurrency: String,
-            iasCode: String,
-            iasMsg: String? = ""
-        ) {
-            ROIQueryIasReportImp.trackIasSubFailEvent(
-                ROIQueryIasConfig.Builder(
-                    iasSeq,
-                    iasPlacement
-                ).iasEntrance(iasEntrance).iasCode(iasCode).iasMsg(iasMsg).iasSku(iasSku)
-                    .iasOrderId(iasOrderId).iasPrice(iasPrice)
-                    .iasOriginalOrderId(iasOriginalOrderId).iasCurrency(iasCurrency).build()
-            )
-
+            ROIQueryIasReportImp.trackIasSubSuccessEvent(originalOrderId, orderId, sku, price, currency, properties)
         }
 
         /**
