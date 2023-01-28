@@ -235,20 +235,28 @@ class EventTrackManager {
     private fun appendDynamicProperties(eventName: String, properties: JSONObject) {
         properties.apply {
             //fps
-            put(
-                Constant.COMMON_PROPERTY_FPS,
-                MemoryUtils.getFPS()
-            )
+            if (!PropertyManager.instance.getDisableList().contains(Constant.COMMON_PROPERTY_FPS)) {
+                put(
+                    Constant.COMMON_PROPERTY_FPS,
+                    MemoryUtils.getFPS()
+                )
+            }
+
             //硬盘使用率
-            put(
-                Constant.COMMON_PROPERTY_STORAGE_USED,
-                MemoryUtils.getDisk(AnalyticsConfig.instance.mContext, false)
-            )
+            if (!PropertyManager.instance.getDisableList().contains(Constant.COMMON_PROPERTY_STORAGE_USED)) {
+                put(
+                    Constant.COMMON_PROPERTY_STORAGE_USED,
+                    MemoryUtils.getDisk(AnalyticsConfig.instance.mContext, false)
+                )
+            }
+
             //内存使用率
-            put(
-                Constant.COMMON_PROPERTY_MEMORY_USED,
-                MemoryUtils.getRAM(AnalyticsConfig.instance.mContext)
-            )
+            if (!PropertyManager.instance.getDisableList().contains(Constant.COMMON_PROPERTY_MEMORY_USED)) {
+                put(
+                    Constant.COMMON_PROPERTY_MEMORY_USED,
+                    MemoryUtils.getRAM(AnalyticsConfig.instance.mContext)
+                )
+            }
             //事件时长
             EventTimerManager.instance.getEventTimer(eventName)?.duration()?.let {
                 if (it > 0) {
