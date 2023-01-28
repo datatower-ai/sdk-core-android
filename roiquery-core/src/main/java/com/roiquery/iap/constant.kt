@@ -5,7 +5,7 @@ internal object Constant {
     //事件名称
     const val EVENT_IAP_ENTRANCE        = "#iap_entrance"
     const val EVENT_IAP_TO_PURCHASE     = "#iap_to_purchase"
-    const val EVENT_IAP_PURCHASED       = "#iap_purchased_success"
+    const val EVENT_IAP_PURCHASED       = "#iap_purchase_success"
     const val EVENT_IAP_NOT_PURCHASED   = "#iap_not_purchased"
     //事件属性
     const val PROPERTY_IAP_SEQ          = "#iap_seq"

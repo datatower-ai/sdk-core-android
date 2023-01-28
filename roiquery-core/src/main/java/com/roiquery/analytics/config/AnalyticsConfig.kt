@@ -60,7 +60,7 @@ private constructor() : AbstractAnalyticsConfig() {
                     .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
                     .executeSync()
 
-                if (response != null && response.code == 200 && !TextUtils.isEmpty(response.result)) {
+                if (!hasGetRemoteConfig && response != null && response.code == 200 && !TextUtils.isEmpty(response.result)) {
                     val responseJson = JSONObject(response.result)
                     if (responseJson.has("is_off")) {
                         val isOff = responseJson.getBoolean("is_off")

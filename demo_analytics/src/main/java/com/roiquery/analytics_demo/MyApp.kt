@@ -19,6 +19,7 @@ class MyApp : Application() {
         super.onCreate()
         val initBeginTime = SystemClock.elapsedRealtime()
         Log.d("initSDK begin", initBeginTime.toString())
+        DTAdReport.generateUUID()
         DT.initSDK(
             this,
             "dt_53ecce7c85c3daab",
