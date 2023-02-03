@@ -286,12 +286,10 @@ class PropertyManager private constructor() {
 
     fun updateIsForeground(isForeground: Boolean, resumeFromBackground: Boolean, startReason: String? = "") {
         EventTrackManager.instance.addTask {
-            if (!disableList.contains(Constant.COMMON_PROPERTY_IS_FOREGROUND)) {
-                updateCommonProperties(
-                    Constant.COMMON_PROPERTY_IS_FOREGROUND,
-                    isForeground
-                )
-            }
+            updateCommonProperties(
+                Constant.COMMON_PROPERTY_IS_FOREGROUND,
+                isForeground
+            )
             val isFirstOpen = dataAdapter?.isFirstSessionStartInserted?.not()
 
             if (isForeground) {
