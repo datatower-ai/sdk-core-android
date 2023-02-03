@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        startService(Intent(this,SubProcessService::class.java))
+        startService(Intent(this,SubProcessService::class.java))
 
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
@@ -40,14 +40,6 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.button_test_third_data_share).setOnClickListener {
             startActivity(Intent(this,ThirdPartyShareActivity::class.java))
         }
-
-         findViewById<View>(R.id.sub_process_activity).setOnClickListener {
-            startActivity(Intent(this, SubProcessActivity::class.java).apply {
-                putExtra("from","main")
-                putExtra("ok",false)
-            })
-        }
-
     }
 
 

@@ -61,10 +61,6 @@
         <activity
             android:name=".ThirdPartyShareActivity"
             android:exported="false"/>
-        <activity
-            android:name=".SubProcessActivity"
-            android:process=":sub"
-            android:exported="false"/>
     </application>
 
 </manifest>

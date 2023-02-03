@@ -67,12 +67,5 @@
         android:layout_margin="5dp"
         android:text="third_data_share"
         android:textAllCaps="false" />
- <Button
-        android:id="@+id/sub_process_activity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="SubProcessActivity"
-        android:textAllCaps="false" />
 
 </LinearLayout>

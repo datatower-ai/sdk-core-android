@@ -61,15 +61,31 @@ class EventInfoCheckHelper private constructor() {
 
     private fun correctEventIdInfo(data: JSONObject):JSONObject? {
         try {
+            val androidId = PropertyManager.instance.getAndroidId()
             val dtId = PropertyManager.instance.getDTID()
-            if (dtId.isEmpty()) {
+            val gaid = PropertyManager.instance.getGAID()
+            if ((androidId.isEmpty()&& gaid.isEmpty()) || dtId.isEmpty() ) {
                 return null
             }
+
             (if (isNewFormatData(data)) data.optJSONObject(Constant.EVENT_BODY) else data)?.let { eventInfo ->
                 if (eventInfo.optString(Constant.EVENT_INFO_DT_ID).isEmpty()) {
                     eventInfo.put(Constant.EVENT_INFO_DT_ID, dtId)
                 }
-                return data
+                if (eventInfo.optString(Constant.EVENT_INFO_GAID).isEmpty()&&gaid.isNotEmpty()) {
+                    eventInfo.put(Constant.EVENT_INFO_GAID, gaid)
+                }
+                if (eventInfo.optString(Constant.EVENT_INFO_ANDROID_ID).isEmpty()&&eventInfo.optString(Constant.EVENT_INFO_GAID).isEmpty()) {
+                    eventInfo.put(Constant.EVENT_INFO_ANDROID_ID, androidId)
+                }
+                if (eventInfo.optString(Constant.EVENT_INFO_DT_ID)
+                        .isNotEmpty() && (eventInfo.optString(
+                        Constant.EVENT_INFO_ANDROID_ID
+                    ).isNotEmpty() || eventInfo.optString(Constant.EVENT_INFO_GAID)
+                        .isNotEmpty())
+                ) {
+                        return data
+                }
             }
 
         } catch (e: JSONException) {

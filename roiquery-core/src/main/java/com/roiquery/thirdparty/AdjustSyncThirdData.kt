@@ -1,14 +1,10 @@
 package com.roiquery.thirdparty
 
-import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.utils.LogUtils
 
 class AdjustSyncThirdData: SyncThirdPartDataImpl{
     override fun synThirdDTIdData(id: String) {
         try {
-            if (AnalyticsConfig.instance.isSdkDisable()) {
-                return
-            }
             val mAdjustClazz = Class.forName("com.adjust.sdk.Adjust")
             val addSessionParameterMethod = mAdjustClazz
                 .getMethod("addSessionCallbackParameter", String::class.java, String::class.java)

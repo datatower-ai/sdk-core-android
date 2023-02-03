@@ -3,12 +3,11 @@ package com.roiquery.analytics.api
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.core.DTActivityLifecycleCallbacks
 import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.core.PresetEventManager
 import com.roiquery.analytics.core.PropertyManager
@@ -26,12 +25,10 @@ abstract class AbstractAnalytics : IAnalytics {
 
     private val isInitRunning = AtomicBoolean(false)
 
-    private var activityLifecycleCallbacks : DTActivityLifecycleCallbacks? = null
 
     var firstOpenTime : Long? by NotNullSingleVar()
 
     var configOptions: AnalyticsConfig? = null
-
 
     companion object {
         const val TAG = Constant.LOG_TAG
@@ -67,6 +64,7 @@ abstract class AbstractAnalytics : IAnalytics {
     private fun onInitSuccess(context: Context) {
         mHasInit.set(true)
         isInitRunning.set(false)
+        EventTrackManager.instance.trackNormalPreset(Constant.PRESET_EVENT_APP_INITIALIZE)
         trackPresetEvent(context)
         LogUtils.d(TAG, "init succeed")
     }
@@ -116,9 +114,10 @@ abstract class AbstractAnalytics : IAnalytics {
      * 监听应用生命周期
      */
     private fun registerAppLifecycleListener(context: Context) {
-        activityLifecycleCallbacks = DTActivityLifecycleCallbacks()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            (context.applicationContext as Application).registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
+        ThreadUtils.runOnUiThread {
+            (context.applicationContext as Application).registerActivityLifecycleCallbacks(
+                LifecycleObserverImpl()
+            )
         }
     }
 
@@ -141,8 +140,6 @@ abstract class AbstractAnalytics : IAnalytics {
      */
     private fun initConfig(context: Context) {
         configOptions = AnalyticsConfig.instance
-        //获取远程配置
-        configOptions?.getRemoteConfig()
         var configBundle: Bundle? = null
         try {
             context.let {

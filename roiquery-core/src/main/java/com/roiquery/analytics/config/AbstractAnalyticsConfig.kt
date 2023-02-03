@@ -51,7 +51,7 @@ abstract class AbstractAnalyticsConfig {
     /**
      * mServerUrl
      */
-    var mServerUrl: String = ""
+    var mServerUrl: String? = ""
 
 
     /**

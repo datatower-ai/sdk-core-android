@@ -27,13 +27,29 @@ class IasReportActivity : AppCompatActivity() {
         val price = 0.09
         val currency = "usd"
 
-        findViewById<View>(R.id.button_track_subscribe_success).setOnClickListener {
-            val properties: HashMap<String, Any> = HashMap<String, Any>().apply {
-                put("placement",placement)
-            }
-            DTIASReport.reportSubscribeSuccess(o_order, order, sku, price, currency,properties)
+        findViewById<View>(R.id.button_report_to_show).setOnClickListener {
+            DTIASReport.reportToShow(seq, entrance, placement)
         }
 
+        findViewById<View>(R.id.button_track_show_success).setOnClickListener {
+            DTIASReport.reportShowSuccess(seq, entrance, placement)
+        }
+
+        findViewById<View>(R.id.button_track_show_fail).setOnClickListener {
+            DTIASReport.reportShowFail(seq, entrance, placement,"-1", "no network")
+        }
+
+        findViewById<View>(R.id.button_track_to_subscribe).setOnClickListener {
+            DTIASReport.reportSubscribe(seq, entrance, placement, sku ,order, price.toString(), currency)
+        }
+
+        findViewById<View>(R.id.button_track_subscribe_success).setOnClickListener {
+            DTIASReport.reportSubscribeSuccess(seq, entrance, placement, sku ,order, o_order, price.toString(), currency)
+        }
+
+        findViewById<View>(R.id.button_track_subscribe_fail).setOnClickListener {
+            DTIASReport.reportSubscribeFail(seq, entrance, placement, sku ,order, o_order,price.toString(), currency,"-2")
+        }
     }
 
     fun generateUUID(): String? {
