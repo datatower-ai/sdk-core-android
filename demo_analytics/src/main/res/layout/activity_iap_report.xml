@@ -29,15 +29,41 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+
+        <Button
+            android:id="@+id/button_report_entrance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:layout_margin="2dp"
+            android:text="iap_entrance"
+            />
+
+        <Button
+            android:id="@+id/button_track_to_purchase"
+            android:layout_width="wrap_content"
+            android:textAllCaps="false"
+            android:layout_margin="2dp"
+            android:layout_height="wrap_content"
+            android:text="iap_to_purchase"
+            />
+
         <Button
             android:id="@+id/button_track_purchased"
             android:layout_width="wrap_content"
             android:textAllCaps="false"
             android:layout_margin="2dp"
             android:layout_height="wrap_content"
-            android:text="iap_purchase_success"
+            android:text="iap_purchased"
             />
-
+        <Button
+            android:id="@+id/button_track_not_purchased"
+            android:layout_width="wrap_content"
+            android:textAllCaps="false"
+            android:layout_margin="2dp"
+            android:layout_height="wrap_content"
+            android:text="iap_not_purchased"
+            />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,6 @@
 package com.roiquery.ias
 
 import com.roiquery.analytics.DTAnalytics
-import org.json.JSONObject
 
 /**
  * author: xiaosailing
@@ -12,24 +11,96 @@ import org.json.JSONObject
 internal class ROIQueryIasReportImp {
     companion object {
 
-        fun trackIasSubSuccessEvent(
-            originalOrderId: String,
-            orderId: String,
-            sku: String,
-            price: Double,
-            currency: String,
-            properties: MutableMap<String, Any>? = mutableMapOf()
-        ) {
-            DTAnalytics.trackInternal(
-                ROIQueryIasConstant.IAS_TO_SUBSCRIBE_SUCCESS_EVENT,
-                JSONObject(properties?.toMutableMap() ?: mutableMapOf<String, Any?>()).apply {
-                    put(ROIQueryIasConstant.IAS_ORIGINAL_ORDER_ID, originalOrderId)
-                    put(ROIQueryIasConstant.IAS_ORDER_ID, orderId)
-                    put(ROIQueryIasConstant.IAS_SKU, sku)
-                    put(ROIQueryIasConstant.IAS_PRICE, price)
-                    put(ROIQueryIasConstant.IAS_CURRENCY, currency)
+        fun trackIasShowEvent(iasConfig: ROIQueryIasConfig) {
+            if (iasConfig.detectBaseProperties()) {
+                DTAnalytics.trackInternal(
+                    ROIQueryIasConstant.IAS_TO_SHOW_EVENT,
+                    iasProperties(iasConfig)
+                )
+            }
+        }
+
+
+        fun trackIasShowSuccessEvent(iasConfig: ROIQueryIasConfig) {
+            if (iasConfig.detectBaseProperties()) {
+                DTAnalytics.trackInternal(
+                    ROIQueryIasConstant.IAS_SHOW_SUCCESS_EVENT,
+                    iasProperties(config = iasConfig)
+                )
+            }
+        }
+
+        fun trackIasShowFailEvent(iasConfig: ROIQueryIasConfig) {
+            if (iasConfig.detectShowFailProperties()) {
+                DTAnalytics.trackInternal(
+                    ROIQueryIasConstant.IAS_SHOW_FAIL_EVENT,
+                    iasProperties
+                        (
+                        iasConfig
+                    )
+                )
+            }
+        }
+
+        fun trackIasSubEvent(iasConfig: ROIQueryIasConfig) {
+            if (iasConfig.detectSubscribeProperties()) {
+                DTAnalytics.trackInternal(
+                    ROIQueryIasConstant.IAS_TO_SUBSCRIBE_EVENT,
+                    iasProperties
+                        (
+                        iasConfig
+                    )
+                )
+            }
+        }
+
+        fun trackIasSubSuccessEvent(iasConfig: ROIQueryIasConfig) {
+            if (iasConfig.detectSubscribeSuccessProperties()) {
+                DTAnalytics.trackInternal(
+                    ROIQueryIasConstant.IAS_TO_SUBSCRIBE_SUCCESS_EVENT,
+                    iasProperties
+                        (
+                        iasConfig
+                    )
+                )
+            }
+        }
+
+        fun trackIasSubFailEvent(iasConfig: ROIQueryIasConfig) {
+            if (iasConfig.detectSubscribeFailProperties()) {
+                DTAnalytics.trackInternal(
+                    ROIQueryIasConstant.IAS_TO_SUBSCRIBE_FAIL_EVENT,
+                    iasProperties
+                        (
+                        iasConfig
+                    )
+                )
+            }
+        }
+
+
+        private fun iasProperties(config: ROIQueryIasConfig): Map<String, Any> {
+            val map = HashMap<String, Any>()
+            map.apply {
+                put(ROIQueryIasConstant.IAS_SEQ, config.iasSeq)
+
+                put(ROIQueryIasConstant.IAS_PLACEMENT, config.iasPlacement)
+                if (config.iasEntrance.isNotEmpty()) {
+                    put(ROIQueryIasConstant.IAS_ENTRANCE, config.iasEntrance)
                 }
-            )
+                if (config.iasCode.isNotEmpty()) {
+                    put(ROIQueryIasConstant.IAS_CODE, config.iasCode)
+                }
+                if (config.iasMsg.isNotEmpty()) {
+                    put(ROIQueryIasConstant.IAS_MSG, config.iasMsg)
+                }
+                put(ROIQueryIasConstant.IAS_SKU, config.iasSku)
+                put(ROIQueryIasConstant.IAS_ORDER_ID, config.iasOrderId)
+                put(ROIQueryIasConstant.IAS_PRICE, config.iasPrice)
+                put(ROIQueryIasConstant.IAS_CURRENCY, config.iasCurrency)
+                put(ROIQueryIasConstant.IAS_ORIGINAL_ORDER_ID, config.iasOriginalOrderId)
+            }
+            return map
         }
     }
 }

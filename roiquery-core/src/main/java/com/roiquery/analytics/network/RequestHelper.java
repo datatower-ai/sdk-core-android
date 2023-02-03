@@ -33,17 +33,17 @@ public class RequestHelper {
     private boolean isRedirected = false;
 
 
-    private RequestHelper() {
-    }
+
+    private RequestHelper(){}
 
     /**
      * 网络请求
      *
-     * @param url        url
-     * @param paramsMap  键值对参数
-     * @param headerMap  请求头键值对
+     * @param url url
+     * @param paramsMap 键值对参数
+     * @param headerMap 请求头键值对
      * @param retryCount 重试次数
-     * @param callBack   请求回调
+     * @param callBack 请求回调
      */
     private RequestHelper(HttpMethod method, String url, Map<String, String> paramsMap, Map<String, String> headerMap, int retryCount, HttpCallback callBack) {
         switch (method) {
@@ -59,11 +59,11 @@ public class RequestHelper {
     /**
      * POST 请求
      *
-     * @param url        url
-     * @param jsonData   json 格式参数
-     * @param headerMap  请求头键值对
+     * @param url url
+     * @param jsonData json 格式参数
+     * @param headerMap 请求头键值对
      * @param retryCount 重试次数
-     * @param callBack   请求回调
+     * @param callBack 请求回调
      */
     private RequestHelper(String url, String jsonData, Map<String, String> headerMap, int retryCount, HttpCallback callBack) {
         urlHttpPost(url, null, jsonData, headerMap, retryCount, callBack);
@@ -72,11 +72,11 @@ public class RequestHelper {
     /**
      * GET 请求
      *
-     * @param url        url
-     * @param paramsMap  键值对参数
-     * @param headerMap  请求头键值对
+     * @param url url
+     * @param paramsMap 键值对参数
+     * @param headerMap 请求头键值对
      * @param retryCount 重试次数
-     * @param callBack   请求回调
+     * @param callBack 请求回调
      */
     private void urlHttpGet(final String url, final Map<String, String> paramsMap, final Map<String, String> headerMap, final int retryCount, final HttpCallback callBack) {
         final int requestCount = retryCount - 1;
@@ -107,12 +107,12 @@ public class RequestHelper {
     /**
      * POST 请求
      *
-     * @param url        url
-     * @param paramsMap  键值对参数
-     * @param jsonData   json 格式参数
-     * @param headerMap  请求头键值对
+     * @param url url
+     * @param paramsMap 键值对参数
+     * @param jsonData json 格式参数
+     * @param headerMap 请求头键值对
      * @param retryCount 重试次数
-     * @param callBack   请求回调
+     * @param callBack 请求回调
      */
     private void urlHttpPost(final String url, final Map<String, String> paramsMap,
                              final String jsonData, final Map<String, String> headerMap,
@@ -143,8 +143,8 @@ public class RequestHelper {
     }
 
     private RealResponse urlHttpPostSync(final String url, final Map<String, String> paramsMap,
-                                         final String jsonData, final Map<String, String> headerMap,
-                                         final int retryCount) {
+                                 final String jsonData, final Map<String, String> headerMap,
+                                 final int retryCount){
         final int requestCount = retryCount - 1;
 
         RealResponse response = new RealRequest().postData(url, getPostBody(paramsMap, jsonData), getPostBodyType(paramsMap, jsonData), headerMap);
@@ -162,29 +162,10 @@ public class RequestHelper {
         }
     }
 
-    private RealResponse urlHttpGetSync(final String url, final Map<String, String> paramsMap, final Map<String, String> headerMap, final int retryCount) {
-        final int requestCount = retryCount - 1;
-
-        RealResponse response = new RealRequest().getData(getUrl(url, paramsMap), headerMap);
-        if (response.code == HTTP_OK || response.code == HTTP_NO_CONTENT) {
-            return response;
-        } else if (!isRedirected && HttpUtils.needRedirects(response.code)) {
-            isRedirected = true;
-            return urlHttpGetSync(response.location, paramsMap, headerMap, retryCount);
-        } else {
-            if (requestCount != 0) {
-               return urlHttpGetSync(url, paramsMap, headerMap, requestCount);
-            } else {
-                return null;
-            }
-        }
-    }
-
-
     /**
      * GET 请求 url 拼接
      *
-     * @param path      请求地址
+     * @param path 请求地址
      * @param paramsMap 参数键值对参数
      * @return GET 请求 url 链接
      */
@@ -206,7 +187,7 @@ public class RequestHelper {
     /**
      * 根据参数得到 body
      *
-     * @param params  键值对参数
+     * @param params 键值对参数
      * @param jsonStr json 格式参数
      * @return 请求 body
      */
@@ -252,7 +233,7 @@ public class RequestHelper {
      * 获取请求的 Content-Type
      *
      * @param paramsMap 请求参数
-     * @param jsonStr   请求参数 json 字符串
+     * @param jsonStr 请求参数 json 字符串
      * @return Content-Type
      */
     private String getPostBodyType(Map<String, String> paramsMap, String jsonStr) {
@@ -264,65 +245,62 @@ public class RequestHelper {
         return null;
     }
 
-public static class Builder {
+    public static class Builder {
 
-    private HttpMethod httpMethod;
-    private String httpUrl;
-    private Map<String, String> paramsMap;
-    private String jsonData;
-    private Map<String, String> headerMap;
-    private HttpCallback callBack;
-    private int retryCount = 1;
+        private HttpMethod httpMethod;
+        private String httpUrl;
+        private Map<String, String> paramsMap;
+        private String jsonData;
+        private Map<String, String> headerMap;
+        private HttpCallback callBack;
+        private int retryCount = 1;
 
-    public Builder(HttpMethod method, String url) {
-        this.httpMethod = method;
-        this.httpUrl = url;
-    }
+        public Builder(HttpMethod method, String url) {
+            this.httpMethod = method;
+            this.httpUrl = url;
+        }
 
-    public Builder params(Map<String, String> paramsMap) {
-        this.paramsMap = paramsMap;
-        return this;
-    }
+        public Builder params(Map<String, String> paramsMap) {
+            this.paramsMap = paramsMap;
+            return this;
+        }
 
-    public Builder jsonData(String data) {
-        this.jsonData = data;
-        return this;
-    }
+        public Builder jsonData(String data) {
+            this.jsonData = data;
+            return this;
+        }
 
-    public Builder header(Map<String, String> headerMap) {
-        this.headerMap = headerMap;
-        return this;
-    }
+        public Builder header(Map<String, String> headerMap) {
+            this.headerMap = headerMap;
+            return this;
+        }
 
-    public Builder callback(HttpCallback callBack) {
-        this.callBack = callBack;
-        return this;
-    }
+        public Builder callback(HttpCallback callBack) {
+            this.callBack = callBack;
+            return this;
+        }
 
-    public Builder retryCount(int retryCount) {
-        this.retryCount = retryCount;
-        return this;
-    }
+        public Builder retryCount(int retryCount) {
+            this.retryCount = retryCount;
+            return this;
+        }
 
-    public void execute() {
-        if (httpMethod == HttpMethod.POST_ASYNC && paramsMap == null) {
-            new RequestHelper(httpUrl, jsonData, headerMap, retryCount, callBack);
-        } else {
-            new RequestHelper(httpMethod, httpUrl, paramsMap, headerMap, retryCount, callBack);
+        public void execute() {
+            if (httpMethod == HttpMethod.POST_ASYNC && paramsMap == null) {
+                new RequestHelper(httpUrl, jsonData, headerMap, retryCount, callBack);
+            } else {
+                new RequestHelper(httpMethod, httpUrl, paramsMap, headerMap, retryCount, callBack);
+            }
+        }
+
+        public RealResponse executeSync(){
+            if (httpMethod == HttpMethod.POST_SYNC) {
+                return new RequestHelper().urlHttpPostSync(httpUrl, paramsMap, jsonData, headerMap, retryCount);
+            }else {
+                return new RealResponse();
+            }
         }
     }
-
-    public RealResponse executeSync() {
-        if (httpMethod == HttpMethod.POST_SYNC) {
-            return new RequestHelper().urlHttpPostSync(httpUrl, paramsMap, jsonData, headerMap, retryCount);
-        } else if (httpMethod == HttpMethod.GET_SYNC){
-            return new RequestHelper().urlHttpGetSync(httpUrl, paramsMap, headerMap, retryCount);
-        }else {
-            return new RealResponse();
-        }
-    }
-
-}
 
     /**
      * 发生异常时，返回包含异常信息的 RealResponse 对象
