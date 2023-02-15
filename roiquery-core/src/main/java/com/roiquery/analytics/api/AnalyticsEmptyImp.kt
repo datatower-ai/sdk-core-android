@@ -65,6 +65,11 @@ class AnalyticsEmptyImp internal constructor() : AbstractAnalytics() {
 
     }
 
+
+    override fun userUniqAppend(properties: JSONObject?) {
+
+    }
+
     override fun trackTimerStart(eventName: String) {
 
     }

@@ -187,6 +187,8 @@ interface IAnalytics {
 
     fun userAppend(properties: JSONObject?)
 
+    fun userUniqAppend(properties: JSONObject?)
+
 }
 
 

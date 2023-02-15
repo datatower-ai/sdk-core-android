@@ -159,6 +159,13 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         trackUser(Constant.PRESET_EVENT_USER_APPEND, properties)
     }
 
+    override fun userUniqAppend(properties: JSONObject?) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
+        trackUser(Constant.PRESET_EVENT_USER_UNIQ_APPEND, properties)
+    }
+
     override fun trackTimerStart(eventName: String) {
         if (configOptions?.isSdkDisable() == true) {
             return

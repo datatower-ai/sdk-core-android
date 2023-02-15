@@ -90,7 +90,14 @@ public class CoreActivity extends AppCompatActivity {
         );
 
         findViewById(R.id.button_track).setOnClickListener(v -> {
-            DTAnalytics.track("dt_track_simple");
+            try {
+                JSONObject property = new JSONObject();
+//                property.put("$property_2","sdf");
+                property.put("property_object", getJSONObject());
+                DTAnalytics.track("dt_track_simple", property);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         });
 
         findViewById(R.id.button_track_illegal_event_name).setOnClickListener(v -> {
@@ -123,8 +130,10 @@ public class CoreActivity extends AppCompatActivity {
                 JSONObject jsonObject  = new JSONObject();
                 jsonObject.put("test_property_3", false);
                 jsonObject.put("test_property_4", 2.3);
+                jsonObject.put("property_object", getJSONObject());
+
                 DTAnalytics.userSet(jsonObject);
-            } catch (Exception ignored){
+            }catch (Exception ignored){
 
             }
 
@@ -135,6 +144,7 @@ public class CoreActivity extends AppCompatActivity {
                 JSONObject jsonObject  = new JSONObject();
                 jsonObject.put("test_property_3", false);
                 jsonObject.put("test_property_4", 2.3);
+                jsonObject.put("property_object", getJSONObject());
                 DTAnalytics.userSetOnce(jsonObject);
             }catch (Exception ignored){
 
@@ -146,6 +156,7 @@ public class CoreActivity extends AppCompatActivity {
                 JSONObject jsonObject  = new JSONObject();
                 jsonObject.put("test_property_3", false);
                 jsonObject.put("test_property_4", 2.3);
+                jsonObject.put("property_object", getJSONObject());
                 DTAnalytics.userAdd(jsonObject);
             }catch (Exception ignored){
 
@@ -182,8 +193,47 @@ public class CoreActivity extends AppCompatActivity {
 
             }
         });
+        findViewById(R.id.uniq_append).setOnClickListener(v -> {
+            try {
+                JSONArray list = new JSONArray("[\"apple\", \"ball\"]");
+                list.put("orage");
+                JSONObject properties = new JSONObject();
+                properties.put("user_list", list);
+                DTAnalytics.userUniqAppend(properties);
+            }catch (Exception ignored){
+
+            }
+        });
     }
 
+    public static JSONObject getJSONObject(){
+        JSONObject properties3 = new JSONObject();
+        try {
+            //properties3
+            JSONObject obj_test3 = new JSONObject();
+            obj_test3.put("hero_name", "刘备");
+            obj_test3.put("hero_level", 22);
+            obj_test3.put("hero_if_support", false);
+            JSONArray hero_equipment3 = new JSONArray();
+            hero_equipment3.put("雌雄双股剑");
+            hero_equipment3.put("的卢");
+            obj_test3.put("hero_equipment", hero_equipment3);
 
+            JSONObject obj_test4 = new JSONObject();
+            obj_test4.put("hero_name", "刘备");
+            obj_test4.put("hero_level", 22);
+            obj_test4.put("hero_if_support", false);
+            JSONArray hero_equipment4 = new JSONArray();
+            hero_equipment4.put("雌雄双股剑");
+            hero_equipment4.put("的卢");
+            obj_test4.put("hero_equipment", hero_equipment3);
+            obj_test3.put("hero_sub_obj", obj_test4);
+
+            properties3.put("obj_test", obj_test3);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return properties3;
+    }
 
 }

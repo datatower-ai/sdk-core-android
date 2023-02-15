@@ -132,6 +132,7 @@ internal object Constant {
     const val PRESET_EVENT_USER_SET_ONCE = "#user_set_once"
     const val PRESET_EVENT_USER_UNSET    = "#user_unset"
     const val PRESET_EVENT_USER_APPEND   = "#user_append"
+    const val PRESET_EVENT_USER_UNIQ_APPEND   = "#user_uniq_append"
     const val PRESET_EVENT_USER_DEL      = "#user_delete"
 
 

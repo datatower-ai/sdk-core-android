@@ -331,6 +331,14 @@
                 android:textAllCaps="false"
                 android:layout_marginStart="10dp"
                 tools:ignore="MissingConstraints" />
+            <Button
+                android:id="@+id/uniq_append"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="uniq_append"
+                android:textAllCaps="false"
+                android:layout_marginStart="10dp"
+                tools:ignore="MissingConstraints" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

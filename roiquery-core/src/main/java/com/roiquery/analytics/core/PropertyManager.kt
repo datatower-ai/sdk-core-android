@@ -96,12 +96,18 @@ class PropertyManager private constructor() {
     }
 
     private fun initDTIdOrUpdateOriginalId(context: Context, justUpdateOriginalId: Boolean) {
+        var gaid: String
         try {
             val info = AdvertisingIdClient.getAdvertisingIdInfo(context)
-            val gaid = info.id ?: ""
+            gaid = info.id ?: ""
             limitAdTrackingEnabled = info.isLimitAdTrackingEnabled
+        } catch (e: Exception) {
+            //googleService not available
+            gaid = ""
+        }
+        try {
             var originalId = ""
-            //gaid 不可用
+            //gaid 不可用，则使用 Android id
             if (gaid.isEmpty() || limitAdTrackingEnabled || gaid == "00000000-0000-0000-0000-000000000000") {
                 originalId = DeviceUtils.getAndroidID(context)
                 updateAndroidId(originalId)

@@ -1,10 +1,7 @@
 package com.roiquery.analytics
 
-import android.content.Context
 import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.core.PropertyManager
-import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.utils.AppLifecycleHelper
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.thirdparty.ThirdPartShareDataFactory
 
@@ -90,13 +87,23 @@ open class DTAnalytics {
         }
 
         /**
-         * 对 JSONArray 类型的用户属性进
+         * 对 JSONArray 类型的用户属性进追加
          *
          * @param properties 属性
          */
         @JvmStatic
         fun userAppend(properties: JSONObject?){
             AnalyticsImp.getInstance().userAppend(properties)
+        }
+
+        /**
+         * 对 JSONArray 类型的用户属性进追加, 并去重
+         *
+         * @param properties 属性
+         */
+        @JvmStatic
+        fun userUniqAppend(properties: JSONObject?){
+            AnalyticsImp.getInstance().userUniqAppend(properties)
         }
 
 
