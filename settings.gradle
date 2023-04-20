@@ -1,4 +1,0 @@
-
-include ':roiquery-core'
-include ':demo_analytics'
-rootProject.name = "ROIQuery-SDK"
