@@ -13,7 +13,7 @@ public class AsyncTaskQueue {
 
     private ExecutorService mPool;
 
-    void postTask(Runnable runnable) {
+    void postTask(Runnable task) {
         mPool.execute(new Runnable() {
             @Override
             public void run() {
