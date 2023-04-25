@@ -122,6 +122,7 @@ class EventTrackManager {
                 val eventTime = SystemClock.elapsedRealtime()
 
                 //加入线程池
+                // TODO: Avoid test `mTrackTaskManager` against null twice.
                 mTrackTaskManager?.addTrackEventTask {
                     addEventTask(
                         eventName,
@@ -154,6 +155,7 @@ class EventTrackManager {
     ) {
         try {
             //事件名、属性名规则校验
+            // TODO: Optimization: Validate event before its being `addEventTask`ed.
             if (!isPreset && !assertEvent(eventName, properties)) {
                 insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_EVENT_ILLEGAL, "event illegal")
                 return
@@ -271,6 +273,7 @@ class EventTrackManager {
 
 
     fun addTask(task: Runnable) {
+        // TODO: Use short-circuiting instead.
         mTrackTaskManager?.let {
             try {
                 it.addTrackEventTask(task)
