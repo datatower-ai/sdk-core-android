@@ -7,9 +7,19 @@ enum class PerfAction {
     SDKINITEND,
     GETDTIDBEGIN,
     GETDTIDEND,
+    GETSRVTIMEBEGIN,
+    GETSRVTIMEEND,
+    GETCONFIGBEGIN,
+    GETCONFIGEND,
     TRACKBEGIN,
     WRITEEVENTTODBBEGIN,
     WRITEEVENTTODBEND,
+    READEVENTDATAFROMDBBEGIN,
+    READEVENTDATAFROMDBEND,
+    UPLOADDATABEGIN,
+    UPLOADDATAEND,
+    DELETEDBBEGIN,
+    DELETEDBEND,
     TRACKEND,
 }
 
@@ -38,8 +48,8 @@ object PerfLogger {
             }
             timeRecord[action.name] = time;
 
-        } else {
-            LogUtils.i(tag, action.name);
         }
+
+        LogUtils.i(tag, action.name);
     }
 }

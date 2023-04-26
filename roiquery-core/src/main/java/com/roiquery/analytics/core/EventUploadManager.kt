@@ -16,6 +16,8 @@ import com.roiquery.analytics.network.RemoteService
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
 import com.roiquery.analytics.utils.TimeCalibration
+import com.roiquery.quality.PerfAction
+import com.roiquery.quality.PerfLogger
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONArray
@@ -52,6 +54,7 @@ class EventUploadManager private constructor(
                 checkInsertResult(insertCode, name, eventJson, eventSyn, insertHandler)
                 //发送上报的message
                 Message.obtain().apply {
+
                     //上报标志
                     this.what = FLUSH_QUEUE
                     mWorker.runMessageOnce(this, FLUSH_DELAY)
@@ -184,6 +187,8 @@ class EventUploadManager private constructor(
      * 数据上报到服务器
      */
     private fun uploadData() {
+        PerfLogger.doPerfLog(PerfAction.TRACKBEGIN, System.currentTimeMillis())
+
         //不上报数据
         if (!enableUploadData()) return
 
@@ -194,9 +199,13 @@ class EventUploadManager private constructor(
         //读取数据库数据
         var eventsData: String?
         synchronized(mDateAdapter) {
+            PerfLogger.doPerfLog(PerfAction.READEVENTDATAFROMDBBEGIN, System.currentTimeMillis())
+
             eventsData = mDateAdapter.generateDataString(
                 Constant.EVENT_REPORT_SIZE
             )
+
+            PerfLogger.doPerfLog(PerfAction.READEVENTDATAFROMDBEND, System.currentTimeMillis())
         }
 
         if (eventsData == null || JSONArray(eventsData).length() == 0) {
@@ -218,6 +227,7 @@ class EventUploadManager private constructor(
                 try {
                     if (info.isNotEmpty() && info != "[]") {
                         mDateAdapter.enableUpload = false
+
                         //http 请求
                         uploadDataToNet(info, mDateAdapter)
                     } else {
@@ -244,6 +254,9 @@ class EventUploadManager private constructor(
         var deleteEvents = false
         var errorMessage: String? = null
         try {
+
+            PerfLogger.doPerfLog(PerfAction.UPLOADDATABEGIN, System.currentTimeMillis())
+
             val response: String = mPoster.performRequest(
                 getEventUploadUrl(), event,
                 false, null, null
@@ -263,6 +276,9 @@ class EventUploadManager private constructor(
         } catch (e: JSONException) {
             errorMessage = "Cannot post message due to JSONException"
         } finally {
+
+            PerfLogger.doPerfLog(PerfAction.UPLOADDATAEND, System.currentTimeMillis())
+
             if (!TextUtils.isEmpty(errorMessage)) {
                 LogUtils.d(errorMessage)
                 ROIQueryQualityHelper.instance.reportQualityMessage(
@@ -271,6 +287,8 @@ class EventUploadManager private constructor(
                 )
             }
             if (deleteEvents) {
+                PerfLogger.doPerfLog(PerfAction.DELETEDBBEGIN, System.currentTimeMillis())
+
                 synchronized(mDateAdapter) {
                     //上报成功后，删除数据库数据
                     deleteEventAfterReport(event, mDateAdapter)
@@ -280,10 +298,14 @@ class EventUploadManager private constructor(
                     //如果远程控制之前获取失败，这里再次获取
                     AnalyticsConfig.instance.getRemoteConfig()
                 }
+
+                PerfLogger.doPerfLog(PerfAction.DELETEDBEND, System.currentTimeMillis())
+
             }else {
                 mDateAdapter.enableUpload = true
             }
 
+            PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
         }
 
     }
