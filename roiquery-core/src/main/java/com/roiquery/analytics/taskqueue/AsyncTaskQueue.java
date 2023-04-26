@@ -1,5 +1,7 @@
 package com.roiquery.analytics.taskqueue;
 
+import android.os.SystemClock;
+
 import com.roiquery.analytics.utils.LogUtils;
 
 import java.util.concurrent.ExecutorService;
@@ -13,6 +15,9 @@ public class AsyncTaskQueue {
 
     private ExecutorService mPool;
 
+    protected long taskBeginTime = 0;
+    protected long taskEndTime = 0;
+
     void postTask(Runnable task) {
         mPool.execute(new Runnable() {
             @Override
@@ -25,11 +30,14 @@ public class AsyncTaskQueue {
     }
 
     void taskWillRun() {
-
+        taskBeginTime = System.currentTimeMillis();
     }
 
     void taskDidRun() {
-
+        taskEndTime = System.currentTimeMillis();
+        if (taskEndTime - taskBeginTime > 3000) {
+//             LogUtils.w();
+        }
     }
 
     AsyncTaskQueue(String name) {

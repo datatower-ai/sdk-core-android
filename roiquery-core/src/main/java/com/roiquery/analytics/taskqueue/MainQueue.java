@@ -26,40 +26,4 @@ public class MainQueue extends AsyncTaskQueue {
     private MainQueue() {
         super("MainQueue");
     }
-
-    void taskWillRun() {
-        // 网monitor线程抛送一个开始监听的逻辑
-
-        MonitorQueue.get().postTask(new Runnable() {
-                                        @Override
-                                        public void run() {
-
-                                            try {
-                                                long beginTime = SystemClock.elapsedRealtime();
-                                                syncLatch.await(
-                                                        5000,
-                                                        TimeUnit.SECONDS
-                                                );
-
-//                                                long endTime = SystemClock.elapsedRealtime();
-//                                                if ((endTime - beginTime) > 5000) {
-//                                                    onTimeout();;
-//                                                }
-
-                                            } catch (InterruptedException e) {
-                                                throw new RuntimeException(e);
-                                            }
-                                        }
-
-                                        void onTimeout() {
-                                            LogUtils.e("Task run time out in main queue");
-//                                            do the report
-                                        }
-                                    }
-        );
-    }
-
-    void taskDidRun() {
-        syncLatch.countDown();
-    }
 }
