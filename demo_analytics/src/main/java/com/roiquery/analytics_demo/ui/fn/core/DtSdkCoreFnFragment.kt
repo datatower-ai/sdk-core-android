@@ -93,7 +93,7 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
                             it.resume(dataTowerId)
                         }
                     })
-                    Thread.sleep(3000)
+//                    Thread.sleep(3000)
                 }
             }.await()
             pref.summary = "DTID=$dtid"
