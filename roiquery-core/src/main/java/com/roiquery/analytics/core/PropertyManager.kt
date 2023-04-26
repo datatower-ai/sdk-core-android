@@ -89,6 +89,7 @@ class PropertyManager private constructor() {
         if (getDTID().isNotEmpty()) {
             Handler(Looper.getMainLooper()).post {
                 PerfLogger.doPerfLog(PerfAction.GETDTIDEND, System.currentTimeMillis())
+
                 callBack.onDataTowerIdCompleted(getDTID())
             }
         } else {
@@ -97,6 +98,8 @@ class PropertyManager private constructor() {
     }
 
     private fun onDataTowerIdCallback(id: String) {
+        PerfLogger.doPerfLog(PerfAction.GETDTIDEND, System.currentTimeMillis())
+
         Handler(Looper.getMainLooper()).post {
             dtidCallbacks.forEach { callback ->
                 callback?.onDataTowerIdCompleted(id)
