@@ -10,6 +10,8 @@ import com.roiquery.analytics.OnDataTowerIdListener
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
+import com.roiquery.quality.PerfAction
+import com.roiquery.quality.PerfLogger
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONObject
@@ -82,8 +84,11 @@ class PropertyManager private constructor() {
     }
 
     fun getDataTowerId(callBack: OnDataTowerIdListener) {
+        PerfLogger.doPerfLog(PerfAction.GETDTIDBEGIN, System.currentTimeMillis())
+
         if (getDTID().isNotEmpty()) {
             Handler(Looper.getMainLooper()).post {
+                PerfLogger.doPerfLog(PerfAction.GETDTIDEND, System.currentTimeMillis())
                 callBack.onDataTowerIdCompleted(getDTID())
             }
         } else {

@@ -139,7 +139,7 @@ public final class LogUtils {
         log(E, CONFIG.getGlobalTag(), contents);
     }
 
-    public static void eTag(final String tag, final Object... contents) {
+    public static void e(final String tag, final Object... contents) {
         log(E, tag, contents);
     }
 
