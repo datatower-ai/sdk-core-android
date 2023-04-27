@@ -1,6 +1,7 @@
 package com.roiquery.analytics.core
 
 import android.content.Context
+import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
@@ -82,17 +83,21 @@ class PropertyManager private constructor() {
 
     fun getDataTowerId(callBack: OnDataTowerIdListener) {
         if (getDTID().isNotEmpty()) {
-            callBack.onDataTowerIdCompleted(getDTID())
+            Handler(Looper.getMainLooper()).post {
+                callBack.onDataTowerIdCompleted(getDTID())
+            }
         } else {
             dtidCallbacks.add(callBack)
         }
     }
 
     private fun onDataTowerIdCallback(id: String) {
-        dtidCallbacks.forEach { callback ->
-            callback?.onDataTowerIdCompleted(id)
+        Handler(Looper.getMainLooper()).post {
+            dtidCallbacks.forEach { callback ->
+                callback?.onDataTowerIdCompleted(id)
+            }
+            dtidCallbacks.clear()
         }
-        dtidCallbacks.clear()
     }
 
     private fun initDTIdOrUpdateOriginalId(context: Context, justUpdateOriginalId: Boolean) {
