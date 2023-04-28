@@ -1,9 +1,14 @@
+import java.util.Properties
+import java.net.URI
+import org.gradle.jvm.tasks.Jar
+
 plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
     id("kotlin-parcelize")
     id("maven-publish")
+    id("signing")
 }
 
 android {
@@ -76,4 +81,92 @@ dependencies {
     // Room DB
     implementation("androidx.room:room-ktx:$roomDbVersion")
     kapt("androidx.room:room-compiler:$roomDbVersion")
+}
+
+tasks.create("sourcesJarToPublish", Jar::class) {
+    from(android.sourceSets.getByName("main").java.getSourceFiles())
+    archiveClassifier.set("sources")
+}
+
+publishing {
+    val groupId = "com.lovinjoy"
+    val artifactId = "datatowerai-core"
+    val dtsdkCoreVersionName: String by rootProject.extra
+
+    val props = rootProject.file("local.properties").inputStream().use { inStream ->
+        Properties().also { it.load(inStream) }
+    }
+
+    publications {
+        create<MavenPublication>("Release") {
+            this.groupId = groupId
+            this.artifactId = artifactId
+            version = dtsdkCoreVersionName
+
+            artifact("$buildDir/outputs/aar/${project.name}-public-release.aar")
+            artifact(tasks.getByName("sourcesJarToPublish"))
+
+            pom {
+                name.set(artifactId)
+                description.set("DataTower.ai Android SDK")
+                url.set("https://github.com/lovinjoy/datatower.ai-core-android")
+
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("lovinjoy")
+                        name.set("lovinjoy")
+                        email.set("develop@nodetower.com")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:github.com/lovinjoy/datatower.ai-core-android.git")
+                    developerConnection.set("scm:git:ssh://github.com/lovinjoy/datatower.ai-core-android.git")
+                    url.set("https://github.com/lovinjoy/datatower.ai-core-android/tree/main")
+                }
+            }
+
+            pom.withXml {
+                val dependenciesNode = asNode().appendNode("dependencies")
+
+                configurations.implementation.get().dependencies.forEach {
+                    val dependencyNode = dependenciesNode.appendNode("dependency")
+                    dependencyNode.appendNode("groupId", it.group)
+                    dependencyNode.appendNode("artifactId", it.name)
+                    dependencyNode.appendNode("version", it.version)
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "LocalReposilite"
+            url = URI.create("http://localhost:8080/releases/")
+            isAllowInsecureProtocol = true
+            credentials.username = props["maven.repo.local.username"].toString()
+            credentials.password = props["maven.repo.local.password"].toString()
+        }
+        maven {
+            name = "En2joyNexus3"
+            url = URI.create("https://repo-public.en2joy.com/repository/maven-releases/")
+            credentials.username = props["maven.repo.en2joy-nexus3.username"].toString()
+            credentials.password = props["maven.repo.en2joy-nexus3.password"].toString()
+        }
+        maven {
+            name = "MavenCentral"
+            url = URI.create("https://s01.oss.sonatype.org/content/repositories/releases/")
+            credentials.username = props["maven.repo.central.username"].toString()
+            credentials.password = props["maven.repo.central.password"].toString()
+        }
+    }
+}
+
+signing {
+    // TODO: sign(publishing.publications)
 }
