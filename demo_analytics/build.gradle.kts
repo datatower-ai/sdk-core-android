@@ -26,6 +26,7 @@ android {
         javaCompileOptions.annotationProcessorOptions.arguments.also {
             it["room.schemaLocation"] = "$projectDir/schemas"
         }
+        missingDimensionStrategy("logging", "internal")
     }
 
     buildTypes {

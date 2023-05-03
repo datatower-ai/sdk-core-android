@@ -28,6 +28,7 @@ android {
         javaCompileOptions.annotationProcessorOptions.arguments.also {
             it["room.schemaLocation"] = "$projectDir/schemas"
         }
+        buildConfigField("Boolean", "IS_INTERNAL_BUILD", "false")
     }
 
     buildFeatures {
@@ -53,6 +54,18 @@ android {
             isMinifyEnabled = false
             proguardFile(getDefaultProguardFile("proguard-android-optimize.txt"))
             buildConfigField("String", "VERSION_NAME", "\"$dtsdkCoreVersionName\"")
+        }
+    }
+
+    flavorDimensions += "logging"
+    productFlavors {
+        create("public") {
+            dimension = "logging"
+            buildConfigField("Boolean", "IS_INTERNAL_BUILD", "false")
+        }
+        create("internal") {
+            dimension = "logging"
+            buildConfigField("Boolean", "IS_INTERNAL_BUILD", "true")
         }
     }
 
