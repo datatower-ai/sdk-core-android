@@ -34,6 +34,7 @@ android {
             proguardFile(getDefaultProguardFile("proguard-android-optimize.txt"))
             proguardFile("${rootProject.path}/proguard-rules/common-rules.pro")
             proguardFile("${rootProject.path}/proguard-rules/core-proguard-rules.pro")
+            proguardFile("$projectDir/r8-config/eventbus.pro")
             buildConfigField("String", "VERSION_NAME", "\"$dtsdkCoreVersionName\"")
             /* 上报域名
              * 0 : 测试
@@ -90,6 +91,10 @@ dependencies {
 
     implementation("com.android.installreferrer:installreferrer:2.2")
     implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
+
+    implementation("org.greenrobot:eventbus:3.3.1")
+    // FIXME: jackson not compatible with AGP 8.1.1.
+    // implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
 
     implementation(project(":roiquery-core"))
 

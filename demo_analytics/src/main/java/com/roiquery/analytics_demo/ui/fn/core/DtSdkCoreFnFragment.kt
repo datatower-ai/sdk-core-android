@@ -76,7 +76,8 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
     private fun trackEventPredefined() {
         Result.runCatching {
             DTAnalytics.track(
-                "dt_track_simple", mapOf(Pair("property_object", generatePredefinedEventProperties))
+                "dt_track_simple",
+                mapOf(Pair("property_object", generatePredefinedEventProperties))
             )
         }.onFailure { it.printStackTrace() }
     }
@@ -93,7 +94,6 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
                             it.resume(dataTowerId)
                         }
                     })
-//                    Thread.sleep(3000)
                 }
             }.await()
             pref.summary = "DTID=$dtid"

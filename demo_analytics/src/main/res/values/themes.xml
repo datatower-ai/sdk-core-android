@@ -24,4 +24,22 @@
     <style name="Theme.ROIQuerySDK.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.ROIQuerySDK.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="ShapeAppearanceOverlay.DtsdkDemoApp.Button.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Theme.DtsdkDemoAp.Button.MaterialCircledIconOnly" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearanceOverlay.DtsdkDemoApp.Button.Circle
+        </item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="iconPadding">0dp</item>
+        <item name="iconGravity">textStart</item>
+    </style>
 </resources>

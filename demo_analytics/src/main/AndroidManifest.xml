@@ -32,7 +32,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.fn.core.TrackEventCustomizedActivity" />
+        <activity
+            android:name=".ui.fn.core.TrackEventCustomizedActivity"
+            android:label="Track Event Customized" />
 
         <activity android:name=".CoreActivity" />
         <activity android:name=".AdReportActivity" />

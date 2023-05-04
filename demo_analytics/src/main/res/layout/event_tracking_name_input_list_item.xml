@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/wrapper"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    tools:ignore="HardcodedText">
+
+    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+        android:id="@+id/edit_text"
+        style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:completionThreshold="1"
+        android:dropDownHeight="256dp"
+        android:hint="Event name"
+        android:inputType="text"
+        android:lines="1"
+        android:maxLines="1" />
+</com.google.android.material.textfield.TextInputLayout>
