@@ -37,6 +37,7 @@ buildscript {
         // maven publish
         classpath("com.vanniktech:gradle-maven-publish-plugin:0.25.2")
         classpath("org.yaml:snakeyaml:2.0")
+        classpath("com.google.devtools.ksp:symbol-processing-gradle-plugin:$kotlinVersion-1.0.11")
     }
 
     /* TODO: Unresolved token reference.

@@ -5,7 +5,7 @@ import org.gradle.jvm.tasks.Jar
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
+    id("com.google.devtools.ksp")
     id("kotlin-parcelize")
     id("maven-publish")
     id("signing")
@@ -25,8 +25,8 @@ android {
     defaultConfig {
         this.minSdk = minSdkVersion
 
-        javaCompileOptions.annotationProcessorOptions.arguments.also {
-            it["room.schemaLocation"] = "$projectDir/schemas"
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
         }
         buildConfigField("Boolean", "IS_INTERNAL_BUILD", "false")
     }
@@ -93,7 +93,7 @@ dependencies {
 
     // Room DB
     implementation("androidx.room:room-ktx:$roomDbVersion")
-    kapt("androidx.room:room-compiler:$roomDbVersion")
+    ksp("androidx.room:room-compiler:$roomDbVersion")
 }
 
 tasks.create("sourcesJarToPublish", Jar::class) {
