@@ -28,7 +28,7 @@ android {
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
-        buildConfigField("Boolean", "IS_INTERNAL_BUILD", "false")
+        buildConfigField("Boolean", "IS_LOGGING_ENABLED", "false")
     }
 
     buildFeatures {
@@ -57,15 +57,15 @@ android {
         }
     }
 
-    flavorDimensions += "logging"
+    flavorDimensions += "slf4jLogging"
     productFlavors {
         create("public") {
-            dimension = "logging"
-            buildConfigField("Boolean", "IS_INTERNAL_BUILD", "false")
+            dimension = "slf4jLogging"
+            buildConfigField("Boolean", "IS_LOGGING_ENABLED", "false")
         }
         create("internal") {
-            dimension = "logging"
-            buildConfigField("Boolean", "IS_INTERNAL_BUILD", "true")
+            dimension = "slf4jLogging"
+            buildConfigField("Boolean", "IS_LOGGING_ENABLED", "true")
         }
     }
 

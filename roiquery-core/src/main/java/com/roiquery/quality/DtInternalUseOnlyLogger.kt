@@ -36,7 +36,7 @@ class DtInternalUseOnlyLogger(private val delegate: Logger) : AbstractLogger() {
         arguments: Array<out Any>?,
         throwable: Throwable?
     ) {
-        if (!BuildConfig.IS_INTERNAL_BUILD) return
+        if (!BuildConfig.IS_LOGGING_ENABLED) return
         delegate.atLevel(level)
             .addMarker(marker)
             .setCause(throwable)

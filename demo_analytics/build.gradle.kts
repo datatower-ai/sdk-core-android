@@ -26,7 +26,6 @@ android {
         javaCompileOptions.annotationProcessorOptions.arguments.also {
             it["room.schemaLocation"] = "$projectDir/schemas"
         }
-        missingDimensionStrategy("logging", "internal")
     }
 
     buildTypes {
@@ -47,6 +46,18 @@ android {
         getByName("debug") {
             isMinifyEnabled = false
             buildConfigField("String", "VERSION_NAME", "\"$dtsdkCoreVersionName\"")
+        }
+    }
+
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("public") {
+            dimension = "distribution"
+        }
+        create("internal") {
+            dimension = "distribution"
+            signingConfig = signingConfigs.getByName("debug")
+            missingDimensionStrategy("slf4jLogging", "internal")
         }
     }
 
