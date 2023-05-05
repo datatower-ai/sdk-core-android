@@ -32,8 +32,8 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             proguardFile(getDefaultProguardFile("proguard-android-optimize.txt"))
-            proguardFile("${rootProject.path}/proguard-rules/common-rules.pro")
-            proguardFile("${rootProject.path}/proguard-rules/core-proguard-rules.pro")
+            proguardFile("${rootProject.rootDir}/proguard-rules/common-rules.pro")
+            proguardFile("${rootProject.rootDir}/proguard-rules/core-proguard-rules.pro")
             proguardFile("$projectDir/r8-config/eventbus.pro")
             buildConfigField("String", "VERSION_NAME", "\"$dtsdkCoreVersionName\"")
             /* 上报域名
