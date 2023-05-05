@@ -123,6 +123,7 @@ class TrackEventCustomizedActivity : AppCompatActivity(), CoroutineScope {
             for (nthTime in 0u until repeats) {
                 mapping.put("seq",nthTime.toString())
                 DTAnalytics.track(name, mapping)
+                Toast.makeText(applicationContext,"执行第${nthTime + 1u}次", Toast.LENGTH_SHORT).show();
                 delay(interval.toLong())
             }
         } else {
