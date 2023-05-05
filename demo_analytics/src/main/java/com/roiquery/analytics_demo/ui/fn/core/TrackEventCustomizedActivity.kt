@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Filter
+import android.widget.Toast
 import androidx.annotation.ArrayRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
@@ -27,7 +28,9 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.json.JSONException
 import org.json.JSONObject
+import java.util.HashMap
 import kotlin.coroutines.CoroutineContext
 
 interface EventMarker
@@ -109,10 +112,21 @@ class TrackEventCustomizedActivity : AppCompatActivity(), CoroutineScope {
         properties: String,
         repeats: UInt, interval: UInt,
     ) = launch {
-        val mapping = JSONObject(properties)
-        for (nthTime in 0u until repeats) {
-            DTAnalytics.track(name, mapping)
-            delay(interval.toLong())
+        var mapping: JSONObject? = null
+        try {
+            mapping = JSONObject(properties)
+        } catch (e: JSONException) {
+
+        }
+
+        if (mapping != null) {
+            for (nthTime in 0u until repeats) {
+                mapping.put("seq",nthTime.toString())
+                DTAnalytics.track(name, mapping)
+                delay(interval.toLong())
+            }
+        } else {
+            Toast.makeText(applicationContext,"非法的json字符串!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -169,6 +183,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 )
                 editText.setAdapter(adapter)
                 editText.doOnTextChanged(this::editText_onTextChanged)
+                editText.setText("eventName")
             }
 
             private fun editText_onTextChanged(
@@ -194,6 +209,11 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             fun bind() {
                 editText.doOnTextChanged(this::editText_onTextChanged)
+
+                editText.setText("{\n" +
+                        "\"action\": \"test\",\n" +
+                        "\"id\": \"1234556\"\n" +
+                        "}")
             }
 
             private fun editText_onTextChanged(
