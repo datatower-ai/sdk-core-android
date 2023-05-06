@@ -14,5 +14,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="monospace"
         android:hint="Properties"
+        android:text="{&quot;textProp&quot;:&quot;Hello world!&quot;,&quot;integerProp&quot;:123456,&quot;fpProp&quot;:123.456,&quot;boolProp&quot;:true}"
         android:inputType="text|textMultiLine" />
 </com.google.android.material.textfield.TextInputLayout>

@@ -18,5 +18,6 @@
         android:hint="Event name"
         android:inputType="text"
         android:lines="1"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:text="default_event_name" />
 </com.google.android.material.textfield.TextInputLayout>

@@ -184,7 +184,6 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 )
                 editText.setAdapter(adapter)
                 editText.doOnTextChanged(this::editText_onTextChanged)
-                editText.setText("eventName")
             }
 
             private fun editText_onTextChanged(
@@ -210,11 +209,6 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             fun bind() {
                 editText.doOnTextChanged(this::editText_onTextChanged)
-
-                editText.setText("{\n" +
-                        "\"action\": \"test\",\n" +
-                        "\"id\": \"1234556\"\n" +
-                        "}")
             }
 
             private fun editText_onTextChanged(
