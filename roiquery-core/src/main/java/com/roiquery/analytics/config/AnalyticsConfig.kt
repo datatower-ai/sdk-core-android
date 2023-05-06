@@ -79,12 +79,10 @@ private constructor() : AbstractAnalyticsConfig() {
                         reportUrl = if (!TextUtils.isEmpty(url)) url else mServerUrl
                     }
                     hasGetRemoteConfig = true
-
-                    PerfLogger.doPerfLog(PerfAction.GETCONFIGEND, System.currentTimeMillis())
                 }
-            } catch (e: Exception) {
-
+            } catch (ignored: Exception) {
             }
+            PerfLogger.doPerfLog(PerfAction.GETCONFIGEND, System.currentTimeMillis())
         }.start()
     }
 
