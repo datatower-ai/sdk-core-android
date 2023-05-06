@@ -1,5 +1,6 @@
 package com.roiquery.analytics_demo.ui.fn.core
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.annotation.ArrayRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,13 +32,17 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.HashMap
+import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
 interface EventMarker
 data class OnEventNameInputEvent(val text: String) : EventMarker
 data class OnEventPropertiesInputEvent(val text: String) : EventMarker
-data class OnEventTrackingSubmitEvent(val repeats: UInt, val interval: UInt) : EventMarker
+data class OnEventTrackingSubmitEvent(
+    val repeats: UInt,
+    val interval: UInt,
+    val infoTextView: WeakReference<AppCompatTextView>,
+) : EventMarker
 
 class TrackEventCustomizedActivity : AppCompatActivity(), CoroutineScope {
     override val coroutineContext: CoroutineContext get() = lifecycleScope.coroutineContext
@@ -58,6 +64,7 @@ class TrackEventCustomizedActivity : AppCompatActivity(), CoroutineScope {
     private var eventTrackingProperties = ""
     private var eventTrackingRepeats = 1u
     private var eventTrackingInterval = 500u
+    private var eventTrackingInfoTextViewWeakRef = WeakReference<AppCompatTextView>(null)
     private var eventTrackingJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,6 +97,7 @@ class TrackEventCustomizedActivity : AppCompatActivity(), CoroutineScope {
             is OnEventTrackingSubmitEvent -> {
                 eventTrackingRepeats = event.repeats
                 eventTrackingInterval = event.interval
+                eventTrackingInfoTextViewWeakRef = event.infoTextView
                 launchEventTrackingIfNotRunning()
             }
         }
@@ -102,7 +110,8 @@ class TrackEventCustomizedActivity : AppCompatActivity(), CoroutineScope {
                 eventTrackingName,
                 eventTrackingProperties,
                 eventTrackingRepeats,
-                eventTrackingInterval
+                eventTrackingInterval,
+                eventTrackingInfoTextViewWeakRef,
             )
         }
     }
@@ -111,23 +120,24 @@ class TrackEventCustomizedActivity : AppCompatActivity(), CoroutineScope {
         name: String,
         properties: String,
         repeats: UInt, interval: UInt,
+        textViewWeakRef: WeakReference<AppCompatTextView>,
     ) = launch {
-        var mapping: JSONObject? = null
-        try {
-            mapping = JSONObject(properties)
+        val mapping = try {
+            JSONObject(properties)
         } catch (e: JSONException) {
-
+            e.printStackTrace()
+            val text = "Error on parsing text to JSON"
+            Toast.makeText(this@TrackEventCustomizedActivity, text, Toast.LENGTH_SHORT).show()
+            return@launch
         }
 
-        if (mapping != null) {
-            for (nthTime in 0u until repeats) {
-                mapping.put("seq",nthTime.toString())
-                DTAnalytics.track(name, mapping)
-                Toast.makeText(applicationContext,"执行第${nthTime + 1u}次", Toast.LENGTH_SHORT).show();
-                delay(interval.toLong())
-            }
-        } else {
-            Toast.makeText(applicationContext,"非法的json字符串!", Toast.LENGTH_SHORT).show();
+        for (nthTime in 1u..repeats) {
+            @SuppressLint("SetTextI18n")
+            textViewWeakRef.get()?.text = "Times of repeat: $nthTime/$repeats"
+
+            mapping.put("seq", nthTime.toString())
+            DTAnalytics.track(name, mapping)
+            delay(interval.toLong())
         }
     }
 
@@ -184,6 +194,8 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 )
                 editText.setAdapter(adapter)
                 editText.doOnTextChanged(this::editText_onTextChanged)
+                val text = editText.text?.toString() ?: ""
+                EventBus.getDefault().post(OnEventNameInputEvent(text))
             }
 
             private fun editText_onTextChanged(
@@ -209,6 +221,8 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             fun bind() {
                 editText.doOnTextChanged(this::editText_onTextChanged)
+                val text = editText.text?.toString() ?: ""
+                EventBus.getDefault().post(OnEventPropertiesInputEvent(text))
             }
 
             private fun editText_onTextChanged(
@@ -240,7 +254,15 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             private fun runButton_onClicked(view: View) {
                 val repeats = binding?.repeatsEditText?.text?.toString()?.toUIntOrNull() ?: 1u
                 val interval = binding?.intervalEditText?.text?.toString()?.toUIntOrNull() ?: 500u
-                EventBus.getDefault().post(OnEventTrackingSubmitEvent(repeats, interval))
+                val textViewWeakRef =
+                    WeakReference<AppCompatTextView>(binding?.timesOfRepeatTextView)
+                EventBus.getDefault().post(
+                    OnEventTrackingSubmitEvent(
+                        repeats,
+                        interval,
+                        textViewWeakRef,
+                    )
+                )
             }
 
             companion object {

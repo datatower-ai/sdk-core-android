@@ -52,6 +52,18 @@
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/times_of_repeat_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Times of repeat: 0/0"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        app:layout_constraintBottom_toTopOf="@+id/run_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/repeats_text_input_layout" />
+
     <Button
         android:id="@+id/run_button"
         android:layout_width="0dp"
@@ -60,5 +72,5 @@
         android:text="Run"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/repeats_text_input_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/times_of_repeat_text_view" />
 </androidx.constraintlayout.widget.ConstraintLayout>
