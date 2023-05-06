@@ -193,7 +193,6 @@ class EventUploadManager private constructor(
         if (!enableUploadData()) return
 
         if (mDateAdapter == null) {
-            mDateAdapter?.enableUpload = true
             return
         }
         //读取数据库数据
