@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -56,6 +57,7 @@ android {
     kotlinOptions.jvmTarget = javaVersion.majorVersion
 
     buildFeatures {
+        this.viewBinding = true
         this.buildConfig = true
     }
 }
@@ -70,7 +72,9 @@ dependencies {
     implementation("androidx.core:core-ktx:1.10.0")
     implementation("androidx.annotation:annotation:1.6.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
+    implementation("androidx.fragment:fragment-ktx:1.5.7")
+    implementation("androidx.preference:preference-ktx:1.2.0")
+    implementation("com.google.android.material:material:1.9.0-rc01")
 
     implementation("com.android.installreferrer:installreferrer:2.2")
     implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")

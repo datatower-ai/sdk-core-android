@@ -29,7 +29,7 @@ buildscript {
         val kotlinVersion: String by rootProject.extra
 
         classpath(androidGradlePluginMvnTriple)
-        classpath(kotlin("gradle-plugin", kotlinVersion))
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20")
         // classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.5")
         classpath("com.google.gms:google-services:4.3.15")
         // The version of Dokka could be different from the version of Kotlin.
