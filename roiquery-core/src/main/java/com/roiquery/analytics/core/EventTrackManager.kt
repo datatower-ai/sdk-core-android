@@ -6,6 +6,8 @@ import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
+import com.roiquery.quality.PerfAction
+import com.roiquery.quality.PerfLogger
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONObject
@@ -122,6 +124,7 @@ class EventTrackManager {
                 val eventTime = SystemClock.elapsedRealtime()
 
                 //加入线程池
+                // TODO: Avoid test `mTrackTaskManager` against null twice.
                 mTrackTaskManager?.addTrackEventTask {
                     addEventTask(
                         eventName,
@@ -152,8 +155,10 @@ class EventTrackManager {
         properties: JSONObject? = null,
         insertHandler: ((code: Int, msg: String) -> Unit)? = null
     ) {
+        PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBBEGIN, System.currentTimeMillis())
         try {
             //事件名、属性名规则校验
+            // TODO: Optimization: Validate event before its being `addEventTask`ed.
             if (!isPreset && !assertEvent(eventName, properties)) {
                 insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_EVENT_ILLEGAL, "event illegal")
                 return
@@ -202,6 +207,8 @@ class EventTrackManager {
             )
             //如果有插入失败的数据，则一起插入
             mAnalyticsManager?.enqueueErrorInsertEventMessage()
+
+            PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBEND, System.currentTimeMillis())
 
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
@@ -271,6 +278,7 @@ class EventTrackManager {
 
 
     fun addTask(task: Runnable) {
+        // TODO: Use short-circuiting instead.
         mTrackTaskManager?.let {
             try {
                 it.addTrackEventTask(task)

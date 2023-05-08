@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:key="dt_anal_core"
+    tools:ignore="HardcodedText">
+
+    <Preference
+        android:key="dt_anal_get_dtid"
+        android:summary="DTID="
+        android:title="Get DTID" />
+
+    <PreferenceCategory
+        android:key="dt_anal_user_builtin_prop_group"
+        android:title="Built-in User Properties">
+        <EditTextPreference
+            android:key="dt_anal_user_builtin_prop_acid"
+            android:summary="dtAnal.accountId"
+            android:title="Set #acid" />
+
+        <EditTextPreference
+            android:key="dt_anal_user_builtin_prop_firebase_id"
+            android:summary="dtAnal.firebaseId"
+            android:title="Set #latest_firebase_iid" />
+
+        <EditTextPreference
+            android:key="dt_anal_user_builtin_prop_appsflyer_id"
+            android:summary="dtAnal.appsFlyerId"
+            android:title="Set #latest_appsflyer_id" />
+
+        <EditTextPreference
+            android:key="dt_anal_user_builtin_prop_kochava_id"
+            android:summary="dtAnal.kochavaId"
+            android:title="Set #latest_kochava_id" />
+
+        <EditTextPreference
+            android:key="dt_anal_user_builtin_prop_adjust_id"
+            android:summary="dtAnal.adjustId"
+            android:title="Set #latest_adjust_id" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Event Tracking">
+        <Preference
+            android:key="dt_anal_track_predefined"
+            android:summary="Track an event with name of 'dt_track_simple' and properties of a predefined key-value paris."
+            android:title="Track event 'dt_track_simple'" />
+
+        <!--
+          TODO: Provide 2 EditTexts, one for event name and one for custom properties and few presets for:
+            1. 'dt_track_simple' with predefined key-value pairs;
+            2. '#dt_track_simple' for illegal(reserved) event names;
+            3. '#dt_track_simple' with illegal property names starts with either '#' or '$';
+            4. and 2 extra params for track events repeatedly with a given delay between each event.
+        -->
+        <Preference
+            android:key="dt_anal_track_custom"
+            android:summary="You'll have to fill in the name of the event and its properties"
+            android:title="Track event" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="User Properties">
+        <!-- TODO: feature delayed indefinitely. -->
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>
