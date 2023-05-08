@@ -13,6 +13,8 @@ import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.EventUtils
 import com.roiquery.analytics.utils.LogUtils
+import com.roiquery.quality.PerfAction
+import com.roiquery.quality.PerfLogger
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONException
@@ -280,10 +282,13 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             if (context == null || configOptions == null) {
                 throw IllegalStateException("Context and configOptions can not be null")
             }
+
+            PerfLogger.doPerfLog(PerfAction.SDKINITBEGIN, System.currentTimeMillis())
             if (instance == null) {
                 instance = AnalyticsImp()
             }
             instance?.init(context)
+            PerfLogger.doPerfLog(PerfAction.SDKINITEND, System.currentTimeMillis())
         }
 
     }

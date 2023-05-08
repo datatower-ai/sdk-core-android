@@ -1,6 +1,7 @@
 package com.roiquery.analytics.core
 
 import android.content.Context
+import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
@@ -9,6 +10,8 @@ import com.roiquery.analytics.OnDataTowerIdListener
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.*
+import com.roiquery.quality.PerfAction
+import com.roiquery.quality.PerfLogger
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONObject
@@ -81,18 +84,28 @@ class PropertyManager private constructor() {
     }
 
     fun getDataTowerId(callBack: OnDataTowerIdListener) {
+        PerfLogger.doPerfLog(PerfAction.GETDTIDBEGIN, System.currentTimeMillis())
+
         if (getDTID().isNotEmpty()) {
-            callBack.onDataTowerIdCompleted(getDTID())
+            Handler(Looper.getMainLooper()).post {
+                PerfLogger.doPerfLog(PerfAction.GETDTIDEND, System.currentTimeMillis())
+
+                callBack.onDataTowerIdCompleted(getDTID())
+            }
         } else {
             dtidCallbacks.add(callBack)
         }
     }
 
     private fun onDataTowerIdCallback(id: String) {
-        dtidCallbacks.forEach { callback ->
-            callback?.onDataTowerIdCompleted(id)
+        PerfLogger.doPerfLog(PerfAction.GETDTIDEND, System.currentTimeMillis())
+
+        Handler(Looper.getMainLooper()).post {
+            dtidCallbacks.forEach { callback ->
+                callback?.onDataTowerIdCompleted(id)
+            }
+            dtidCallbacks.clear()
         }
-        dtidCallbacks.clear()
     }
 
     private fun initDTIdOrUpdateOriginalId(context: Context, justUpdateOriginalId: Boolean) {

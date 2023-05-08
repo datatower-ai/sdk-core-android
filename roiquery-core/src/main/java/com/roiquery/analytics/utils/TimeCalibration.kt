@@ -12,6 +12,8 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
+import com.roiquery.quality.PerfAction
+import com.roiquery.quality.PerfLogger
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
@@ -44,6 +46,8 @@ class TimeCalibration private constructor() {
             if (isVerifyTimeRunning.get()) {
                 return
             }
+            PerfLogger.doPerfLog(PerfAction.GETSRVTIMEBEGIN, System.currentTimeMillis())
+
             isVerifyTimeRunning.set(true)
             //子进程只读取主进程的时间，不获取服务器时间
             if (!ProcessUtil.isMainProcess(AnalyticsConfig.instance.mContext)){
@@ -64,6 +68,8 @@ class TimeCalibration private constructor() {
                 }
             }
             isVerifyTimeRunning.set(false)
+
+            PerfLogger.doPerfLog(PerfAction.GETSRVTIMEEND, System.currentTimeMillis())
         }
     }
 

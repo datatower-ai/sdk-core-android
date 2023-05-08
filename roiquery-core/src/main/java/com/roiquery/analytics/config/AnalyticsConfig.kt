@@ -14,6 +14,8 @@ import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
 import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.LogUtils
+import com.roiquery.quality.PerfAction
+import com.roiquery.quality.PerfLogger
 import org.json.JSONObject
 import java.util.concurrent.Future
 
@@ -47,6 +49,9 @@ private constructor() : AbstractAnalyticsConfig() {
         if (hasGetRemoteConfig) {
             return
         }
+
+        PerfLogger.doPerfLog(PerfAction.GETCONFIGBEGIN, System.currentTimeMillis())
+
         initRemoteConfig()
         Thread {
             try {
@@ -75,9 +80,9 @@ private constructor() : AbstractAnalyticsConfig() {
                     }
                     hasGetRemoteConfig = true
                 }
-            } catch (e: Exception) {
-
+            } catch (ignored: Exception) {
             }
+            PerfLogger.doPerfLog(PerfAction.GETCONFIGEND, System.currentTimeMillis())
         }.start()
     }
 
