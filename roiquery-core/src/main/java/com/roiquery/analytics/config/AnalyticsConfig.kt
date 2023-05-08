@@ -50,10 +50,10 @@ private constructor() : AbstractAnalyticsConfig() {
             return
         }
 
-        PerfLogger.doPerfLog(PerfAction.GETCONFIGBEGIN, System.currentTimeMillis())
-
         initRemoteConfig()
         Thread {
+            PerfLogger.doPerfLog(PerfAction.GETCONFIGBEGIN, System.currentTimeMillis())
+
             try {
                 val response = RequestHelper.Builder(HttpMethod.GET_SYNC, configUrl)
                     .params(mutableMapOf<String, String>().apply {

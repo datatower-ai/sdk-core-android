@@ -39,6 +39,8 @@ object PerfLogger {
                     LogUtils.i(tag, "action ${action.name} cost $cost");
                 }
                 timeRecord.remove(relatedKey)
+            } else {
+                LogUtils.e(tag, "Error, no log action $relatedKey");
             }
 
         } else if (action.name.endsWith("BEGIN")){
@@ -47,7 +49,6 @@ object PerfLogger {
 //                return
             }
             timeRecord[action.name] = time;
-
         }
 
         LogUtils.i(tag, action.name);

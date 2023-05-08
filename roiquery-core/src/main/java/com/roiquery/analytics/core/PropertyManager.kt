@@ -70,6 +70,8 @@ class PropertyManager private constructor() {
     }
 
     private fun getDataTowerId(context: Context) {
+        PerfLogger.doPerfLog(PerfAction.GETDTIDBEGIN, System.currentTimeMillis())
+
         //这里每次更新，因为 gaid 或者Android id 有可能会变
         MainQueue.get().postTask {
             var justUpdateOriginalId = false

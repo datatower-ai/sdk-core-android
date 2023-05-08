@@ -4,6 +4,8 @@ import android.content.Context
 import com.roiquery.analytics.taskqueue.DBQueue
 import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.utils.TimeCalibration
+import com.roiquery.quality.PerfAction
+import com.roiquery.quality.PerfLogger
 import org.json.JSONObject
 
 interface AsyncGetDBData {
@@ -25,8 +27,12 @@ class EventDateAdapter private constructor(
      */
      fun addJSON(data: JSONObject?, eventSyn: String, callback: AsyncGetDBData?) {
         DBQueue.get().postTask {
+            PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBBEGIN, System.currentTimeMillis())
+
             try {
                 val ret = mOperation?.insertData(data, eventSyn)!!
+
+                PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBEND, System.currentTimeMillis())
 
                 callback?.let {
                     MainQueue.get().postTask {

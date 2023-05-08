@@ -159,7 +159,6 @@ class EventTrackManager {
         properties: JSONObject? = null,
         insertHandler: ((code: Int, msg: String) -> Unit)? = null
     ) {
-        PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBBEGIN, System.currentTimeMillis())
         try {
             //事件名、属性名规则校验
             // TODO: Optimization: Validate event before its being `addEventTask`ed.

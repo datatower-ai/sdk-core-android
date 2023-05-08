@@ -57,7 +57,6 @@ class EventUploadManager private constructor(
                 mDateAdapter.addJSON(eventJson, eventSyn, object : AsyncGetDBData {
 
                     override fun onDataGet(data: Any?) {
-                        PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBEND, System.currentTimeMillis())
 
                         val insertCode = data as Int
                         checkInsertResult(insertCode, name, eventJson, eventSyn, insertHandler)
@@ -197,7 +196,6 @@ class EventUploadManager private constructor(
      * 数据上报到服务器
      */
     private fun uploadData() {
-        PerfLogger.doPerfLog(PerfAction.TRACKBEGIN, System.currentTimeMillis())
 
         do {
             //不上报数据
@@ -206,6 +204,8 @@ class EventUploadManager private constructor(
             if (mDateAdapter == null) {
                 break
             }
+
+            PerfLogger.doPerfLog(PerfAction.TRACKBEGIN, System.currentTimeMillis())
 
             val syncTask = SynnDataModel()
             syncTask.taskSeq = 1;
@@ -236,6 +236,7 @@ class EventUploadManager private constructor(
             if (eventsData == null || JSONArray(eventsData).length() == 0) {
                 LogUtils.d(TAG, "db count = 0，disable upload")
                 mDateAdapter.enableUpload = true
+                PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
                 break
             }
 
@@ -244,6 +245,7 @@ class EventUploadManager private constructor(
                 LogUtils.d(TAG, "time do not calibrate yet")
                 mDateAdapter.enableUpload = true
                 TimeCalibration.instance.getReferenceTime()
+                PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
                 break
             }
 
