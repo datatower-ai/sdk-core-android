@@ -45,8 +45,7 @@ public class MonitorQueue extends AsyncTaskQueue {
 
                              try {
                                  Thread.sleep(60000);
-                             } catch (InterruptedException e) {
-                                 throw new RuntimeException(e);
+                             } catch (InterruptedException ignored) {
                              }
 
                              if (mFlag == 1) {
