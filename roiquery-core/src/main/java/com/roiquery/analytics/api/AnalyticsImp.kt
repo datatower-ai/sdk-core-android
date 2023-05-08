@@ -11,6 +11,7 @@ import com.roiquery.analytics.core.EventTimerManager
 import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.utils.EventUtils
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.quality.PerfAction
@@ -79,15 +80,18 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         if (configOptions?.isSdkDisable() == true) {
             return
         }
-        EventTrackManager.instance.trackUserWithPropertyCheck(eventName, properties)
+        val happenTime = SystemClock.elapsedRealtime()
+        EventTrackManager.instance.trackUserWithPropertyCheck(eventName, happenTime, properties)
     }
 
     override fun trackNormal(eventName: String?, isPreset: Boolean, properties: JSONObject?) {
         if (configOptions?.isSdkDisable() == true) {
             return
         }
-        if (isPreset) EventTrackManager.instance.trackNormalPreset(eventName, properties)
-        else EventTrackManager.instance.trackNormal(eventName, properties)
+        val happenTime = SystemClock.elapsedRealtime()
+
+        if (isPreset) EventTrackManager.instance.trackNormalPreset(eventName, happenTime, properties)
+        else EventTrackManager.instance.trackNormal(eventName, happenTime, properties)
     }
 
     override fun trackNormal(eventName: String?, isPreset: Boolean, properties: Map<String, Any>?) {
@@ -173,9 +177,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             return
         }
         val startTime = SystemClock.elapsedRealtime()
-        EventTrackManager.instance.addTask {
+        MainQueue.get().postTask {
             try {
-                if (!EventUtils.isValidEventName(eventName)) return@addTask
+                if (!EventUtils.isValidEventName(eventName)) return@postTask
                 EventTimerManager.instance.addEventTimer(eventName, EventTimer(startTime))
             } catch (e: Exception) {
                 LogUtils.e(e)
@@ -188,9 +192,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             return
         }
         val startTime = SystemClock.elapsedRealtime()
-        EventTrackManager.instance.addTask {
+        MainQueue.get().postTask {
             try {
-                if (!EventUtils.isValidEventName(eventName)) return@addTask
+                if (!EventUtils.isValidEventName(eventName)) return@postTask
                 EventTimerManager.instance.updateTimerState(eventName, startTime, true)
             } catch (e: Exception) {
                 LogUtils.e(e)
@@ -203,9 +207,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             return
         }
         val startTime = SystemClock.elapsedRealtime()
-        EventTrackManager.instance.addTask {
+        MainQueue.get().postTask {
             try {
-                if (!EventUtils.isValidEventName(eventName)) return@addTask
+                if (!EventUtils.isValidEventName(eventName)) return@postTask
                 EventTimerManager.instance.updateTimerState(eventName, startTime, false)
             } catch (e: Exception) {
                 LogUtils.e(e)
@@ -218,9 +222,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             return
         }
         val endTime = SystemClock.elapsedRealtime()
-        EventTrackManager.instance.addTask {
+        MainQueue.get().postTask {
             try {
-                if (!EventUtils.isValidEventName(eventName)) return@addTask
+                if (!EventUtils.isValidEventName(eventName)) return@postTask
                 EventTimerManager.instance.updateEndTime(eventName, endTime)
                 trackNormal(eventName,false, properties)
             } catch (e: Exception) {
@@ -233,9 +237,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         if (configOptions?.isSdkDisable() == true) {
             return
         }
-        EventTrackManager.instance.addTask {
+        MainQueue.get().postTask {
             try {
-                if (!EventUtils.isValidEventName(eventName)) return@addTask
+                if (!EventUtils.isValidEventName(eventName)) return@postTask
                 EventTimerManager.instance.removeTimer(eventName)
             } catch (e: java.lang.Exception) {
                 LogUtils.e(e)
@@ -247,8 +251,7 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         if (configOptions?.isSdkDisable() == true) {
             return
         }
-        EventTrackManager.instance.addTask {
-            try {
+        MainQueue.get().postTask { try {
                 EventTimerManager.instance.clearTimers()
             } catch (e: java.lang.Exception) {
                 LogUtils.e(e)
@@ -284,11 +287,14 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             }
 
             PerfLogger.doPerfLog(PerfAction.SDKINITBEGIN, System.currentTimeMillis())
-            if (instance == null) {
-                instance = AnalyticsImp()
+            MainQueue.get().postTask {
+                if (instance == null) {
+                    instance = AnalyticsImp()
+                }
+
+                instance?.init(context)
+                PerfLogger.doPerfLog(PerfAction.SDKINITEND, System.currentTimeMillis())
             }
-            instance?.init(context)
-            PerfLogger.doPerfLog(PerfAction.SDKINITEND, System.currentTimeMillis())
         }
 
     }

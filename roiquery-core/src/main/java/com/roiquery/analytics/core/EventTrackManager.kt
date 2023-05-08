@@ -5,6 +5,7 @@ import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
@@ -22,16 +23,16 @@ class EventTrackManager {
     }
 
     //事件采集管理线程池
-    private var mTrackTaskManager: TrackTaskManager? = null
+//    private var mTrackTaskManager: TrackTaskManager? = null
 
     //采集 、上报管理
     private var mAnalyticsManager: EventUploadManager? = null
-    private var mTrackTaskManagerThread: TrackTaskManagerThread? = null
+//    private var mTrackTaskManagerThread: TrackTaskManagerThread? = null
 
     fun init() {
-        mTrackTaskManager = TrackTaskManager.getInstance()
-        mTrackTaskManagerThread = TrackTaskManagerThread()
-        Thread(mTrackTaskManagerThread, "DT.TaskQueueThread").start()
+//        mTrackTaskManager = TrackTaskManager.getInstance()
+//        mTrackTaskManagerThread = TrackTaskManagerThread()
+//        Thread(mTrackTaskManagerThread, "DT.TaskQueueThread").start()
         mAnalyticsManager = EventUploadManager.getInstance()
         initTime()
     }
@@ -61,8 +62,8 @@ class EventTrackManager {
      * 用于 track 非预置事件
      *
      * */
-    fun trackNormal(eventName: String?, properties: JSONObject? = JSONObject()) {
-        trackInternal(eventName, Constant.EVENT_TYPE_TRACK, false, properties)
+    fun trackNormal(eventName: String?, eventTime: Long, properties: JSONObject? = JSONObject()) {
+        trackInternal(eventName, eventTime, Constant.EVENT_TYPE_TRACK, false, properties)
     }
 
     /**
@@ -71,23 +72,25 @@ class EventTrackManager {
      * */
     fun trackNormalPreset(
         eventName: String?,
+        eventTime: Long,
         properties: JSONObject? = JSONObject(),
         insertHandler: ((code: Int, msg: String) -> Unit)? = null
     ) {
-        trackInternal(eventName, Constant.EVENT_TYPE_TRACK, true, properties, insertHandler)
+        trackInternal(eventName, eventTime, Constant.EVENT_TYPE_TRACK, true, properties, insertHandler)
     }
 
-    fun trackUser(eventName: String?, properties: JSONObject? = JSONObject()) {
-        trackInternal(eventName, Constant.EVENT_TYPE_USER, true, properties)
+    fun trackUser(eventName: String?, eventTime: Long, properties: JSONObject? = JSONObject()) {
+        trackInternal(eventName, eventTime, Constant.EVENT_TYPE_USER, true, properties)
     }
 
-    fun trackUserWithPropertyCheck(eventName: String?, properties: JSONObject? = JSONObject()) {
+    fun trackUserWithPropertyCheck(eventName: String?, eventTime: Long, properties: JSONObject? = JSONObject()) {
         if (!EventUtils.isValidProperty(properties)) return
-        trackInternal(eventName, Constant.EVENT_TYPE_USER, true, properties)
+        trackInternal(eventName, eventTime, Constant.EVENT_TYPE_USER, true, properties)
     }
 
     private fun trackInternal(
         eventName: String?,
+        eventTime: Long,
         eventType: String,
         isPreset: Boolean,
         properties: JSONObject?,
@@ -100,17 +103,18 @@ class EventTrackManager {
             )
             return
         }
-        trackEvent(eventName, eventType, isPreset, properties, insertHandler)
+        trackEvent(eventName, eventTime, eventType, isPreset, properties, insertHandler)
     }
 
     private fun trackEvent(
         eventName: String?,
+        eventTime: Long,
         eventType: String,
         isPreset: Boolean,
         properties: JSONObject?,
         insertHandler: ((code: Int, msg: String) -> Unit)? = null
     ) {
-        if (mTrackTaskManager != null) {
+//        if (mTrackTaskManager != null) {
             try {
                 //事件名判空
                 if (eventName.isNullOrEmpty()) {
@@ -121,11 +125,10 @@ class EventTrackManager {
                     return
                 }
                 //事件时间，开机时长
-                val eventTime = SystemClock.elapsedRealtime()
+//                val eventTime = SystemClock.elapsedRealtime()
 
                 //加入线程池
-                // TODO: Avoid test `mTrackTaskManager` against null twice.
-                mTrackTaskManager?.addTrackEventTask {
+                MainQueue.get().postTask {
                     addEventTask(
                         eventName,
                         eventTime,
@@ -142,9 +145,10 @@ class EventTrackManager {
                 )
                 insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_ERROR, "trackEvent Exception")
             }
-        } else {
-            insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_ERROR, "TrackTaskManager is null")
-        }
+//        }
+//        else {
+//            insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_ERROR, "TrackTaskManager is null")
+//        }
     }
 
     private fun addEventTask(
@@ -207,8 +211,6 @@ class EventTrackManager {
             )
             //如果有插入失败的数据，则一起插入
             mAnalyticsManager?.enqueueErrorInsertEventMessage()
-
-            PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBEND, System.currentTimeMillis())
 
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
@@ -277,16 +279,15 @@ class EventTrackManager {
     }
 
 
-    fun addTask(task: Runnable) {
-        // TODO: Use short-circuiting instead.
-        mTrackTaskManager?.let {
-            try {
-                it.addTrackEventTask(task)
-            } catch (e: Exception) {
-                trackQualityEvent("addTrackEventTask Exception")
-            }
-        }
-    }
+//    fun addTask(task: Runnable) {
+//        mTrackTaskManager?.let {
+//            try {
+//                it.addTrackEventTask(task)
+//            } catch (e: Exception) {
+//                trackQualityEvent("addTrackEventTask Exception")
+//            }
+//        }
+//    }
 
 
     private fun trackQualityEvent(qualityInfo: String) {

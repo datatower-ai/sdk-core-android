@@ -1,12 +1,14 @@
 package com.roiquery.analytics.core
 
 import android.content.Context
+import android.os.SystemClock
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.utils.*
 import org.json.JSONObject
 import java.util.concurrent.atomic.AtomicBoolean
@@ -32,7 +34,7 @@ class PresetEventManager {
             return
         }
         mDataAdapter = EventDateAdapter.getInstance()
-        EventTrackManager.instance.addTask {
+        MainQueue.get().postTask {
             checkAppInstall(context)
             setLatestUserProperties(context)
             setActiveUserProperties(context)
@@ -52,8 +54,11 @@ class PresetEventManager {
         if (AnalyticsConfig.instance.isSdkDisable()) {
             return
         }
+        val happenTime = SystemClock.elapsedRealtime()
+
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET,
+            happenTime,
             JSONObject(EventUtils.getLatestUserProperties(context, PropertyManager.instance.getDisableList()))
         )
     }
@@ -62,6 +67,8 @@ class PresetEventManager {
         if (AnalyticsConfig.instance.isSdkDisable()) {
             return
         }
+        val happenTime = SystemClock.elapsedRealtime()
+
         val activeUserProperties =
             JSONObject(PropertyManager.instance.getActiveProperties()).apply {
                 PropertyManager.instance.updateSdkVersionProperty(
@@ -72,6 +79,7 @@ class PresetEventManager {
             }
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET_ONCE,
+            happenTime,
             activeUserProperties
         )
 
@@ -99,7 +107,7 @@ class PresetEventManager {
         referrerClient?.startConnection(object : InstallReferrerStateListener {
 
             override fun onInstallReferrerSetupFinished(responseCode: Int) {
-                EventTrackManager.instance.addTask{
+                MainQueue.get().postTask {
                     try {
                         when (responseCode) {
                             InstallReferrerClient.InstallReferrerResponse.OK -> {
@@ -125,7 +133,7 @@ class PresetEventManager {
             override fun onInstallReferrerServiceDisconnected() {
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
-                EventTrackManager.instance.addTask {
+                MainQueue.get().postTask {
                     try {
                         trackAppInstallEvent(
                             ReferrerDetails(null),
@@ -154,8 +162,11 @@ class PresetEventManager {
         isAppInstallTrackRunning.set(true)
 
         val isOK = failedReason.isBlank()
+        val happenTime = SystemClock.elapsedRealtime()
+
         EventTrackManager.instance.trackNormalPreset(
             Constant.PRESET_EVENT_APP_INSTALL,
+            happenTime,
             JSONObject().apply {
                 val cnl = AnalyticsConfig.instance.mChannel
                 put(

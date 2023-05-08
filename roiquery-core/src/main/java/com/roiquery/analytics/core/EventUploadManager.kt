@@ -9,10 +9,14 @@ import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.Constant.PRE_EVENT_INFO_SYN
 import com.roiquery.analytics.config.AnalyticsConfig
+import com.roiquery.analytics.data.AsyncGetDBData
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpService
 import com.roiquery.analytics.network.RemoteService
+import com.roiquery.analytics.taskqueue.DBQueue
+import com.roiquery.analytics.taskqueue.DataUploadQueue
+import com.roiquery.analytics.taskqueue.SynnDataModel
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
 import com.roiquery.analytics.utils.TimeCalibration
@@ -49,16 +53,22 @@ class EventUploadManager private constructor(
         synchronized(mDateAdapter) {
             try {
                 //插入数据库
-                val insertCode = mDateAdapter.addJSON(eventJson, eventSyn)
-                //检测插入结果
-                checkInsertResult(insertCode, name, eventJson, eventSyn, insertHandler)
-                //发送上报的message
-                Message.obtain().apply {
+//                val insertCode = mDateAdapter.addJSON(eventJson, eventSyn)
+                mDateAdapter.addJSON(eventJson, eventSyn, object : AsyncGetDBData {
 
-                    //上报标志
-                    this.what = FLUSH_QUEUE
-                    mWorker.runMessageOnce(this, FLUSH_DELAY)
-                }
+                    override fun onDataGet(data: Any?) {
+                        PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBEND, System.currentTimeMillis())
+
+                        val insertCode = data as Int
+                        checkInsertResult(insertCode, name, eventJson, eventSyn, insertHandler)
+                        //发送上报的message
+                        Message.obtain().apply {
+                            //上报标志
+                            this.what = FLUSH_QUEUE
+                            mWorker.runMessageOnce(this, FLUSH_DELAY)
+                        }
+                    }
+                })
             } catch (e: Exception) {
                 LogUtils.i(TAG, "enqueueEventMessage error:$e")
                 ROIQueryQualityHelper.instance.reportQualityMessage(
@@ -189,67 +199,106 @@ class EventUploadManager private constructor(
     private fun uploadData() {
         PerfLogger.doPerfLog(PerfAction.TRACKBEGIN, System.currentTimeMillis())
 
-        //不上报数据
-        if (!enableUploadData()) return
+        do {
+            //不上报数据
+            if (!enableUploadData()) return
 
-        if (mDateAdapter == null) {
-            return
-        }
-        //读取数据库数据
-        var eventsData: String?
-        synchronized(mDateAdapter) {
+            if (mDateAdapter == null) {
+                break
+            }
+
+            val syncTask = SynnDataModel()
+            syncTask.taskSeq = 1;
+
+            //读取数据库数据
             PerfLogger.doPerfLog(PerfAction.READEVENTDATAFROMDBBEGIN, System.currentTimeMillis())
+            mDateAdapter.generateDataString(
+                Constant.EVENT_REPORT_SIZE,
+                object : AsyncGetDBData {
+                    override fun onDataGet(data: Any?) {
 
-            eventsData = mDateAdapter.generateDataString(
-                Constant.EVENT_REPORT_SIZE
+                        syncTask.data = data;
+                        syncTask.done()
+                    }
+                }
             )
 
+            syncTask.waitDataCome(5000)
+            if (!syncTask.isSucceed) {
+//            任务超时或者失败,重置seq，标志该任务已经废弃
+                syncTask.taskSeq = 0;
+                break;
+            }
             PerfLogger.doPerfLog(PerfAction.READEVENTDATAFROMDBEND, System.currentTimeMillis())
-        }
 
-        if (eventsData == null || JSONArray(eventsData).length() == 0) {
-            LogUtils.d(TAG, "db count = 0，disable upload")
-            mDateAdapter.enableUpload = true
-            return
-        }
+            val eventsData = syncTask.data as String
 
-        //如果未进行时间同步，发空参数进行时间同步
-        if (TimeCalibration.TIME_NOT_VERIFY_VALUE == TimeCalibration.instance.getVerifyTimeAsync()) {
-            LogUtils.d(TAG, "time do not calibrate yet")
-            mDateAdapter.enableUpload = true
-            TimeCalibration.instance.getReferenceTime()
-            return
-        }
-        //事件主体，json格式
-        eventsData?.let {
-            EventInfoCheckHelper.instance.correctEventInfo(it) { info ->
-                try {
-                    if (info.isNotEmpty() && info != "[]") {
-                        mDateAdapter.enableUpload = false
+            if (eventsData == null || JSONArray(eventsData).length() == 0) {
+                LogUtils.d(TAG, "db count = 0，disable upload")
+                mDateAdapter.enableUpload = true
+                break
+            }
 
-                        //http 请求
-                        uploadDataToNet(info, mDateAdapter)
-                    } else {
+            //如果未进行时间同步，发空参数进行时间同步
+            if (TimeCalibration.TIME_NOT_VERIFY_VALUE == TimeCalibration.instance.getVerifyTimeAsync()) {
+                LogUtils.d(TAG, "time do not calibrate yet")
+                mDateAdapter.enableUpload = true
+                TimeCalibration.instance.getReferenceTime()
+                break
+            }
+
+            //事件主体，json格式
+            var uploadSucceed = false
+            var uploadInfo: String? = null
+            eventsData.let {
+                EventInfoCheckHelper.instance.correctEventInfo(it) { info ->
+                    try {
+                        uploadInfo = info
+                        if (info.isNotEmpty() && info != "[]") {
+                            mDateAdapter.enableUpload = false
+                            //http 请求
+                            uploadSucceed = uploadDataToNet(info, mDateAdapter)
+                        } else {
+                            mDateAdapter.enableUpload = true
+                        }
+                    } catch (e: Exception) {
                         mDateAdapter.enableUpload = true
+                        ROIQueryQualityHelper.instance.reportQualityMessage(
+                            ROIQueryErrorParams.CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
+                            e.message,
+                            ROIQueryErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,
+                            ROIQueryErrorParams.TYPE_WARNING
+                        )
                     }
-                } catch (e: Exception) {
-                    mDateAdapter.enableUpload = true
-                    ROIQueryQualityHelper.instance.reportQualityMessage(
-                        ROIQueryErrorParams.CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
-                        e.message,
-                        ROIQueryErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,
-                        ROIQueryErrorParams.TYPE_WARNING
-                    )
-
                 }
             }
-        }
+
+            if (uploadSucceed) {
+                PerfLogger.doPerfLog(PerfAction.DELETEDBBEGIN, System.currentTimeMillis())
+
+                uploadInfo?.let {
+
+                    //上报成功后，删除数据库数据
+                    deleteEventAfterReport(uploadInfo!!, mDateAdapter)
+                    mDateAdapter.enableUpload = true
+                    //避免事件积压，成功后再次上报
+                    flush(FLUSH_DELAY)
+                    //如果远程控制之前获取失败，这里再次获取
+                    AnalyticsConfig.instance.getRemoteConfig()
+                }
+
+                PerfLogger.doPerfLog(PerfAction.DELETEDBEND, System.currentTimeMillis())
+            }
+
+            PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
+
+        } while (false)
     }
 
     private fun uploadDataToNet(
         event: String,
         mDateAdapter: EventDateAdapter
-    ) {
+    ): Boolean {
         var deleteEvents = false
         var errorMessage: String? = null
         try {
@@ -267,11 +316,13 @@ class EventUploadManager private constructor(
             LogUtils.json("$TAG upload event data ", event)
             LogUtils.json("$TAG upload event result ", responseJson)
         } catch (e: RemoteService.ServiceUnavailableException) {
-            errorMessage = ("Cannot post message to ["+ getEventUploadUrl()) + "] due to " + e.message
+            errorMessage =
+                ("Cannot post message to [" + getEventUploadUrl()) + "] due to " + e.message
         } catch (e: MalformedInputException) {
-            errorMessage = ("Cannot interpret "+ getEventUploadUrl()) + " as a URL."
+            errorMessage = ("Cannot interpret " + getEventUploadUrl()) + " as a URL."
         } catch (e: IOException) {
-            errorMessage = ("Cannot post message to ["+ getEventUploadUrl()) + "] due to " + e.message
+            errorMessage =
+                ("Cannot post message to [" + getEventUploadUrl()) + "] due to " + e.message
         } catch (e: JSONException) {
             errorMessage = "Cannot post message due to JSONException"
         } finally {
@@ -285,26 +336,21 @@ class EventUploadManager private constructor(
                     errorMessage, level = ROIQueryErrorParams.TYPE_WARNING
                 )
             }
-            if (deleteEvents) {
-                PerfLogger.doPerfLog(PerfAction.DELETEDBBEGIN, System.currentTimeMillis())
+//            if (deleteEvents) {
+//                synchronized(mDateAdapter) {
+//                    //上报成功后，删除数据库数据
+//                    deleteEventAfterReport(event, mDateAdapter)
+//                    mDateAdapter.enableUpload = true
+//                    //避免事件积压，成功后再次上报
+//                    flush(FLUSH_DELAY)
+//                    //如果远程控制之前获取失败，这里再次获取
+//                    AnalyticsConfig.instance.getRemoteConfig()
+//                }
+//            } else {
+//                mDateAdapter.enableUpload = true
+//            }
 
-                synchronized(mDateAdapter) {
-                    //上报成功后，删除数据库数据
-                    deleteEventAfterReport(event, mDateAdapter)
-                    mDateAdapter.enableUpload = true
-                    //避免事件积压，成功后再次上报
-                    flush(FLUSH_DELAY)
-                    //如果远程控制之前获取失败，这里再次获取
-                    AnalyticsConfig.instance.getRemoteConfig()
-                }
-
-                PerfLogger.doPerfLog(PerfAction.DELETEDBEND, System.currentTimeMillis())
-
-            }else {
-                mDateAdapter.enableUpload = true
-            }
-
-            PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
+            return deleteEvents
         }
 
     }
@@ -317,14 +363,34 @@ class EventUploadManager private constructor(
         try {
             val jsonArray = JSONArray(event)
             val length = jsonArray.length()
+            val allEvents: MutableList<String> = mutableListOf()
+//            for (i in 0 until length) {
+//                jsonArray.optJSONObject(i)?.let {
+//                    if (it.optString(EVENT_INFO_SYN).isNotEmpty()) {
+//                        mDateAdapter.cleanupEvents(it.optString(EVENT_INFO_SYN))
+//                    } else {
+//                        mDateAdapter.cleanupEvents(it.optString(PRE_EVENT_INFO_SYN))
+//                    }
+//                }
+//            }
             for (i in 0 until length) {
                 jsonArray.optJSONObject(i)?.let {
                     if (it.optString(EVENT_INFO_SYN).isNotEmpty()) {
-                        mDateAdapter.cleanupEvents(it.optString(EVENT_INFO_SYN))
+                        allEvents.add(it.optString(EVENT_INFO_SYN))
                     } else {
-                        mDateAdapter.cleanupEvents(it.optString(PRE_EVENT_INFO_SYN))
+                        allEvents.add(it.optString(PRE_EVENT_INFO_SYN))
                     }
                 }
+            }
+
+            if (allEvents.isNotEmpty()) {
+                val waitObject = SynnDataModel()
+                mDateAdapter.cleanupBatchEvents(allEvents, object : AsyncGetDBData {
+                    override fun onDataGet(data: Any?) {
+                        waitObject.done()
+                    }
+                })
+                waitObject.waitDataCome(5000)
             }
         } catch (e: Exception) {
             ROIQueryQualityHelper.instance.reportQualityMessage(
@@ -376,8 +442,13 @@ class EventUploadManager private constructor(
                 try {
                     when (msg.what) {
                         FLUSH_QUEUE -> {
-                            uploadData()
+                            if (DataUploadQueue.get().taskCount() <= 1) {
+                                DataUploadQueue.get().postTask {
+                                    uploadData()
+                                }
+                            }
                         }
+
                         DELETE_ALL -> {
                             try {
                                 mDateAdapter?.deleteAllEvents()
@@ -385,6 +456,7 @@ class EventUploadManager private constructor(
                                 LogUtils.printStackTrace(e)
                             }
                         }
+
                         else -> {
                             LogUtils.i(
                                 TAG,

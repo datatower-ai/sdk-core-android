@@ -13,12 +13,12 @@ import java.util.concurrent.TimeUnit;
 public class AsyncTaskQueue {
     private  String mName;
 
-    private ExecutorService mPool;
+    private ThreadPoolExecutor mPool;
 
     protected long taskBeginTime = 0;
     protected long taskEndTime = 0;
 
-    void postTask(Runnable task) {
+    public void postTask(Runnable task) {
         mPool.execute(new Runnable() {
             @Override
             public void run() {
@@ -37,6 +37,12 @@ public class AsyncTaskQueue {
         taskEndTime = System.currentTimeMillis();
         if (taskEndTime - taskBeginTime > 3000) {
 //             LogUtils.w();
+        }
+    }
+
+    public int taskCount() {
+        synchronized (mPool) {
+            return mPool.getQueue().size();
         }
     }
 

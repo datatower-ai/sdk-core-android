@@ -3,10 +3,9 @@ package com.roiquery.analytics.utils
 import android.content.Context
 import android.os.Build
 import android.text.TextUtils
-import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.api.AbstractAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
+import com.roiquery.analytics.data.AsyncGetDBData
 import com.roiquery.analytics.data.EventDateAdapter
 import org.json.JSONArray
 import org.json.JSONException
@@ -25,11 +24,21 @@ object EventUtils {
                      disableList: ArrayList<String>
     ) {
         //登录账号id
-        dataAdapter?.accountId?.let {
-            if (it.isNotEmpty()) {
-                eventInfo[Constant.EVENT_INFO_ACID] = it
+//        dataAdapter?.accountId?.let {
+//            if (it.isNotEmpty()) {
+//                eventInfo[Constant.EVENT_INFO_ACID] = it
+//            }
+//        }
+        dataAdapter?.getAccountId(object: AsyncGetDBData{
+            override fun onDataGet(data: Any?) {
+                data?.let {
+                    val accountId = it as String
+                    eventInfo[Constant.EVENT_INFO_ACID] = it
+                }
             }
-        }
+        })
+
+
         if (!disableList.contains(Constant.EVENT_INFO_BUNDLE_ID)) {
             //进程名
             eventInfo[Constant.EVENT_INFO_BUNDLE_ID] = ProcessUtil.getCurrentProcessName(context)

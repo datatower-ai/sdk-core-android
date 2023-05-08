@@ -6,7 +6,6 @@ import com.roiquery.analytics.data.room.ROIQueryAnalyticsDB
 import com.roiquery.analytics.data.room.bean.Configs
 import com.roiquery.analytics.data.room.bean.Events
 import com.roiquery.analytics.utils.LogUtils
-import com.roiquery.analytics.utils.ThreadUtils
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONObject
@@ -147,6 +146,20 @@ internal class EventDataOperation(
     fun deleteEventByEventSyn(eventSyn: String) {
         try {
             analyticsDB?.getEventsDao()?.deleteEventByEventSyn(eventSyn)
+            if (eventCount != 0) {
+                eventCount -= 1
+            }
+        } catch (exception: Exception) {
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_DELETE_DB_EXCEPTION,
+                exception.message, ROIQueryErrorParams.DELETE_DB_EXCEPTION
+            )
+        }
+    }
+
+    fun deleteBatchEventByEventSyn(eventSyns: List<String>) {
+        try {
+            analyticsDB?.getEventsDao()?.deleteBatchEventByEventSyn(eventSyns)
             if (eventCount != 0) {
                 eventCount -= 1
             }

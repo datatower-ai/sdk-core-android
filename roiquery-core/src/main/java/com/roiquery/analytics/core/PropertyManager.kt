@@ -9,6 +9,7 @@ import com.roiquery.analytics.Constant
 import com.roiquery.analytics.OnDataTowerIdListener
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
@@ -70,7 +71,7 @@ class PropertyManager private constructor() {
 
     private fun getDataTowerId(context: Context) {
         //这里每次更新，因为 gaid 或者Android id 有可能会变
-        EventTrackManager.instance.addTask {
+        MainQueue.get().postTask {
             var justUpdateOriginalId = false
             dataAdapter?.dtId?.let {
                 if (it.isNotEmpty()) {
@@ -206,7 +207,7 @@ class PropertyManager private constructor() {
      */
     private fun initEventInfo(context: Context) {
         try {
-            EventTrackManager.instance.addTask {
+            MainQueue.get().postTask {
                 EventUtils.getEventInfo(context, dataAdapter, eventInfo, disableList)
             }
         }catch (e:Exception){
@@ -226,7 +227,7 @@ class PropertyManager private constructor() {
      */
     private fun initCommonProperties(context: Context, initConfig: AnalyticsConfig?) {
         try {
-            EventTrackManager.instance.addTask {
+            MainQueue.get().postTask {
                 EventUtils.getCommonProperties(context, commonProperties, activeProperties, disableList)
             }
         } catch (e: Exception) {
@@ -304,7 +305,8 @@ class PropertyManager private constructor() {
 
 
     fun updateIsForeground(isForeground: Boolean, resumeFromBackground: Boolean, startReason: String? = "") {
-        EventTrackManager.instance.addTask {
+        val happenTime = SystemClock.elapsedRealtime()
+        MainQueue.get().postTask {
             if (!disableList.contains(Constant.COMMON_PROPERTY_IS_FOREGROUND)) {
                 updateCommonProperties(
                     Constant.COMMON_PROPERTY_IS_FOREGROUND,
@@ -323,6 +325,7 @@ class PropertyManager private constructor() {
 
                 EventTrackManager.instance.trackNormalPreset(
                     Constant.PRESET_EVENT_SESSION_START,
+                    happenTime,
                     JSONObject().apply {
                         put(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME, isFirstOpen)
                         put(
@@ -342,6 +345,7 @@ class PropertyManager private constructor() {
             } else {
                 EventTrackManager.instance.trackNormalPreset(
                     Constant.PRESET_EVENT_SESSION_END,
+                    happenTime,
                     JSONObject().apply {
                         if (sessionStartTime != 0L) {
                             val sessionDuration = SystemClock.elapsedRealtime() - sessionStartTime
@@ -372,7 +376,7 @@ class PropertyManager private constructor() {
         if (id.isEmpty()) {
             return
         }
-        EventTrackManager.instance.addTask{
+        MainQueue.get().postTask {
             if (dataAdapter?.dtId?.isEmpty() == true) {
                 dataAdapter?.dtId = id
             }
@@ -413,13 +417,16 @@ class PropertyManager private constructor() {
         if (id.isEmpty() || limitAdTrackingEnabled) {
             return
         }
+
+        val happenTime = SystemClock.elapsedRealtime()
+
         if (!disableList.contains(Constant.EVENT_INFO_GAID)) {
             updateEventInfo(Constant.EVENT_INFO_GAID, id)
         }
 
         if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_GAID)) {
             EventTrackManager.instance.trackUser(
-                Constant.PRESET_EVENT_USER_SET_ONCE, JSONObject().apply {
+                Constant.PRESET_EVENT_USER_SET_ONCE, happenTime, JSONObject().apply {
                     put(Constant.USER_PROPERTY_ACTIVE_GAID, id)
                 })
         }
@@ -436,12 +443,15 @@ class PropertyManager private constructor() {
 
     private fun updateAndroidId(id: String) {
         if (id.isEmpty()) return
+
+        val happenTime = SystemClock.elapsedRealtime()
+
         if (!disableList.contains(Constant.EVENT_INFO_ANDROID_ID)) {
             updateEventInfo(Constant.EVENT_INFO_ANDROID_ID, id)
         }
         if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_ANDROID_ID)) {
             EventTrackManager.instance.trackUser(
-                Constant.PRESET_EVENT_USER_SET_ONCE, JSONObject().apply {
+                Constant.PRESET_EVENT_USER_SET_ONCE, happenTime, JSONObject().apply {
                     put(Constant.USER_PROPERTY_ACTIVE_ANDROID_ID, id)
                 })
         }
@@ -456,8 +466,8 @@ class PropertyManager private constructor() {
 
     fun updateACID(acid: String) {
         if (acid.isEmpty()) return
-        EventTrackManager.instance.addTask{
-            EventDateAdapter.getInstance()?.accountId = acid
+        MainQueue.get().postTask {
+            EventDateAdapter.getInstance()?.setAccountId(acid)
             updateEventInfo(Constant.EVENT_INFO_ACID, acid)
         }
     }
@@ -473,18 +483,27 @@ class PropertyManager private constructor() {
 
     fun updateFireBaseInstanceId(fiid: String?) {
         if (fiid?.isEmpty() == true) return
-        EventTrackManager.instance.trackUser(
-            Constant.PRESET_EVENT_USER_SET,
-            JSONObject().apply {
-                put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, fiid)
-            }
-        )
+
+        val happenTime = SystemClock.elapsedRealtime()
+
+        MainQueue.get().postTask {
+            EventTrackManager.instance.trackUser(
+                Constant.PRESET_EVENT_USER_SET,
+                happenTime,
+                JSONObject().apply {
+                    put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, fiid)
+                }
+            )
+        }
     }
 
     fun updateAFID(afid: String?) {
         if (afid?.isEmpty() == true) return
+
+        val happenTime = SystemClock.elapsedRealtime()
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET,
+            happenTime,
             JSONObject().apply {
                 put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, afid)
             }
@@ -493,8 +512,11 @@ class PropertyManager private constructor() {
 
     fun updateKOID(koid: String?) {
         if (koid?.isEmpty() == true) return
+
+        val happenTime = SystemClock.elapsedRealtime()
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET,
+            happenTime,
             JSONObject().apply {
                 put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, koid)
             }
@@ -503,8 +525,11 @@ class PropertyManager private constructor() {
 
     fun updateAdjustId(adjustId: String?) {
         if (adjustId?.isEmpty() == true) return
+
+        val happenTime = SystemClock.elapsedRealtime()
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET,
+            happenTime,
             JSONObject().apply {
                 put(Constant.USER_PROPERTY_LATEST_ADJUST_ID, adjustId)
             }

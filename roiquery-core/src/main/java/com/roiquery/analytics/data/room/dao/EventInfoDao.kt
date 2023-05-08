@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.roiquery.analytics.Constant
 import com.roiquery.analytics.data.room.bean.Events
 
 /**
@@ -33,6 +32,9 @@ interface EventInfoDao {
 
     @Query("DELETE FROM events WHERE event_syn=:eventSyn")
     fun deleteEventByEventSyn(eventSyn:String)
+
+    @Query("DELETE FROM events WHERE event_syn IN (:eventSyn )")
+    fun deleteBatchEventByEventSyn(eventSyn: List<String>)
 
     @Query("delete  from events")
     fun clearTable()

@@ -1,13 +1,14 @@
 package com.roiquery.analytics.data
 
 import android.content.Context
-import com.roiquery.analytics.Constant
-import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.utils.LogUtils
-import com.roiquery.analytics.utils.ProcessUtil
-import com.roiquery.analytics.utils.ThreadUtils
+import com.roiquery.analytics.taskqueue.DBQueue
+import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.utils.TimeCalibration
 import org.json.JSONObject
+
+interface AsyncGetDBData {
+    fun onDataGet(data: Any?)
+}
 
 class EventDateAdapter private constructor(
     context: Context,
@@ -22,11 +23,19 @@ class EventDateAdapter private constructor(
      * @return the number of rows in the table, or DB_OUT_OF_MEMORY_ERROR/DB_UPDATE_ERROR
      * on failure
      */
-     fun addJSON(data: JSONObject?, eventSyn: String):Int {
-        return try {
-            mOperation?.insertData(data, eventSyn)!!
-        } catch (e:Exception){
-            DataParams.DB_ADD_JSON_ERROR
+     fun addJSON(data: JSONObject?, eventSyn: String, callback: AsyncGetDBData?) {
+        DBQueue.get().postTask {
+            try {
+                val ret = mOperation?.insertData(data, eventSyn)!!
+
+                callback?.let {
+                    MainQueue.get().postTask {
+                        it.onDataGet(ret)
+                    }
+                }
+            } catch (e: Exception) {
+                DataParams.DB_ADD_JSON_ERROR
+            }
         }
     }
 
@@ -34,7 +43,9 @@ class EventDateAdapter private constructor(
      * Removes all events from table
      */
     fun deleteAllEvents() {
-        mOperation?.deleteAllEventData()
+        DBQueue.get().postTask {
+            mOperation?.deleteAllEventData()
+        }
     }
 
     /**
@@ -43,8 +54,30 @@ class EventDateAdapter private constructor(
      * @param eventSyn the last id to delete
      * @return the number of rows in the table
      */
-    fun cleanupEvents(eventSyn: String?) {
+    fun cleanupEventsSync(eventSyn: String?, callback: AsyncGetDBData?) {
         eventSyn?.let { mOperation?.deleteEventByEventSyn(it) }
+        MainQueue.get().postTask {
+            callback?.let {
+                it.onDataGet(true)
+            }
+        }
+    }
+
+    /**
+     * Removes events with an _id &lt;= last_id from table
+     *
+     * @param eventSyn the last id to delete
+     * @return the number of rows in the table
+     */
+    fun cleanupBatchEvents(eventSyns: List<String>, callback: AsyncGetDBData?) {
+        DBQueue.get().postTask {
+            eventSyns?.let { mOperation?.deleteBatchEventByEventSyn(it) }
+            MainQueue.get().postTask {
+                callback?.let {
+                    it.onDataGet(true)
+                }
+            }
+        }
     }
 
     /**
@@ -52,20 +85,51 @@ class EventDateAdapter private constructor(
      * @param limit 条数限制
      * @return 数据
      */
-    fun generateDataString(limit: Int):String? {
-        return mOperation?.queryData(limit)
+    fun generateDataString(limit: Int, callback: AsyncGetDBData?) {
+        DBQueue.get().postTask {
+            val ret = mOperation?.queryData(limit)
+            MainQueue.get().postTask {
+                callback?.let {
+                    it.onDataGet(ret)
+                }
+            }
+        }
     }
-
-
 
     /**
      *  acountId,自有用户系统id
      *
      * @return acountId
      */
-    var accountId: String
-        get() = getStringConfig(DataParams.CONFIG_ACCOUNT_ID)
-        set(value) = setStringConfig(DataParams.CONFIG_ACCOUNT_ID,value)
+    private var accountId: String = ""
+        get() {
+            if (field.isEmpty()) {
+                field = getStringConfig(DataParams.CONFIG_ACCOUNT_ID)
+            }
+            return field
+        }
+
+    fun getAccountId(callback: AsyncGetDBData) {
+        DBQueue.get().postTask {
+
+            val value = accountId
+            callback?.let {
+                MainQueue.get().postTask {
+                    it.onDataGet(value)
+                }
+            }
+        }
+    }
+
+    fun setAccountId(value: String) {
+        DBQueue.get().postTask {
+            if (accountId == value) {
+                return@postTask
+            }
+            accountId = value
+            setStringConfig(DataParams.CONFIG_ACCOUNT_ID, value)
+        }
+    }
 
     /**
      * 是否上报数据，默认是
