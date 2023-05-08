@@ -13,7 +13,7 @@ android {
     val buildToolsVersion: String by rootProject.extra
     val dtsdkCoreVersionName: String by rootProject.extra
 
-    this.compileSdk = compileSdkVersion;
+    this.compileSdk = compileSdkVersion
     this.buildToolsVersion = buildToolsVersion
     this.namespace = "com.roiquery.analytics"
 
@@ -70,6 +70,8 @@ dependencies {
 
     implementation("com.android.installreferrer:installreferrer:2.2")
     implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
+
+    implementation("org.slf4j:slf4j-api:2.0.7")
 
     // Room DB
     implementation("androidx.room:room-ktx:$roomDbVersion")
