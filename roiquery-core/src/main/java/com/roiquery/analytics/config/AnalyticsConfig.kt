@@ -45,14 +45,24 @@ private constructor() : AbstractAnalyticsConfig() {
     @Volatile
     private var hasGetRemoteConfig = false
 
-    fun getRemoteConfig() {
-        if (hasGetRemoteConfig) {
-            return
-        }
+    @Volatile
+    private var isFetching = false
 
-        initRemoteConfig()
+    fun getRemoteConfig() {
         Thread {
             PerfLogger.doPerfLog(PerfAction.GETCONFIGBEGIN, System.currentTimeMillis())
+
+            if (hasGetRemoteConfig) {
+                return@Thread
+            }
+
+            if (isFetching) {
+                return@Thread
+            }
+
+            isFetching = true
+
+            initRemoteConfig()
 
             try {
                 val response = RequestHelper.Builder(HttpMethod.GET_SYNC, configUrl)
@@ -82,6 +92,7 @@ private constructor() : AbstractAnalyticsConfig() {
                 }
             } catch (ignored: Exception) {
             }
+            isFetching = false
             PerfLogger.doPerfLog(PerfAction.GETCONFIGEND, System.currentTimeMillis())
         }.start()
     }

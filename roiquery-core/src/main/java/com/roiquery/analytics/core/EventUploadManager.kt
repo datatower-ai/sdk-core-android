@@ -50,36 +50,34 @@ class EventUploadManager private constructor(
         insertHandler: ((code: Int, msg: String) -> Unit)? = null
     ) {
         if (mDateAdapter == null) return
-        synchronized(mDateAdapter) {
-            try {
-                //插入数据库
+        try {
+            //插入数据库
 //                val insertCode = mDateAdapter.addJSON(eventJson, eventSyn)
-                mDateAdapter.addJSON(eventJson, eventSyn, object : AsyncGetDBData {
+            mDateAdapter.addJSON(eventJson, eventSyn, object : AsyncGetDBData {
 
-                    override fun onDataGet(data: Any?) {
+                override fun onDataGet(data: Any?) {
 
-                        val insertCode = data as Int
-                        checkInsertResult(insertCode, name, eventJson, eventSyn, insertHandler)
-                        //发送上报的message
-                        Message.obtain().apply {
-                            //上报标志
-                            this.what = FLUSH_QUEUE
-                            mWorker.runMessageOnce(this, FLUSH_DELAY)
-                        }
+                    val insertCode = data as Int
+                    checkInsertResult(insertCode, name, eventJson, eventSyn, insertHandler)
+                    //发送上报的message
+                    Message.obtain().apply {
+                        //上报标志
+                        this.what = FLUSH_QUEUE
+                        mWorker.runMessageOnce(this, FLUSH_DELAY)
                     }
-                })
-            } catch (e: Exception) {
-                LogUtils.i(TAG, "enqueueEventMessage error:$e")
-                ROIQueryQualityHelper.instance.reportQualityMessage(
-                    ROIQueryErrorParams.CODE_INIT_DB_ERROR,
-                    "event name: $name ," + e.stackTraceToString(),
-                    ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR
-                )
-                insertHandler?.invoke(
-                    ROIQueryErrorParams.CODE_INIT_DB_ERROR,
-                    ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR
-                )
-            }
+                }
+            })
+        } catch (e: Exception) {
+            LogUtils.i(TAG, "enqueueEventMessage error:$e")
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_INIT_DB_ERROR,
+                "event name: $name ," + e.stackTraceToString(),
+                ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR
+            )
+            insertHandler?.invoke(
+                ROIQueryErrorParams.CODE_INIT_DB_ERROR,
+                ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR
+            )
         }
     }
 

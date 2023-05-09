@@ -42,10 +42,8 @@ class EventTrackManager {
      * 初始化网络时间，保存至内存中
      */
     private fun initTime() {
-        Thread {
-            TimeCalibration.instance.getReferenceTime()
-            EventDateAdapter.getInstance()?.enableUpload = true
-        }.start()
+        TimeCalibration.instance.getReferenceTime()
+        EventDateAdapter.getInstance()?.enableUpload = true
     }
 
 

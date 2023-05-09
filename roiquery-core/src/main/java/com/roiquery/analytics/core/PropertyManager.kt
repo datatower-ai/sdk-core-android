@@ -228,13 +228,7 @@ class PropertyManager private constructor() {
      * @return
      */
     private fun initCommonProperties(context: Context, initConfig: AnalyticsConfig?) {
-        try {
-            MainQueue.get().postTask {
-                EventUtils.getCommonProperties(context, commonProperties, activeProperties, disableList)
-            }
-        } catch (e: Exception) {
-            LogUtils.printStackTrace(e)
-        }
+        EventUtils.getCommonProperties(context, commonProperties, activeProperties, disableList)
     }
 
 

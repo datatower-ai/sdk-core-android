@@ -9,8 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MainQueue extends AsyncTaskQueue {
 
-    private CountDownLatch syncLatch = new CountDownLatch(1);
-
     private volatile static MainQueue singleton;  //1:volatile修饰
     public static MainQueue get() {
         if (singleton == null) {  //2:减少不要同步，优化性能

@@ -42,35 +42,40 @@ class TimeCalibration private constructor() {
     private var isVerifyTimeRunning = AtomicBoolean(false)
 
     fun getReferenceTime() {
-        if (_latestTime == 0L) {
-            if (isVerifyTimeRunning.get()) {
-                return
-            }
-            PerfLogger.doPerfLog(PerfAction.GETSRVTIMEBEGIN, System.currentTimeMillis())
-
-            isVerifyTimeRunning.set(true)
-            //子进程只读取主进程的时间，不获取服务器时间
-            if (!ProcessUtil.isMainProcess(AnalyticsConfig.instance.mContext)){
-                setVerifyTimeForSubProcess()
-                isVerifyTimeRunning.set(false)
-                return
-            }
-            val response = RequestHelper.Builder(HttpMethod.POST_SYNC, EventUploadManager.getInstance()?.getEventUploadUrl())
-                .jsonData(TIME_FROM_ROI_NET_BODY)
-                .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
-                .executeSync()
-
-            if (response != null && response.date != 0L) {
-                setVerifyTime(response.date)
-                //避免因为时间未同步而造成数据堆积
-                if (DTAnalytics.isSDKInitSuccess()) {
-                    EventUploadManager.getInstance()?.flush()
+        Thread {
+            if (_latestTime == 0L) {
+                if (isVerifyTimeRunning.get()) {
+                    return@Thread
                 }
-            }
-            isVerifyTimeRunning.set(false)
+                PerfLogger.doPerfLog(PerfAction.GETSRVTIMEBEGIN, System.currentTimeMillis())
 
-            PerfLogger.doPerfLog(PerfAction.GETSRVTIMEEND, System.currentTimeMillis())
-        }
+                isVerifyTimeRunning.set(true)
+                //子进程只读取主进程的时间，不获取服务器时间
+                if (!ProcessUtil.isMainProcess(AnalyticsConfig.instance.mContext)) {
+                    setVerifyTimeForSubProcess()
+                    isVerifyTimeRunning.set(false)
+                    return@Thread
+                }
+                val response = RequestHelper.Builder(
+                    HttpMethod.POST_SYNC,
+                    EventUploadManager.getInstance()?.getEventUploadUrl()
+                )
+                    .jsonData(TIME_FROM_ROI_NET_BODY)
+                    .retryCount(Constant.EVENT_REPORT_TRY_COUNT)
+                    .executeSync()
+
+                if (response != null && response.date != 0L) {
+                    setVerifyTime(response.date)
+                    //避免因为时间未同步而造成数据堆积
+                    if (DTAnalytics.isSDKInitSuccess()) {
+                        EventUploadManager.getInstance()?.flush()
+                    }
+                }
+                isVerifyTimeRunning.set(false)
+
+                PerfLogger.doPerfLog(PerfAction.GETSRVTIMEEND, System.currentTimeMillis())
+            }
+        }.start()
     }
 
 
