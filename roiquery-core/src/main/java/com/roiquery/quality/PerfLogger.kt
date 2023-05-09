@@ -50,5 +50,7 @@ object PerfLogger {
             }
             timeRecord[action.name] = time;
         }
+
+        LogUtils.i(tag, action.name);
     }
 }
