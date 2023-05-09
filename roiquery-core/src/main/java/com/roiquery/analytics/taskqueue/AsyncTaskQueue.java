@@ -1,16 +1,19 @@
 package com.roiquery.analytics.taskqueue;
 
-import android.os.SystemClock;
+import androidx.annotation.NonNull;
 
 import com.roiquery.analytics.utils.LogUtils;
 
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class AsyncTaskQueue {
+import kotlin.coroutines.CoroutineContext;
+import kotlinx.coroutines.CoroutineDispatcher;
+import kotlinx.coroutines.CoroutineScope;
+
+public class AsyncTaskQueue extends CoroutineDispatcher implements CoroutineScope {
     private  String mName;
 
     private ThreadPoolExecutor mPool;
@@ -52,6 +55,17 @@ public class AsyncTaskQueue {
                     0L, TimeUnit.MILLISECONDS,
                     new LinkedBlockingQueue<Runnable>(),
                 new ThreadFactoryWithName(mName));
+    }
+
+    @Override
+    public void dispatch(@NonNull CoroutineContext coroutineContext, @NonNull Runnable runnable) {
+        postTask(runnable);
+    }
+
+    @NonNull
+    @Override
+    public CoroutineContext getCoroutineContext() {
+        return (CoroutineContext) this;
     }
 
     static class ThreadFactoryWithName implements ThreadFactory {
