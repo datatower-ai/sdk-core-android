@@ -30,7 +30,7 @@ suspend fun <T> AsyncTaskQueue.postTaskSuspended(
 }
 
 fun <T> AsyncTaskQueue.postTaskAsync(
-    task: suspend () -> T?,
-): Deferred<Result<T?>> = this.async {
+    task: suspend () -> T,
+): Deferred<Result<T>> = this.async {
     Result.runCatching { task() }
 }
