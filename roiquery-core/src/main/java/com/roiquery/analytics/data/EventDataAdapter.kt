@@ -3,6 +3,7 @@ package com.roiquery.analytics.data
 import android.content.Context
 import com.roiquery.analytics.taskqueue.DBQueue
 import com.roiquery.analytics.taskqueue.MainQueue
+import com.roiquery.analytics.taskqueue.postTaskAsync
 import com.roiquery.analytics.utils.TimeCalibration
 import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
@@ -91,16 +92,10 @@ class EventDateAdapter private constructor(
      * @param limit 条数限制
      * @return 数据
      */
-    fun generateDataString(limit: Int, callback: AsyncGetDBData?) {
-        DBQueue.get().postTask {
-            val ret = mOperation?.queryData(limit)
-            MainQueue.get().postTask {
-                callback?.let {
-                    it.onDataGet(ret)
-                }
-            }
+    fun readEventsDataFromDb(limit: Int) =
+        DBQueue.get().postTaskAsync {
+            mOperation?.queryData(limit)
         }
-    }
 
     /**
      *  acountId,自有用户系统id

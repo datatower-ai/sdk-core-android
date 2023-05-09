@@ -14,7 +14,6 @@ import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpService
 import com.roiquery.analytics.network.RemoteService
-import com.roiquery.analytics.taskqueue.DBQueue
 import com.roiquery.analytics.taskqueue.DataUploadQueue
 import com.roiquery.analytics.taskqueue.SynnDataModel
 import com.roiquery.analytics.utils.LogUtils
@@ -24,6 +23,8 @@ import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeoutOrNull
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -205,33 +206,16 @@ class EventUploadManager private constructor(
 
             PerfLogger.doPerfLog(PerfAction.TRACKBEGIN, System.currentTimeMillis())
 
-            val syncTask = SynnDataModel()
-            syncTask.taskSeq = 1;
-
             //读取数据库数据
             PerfLogger.doPerfLog(PerfAction.READEVENTDATAFROMDBBEGIN, System.currentTimeMillis())
-            mDateAdapter.generateDataString(
-                Constant.EVENT_REPORT_SIZE,
-                object : AsyncGetDBData {
-                    override fun onDataGet(data: Any?) {
-
-                        syncTask.data = data;
-                        syncTask.done()
-                    }
+            val eventsData = runBlocking {
+                withTimeoutOrNull(5000) {
+                    mDateAdapter.readEventsDataFromDb(Constant.EVENT_REPORT_SIZE).await()
                 }
-            )
-
-            syncTask.waitDataCome(5000)
-            if (!syncTask.isSucceed) {
-//            任务超时或者失败,重置seq，标志该任务已经废弃
-                syncTask.taskSeq = 0;
-                break;
-            }
+            }?.getOrThrow() ?: return
             PerfLogger.doPerfLog(PerfAction.READEVENTDATAFROMDBEND, System.currentTimeMillis())
 
-            val eventsData = syncTask.data as String
-
-            if (eventsData == null || JSONArray(eventsData).length() == 0) {
+            if (JSONArray(eventsData).length() == 0) {
                 LogUtils.d(TAG, "db count = 0，disable upload")
                 mDateAdapter.enableUpload = true
                 PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
