@@ -7,6 +7,8 @@ import com.roiquery.analytics.taskqueue.postTaskAsync
 import com.roiquery.analytics.utils.TimeCalibration
 import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import org.json.JSONObject
 
 interface AsyncGetDBData {
@@ -26,23 +28,14 @@ class EventDateAdapter private constructor(
      * @return the number of rows in the table, or DB_OUT_OF_MEMORY_ERROR/DB_UPDATE_ERROR
      * on failure
      */
-     fun addJSON(data: JSONObject?, eventSyn: String, callback: AsyncGetDBData?) {
-        DBQueue.get().postTask {
+     fun addJSON(data: JSONObject?, eventSyn: String): Deferred<Int> {
+        return DBQueue.get().async {
             PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBBEGIN, System.currentTimeMillis())
-
-            try {
-                val ret = mOperation?.insertData(data, eventSyn)!!
-
-                PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBEND, System.currentTimeMillis())
-
-                callback?.let {
-                    MainQueue.get().postTask {
-                        it.onDataGet(ret)
-                    }
-                }
-            } catch (e: Exception) {
-                DataParams.DB_ADD_JSON_ERROR
-            }
+            val returns = Result.runCatching {
+                mOperation?.insertData(data, eventSyn) ?: DataParams.DB_ADD_JSON_ERROR
+            }.getOrNull() ?: DataParams.DB_ADD_JSON_ERROR
+            PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBEND, System.currentTimeMillis())
+            returns
         }
     }
 

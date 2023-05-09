@@ -15,6 +15,7 @@ import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpService
 import com.roiquery.analytics.network.RemoteService
 import com.roiquery.analytics.taskqueue.DataUploadQueue
+import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.taskqueue.SynnDataModel
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
@@ -23,6 +24,7 @@ import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 import org.json.JSONArray
@@ -50,24 +52,19 @@ class EventUploadManager private constructor(
         eventSyn: String,
         insertHandler: ((code: Int, msg: String) -> Unit)? = null
     ) {
-        if (mDateAdapter == null) return
+        val dataAdapter = mDateAdapter ?: return
         try {
             //插入数据库
-//                val insertCode = mDateAdapter.addJSON(eventJson, eventSyn)
-            mDateAdapter.addJSON(eventJson, eventSyn, object : AsyncGetDBData {
-
-                override fun onDataGet(data: Any?) {
-
-                    val insertCode = data as Int
-                    checkInsertResult(insertCode, name, eventJson, eventSyn, insertHandler)
-                    //发送上报的message
-                    Message.obtain().apply {
-                        //上报标志
-                        this.what = FLUSH_QUEUE
-                        mWorker.runMessageOnce(this, FLUSH_DELAY)
-                    }
+            val insertCode = runBlocking { dataAdapter.addJSON(eventJson, eventSyn).await() }
+            MainQueue.get().launch {
+                checkInsertResult(insertCode, name, eventJson, eventSyn, insertHandler)
+                //发送上报的message
+                Message.obtain().apply {
+                    //上报标志
+                    this.what = FLUSH_QUEUE
+                    mWorker.runMessageOnce(this, FLUSH_DELAY)
                 }
-            })
+            }
         } catch (e: Exception) {
             LogUtils.i(TAG, "enqueueEventMessage error:$e")
             ROIQueryQualityHelper.instance.reportQualityMessage(
