@@ -43,10 +43,12 @@ class EventDataAdapter private constructor(
     /**
      * install 事件的插入数据库状态
      */
-    fun isAppInstallInserted(callback: (Boolean) -> Unit) = DBQueue.get().async {
+    fun isAppInstallInserted(callback: ((Boolean) -> Unit)?) = DBQueue.get().async {
         val ret = getBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE, false)
-        MainQueue.get().postTask {
-            callback.invoke(ret)
+        callback?.let {
+            MainQueue.get().postTask {
+                callback?.invoke(ret)
+            }
         }
         ret
     }

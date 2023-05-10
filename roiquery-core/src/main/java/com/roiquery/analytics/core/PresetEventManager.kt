@@ -10,6 +10,7 @@ import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDataAdapter
 import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.utils.*
+import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -45,9 +46,7 @@ class PresetEventManager {
         if (AnalyticsConfig.instance.isSdkDisable()) {
             return
         }
-//        if (mDataAdapter?.isAppInstallInserted == false) {
-//
-//        }
+
         mDataAdapter?.isAppInstallInserted() {
             if (!it) {
                 startAppAttribute(context)
