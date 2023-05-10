@@ -17,6 +17,7 @@ import com.roiquery.analytics.network.RemoteService
 import com.roiquery.analytics.taskqueue.DataUploadQueue
 import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.taskqueue.SynnDataModel
+import com.roiquery.analytics.taskqueue.postTaskAsync
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
 import com.roiquery.analytics.utils.TimeCalibration
@@ -191,7 +192,7 @@ class EventUploadManager private constructor(
     /**
      * 数据上报到服务器
      */
-    private fun uploadData() {
+    private suspend fun uploadData() {
 
         do {
             //不上报数据
@@ -336,7 +337,7 @@ class EventUploadManager private constructor(
 
     }
 
-    private fun deleteEventAfterReport(
+    private suspend fun deleteEventAfterReport(
         event: String,
         mDateAdapter: EventDateAdapter
     ) {
@@ -365,13 +366,9 @@ class EventUploadManager private constructor(
             }
 
             if (allEvents.isNotEmpty()) {
-                val waitObject = SynnDataModel()
-                mDateAdapter.cleanupBatchEvents(allEvents, object : AsyncGetDBData {
-                    override fun onDataGet(data: Any?) {
-                        waitObject.done()
-                    }
-                })
-                waitObject.waitDataCome(5000)
+                withTimeoutOrNull(5000) {
+                    mDateAdapter.cleanupBatchEvents(allEvents).await()
+                }
             }
         } catch (e: Exception) {
             ROIQueryQualityHelper.instance.reportQualityMessage(
@@ -424,9 +421,7 @@ class EventUploadManager private constructor(
                     when (msg.what) {
                         FLUSH_QUEUE -> {
                             if (DataUploadQueue.get().taskCount() <= 1) {
-                                DataUploadQueue.get().postTask {
-                                    uploadData()
-                                }
+                                DataUploadQueue.get().launch { uploadData() }
                             }
                         }
 

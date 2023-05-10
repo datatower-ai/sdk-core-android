@@ -54,6 +54,7 @@ class EventDateAdapter private constructor(
      * @param eventSyn the last id to delete
      * @return the number of rows in the table
      */
+    /* FIXME: Disabled function: nobody invokes it.
     fun cleanupEventsSync(eventSyn: String?, callback: AsyncGetDBData?) {
         eventSyn?.let { mOperation?.deleteEventByEventSyn(it) }
         MainQueue.get().postTask {
@@ -62,6 +63,7 @@ class EventDateAdapter private constructor(
             }
         }
     }
+     */
 
     /**
      * Removes events with an _id &lt;= last_id from table
@@ -69,16 +71,10 @@ class EventDateAdapter private constructor(
      * @param eventSyn the last id to delete
      * @return the number of rows in the table
      */
-    fun cleanupBatchEvents(eventSyns: List<String>, callback: AsyncGetDBData?) {
-        DBQueue.get().postTask {
-            eventSyns?.let { mOperation?.deleteBatchEventByEventSyn(it) }
-            MainQueue.get().postTask {
-                callback?.let {
-                    it.onDataGet(true)
-                }
-            }
+    fun cleanupBatchEvents(eventSyns: List<String>) =
+        DBQueue.get().postTaskAsync {
+            mOperation?.deleteBatchEventByEventSyn(eventSyns)
         }
-    }
 
     /**
      * 从 Event 表中读取上报数据
