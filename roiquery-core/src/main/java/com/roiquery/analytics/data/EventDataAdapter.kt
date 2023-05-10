@@ -43,15 +43,6 @@ class EventDataAdapter private constructor(
     /**
      * install 事件的插入数据库状态
      */
-    @Deprecated("Suspends current thread, use `isAppInstallInserted()` or `setIsAppInstallInserted(value)`")
-    var isAppInstallInserted: Boolean
-        get() = runBlocking {
-            getBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE, false)
-        }
-        set(value) = runBlocking {
-            setBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE, value)
-        }
-
     fun isAppInstallInserted(callback: (Boolean) -> Unit) = DBQueue.get().async {
         val ret = getBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE, false)
         MainQueue.get().postTask {

@@ -161,7 +161,7 @@ class PresetEventManager {
      */
     private fun trackAppInstallEvent(response: ReferrerDetails, failedReason: String) {
         //如果 app_install 事件已插入或者正在插入，则不处理
-        if (mDataAdapter?.isAppInstallInserted == true || isAppInstallTrackRunning.get()) {
+        if (isAppInstallTrackRunning.get()) {
             return
         }
         isAppInstallTrackRunning.set(true)
@@ -203,7 +203,7 @@ class PresetEventManager {
             },
             insertHandler = { code: Int, _: String ->
                 if (code == 0) {
-                    EventDataAdapter.getInstance()?.isAppInstallInserted = true
+                    EventDataAdapter.getInstance()?.setIsAppInstallInserted(true)
                 }
                 isAppInstallTrackRunning.set(false)
             }
