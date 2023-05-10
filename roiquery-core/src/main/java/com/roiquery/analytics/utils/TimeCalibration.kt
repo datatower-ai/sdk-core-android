@@ -11,6 +11,7 @@ import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
 import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
@@ -47,6 +48,7 @@ class TimeCalibration private constructor() {
                 PerfLogger.doPerfLog(PerfAction.GETSRVTIMEBEGIN, System.currentTimeMillis())
 
                 isVerifyTimeRunning.set(true)
+
                 //子进程只读取主进程的时间，不获取服务器时间
                 if (!ProcessUtil.isMainProcess(AnalyticsConfig.instance.mContext)) {
                     setVerifyTimeForSubProcess()
@@ -75,18 +77,20 @@ class TimeCalibration private constructor() {
         }.start()
     }
 
-
     private fun setVerifyTime(time: Long){
         calibratedTimeLock.writeLock().lock()
         if (_latestTime == TIME_NOT_VERIFY_VALUE){
-            if (time - (EventDataAdapter.getInstance()?.latestNetTime ?: TIME_NOT_VERIFY_VALUE) > 5000){
+            val dbTime = runBlocking { EventDataAdapter.getInstance()?.getLatestNetTime()?.await()  }
+            val dbGamTime = runBlocking { EventDataAdapter.getInstance()?.getLatestGapTime()?.await() }
+
+            if (time - (dbTime ?: TIME_NOT_VERIFY_VALUE) > 5000){
                 _latestTime = time
                 _latestSystemElapsedRealtime = SystemClock.elapsedRealtime()
-                EventDataAdapter.getInstance()?.latestNetTime = _latestTime
-                EventDataAdapter.getInstance()?.latestGapTime = _latestSystemElapsedRealtime
+                EventDataAdapter.getInstance()?.setLatestNetTime(_latestTime)
+                EventDataAdapter.getInstance()?.setLatestGapTime( _latestSystemElapsedRealtime)
             } else {
-                _latestTime = EventDataAdapter.getInstance()?.latestNetTime ?: TIME_NOT_VERIFY_VALUE
-                _latestSystemElapsedRealtime = EventDataAdapter.getInstance()?.latestGapTime ?: TIME_NOT_VERIFY_VALUE
+                _latestTime = dbTime ?: TIME_NOT_VERIFY_VALUE
+                _latestSystemElapsedRealtime = dbGamTime ?: TIME_NOT_VERIFY_VALUE
             }
         }
         calibratedTimeLock.writeLock().unlock()
@@ -94,8 +98,10 @@ class TimeCalibration private constructor() {
 
     private fun setVerifyTimeForSubProcess(){
         calibratedTimeLock.writeLock().lock()
-        _latestTime = EventDataAdapter.getInstance()?.latestNetTime ?: TIME_NOT_VERIFY_VALUE
-        _latestSystemElapsedRealtime = EventDataAdapter.getInstance()?.latestGapTime ?: TIME_NOT_VERIFY_VALUE
+        val dbTime = runBlocking { EventDataAdapter.getInstance()?.getLatestNetTime()?.await()  }
+        val dbGamTime = runBlocking { EventDataAdapter.getInstance()?.getLatestGapTime()?.await() }
+        _latestTime = dbTime ?: TIME_NOT_VERIFY_VALUE
+        _latestSystemElapsedRealtime = dbGamTime ?: TIME_NOT_VERIFY_VALUE
         calibratedTimeLock.writeLock().unlock()
     }
 
@@ -137,8 +143,8 @@ class TimeCalibration private constructor() {
 
     init {
         if (ProcessUtil.isMainProcess(AnalyticsConfig.instance.mContext)){
-            EventDataAdapter.getInstance()?.latestNetTime = TIME_NOT_VERIFY_VALUE
-            EventDataAdapter.getInstance()?.latestGapTime = TIME_NOT_VERIFY_VALUE
+            EventDataAdapter.getInstance()?.setLatestNetTime(TIME_NOT_VERIFY_VALUE)
+            EventDataAdapter.getInstance()?.setLatestGapTime(TIME_NOT_VERIFY_VALUE)
         }
     }
 }

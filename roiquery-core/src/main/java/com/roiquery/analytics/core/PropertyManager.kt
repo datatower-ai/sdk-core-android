@@ -75,13 +75,16 @@ class PropertyManager private constructor() {
         //这里每次更新，因为 gaid 或者Android id 有可能会变
         MainQueue.get().postTask {
             var justUpdateOriginalId = false
-            dataAdapter?.dtId?.let {
-                if (it.isNotEmpty()) {
-                    updateDTID(it)
-                    onDataTowerIdCallback(it)
-                    justUpdateOriginalId = true
+            dataAdapter?.getDtId()?.onSameQueueThen {
+                MainQueue.get().postTask {
+                    if (it.isNotEmpty()) {
+                        updateDTID(it)
+                        onDataTowerIdCallback(it)
+                        justUpdateOriginalId = true
+                    }
                 }
             }
+
             initDTIdOrUpdateOriginalId(context, justUpdateOriginalId)
         }
     }
@@ -309,7 +312,6 @@ class PropertyManager private constructor() {
                     isForeground
                 )
             }
-            val isFirstOpen = dataAdapter?.isFirstSessionStartInserted?.not()
 
             if (isForeground) {
                 sessionStartTime = SystemClock.elapsedRealtime()
@@ -319,25 +321,34 @@ class PropertyManager private constructor() {
                     DataUtils.getSession()
                 )
 
-                EventTrackManager.instance.trackNormalPreset(
-                    Constant.PRESET_EVENT_SESSION_START,
-                    happenTime,
-                    JSONObject().apply {
-                        put(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME, isFirstOpen)
-                        put(
-                            Constant.SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND,
-                            resumeFromBackground
+                dataAdapter?.isFirstSessionStartInserted()?.onSameQueueThen {
+
+                    MainQueue.get().postTask {
+
+                        val isFirstOpen = it.not()
+
+                        EventTrackManager.instance.trackNormalPreset(
+                            Constant.PRESET_EVENT_SESSION_START,
+                            happenTime,
+                            JSONObject().apply {
+                                put(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME, isFirstOpen)
+                                put(
+                                    Constant.SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND,
+                                    resumeFromBackground
+                                )
+                                if (startReason != "" && startReason != "{}") {
+                                    put(Constant.SESSION_START_PROPERTY_START_REASON, startReason)
+                                }
+                            },
+                            insertHandler = { code: Int, _: String ->
+                                if (code == 0 && isFirstOpen == true) {
+                                    EventDataAdapter.getInstance()
+                                        ?.setIsFirstSessionStartInserted(true)
+                                }
+                            }
                         )
-                        if (startReason != "" && startReason != "{}"){
-                            put(Constant.SESSION_START_PROPERTY_START_REASON, startReason)
-                        }
-                    },
-                    insertHandler = { code: Int, _: String ->
-                        if (code == 0 && isFirstOpen == true) {
-                            EventDataAdapter.getInstance()?.isFirstSessionStartInserted = true
-                        }
                     }
-                )
+                }
             } else {
                 EventTrackManager.instance.trackNormalPreset(
                     Constant.PRESET_EVENT_SESSION_END,
@@ -373,9 +384,7 @@ class PropertyManager private constructor() {
             return
         }
         MainQueue.get().postTask {
-            if (dataAdapter?.dtId?.isEmpty() == true) {
-                dataAdapter?.dtId = id
-            }
+            dataAdapter?.setDtIdIfNeeded(id)
             updateEventInfo(
                 Constant.EVENT_INFO_DT_ID, id
             )

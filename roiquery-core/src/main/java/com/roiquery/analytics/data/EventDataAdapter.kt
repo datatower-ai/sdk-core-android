@@ -54,16 +54,7 @@ class EventDataAdapter private constructor(
     /**
      * 第一次 session_start 事件的插入数据库状态
      */
-    @Deprecated("Suspends current thread, use `isFirstSessionStartInserted()` or `setIsFirstSessionStartInserted(value)`")
-    var isFirstSessionStartInserted: Boolean
-        get() = runBlocking {
-            getBooleanConfig(DataParams.CONFIG_FIRST_SESSION_START_INSERT_STATE, false)
-        }
-        set(value) = runBlocking {
-            setBooleanConfig(DataParams.CONFIG_FIRST_SESSION_START_INSERT_STATE, value)
-        }
-
-    fun isFirstSessionStartInserted() = DBQueue.get().async {
+    fun isFirstSessionStartInserted() = DBQueue.get().asyncChained {
         getBooleanConfig(DataParams.CONFIG_FIRST_SESSION_START_INSERT_STATE, false)
     }
 
@@ -72,29 +63,18 @@ class EventDataAdapter private constructor(
     }
 
     /** DataTower id */
-    @Deprecated("Suspends current thread, use `getDtId()` or `setDtId(value)`")
-    var dtId: String
-        get() = runBlocking { getStringConfig(DataParams.CONFIG_DT_ID) }
-        set(value) = runBlocking { setStringConfig(DataParams.CONFIG_DT_ID, value) }
-
-    fun getDtId() = DBQueue.get().async {
-        getStringConfig(DataParams.CONFIG_DT_ID)
+    fun getDtId() = DBQueue.get().asyncChained {
+         getStringConfig(DataParams.CONFIG_DT_ID)
     }
 
-    fun setDtId(value: String) = DBQueue.get().async {
-        setStringConfig(DataParams.CONFIG_DT_ID, value)
+    fun setDtIdIfNeeded(value: String) = DBQueue.get().async {
+        val ret = getStringConfig(DataParams.CONFIG_DT_ID)
+        if (ret.isEmpty()) {
+            setStringConfig(DataParams.CONFIG_DT_ID, value)
+        }
     }
 
-    @Deprecated("Suspends current thread, use `getLatestNetTime()` or `setLatestNetTime(value)`")
-    var latestNetTime: Long
-        get() = runBlocking {
-            getLongConfig(DataParams.LATEST_NET_TIME, TimeCalibration.TIME_NOT_VERIFY_VALUE)
-        }
-        set(value) = runBlocking {
-            setLongConfig(DataParams.LATEST_NET_TIME, value)
-        }
-
-    fun getLatestNetTime() = DBQueue.get().async {
+    fun getLatestNetTime() = DBQueue.get().asyncChained {
         getLongConfig(DataParams.LATEST_NET_TIME, TimeCalibration.TIME_NOT_VERIFY_VALUE)
     }
 
@@ -102,16 +82,7 @@ class EventDataAdapter private constructor(
         setLongConfig(DataParams.LATEST_NET_TIME, value)
     }
 
-    @Deprecated("Suspends current thread, use `getLatestGapTime()` or `setLatestGapTime(value)`")
-    var latestGapTime: Long
-        get() = runBlocking {
-            getLongConfig(DataParams.LATEST_GAP_TIME, TimeCalibration.TIME_NOT_VERIFY_VALUE)
-        }
-        set(value) = runBlocking {
-            setLongConfig(DataParams.LATEST_GAP_TIME, value)
-        }
-
-    fun getLatestGapTime() = DBQueue.get().async {
+    fun getLatestGapTime() = DBQueue.get().asyncChained {
         getLongConfig(DataParams.LATEST_GAP_TIME, TimeCalibration.TIME_NOT_VERIFY_VALUE)
     }
 
@@ -128,7 +99,7 @@ class EventDataAdapter private constructor(
      */
     private var accountIdCached = ""
 
-    fun getAccountId() = DBQueue.get().async {
+    fun getAccountId() = DBQueue.get().asyncChained {
         if (accountIdCached.isEmpty()) {
             accountIdCached = getStringConfig(DataParams.CONFIG_ACCOUNT_ID)
         }
