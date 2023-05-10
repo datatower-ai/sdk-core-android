@@ -42,10 +42,8 @@ class EventDateAdapter private constructor(
     /**
      * Removes all events from table
      */
-    fun deleteAllEvents() {
-        DBQueue.get().postTask {
-            mOperation?.deleteAllEventData()
-        }
+    fun deleteAllEvents() = DBQueue.get().async {
+        mOperation?.deleteAllEventData()
     }
 
     /**
