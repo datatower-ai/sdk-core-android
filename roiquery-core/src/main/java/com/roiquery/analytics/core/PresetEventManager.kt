@@ -45,8 +45,13 @@ class PresetEventManager {
         if (AnalyticsConfig.instance.isSdkDisable()) {
             return
         }
-        if (mDataAdapter?.isAppInstallInserted == false) {
-            startAppAttribute(context)
+//        if (mDataAdapter?.isAppInstallInserted == false) {
+//
+//        }
+        mDataAdapter?.isAppInstallInserted() {
+            if (!it) {
+                startAppAttribute(context)
+            }
         }
     }
 
