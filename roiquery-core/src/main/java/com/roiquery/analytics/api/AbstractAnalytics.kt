@@ -12,7 +12,7 @@ import com.roiquery.analytics.core.DTActivityLifecycleCallbacks
 import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.core.PresetEventManager
 import com.roiquery.analytics.core.PropertyManager
-import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.data.EventDataAdapter
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 abstract class AbstractAnalytics : IAnalytics {
 
     //本地数据适配器，包括sp、db的操作
-    private var dataAdapter: EventDateAdapter? = null
+    private var dataAdapter: EventDataAdapter? = null
 
     private val isInitRunning = AtomicBoolean(false)
 
@@ -102,7 +102,7 @@ abstract class AbstractAnalytics : IAnalytics {
      * 初始化本地数据
      */
     private fun initLocalData(context: Context) {
-        dataAdapter = EventDateAdapter.getInstance(context)
+        dataAdapter = EventDataAdapter.getInstance(context)
     }
 
     /**

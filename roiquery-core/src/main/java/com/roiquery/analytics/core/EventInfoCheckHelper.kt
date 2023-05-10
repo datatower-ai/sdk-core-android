@@ -2,7 +2,6 @@ package com.roiquery.analytics.core
 
 import android.os.SystemClock
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.utils.TimeCalibration
 import org.json.JSONArray
 import org.json.JSONException

@@ -11,11 +11,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 
-interface AsyncGetDBData {
-    fun onDataGet(data: Any?)
-}
-
-class EventDateAdapter private constructor(
+class EventDataAdapter private constructor(
     context: Context,
 ){
     private var mOperation: EventDataOperation? = EventDataOperation(context.applicationContext)
@@ -307,17 +303,17 @@ class EventDateAdapter private constructor(
     // endregion
 
     companion object {
-        private var instance: EventDateAdapter? = null
+        private var instance: EventDataAdapter? = null
         internal fun getInstance(
             context: Context
-        ): EventDateAdapter? {
+        ): EventDataAdapter? {
             if (instance == null) {
-                instance = EventDateAdapter(context)
+                instance = EventDataAdapter(context)
             }
             return instance
         }
 
-        internal fun getInstance(): EventDateAdapter? {
+        internal fun getInstance(): EventDataAdapter? {
             checkNotNull(instance) { "Call ROIQuerySDK.init first" }
             return instance
         }

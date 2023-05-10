@@ -7,7 +7,7 @@ import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.data.EventDataAdapter
 import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.utils.*
 import org.json.JSONObject
@@ -20,7 +20,7 @@ class PresetEventManager {
         }
     }
 
-    private var mDataAdapter: EventDateAdapter? = null
+    private var mDataAdapter: EventDataAdapter? = null
 
     private val isAppInstallTrackRunning = AtomicBoolean(false)
 
@@ -33,7 +33,7 @@ class PresetEventManager {
         if (!ProcessUtil.isMainProcess(context)) {
             return
         }
-        mDataAdapter = EventDateAdapter.getInstance()
+        mDataAdapter = EventDataAdapter.getInstance()
         MainQueue.get().postTask {
             checkAppInstall(context)
             setLatestUserProperties(context)
@@ -198,7 +198,7 @@ class PresetEventManager {
             },
             insertHandler = { code: Int, _: String ->
                 if (code == 0) {
-                    EventDateAdapter.getInstance()?.isAppInstallInserted = true
+                    EventDataAdapter.getInstance()?.isAppInstallInserted = true
                 }
                 isAppInstallTrackRunning.set(false)
             }

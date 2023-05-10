@@ -10,7 +10,7 @@ import com.roiquery.analytics.core.EventTimer
 import com.roiquery.analytics.core.EventTimerManager
 import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.core.PropertyManager
-import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.data.EventDataAdapter
 import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.utils.EventUtils
 import com.roiquery.analytics.utils.LogUtils
@@ -67,9 +67,9 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     }
 
     override var enableUpload: Boolean?
-        get() = EventDateAdapter.getInstance()?.isUploadEnabled == true
+        get() = EventDataAdapter.getInstance()?.isUploadEnabled == true
         set(value) {
-            EventDateAdapter.getInstance()?.isUploadEnabled
+            EventDataAdapter.getInstance()?.isUploadEnabled
             value?.let {
                 configOptions?.mEnableUpload = it
             }

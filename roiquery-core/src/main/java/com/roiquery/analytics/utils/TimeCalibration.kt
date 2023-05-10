@@ -2,14 +2,11 @@ package com.roiquery.analytics.utils
 
 import android.os.SystemClock
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.Constant.LOG_TAG
 import com.roiquery.analytics.Constant.TIME_FROM_ROI_NET_BODY
 import com.roiquery.analytics.DTAnalytics
 import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.core.EventUploadManager
-import com.roiquery.analytics.data.EventDateAdapter
-import com.roiquery.analytics.network.HttpCallback
+import com.roiquery.analytics.data.EventDataAdapter
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
 import com.roiquery.quality.PerfAction
@@ -82,14 +79,14 @@ class TimeCalibration private constructor() {
     private fun setVerifyTime(time: Long){
         calibratedTimeLock.writeLock().lock()
         if (_latestTime == TIME_NOT_VERIFY_VALUE){
-            if (time - (EventDateAdapter.getInstance()?.latestNetTime ?: TIME_NOT_VERIFY_VALUE) > 5000){
+            if (time - (EventDataAdapter.getInstance()?.latestNetTime ?: TIME_NOT_VERIFY_VALUE) > 5000){
                 _latestTime = time
                 _latestSystemElapsedRealtime = SystemClock.elapsedRealtime()
-                EventDateAdapter.getInstance()?.latestNetTime = _latestTime
-                EventDateAdapter.getInstance()?.latestGapTime = _latestSystemElapsedRealtime
+                EventDataAdapter.getInstance()?.latestNetTime = _latestTime
+                EventDataAdapter.getInstance()?.latestGapTime = _latestSystemElapsedRealtime
             } else {
-                _latestTime = EventDateAdapter.getInstance()?.latestNetTime ?: TIME_NOT_VERIFY_VALUE
-                _latestSystemElapsedRealtime = EventDateAdapter.getInstance()?.latestGapTime ?: TIME_NOT_VERIFY_VALUE
+                _latestTime = EventDataAdapter.getInstance()?.latestNetTime ?: TIME_NOT_VERIFY_VALUE
+                _latestSystemElapsedRealtime = EventDataAdapter.getInstance()?.latestGapTime ?: TIME_NOT_VERIFY_VALUE
             }
         }
         calibratedTimeLock.writeLock().unlock()
@@ -97,8 +94,8 @@ class TimeCalibration private constructor() {
 
     private fun setVerifyTimeForSubProcess(){
         calibratedTimeLock.writeLock().lock()
-        _latestTime = EventDateAdapter.getInstance()?.latestNetTime ?: TIME_NOT_VERIFY_VALUE
-        _latestSystemElapsedRealtime = EventDateAdapter.getInstance()?.latestGapTime ?: TIME_NOT_VERIFY_VALUE
+        _latestTime = EventDataAdapter.getInstance()?.latestNetTime ?: TIME_NOT_VERIFY_VALUE
+        _latestSystemElapsedRealtime = EventDataAdapter.getInstance()?.latestGapTime ?: TIME_NOT_VERIFY_VALUE
         calibratedTimeLock.writeLock().unlock()
     }
 
@@ -140,8 +137,8 @@ class TimeCalibration private constructor() {
 
     init {
         if (ProcessUtil.isMainProcess(AnalyticsConfig.instance.mContext)){
-            EventDateAdapter.getInstance()?.latestNetTime = TIME_NOT_VERIFY_VALUE
-            EventDateAdapter.getInstance()?.latestGapTime = TIME_NOT_VERIFY_VALUE
+            EventDataAdapter.getInstance()?.latestNetTime = TIME_NOT_VERIFY_VALUE
+            EventDataAdapter.getInstance()?.latestGapTime = TIME_NOT_VERIFY_VALUE
         }
     }
 }

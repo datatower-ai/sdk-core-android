@@ -8,7 +8,7 @@ import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.OnDataTowerIdListener
 import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.data.EventDataAdapter
 import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.PerfAction
@@ -39,7 +39,7 @@ class PropertyManager private constructor() {
     private val disableList: ArrayList<String> = ArrayList()
 
     //本地数据适配器，包括sp、db的操作
-    private var dataAdapter: EventDateAdapter? = null
+    private var dataAdapter: EventDataAdapter? = null
 
 //    private var resumeFromBackground = false
 
@@ -57,7 +57,7 @@ class PropertyManager private constructor() {
         initConfig: AnalyticsConfig?,
     ) {
         try {
-            dataAdapter = EventDateAdapter.getInstance(context)
+            dataAdapter = EventDataAdapter.getInstance(context)
             initDisableList(context)
             initEventInfo(context)
             initCommonProperties(context, initConfig)
@@ -334,7 +334,7 @@ class PropertyManager private constructor() {
                     },
                     insertHandler = { code: Int, _: String ->
                         if (code == 0 && isFirstOpen == true) {
-                            EventDateAdapter.getInstance()?.isFirstSessionStartInserted = true
+                            EventDataAdapter.getInstance()?.isFirstSessionStartInserted = true
                         }
                     }
                 )
@@ -463,7 +463,7 @@ class PropertyManager private constructor() {
     fun updateACID(acid: String) {
         if (acid.isEmpty()) return
         MainQueue.get().postTask {
-            EventDateAdapter.getInstance()?.setAccountId(acid)
+            EventDataAdapter.getInstance()?.setAccountId(acid)
             updateEventInfo(Constant.EVENT_INFO_ACID, acid)
         }
     }

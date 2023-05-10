@@ -9,7 +9,7 @@ import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.Constant.PRE_EVENT_INFO_SYN
 import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.data.EventDataAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpService
 import com.roiquery.analytics.network.RemoteService
@@ -38,7 +38,7 @@ import java.nio.charset.MalformedInputException
 class EventUploadManager private constructor(
 ) {
     private val mWorker: Worker = Worker()
-    private val mDateAdapter: EventDateAdapter? = EventDateAdapter.getInstance()
+    private val mDateAdapter: EventDataAdapter? = EventDataAdapter.getInstance()
     private val mPoster: RemoteService = HttpService()
     private val mErrorInsertDataMap: MutableMap<String, JSONObject> = mutableMapOf()
     private var mDisableUploadCount = 0
@@ -276,7 +276,7 @@ class EventUploadManager private constructor(
 
     private fun uploadDataToNet(
         event: String,
-        mDateAdapter: EventDateAdapter
+        mDateAdapter: EventDataAdapter
     ): Boolean {
         var deleteEvents = false
         var errorMessage: String? = null
@@ -336,7 +336,7 @@ class EventUploadManager private constructor(
 
     private suspend fun deleteEventAfterReport(
         event: String,
-        mDateAdapter: EventDateAdapter
+        mDateAdapter: EventDataAdapter
     ) {
         //上报成功后删除本地数据
         try {

@@ -5,8 +5,7 @@ import android.os.Build
 import android.text.TextUtils
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.data.AsyncGetDBData
-import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.data.EventDataAdapter
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -19,7 +18,7 @@ object EventUtils {
         Pattern.compile("^[a-zA-Z][a-zA-Z\\d_#]{0,49}", Pattern.CASE_INSENSITIVE)
 
     suspend fun getEventInfo(context: Context,
-                     dataAdapter: EventDateAdapter?,
+                     dataAdapter: EventDataAdapter?,
                      eventInfo: MutableMap<String, Any?>,
                      disableList: ArrayList<String>
     ) {

@@ -3,7 +3,7 @@ package com.roiquery.analytics.core
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.data.EventDateAdapter
+import com.roiquery.analytics.data.EventDataAdapter
 import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.ROIQueryErrorParams
@@ -40,7 +40,7 @@ class EventTrackManager {
      */
     private fun initTime() {
         TimeCalibration.instance.getReferenceTime()
-        EventDateAdapter.getInstance()?.isUploadEnabled = true
+        EventDataAdapter.getInstance()?.isUploadEnabled = true
     }
 
 
