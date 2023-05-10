@@ -23,16 +23,7 @@ class EventDataAdapter private constructor(
     /**
      * 是否上报数据，默认是
      */
-    @Deprecated("Suspends current thread, use `isUploadEnabled()` or `setIsUploadEnabled(value)`")
-    var isUploadEnabled: Boolean
-        get() = runBlocking {
-            getBooleanConfig(DataParams.CONFIG_ENABLE_UPLOADS, true)
-        }
-        set(value) = runBlocking {
-            setBooleanConfig(DataParams.CONFIG_ENABLE_UPLOADS, value)
-        }
-
-    fun isUploadEnabled() = DBQueue.get().async {
+    fun isUploadEnabled() = DBQueue.get().asyncChained {
         getBooleanConfig(DataParams.CONFIG_ENABLE_UPLOADS, true)
     }
 

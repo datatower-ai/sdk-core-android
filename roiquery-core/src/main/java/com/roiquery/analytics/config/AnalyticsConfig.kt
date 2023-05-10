@@ -50,8 +50,6 @@ private constructor() : AbstractAnalyticsConfig() {
 
     fun getRemoteConfig() {
         Thread {
-            PerfLogger.doPerfLog(PerfAction.GETCONFIGBEGIN, System.currentTimeMillis())
-
             if (hasGetRemoteConfig) {
                 return@Thread
             }
@@ -59,6 +57,8 @@ private constructor() : AbstractAnalyticsConfig() {
             if (isFetching) {
                 return@Thread
             }
+
+            PerfLogger.doPerfLog(PerfAction.GETCONFIGBEGIN, System.currentTimeMillis())
 
             isFetching = true
 

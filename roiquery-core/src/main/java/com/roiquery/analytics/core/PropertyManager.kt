@@ -16,6 +16,7 @@ import com.roiquery.quality.PerfLogger
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -75,13 +76,11 @@ class PropertyManager private constructor() {
         //这里每次更新，因为 gaid 或者Android id 有可能会变
         MainQueue.get().postTask {
             var justUpdateOriginalId = false
-            dataAdapter?.getDtId()?.onSameQueueThen {
-                MainQueue.get().postTask {
-                    if (it.isNotEmpty()) {
-                        updateDTID(it)
-                        onDataTowerIdCallback(it)
-                        justUpdateOriginalId = true
-                    }
+            runBlocking { dataAdapter?.getDtId()?.await() }?.let {
+                if (it.isNotEmpty()) {
+                    updateDTID(it)
+                    onDataTowerIdCallback(it)
+                    justUpdateOriginalId = true
                 }
             }
 

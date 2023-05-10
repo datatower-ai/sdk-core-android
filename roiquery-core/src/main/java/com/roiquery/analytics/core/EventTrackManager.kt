@@ -40,7 +40,7 @@ class EventTrackManager {
      */
     private fun initTime() {
         TimeCalibration.instance.getReferenceTime()
-        EventDataAdapter.getInstance()?.isUploadEnabled = true
+        EventDataAdapter.getInstance()?.setIsUploadEnabled(true)
     }
 
 

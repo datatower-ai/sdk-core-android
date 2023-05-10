@@ -18,6 +18,7 @@ import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
+import kotlinx.coroutines.runBlocking
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -67,10 +68,10 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     }
 
     override var enableUpload: Boolean?
-        get() = EventDataAdapter.getInstance()?.isUploadEnabled == true
+        get() = runBlocking { EventDataAdapter.getInstance()?.isUploadEnabled()?.await() }
         set(value) {
-            EventDataAdapter.getInstance()?.isUploadEnabled
             value?.let {
+                EventDataAdapter.getInstance()?.setIsUploadEnabled(it)
                 configOptions?.mEnableUpload = it
             }
         }

@@ -41,8 +41,6 @@ class EventUploadManager private constructor(
     private val mDateAdapter: EventDataAdapter? = EventDataAdapter.getInstance()
     private val mPoster: RemoteService = HttpService()
     private val mErrorInsertDataMap: MutableMap<String, JSONObject> = mutableMapOf()
-    private var mDisableUploadCount = 0
-
 
     fun enqueueEventMessage(
         name: String,
@@ -121,13 +119,6 @@ class EventUploadManager private constructor(
         )
     }
 
-    private fun checkDisableUpload() {
-        if (mDisableUploadCount > 10) {
-            mDateAdapter?.isUploadEnabled = true
-            mDisableUploadCount = 0
-        }
-    }
-
     /**
      * 主动上报
      */
@@ -161,19 +152,8 @@ class EventUploadManager private constructor(
                 LogUtils.d(TAG, "NetworkAvailable，disable upload")
                 return false
             }
-            if (mDateAdapter?.isUploadEnabled == false) {
-                LogUtils.i(TAG, "A task is currently uploading，or upload is disable")
-                mDisableUploadCount++
-                checkDisableUpload()
-                return false
-            } else {
-                mDateAdapter?.isUploadEnabled = false
-                mDisableUploadCount = 0
-            }
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
-            mDateAdapter?.isUploadEnabled = true
-            mDisableUploadCount = 0
             ROIQueryQualityHelper.instance.reportQualityMessage(
                 ROIQueryErrorParams.CODE_CHECK_ENABLE_UPLOAD_EXCEPTION,
                 e.message,
@@ -212,7 +192,6 @@ class EventUploadManager private constructor(
 
             if (JSONArray(eventsData).length() == 0) {
                 LogUtils.d(TAG, "db count = 0，disable upload")
-                mDateAdapter.isUploadEnabled = true
                 PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
                 break
             }
@@ -220,7 +199,6 @@ class EventUploadManager private constructor(
             //如果未进行时间同步，发空参数进行时间同步
             if (TimeCalibration.TIME_NOT_VERIFY_VALUE == TimeCalibration.instance.getVerifyTimeAsync()) {
                 LogUtils.d(TAG, "time do not calibrate yet")
-                mDateAdapter.isUploadEnabled = true
                 TimeCalibration.instance.getReferenceTime()
                 PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
                 break
@@ -234,14 +212,10 @@ class EventUploadManager private constructor(
                     try {
                         uploadInfo = info
                         if (info.isNotEmpty() && info != "[]") {
-                            mDateAdapter.isUploadEnabled = false
                             //http 请求
                             uploadSucceed = uploadDataToNet(info, mDateAdapter)
-                        } else {
-                            mDateAdapter.isUploadEnabled = true
                         }
                     } catch (e: Exception) {
-                        mDateAdapter.isUploadEnabled = true
                         ROIQueryQualityHelper.instance.reportQualityMessage(
                             ROIQueryErrorParams.CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
                             e.message,
@@ -259,7 +233,6 @@ class EventUploadManager private constructor(
 
                     //上报成功后，删除数据库数据
                     deleteEventAfterReport(uploadInfo!!, mDateAdapter)
-                    mDateAdapter.isUploadEnabled = true
                     //避免事件积压，成功后再次上报
                     flush(FLUSH_DELAY)
                     //如果远程控制之前获取失败，这里再次获取
