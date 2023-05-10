@@ -1,5 +1,6 @@
 package com.roiquery.analytics.taskqueue
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -34,3 +35,17 @@ fun <T> AsyncTaskQueue.asyncCatching(
 ): Deferred<Result<T>> = this.async {
     Result.runCatching { task() }
 }
+
+class AsyncTaskRescheduled<T>(
+    private val deferred: Deferred<T>,
+    private val queue: AsyncTaskQueue,
+) {
+    fun <O> onSameQueueThen(block: suspend CoroutineScope.(T) -> O): AsyncTaskRescheduled<O> =
+        AsyncTaskRescheduled(queue.async { block(deferred.await()) }, queue)
+
+    suspend fun await(): T = deferred.await()
+}
+
+fun <T> AsyncTaskQueue.asyncChained(
+    block: suspend CoroutineScope.() -> T,
+): AsyncTaskRescheduled<T> = AsyncTaskRescheduled(async(block = block), this)

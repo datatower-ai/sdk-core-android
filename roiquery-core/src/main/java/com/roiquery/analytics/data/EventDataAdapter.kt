@@ -4,11 +4,11 @@ import android.content.Context
 import com.roiquery.analytics.taskqueue.DBQueue
 import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.taskqueue.asyncCatching
+import com.roiquery.analytics.taskqueue.asyncChained
 import com.roiquery.analytics.utils.TimeCalibration
 import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
@@ -43,14 +43,8 @@ class EventDataAdapter private constructor(
     /**
      * install 事件的插入数据库状态
      */
-    fun isAppInstallInserted(callback: ((Boolean) -> Unit)?) = DBQueue.get().async {
-        val ret = getBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE, false)
-        callback?.let {
-            MainQueue.get().postTask {
-                callback?.invoke(ret)
-            }
-        }
-        ret
+    fun isAppInstallInserted() = DBQueue.get().asyncChained {
+        getBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE, false)
     }
 
     fun setIsAppInstallInserted(value: Boolean) = DBQueue.get().async {
