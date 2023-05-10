@@ -9,15 +9,12 @@ import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.EVENT_INFO_SYN
 import com.roiquery.analytics.Constant.PRE_EVENT_INFO_SYN
 import com.roiquery.analytics.config.AnalyticsConfig
-import com.roiquery.analytics.data.AsyncGetDBData
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpService
 import com.roiquery.analytics.network.RemoteService
 import com.roiquery.analytics.taskqueue.DataUploadQueue
 import com.roiquery.analytics.taskqueue.MainQueue
-import com.roiquery.analytics.taskqueue.SynnDataModel
-import com.roiquery.analytics.taskqueue.postTaskAsync
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
 import com.roiquery.analytics.utils.TimeCalibration
@@ -126,7 +123,7 @@ class EventUploadManager private constructor(
 
     private fun checkDisableUpload() {
         if (mDisableUploadCount > 10) {
-            mDateAdapter?.enableUpload = true
+            mDateAdapter?.isUploadEnabled = true
             mDisableUploadCount = 0
         }
     }
@@ -164,18 +161,18 @@ class EventUploadManager private constructor(
                 LogUtils.d(TAG, "NetworkAvailable，disable upload")
                 return false
             }
-            if (mDateAdapter?.enableUpload == false) {
+            if (mDateAdapter?.isUploadEnabled == false) {
                 LogUtils.i(TAG, "A task is currently uploading，or upload is disable")
                 mDisableUploadCount++
                 checkDisableUpload()
                 return false
             } else {
-                mDateAdapter?.enableUpload = false
+                mDateAdapter?.isUploadEnabled = false
                 mDisableUploadCount = 0
             }
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
-            mDateAdapter?.enableUpload = true
+            mDateAdapter?.isUploadEnabled = true
             mDisableUploadCount = 0
             ROIQueryQualityHelper.instance.reportQualityMessage(
                 ROIQueryErrorParams.CODE_CHECK_ENABLE_UPLOAD_EXCEPTION,
@@ -215,7 +212,7 @@ class EventUploadManager private constructor(
 
             if (JSONArray(eventsData).length() == 0) {
                 LogUtils.d(TAG, "db count = 0，disable upload")
-                mDateAdapter.enableUpload = true
+                mDateAdapter.isUploadEnabled = true
                 PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
                 break
             }
@@ -223,7 +220,7 @@ class EventUploadManager private constructor(
             //如果未进行时间同步，发空参数进行时间同步
             if (TimeCalibration.TIME_NOT_VERIFY_VALUE == TimeCalibration.instance.getVerifyTimeAsync()) {
                 LogUtils.d(TAG, "time do not calibrate yet")
-                mDateAdapter.enableUpload = true
+                mDateAdapter.isUploadEnabled = true
                 TimeCalibration.instance.getReferenceTime()
                 PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
                 break
@@ -237,14 +234,14 @@ class EventUploadManager private constructor(
                     try {
                         uploadInfo = info
                         if (info.isNotEmpty() && info != "[]") {
-                            mDateAdapter.enableUpload = false
+                            mDateAdapter.isUploadEnabled = false
                             //http 请求
                             uploadSucceed = uploadDataToNet(info, mDateAdapter)
                         } else {
-                            mDateAdapter.enableUpload = true
+                            mDateAdapter.isUploadEnabled = true
                         }
                     } catch (e: Exception) {
-                        mDateAdapter.enableUpload = true
+                        mDateAdapter.isUploadEnabled = true
                         ROIQueryQualityHelper.instance.reportQualityMessage(
                             ROIQueryErrorParams.CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
                             e.message,
@@ -262,7 +259,7 @@ class EventUploadManager private constructor(
 
                     //上报成功后，删除数据库数据
                     deleteEventAfterReport(uploadInfo!!, mDateAdapter)
-                    mDateAdapter.enableUpload = true
+                    mDateAdapter.isUploadEnabled = true
                     //避免事件积压，成功后再次上报
                     flush(FLUSH_DELAY)
                     //如果远程控制之前获取失败，这里再次获取

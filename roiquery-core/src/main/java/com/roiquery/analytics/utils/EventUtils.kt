@@ -18,7 +18,7 @@ object EventUtils {
     private val KEY_PATTERN =
         Pattern.compile("^[a-zA-Z][a-zA-Z\\d_#]{0,49}", Pattern.CASE_INSENSITIVE)
 
-    fun getEventInfo(context: Context,
+    suspend fun getEventInfo(context: Context,
                      dataAdapter: EventDateAdapter?,
                      eventInfo: MutableMap<String, Any?>,
                      disableList: ArrayList<String>
@@ -29,15 +29,9 @@ object EventUtils {
 //                eventInfo[Constant.EVENT_INFO_ACID] = it
 //            }
 //        }
-        dataAdapter?.getAccountId(object: AsyncGetDBData{
-            override fun onDataGet(data: Any?) {
-                data?.let {
-                    val accountId = it as String
-                    eventInfo[Constant.EVENT_INFO_ACID] = it
-                }
-            }
-        })
-
+        dataAdapter?.getAccountId()?.await()?.let {
+            eventInfo[Constant.EVENT_INFO_ACID] = it
+        }
 
         if (!disableList.contains(Constant.EVENT_INFO_BUNDLE_ID)) {
             //进程名
@@ -51,10 +45,8 @@ object EventUtils {
             eventInfo[Constant.EVENT_INFO_DEBUG] = true
         }
         //dt_id (gaid/androidId + appId)
-        dataAdapter?.dtId?.let {
-            if (it.isNotEmpty()) {
-                eventInfo[Constant.EVENT_INFO_DT_ID] = it
-            }
+        dataAdapter?.getDtId()?.await()?.let {
+            if (it.isNotEmpty()) eventInfo[Constant.EVENT_INFO_DT_ID] = it
         }
     }
 

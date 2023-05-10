@@ -67,10 +67,10 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     }
 
     override var enableUpload: Boolean?
-        get() = EventDateAdapter.getInstance()?.enableUpload == true
+        get() = EventDateAdapter.getInstance()?.isUploadEnabled == true
         set(value) {
+            EventDateAdapter.getInstance()?.isUploadEnabled
             value?.let {
-                EventDateAdapter.getInstance()?.enableUpload = it
                 configOptions?.mEnableUpload = it
             }
         }

@@ -1,14 +1,11 @@
 package com.roiquery.analytics.core
 
-import android.os.SystemClock
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDateAdapter
 import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.utils.*
-import com.roiquery.quality.PerfAction
-import com.roiquery.quality.PerfLogger
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import org.json.JSONObject
@@ -43,7 +40,7 @@ class EventTrackManager {
      */
     private fun initTime() {
         TimeCalibration.instance.getReferenceTime()
-        EventDateAdapter.getInstance()?.enableUpload = true
+        EventDateAdapter.getInstance()?.isUploadEnabled = true
     }
 
 

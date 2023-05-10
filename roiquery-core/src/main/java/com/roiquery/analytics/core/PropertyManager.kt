@@ -15,8 +15,8 @@ import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
+import kotlinx.coroutines.launch
 import org.json.JSONObject
-import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
 
 
@@ -209,10 +209,10 @@ class PropertyManager private constructor() {
      */
     private fun initEventInfo(context: Context) {
         try {
-            MainQueue.get().postTask {
+            MainQueue.get().launch {
                 EventUtils.getEventInfo(context, dataAdapter, eventInfo, disableList)
             }
-        }catch (e:Exception){
+        } catch (ignored: Exception) {
         }
     }
 

@@ -8,7 +8,10 @@ import com.roiquery.analytics.data.room.bean.Events
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
+import kotlinx.coroutines.suspendCancellableCoroutine
 import org.json.JSONObject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 
 internal class EventDataOperation(
@@ -20,10 +23,11 @@ internal class EventDataOperation(
     private var eventCount = -1
 
 
-    fun insertData(jsonObject: JSONObject?, eventSyn: String): Int {
+    suspend fun insertData(jsonObject: JSONObject?, eventSyn: String): Int = suspendCoroutine {
         //删除已满数据异常
         if (!deleteDataWhenOverMaxRows()) {
-            return DataParams.DB_OUT_OF_ROW_ERROR
+            it.resume(DataParams.DB_OUT_OF_ROW_ERROR)
+            return@suspendCoroutine
         }
         try {
             //return the SQLite row id or -1 if no row is inserted
@@ -36,18 +40,19 @@ internal class EventDataOperation(
                     eventSyn = eventSyn
                 )
             )
-            return if (result != -1L) {
+            val returns = if (result != -1L) {
                 eventCount += 1
                 DataParams.DB_INSERT_SUCCEED
             } else {
                 DataParams.DB_INSERT_ERROR
             }
+            it.resume(returns)
         } catch (exception: Exception) {
             ROIQueryQualityHelper.instance.reportQualityMessage(
                 ROIQueryErrorParams.CODE_INSERT_DB_EXCEPTION,
                 exception.message, ROIQueryErrorParams.INSERT_DB_EXCEPTION
             )
-            return DataParams.DB_INSERT_EXCEPTION
+            it.resume(DataParams.DB_INSERT_EXCEPTION)
         }
     }
 
@@ -55,7 +60,7 @@ internal class EventDataOperation(
     /**
      * 保存配置
      */
-    fun insertConfig(name: String, value: String?) {
+    suspend fun insertConfig(name: String, value: String?): Unit = suspendCoroutine {
         try {
             value?.let { notEmptyValue ->
                 analyticsDB?.getConfigDao()?.let {
@@ -73,14 +78,15 @@ internal class EventDataOperation(
                 "insertConfig：$name " + exception.message, ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR
             )
         }
+        it.resume(Unit)
     }
 
 
     /**
      * 查询配置
      */
-    fun queryConfig(name: String): String? {
-        return try {
+    suspend fun queryConfig(name: String): String? = suspendCoroutine {
+        val value = try {
             analyticsDB?.getConfigDao()?.queryValueByName(name)
         } catch (exception: Exception) {
             ROIQueryQualityHelper.instance.reportQualityMessage(
@@ -89,6 +95,7 @@ internal class EventDataOperation(
             )
             null
         }
+        it.resume(value)
     }
 
 
@@ -96,13 +103,13 @@ internal class EventDataOperation(
     /**
      * 查询数据
      */
-    fun queryData(limit: Int): String {
+    suspend fun queryData(limit: Int): String = suspendCoroutine {
         val jsonData = StringBuilder()
         val suffix = ","
         jsonData.append("[")
         try {
             val queryEventData = analyticsDB?.getEventsDao()?.queryEventData(limit)
-            queryEventData?.let { it ->
+            queryEventData?.let {
                 val size = it.size
                 for (i in 0 until size) {
                     jsonData.append(parseData(it[i]))
@@ -117,7 +124,7 @@ internal class EventDataOperation(
         } finally {
             jsonData.append("]")
         }
-        return jsonData.toString()
+        it.resume(jsonData.toString())
     }
 
 
@@ -143,6 +150,7 @@ internal class EventDataOperation(
     /**
      * 删除数据
      */
+    /* FIXME: Function disabled because nobody calls it.
     fun deleteEventByEventSyn(eventSyn: String) {
         try {
             analyticsDB?.getEventsDao()?.deleteEventByEventSyn(eventSyn)
@@ -156,8 +164,9 @@ internal class EventDataOperation(
             )
         }
     }
+     */
 
-    fun deleteBatchEventByEventSyn(eventSyns: List<String>) {
+    suspend fun deleteBatchEventByEventSyn(eventSyns: List<String>) = suspendCoroutine<Unit> {
         try {
             analyticsDB?.getEventsDao()?.deleteBatchEventByEventSyn(eventSyns)
             if (eventCount != 0) {
@@ -169,6 +178,7 @@ internal class EventDataOperation(
                 exception.message, ROIQueryErrorParams.DELETE_DB_EXCEPTION
             )
         }
+        it.resume(Unit)
     }
 
 
@@ -238,7 +248,7 @@ internal class EventDataOperation(
         return false
     }
 
-    fun deleteAllEventData() {
+    suspend fun deleteAllEventData(): Unit = suspendCoroutine {
         try {
             analyticsDB?.getEventsDao()?.clearTable()
             eventCount = 0
@@ -248,7 +258,7 @@ internal class EventDataOperation(
                 "deleteAllEventData:" + e.message, ROIQueryErrorParams.DELETE_DB_EXCEPTION
             )
         }
+        it.resume(Unit)
     }
-
 
 }
