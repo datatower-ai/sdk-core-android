@@ -316,15 +316,7 @@ class EventUploadManager private constructor(
             val jsonArray = JSONArray(event)
             val length = jsonArray.length()
             val allEvents: MutableList<String> = mutableListOf()
-//            for (i in 0 until length) {
-//                jsonArray.optJSONObject(i)?.let {
-//                    if (it.optString(EVENT_INFO_SYN).isNotEmpty()) {
-//                        mDateAdapter.cleanupEvents(it.optString(EVENT_INFO_SYN))
-//                    } else {
-//                        mDateAdapter.cleanupEvents(it.optString(PRE_EVENT_INFO_SYN))
-//                    }
-//                }
-//            }
+
             for (i in 0 until length) {
                 jsonArray.optJSONObject(i)?.let {
                     if (it.optString(EVENT_INFO_SYN).isNotEmpty()) {
