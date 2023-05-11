@@ -48,7 +48,7 @@ mavenAarByType(){
     # shellcheck disable=SC2164
   cd roiquery-"${aar_type}"
   gradle clean
-  gradle assembleRelease
+  gradle assemblePublicRelease
   gradle publish
     if [  $? -ne 0 ]; then
         exit

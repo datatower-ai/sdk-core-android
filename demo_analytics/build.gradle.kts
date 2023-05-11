@@ -50,10 +50,21 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("keystore.jks")
+            storePassword = "111111"
+            keyPassword = "111111"
+            keyAlias = "key0"
+        }
+    }
+
     flavorDimensions += "distribution"
     productFlavors {
         create("public") {
             dimension = "distribution"
+            signingConfig = signingConfigs.getByName("release")
+            missingDimensionStrategy("slf4jLogging", "public")
         }
         create("internal") {
             dimension = "distribution"

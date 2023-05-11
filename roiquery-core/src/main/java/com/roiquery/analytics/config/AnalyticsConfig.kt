@@ -5,14 +5,11 @@ import android.content.SharedPreferences
 import android.text.TextUtils
 import com.roiquery.analytics.BuildConfig
 import com.roiquery.analytics.Constant
-import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.data.persistence.SharedPreferencesLoader
 import com.roiquery.analytics.data.persistence.StorageDisableFlag
 import com.roiquery.analytics.data.persistence.StorageReportUrl
-import com.roiquery.analytics.network.HttpCallback
 import com.roiquery.analytics.network.HttpMethod
 import com.roiquery.analytics.network.RequestHelper
-import com.roiquery.analytics.utils.AppInfoUtils
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
