@@ -52,6 +52,8 @@ class DataParams private constructor(packageName: String) {
         /* 删除所有数据 */
         const val DB_DELETE_ALL = "DB_DELETE_ALL"
         private var instance: DataParams? = null
+
+        @Synchronized
         fun getInstance(packageName: String): DataParams? {
             if (instance == null) {
                 instance = DataParams(packageName)

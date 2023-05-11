@@ -259,6 +259,7 @@ class EventDataAdapter private constructor(
 
     companion object {
         private var instance: EventDataAdapter? = null
+        @Synchronized
         internal fun getInstance(
             context: Context
         ): EventDataAdapter? {
