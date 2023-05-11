@@ -7,7 +7,7 @@ import java.lang.reflect.ParameterizedType
 class ReflectUtils private constructor() {
     companion object{
         private const val TAG = "ReflectUtils"
-        val instance by lazy {
+        val instance by lazy(LazyThreadSafetyMode.SYNCHRONIZED)  {
             ReflectUtils()
         }
     }

@@ -2,6 +2,15 @@ package com.roiquery.analytics.taskqueue;
 
 import static java.lang.Thread.sleep;
 
+// 需要上报的场景，记录下
+//1 上报gaid获取不到，检测是不是用户未授权
+//2 检测用户是否重启了系统，或者修改了本地时间
+//3 uploadData的每个子步骤的超时（现在定的是5秒）
+//4 MainQueue任务执行耗时超过1秒
+//5 所有串行队列是否卡死（1分钟无响应）
+//6 DB的未上报记录超过100条
+//7 uploadData连续3次执行失败
+
 public class MonitorQueue extends AsyncTaskQueue {
 
     private volatile static MonitorQueue singleton;  //1:volatile修饰
