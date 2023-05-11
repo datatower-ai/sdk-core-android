@@ -131,11 +131,23 @@ class TimeCalibration private constructor() {
         return time
     }
 
-    fun getServerTime() = _latestTime
+    fun getServerTime(): Long {
+        calibratedTimeLock.readLock().lock()
+        val ret = _latestTime
+        calibratedTimeLock.readLock().unlock()
 
-    fun getUpdateSystemUpTime() = _latestSystemElapsedRealtime
+        return ret
+    }
 
-    /**
+    fun getUpdateSystemUpTime(): Long {
+        calibratedTimeLock.readLock().lock()
+        val ret = _latestSystemElapsedRealtime
+        calibratedTimeLock.readLock().unlock()
+
+        return ret
+    }
+
+        /**
      * Get system hibernate time gap
      *
      */
