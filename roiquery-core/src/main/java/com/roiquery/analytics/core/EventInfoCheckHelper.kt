@@ -151,7 +151,7 @@ class EventInfoCheckHelper private constructor() {
 //                        历史数据，时间戳不可行
                         if (TimeCalibration.instance.isDeviceTimeCorrect()) {
 //                            设备时间是对的
-                            realTime = if ((sInterval * dInterval) > 0L && abs(sInterval - dInterval) < 5000L) {
+                            realTime = if ((sInterval * dInterval) > 0L && abs(sInterval - dInterval) < 5 * 60 * 1000L) {
                         //                                没有调时，也没有启动过
                                 infoTime - updateSystemUpTime + serverTime
                             } else {
@@ -160,7 +160,8 @@ class EventInfoCheckHelper private constructor() {
                             }
 
                         } else {
-                            realTime = if ((sInterval * dInterval) > 0L && abs(sInterval - dInterval) < 5000L) {
+                            realTime = if ((sInterval * dInterval) > 0L && abs(sInterval - dInterval) < 5 * 60 * 1000L) {
+//                                没重启过，系统时间与实际时间的差是固定的
                                 infoTime - updateSystemUpTime + serverTime
                             } else {
                                 eventInfo.put(

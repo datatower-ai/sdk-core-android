@@ -166,7 +166,8 @@ class TimeCalibration private constructor() {
         calibratedTimeLock.readLock().lock()
         if (_latestSystemElapsedRealtime == 0L) return false
 
-        val ret = abs(_latestTime - _latestDeviceTime) < 10000
+//        5分钟的误差
+        val ret = abs(_latestTime - _latestDeviceTime) < 5 * 60 * 1000L
 
         calibratedTimeLock.readLock().unlock()
 
