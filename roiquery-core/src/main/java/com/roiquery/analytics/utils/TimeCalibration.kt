@@ -1,6 +1,7 @@
 package com.roiquery.analytics.utils
 
 import android.os.SystemClock
+import com.roiquery.ad.utils.UUIDUtils
 import com.roiquery.analytics.Constant
 import com.roiquery.analytics.Constant.TIME_FROM_ROI_NET_BODY
 import com.roiquery.analytics.DTAnalytics
@@ -14,6 +15,7 @@ import com.roiquery.quality.PerfLogger
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.math.abs
 
 /**
  * author: xiaosailing
@@ -38,6 +40,10 @@ class TimeCalibration private constructor() {
     private val calibratedTimeLock = ReentrantReadWriteLock()
 
     private var isVerifyTimeRunning = AtomicBoolean(false)
+
+    private var _latestDeviceTime = TIME_NOT_VERIFY_VALUE
+
+    val sessionId: String = UUIDUtils.generateUUID()
 
     fun getReferenceTime() {
         Thread {
@@ -85,6 +91,7 @@ class TimeCalibration private constructor() {
 
             if (time - (dbTime ?: TIME_NOT_VERIFY_VALUE) > 5000){
                 _latestTime = time
+                _latestDeviceTime = System.currentTimeMillis()
                 _latestSystemElapsedRealtime = SystemClock.elapsedRealtime()
                 EventDataAdapter.getInstance()?.setLatestNetTime(_latestTime)
                 EventDataAdapter.getInstance()?.setLatestGapTime( _latestSystemElapsedRealtime)
@@ -142,6 +149,25 @@ class TimeCalibration private constructor() {
     fun getUpdateSystemUpTime(): Long {
         calibratedTimeLock.readLock().lock()
         val ret = _latestSystemElapsedRealtime
+        calibratedTimeLock.readLock().unlock()
+
+        return ret
+    }
+
+    fun getDeviceTime() : Long {
+        calibratedTimeLock.readLock().lock()
+        val ret = _latestDeviceTime
+        calibratedTimeLock.readLock().unlock()
+
+        return ret
+    }
+
+    fun isDeviceTimeCorrect(): Boolean {
+        calibratedTimeLock.readLock().lock()
+        if (_latestSystemElapsedRealtime == 0L) return false
+
+        val ret = abs(_latestTime - _latestDeviceTime) < 10000
+
         calibratedTimeLock.readLock().unlock()
 
         return ret

@@ -36,7 +36,9 @@ internal object Constant {
 
     const val EVENT_BODY  = "body"
     const val EVENT_TIME_CALIBRATED  = "time_calibrated"
-
+    const val EVENT_TIME_DEVICE  = "time_device"
+    const val EVENT_TIME_SESSION_ID  = "time_session_id"  // 进程启动一次生成一次唯一id
+    const val EVENT_TIME_CAN_TRUSTED  = "time_trusted"
 
     const val COMMON_PROPERTY_EVENT_SESSION       = "#session_id"
     const val COMMON_PROPERTY_MCC                 = "#mcc"

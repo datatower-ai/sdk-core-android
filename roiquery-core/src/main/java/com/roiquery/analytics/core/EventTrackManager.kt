@@ -193,6 +193,14 @@ class EventTrackManager {
                     Constant.EVENT_TIME_CALIBRATED,
                     isTimeVerify
                 )
+                put(
+                    Constant.EVENT_TIME_DEVICE,
+                    System.currentTimeMillis(),
+                )
+                put(
+                    Constant.EVENT_TIME_SESSION_ID,
+                    TimeCalibration.instance.sessionId
+                )
             }
 
             mAnalyticsManager?.enqueueEventMessage(
