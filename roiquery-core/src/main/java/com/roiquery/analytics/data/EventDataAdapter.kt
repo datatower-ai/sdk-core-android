@@ -197,6 +197,11 @@ class EventDataAdapter private constructor(
             mOperation?.queryData(limit)
         }
 
+    fun queryDataCount() =
+        DBQueue.get().asyncCatching {
+            mOperation?.queryDataCount()
+        }
+
 
     // region get/set<Type>Config
 

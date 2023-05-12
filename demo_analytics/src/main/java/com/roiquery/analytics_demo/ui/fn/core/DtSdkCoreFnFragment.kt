@@ -15,11 +15,14 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.get
 import com.roiquery.analytics.DTAnalytics
 import com.roiquery.analytics.OnDataTowerIdListener
+import com.roiquery.analytics.data.EventDataAdapter
 import com.roiquery.analytics_demo.R
+import com.roiquery.quality.PerfLogger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -46,6 +49,13 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
                 }
             }
         }
+
+        preferenceScreen.get<Preference>("dt_anal_get_db_count")?.let {
+            it.setOnPreferenceClickListener {
+                guiDBItemUpdate(it)
+            }
+        }
+
         assignBuiltinUserPropertiesToSdk()
     }
 
@@ -104,6 +114,18 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             clipboardMgr.setPrimaryClip(ClipData.newPlainText("DTID", dtid))
             Toast.makeText(requireActivity(), "DTID copied to clipboard.", Toast.LENGTH_SHORT)
                 .show()
+        }
+        return true
+    }
+
+    private fun guiDBItemUpdate(ignored: Preference): Boolean {
+        launch {
+            val pref = preferenceScreen.get<Preference>("dt_anal_get_db_count") ?: return@launch
+            pref.summary = "DB Item=<Loading..>"
+
+            val dbItmeCount = PerfLogger.getDBItemCount()
+
+            pref.summary = "DB Item=$dbItmeCount"
         }
         return true
     }

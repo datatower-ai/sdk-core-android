@@ -1,6 +1,10 @@
 package com.roiquery.quality
 
+import com.roiquery.analytics.Constant
+import com.roiquery.analytics.data.EventDataAdapter
 import com.roiquery.analytics.utils.LogUtils
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeoutOrNull
 
 enum class PerfAction {
     SDKINITBEGIN,
@@ -52,5 +56,14 @@ object PerfLogger {
         }
 
         LogUtils.i(tag, action.name);
+    }
+
+    fun getDBItemCount(): Int? {
+        val ret = runBlocking {
+            withTimeoutOrNull(5000) {
+                EventDataAdapter.getInstance()?.queryDataCount()?.await()
+            }
+        }?.getOrThrow() ?: 0
+        return ret
     }
 }

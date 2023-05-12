@@ -133,7 +133,7 @@ internal class EventDataOperation(
      * 查询数据条数
      * @return 条数
      */
-    private fun queryDataCount(): Int {
+    fun queryDataCount(): Int {
         var count = 0
         try {
             count = analyticsDB?.getEventsDao()?.dataCount() ?: 0

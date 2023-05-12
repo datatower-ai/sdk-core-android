@@ -9,6 +9,11 @@
         android:summary="DTID="
         android:title="Get DTID" />
 
+    <Preference
+        android:key="dt_anal_get_db_count"
+        android:summary="DB Item Count="
+        android:title="Get DB items" />
+
     <PreferenceCategory
         android:key="dt_anal_user_builtin_prop_group"
         android:title="Built-in User Properties">

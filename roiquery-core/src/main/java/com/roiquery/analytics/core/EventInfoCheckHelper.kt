@@ -148,14 +148,14 @@ class EventInfoCheckHelper private constructor() {
                         val dInterval = deviceTime - dHistoryTime
                         var realTime = 0L
 
-//                        历史数据，时间戳不可行
+                        //  历史数据，时间戳不可行
                         if (TimeCalibration.instance.isDeviceTimeCorrect()) {
-//                            设备时间是对的
+                        //  设备时间是对的
                             realTime = if ((sInterval * dInterval) > 0L && abs(sInterval - dInterval) < 5 * 60 * 1000L) {
-                        //                                没有调时，也没有启动过
+                        // 没有调时，也没有启动过
                                 infoTime - updateSystemUpTime + serverTime
                             } else {
-                        //                                重启过
+                        // 重启过
                                 dHistoryTime
                             }
 
