@@ -33,12 +33,12 @@ class AdReportActivity : AppCompatActivity() {
                 put("location",ad_location)
             }
 
-            DTAdReport.reportShow(
-                ad_unit,
-                ad_type,
-                ad_platform,
-                properties
-            )
+//            DTAdReport.reportShow(
+//                ad_unit,
+//                ad_type,
+//                ad_platform,
+//                properties
+//            )
         }
 
 
@@ -47,12 +47,12 @@ class AdReportActivity : AppCompatActivity() {
             val properties: HashMap<String, Any> = HashMap<String, Any>().apply {
                 put("seq",ad_seq)
             }
-            DTAdReport.reportConversion(
-                ad_unit,
-                ad_type,
-                ad_platform,
-                properties
-            )
+//            DTAdReport.reportConversion(
+//                ad_unit,
+//                ad_type,
+//                ad_platform,
+//                properties
+//            )
         }
 
     }
