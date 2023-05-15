@@ -51,14 +51,15 @@ class EventUploadManager private constructor(
         val dataAdapter = mDateAdapter ?: return
         try {
             //插入数据库
-            val insertCode = runBlocking { dataAdapter.addJSON(eventJson, eventSyn).await() }
-            MainQueue.get().launch {
-                checkInsertResult(insertCode, name, eventJson, eventSyn, insertHandler)
-                //发送上报的message
-                Message.obtain().apply {
-                    //上报标志
-                    this.what = FLUSH_QUEUE
-                    mWorker.runMessageOnce(this, FLUSH_DELAY)
+            dataAdapter.addJSON(eventJson, eventSyn).onSameQueueThen {
+                MainQueue.get().postTask {
+                    checkInsertResult(it, name, eventJson, eventSyn, insertHandler)
+                    //发送上报的message
+                    Message.obtain().apply {
+                        //上报标志
+                        this.what = FLUSH_QUEUE
+                        mWorker.runMessageOnce(this, FLUSH_DELAY)
+                    }
                 }
             }
         } catch (e: Exception) {

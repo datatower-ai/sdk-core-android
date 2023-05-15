@@ -60,10 +60,8 @@ object PerfLogger {
 
     fun getDBItemCount(): Int? {
         val ret = runBlocking {
-            withTimeoutOrNull(5000) {
-                EventDataAdapter.getInstance()?.queryDataCount()?.await()
-            }
-        }?.getOrThrow() ?: 0
+            EventDataAdapter.getInstance()?.queryDataCount()?.await()
+        }
         return ret
     }
 }

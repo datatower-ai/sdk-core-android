@@ -120,16 +120,14 @@ class EventDataAdapter private constructor(
      * @return the number of rows in the table, or DB_OUT_OF_MEMORY_ERROR/DB_UPDATE_ERROR
      * on failure
      */
-    fun addJSON(data: JSONObject?, eventSyn: String): Deferred<Int> {
-        return DBQueue.get().async {
-            PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBBEGIN, System.currentTimeMillis())
-            val returns = Result.runCatching {
-                mOperation?.insertData(data, eventSyn) ?: DataParams.DB_ADD_JSON_ERROR
-            }.getOrNull() ?: DataParams.DB_ADD_JSON_ERROR
-            PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBEND, System.currentTimeMillis())
-            returns
-        }
-    }
+    fun addJSON(data: JSONObject?, eventSyn: String) = DBQueue.get().asyncChained {
+         PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBBEGIN, System.currentTimeMillis())
+         val returns = Result.runCatching {
+             mOperation?.insertData(data, eventSyn) ?: DataParams.DB_ADD_JSON_ERROR
+         }.getOrNull() ?: DataParams.DB_ADD_JSON_ERROR
+         PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBEND, System.currentTimeMillis())
+         returns
+     }
 
     /**
      * Removes all events from table
@@ -198,7 +196,7 @@ class EventDataAdapter private constructor(
         }
 
     fun queryDataCount() =
-        DBQueue.get().asyncCatching {
+        DBQueue.get().asyncChained {
             mOperation?.queryDataCount()
         }
 
