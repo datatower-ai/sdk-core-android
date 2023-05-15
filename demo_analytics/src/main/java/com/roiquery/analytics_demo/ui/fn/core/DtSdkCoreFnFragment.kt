@@ -63,6 +63,7 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
         when (preference.key) {
             "dt_anal_track_predefined" -> trackEventPredefined()
             "dt_anal_track_custom" -> trackEventCustomDialogShow()
+            "dt_anal_invoke_user_api" -> invokeUserApiDialogShow()
         }
         return super.onPreferenceTreeClick(preference)
     }
@@ -132,6 +133,10 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
 
     private fun trackEventCustomDialogShow() {
         TrackEventCustomizedActivity.startActivity(requireActivity())
+    }
+
+    private  fun invokeUserApiDialogShow() {
+        UserApiActivity.startActivity(requireActivity())
     }
 
     private fun onBuiltinPropPrefChanged(preference: Preference, newValue: Any?): Boolean {

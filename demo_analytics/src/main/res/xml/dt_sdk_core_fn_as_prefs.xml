@@ -63,7 +63,10 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="User Properties">
-        <!-- TODO: feature delayed indefinitely. -->
+        <Preference
+            android:key="dt_anal_invoke_user_api"
+            android:summary="You'll have to fill in the name of the user api and its params"
+            android:title="User related API" />
     </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

@@ -41,6 +41,8 @@
         <activity android:name=".IapReportActivity" />
         <activity android:name=".IasReportActivity" />
         <activity android:name=".UtilsActivity" />
+        <activity android:name=".ui.fn.core.UserApiActivity"
+            android:label="User related API" ></activity>
 
         <service
             android:name=".SubProcessService"
