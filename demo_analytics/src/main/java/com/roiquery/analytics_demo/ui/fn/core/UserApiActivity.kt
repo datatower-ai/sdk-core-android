@@ -37,20 +37,28 @@ class UserApiActivity : AppCompatActivity() {
                 if (param != null) {
                     if (param.isNotEmpty()) {
                         passParam = editParam?.text.toString()
-                        if (passParam.isEmpty())
+                        if (passParam.isEmpty()) {
+                            val text = "pls input the params"
+                            Toast.makeText(this@UserApiActivity, text, Toast.LENGTH_SHORT).show()
                             return@setOnClickListener
+                        }
 
-                        // todo  String type not handle
-                        val reflectionMethod = DTAnalytics::class.java.getMethod(api)
-                        val jsonObject = try {
-                            JSONObject(passParam)
+                        // todo only handle json Object now
+                        try {
+                            val reflectionMethod = DTAnalytics::class.java.getMethod(api, JSONObject::class.java,)
+                            val jsonObject = JSONObject(passParam)
+                            reflectionMethod.invoke(null, jsonObject)
                         } catch (e: JSONException) {
                             e.printStackTrace()
                             val text = "Error on parsing text to JSON"
                             Toast.makeText(this@UserApiActivity, text, Toast.LENGTH_SHORT).show()
                             return@setOnClickListener
+                        } catch (e: Exception) {
+                            val text = e.toString()
+                            Toast.makeText(this@UserApiActivity, text, Toast.LENGTH_SHORT).show()
+                            return@setOnClickListener
                         }
-                        reflectionMethod.invoke(null, jsonObject)
+
                     } else {
                         val reflectionMethod = DTAnalytics::class.java.getMethod(api)
                         reflectionMethod.invoke(null)
@@ -60,7 +68,6 @@ class UserApiActivity : AppCompatActivity() {
         }
 
         fillinUI()
-
     }
 
     private fun fillinUI() {
