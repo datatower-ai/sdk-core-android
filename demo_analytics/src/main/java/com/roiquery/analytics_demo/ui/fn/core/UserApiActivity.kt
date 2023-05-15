@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.roiquery.analytics.DTAnalytics
@@ -20,7 +21,7 @@ class UserApiActivity : AppCompatActivity() {
     private var spinner: Spinner? = null
     private val infoMap: MutableMap<String, String?> = mutableMapOf()
     private var editParam: EditText? = null
-    private var editDescription: EditText? = null
+    private var editDescription: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +67,7 @@ class UserApiActivity : AppCompatActivity() {
 
         spinner = findViewById<Spinner>(R.id.user_api_list)
         editParam = findViewById<EditText>(R.id.user_api_param)
-        editDescription = findViewById<EditText>(R.id.user_api_description)
+        editDescription = findViewById<TextView>(R.id.user_api_description)
 
         val reflectionMethods = DTAnalytics::class.java.methods
         for(method in reflectionMethods) {
