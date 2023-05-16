@@ -22,10 +22,11 @@ class MyApp : Application() {
         DTAdReport.generateUUID()
         DT.initSDK(
             this,
-            "dt_53ecce7c85c3daab",
+//            "dt_53ecce7c85c3daab",
+            "dt_beb231f90a5a20ba", // test app
             SERVER_URL_TEST,
             DTChannel.GP,
-            true,
+            false,
             Log.VERBOSE
         )
         Log.d("initSDK end", (SystemClock.elapsedRealtime() - initBeginTime).toString())
