@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +34,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONException
 import org.json.JSONObject
+import java.lang.Thread.sleep
 import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
@@ -131,14 +134,22 @@ class TrackEventCustomizedActivity : AppCompatActivity(), CoroutineScope {
             return@launch
         }
 
-        for (nthTime in 1u..repeats) {
-            @SuppressLint("SetTextI18n")
-            textViewWeakRef.get()?.text = "Times of repeat: $nthTime/$repeats"
-
-            mapping.put("seq", nthTime.toString())
-            DTAnalytics.track(name, mapping)
-            delay(interval.toLong())
-        }
+        Thread {
+            var count: UInt = 0u
+            while (count < repeats) {
+                mapping.put("seq", (count + 1u).toString())
+                DTAnalytics.track(name, mapping)
+                count++
+                Handler(Looper.getMainLooper()).post {
+                    Toast.makeText(
+                        applicationContext,
+                        "track event $count/$repeats",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                sleep(interval.toLong())
+            }
+        }.start()
     }
 
     companion object {

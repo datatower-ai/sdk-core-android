@@ -32,6 +32,7 @@ internal object ROIQueryErrorParams {
     const val CODE_QUERY_DB_EXCEPTION = 2010
     const val CODE_DELETE_UPLOADED_EXCEPTION = 2012
     const val CODE_DELETE_DB_EXCEPTION = 2013
+    const val CODE_DB_DATA_COUNT = 2014
 
     //upload
     const val CODE_HANDLE_UPLOAD_MESSAGE_ERROR = 3001
@@ -39,6 +40,10 @@ internal object ROIQueryErrorParams {
     const val CODE_REPORT_ERROR_ON_FAIL = 3003
     const val CODE_REPORT_ERROR_ON_RESPONSE = 3004
 
+    //queue
+    const val CODE_QUEUE_MAIN_DEAD = 4001
+    const val CODE_QUEUE_UPLOAD_DEAD = 4002
+    const val CODE_QUEUE_DB_DEAD = 4003
 
     @IntDef(
 
@@ -59,11 +64,16 @@ internal object ROIQueryErrorParams {
         CODE_QUERY_DB_EXCEPTION,
         CODE_DELETE_UPLOADED_EXCEPTION,
         CODE_DELETE_DB_EXCEPTION,
+        CODE_DB_DATA_COUNT,
 
         CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
         CODE_CHECK_ENABLE_UPLOAD_EXCEPTION,
         CODE_REPORT_ERROR_ON_FAIL,
-        CODE_REPORT_ERROR_ON_RESPONSE
+        CODE_REPORT_ERROR_ON_RESPONSE,
+
+        CODE_QUEUE_MAIN_DEAD,
+        CODE_QUEUE_UPLOAD_DEAD,
+        CODE_QUEUE_DB_DEAD
     )
     @Retention(AnnotationRetention.SOURCE)
     annotation class ROIQueryErrorCode

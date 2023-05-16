@@ -1,5 +1,6 @@
 package com.roiquery.analytics_demo.ui
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
@@ -21,5 +22,9 @@ class MainActivity : AppCompatActivity() {
             setReorderingAllowed(true)
             add<DtSdkCoreFnFragment>(R.id.fragment_container)
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
     }
 }

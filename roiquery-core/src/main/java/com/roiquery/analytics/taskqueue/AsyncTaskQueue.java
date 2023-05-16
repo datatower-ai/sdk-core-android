@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.roiquery.analytics.utils.LogUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -17,6 +18,8 @@ public class AsyncTaskQueue extends CoroutineDispatcher implements CoroutineScop
     private  String mName;
 
     private ThreadPoolExecutor mPool;
+
+    public Thread activeThread;
 
     protected long taskBeginTime = 0;
     protected long taskEndTime = 0;
@@ -49,12 +52,16 @@ public class AsyncTaskQueue extends CoroutineDispatcher implements CoroutineScop
         }
     }
 
+    public Thread getCurrentThread() {
+        return activeThread;
+    }
+
     AsyncTaskQueue(String name) {
         mName = name;
         mPool = new ThreadPoolExecutor(1, 1,
                     0L, TimeUnit.MILLISECONDS,
                     new LinkedBlockingQueue<Runnable>(),
-                new ThreadFactoryWithName(mName));
+                new ThreadFactoryWithName(mName, this));
     }
 
     @Override
@@ -72,8 +79,11 @@ public class AsyncTaskQueue extends CoroutineDispatcher implements CoroutineScop
 
         private final String name;
 
-        ThreadFactoryWithName(String name) {
+        private WeakReference<AsyncTaskQueue> mHolder;
+
+        ThreadFactoryWithName(String name, AsyncTaskQueue holder) {
             this.name = name;
+            this.mHolder = new WeakReference(holder);
         }
 
         public Thread newThread(Runnable r) {
@@ -82,6 +92,7 @@ public class AsyncTaskQueue extends CoroutineDispatcher implements CoroutineScop
             thread.setUncaughtExceptionHandler((t, e) -> {
                 LogUtils.e(e.getMessage());
             });
+            mHolder.get().activeThread = thread;
             return thread;
         }
     };

@@ -12,6 +12,7 @@ import com.roiquery.analytics.core.EventTrackManager
 import com.roiquery.analytics.core.PropertyManager
 import com.roiquery.analytics.data.EventDataAdapter
 import com.roiquery.analytics.taskqueue.MainQueue
+import com.roiquery.analytics.taskqueue.MonitorQueue
 import com.roiquery.analytics.utils.EventUtils
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.quality.PerfAction
@@ -294,6 +295,7 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
                 }
 
                 instance?.init(context)
+                MonitorQueue.get()?.startMonitor()
                 PerfLogger.doPerfLog(PerfAction.SDKINITEND, System.currentTimeMillis())
             }
         }
