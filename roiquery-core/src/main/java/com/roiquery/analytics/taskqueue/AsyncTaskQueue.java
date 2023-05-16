@@ -15,7 +15,7 @@ import kotlinx.coroutines.CoroutineDispatcher;
 import kotlinx.coroutines.CoroutineScope;
 
 public class AsyncTaskQueue extends CoroutineDispatcher implements CoroutineScope {
-    private  String mName;
+    private String mName;
 
     private ThreadPoolExecutor mPool;
 
@@ -23,6 +23,8 @@ public class AsyncTaskQueue extends CoroutineDispatcher implements CoroutineScop
 
     protected long taskBeginTime = 0;
     protected long taskEndTime = 0;
+
+    static String tag = "PerfLog";
 
     public void postTask(Runnable task) {
         mPool.execute(new Runnable() {
@@ -42,7 +44,7 @@ public class AsyncTaskQueue extends CoroutineDispatcher implements CoroutineScop
     void taskDidRun() {
         taskEndTime = System.currentTimeMillis();
         if (taskEndTime - taskBeginTime > 3000) {
-//             LogUtils.w();
+             LogUtils.d(tag, "task time out in queue" + this.mName);
         }
     }
 

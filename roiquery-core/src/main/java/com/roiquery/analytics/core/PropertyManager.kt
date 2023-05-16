@@ -10,6 +10,7 @@ import com.roiquery.analytics.OnDataTowerIdListener
 import com.roiquery.analytics.config.AnalyticsConfig
 import com.roiquery.analytics.data.EventDataAdapter
 import com.roiquery.analytics.taskqueue.MainQueue
+import com.roiquery.analytics.taskqueue.MonitorQueue
 import com.roiquery.analytics.utils.*
 import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
@@ -127,6 +128,7 @@ class PropertyManager private constructor() {
             var originalId = ""
             //gaid 不可用，则使用 Android id
             if (gaid.isEmpty() || limitAdTrackingEnabled || gaid == "00000000-0000-0000-0000-000000000000") {
+                MonitorQueue.get()?.findReasonForGAIDFail(context)
                 originalId = DeviceUtils.getAndroidID(context)
                 updateAndroidId(originalId)
             } else {

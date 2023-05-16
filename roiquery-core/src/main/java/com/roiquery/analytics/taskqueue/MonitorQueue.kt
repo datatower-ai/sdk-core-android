@@ -1,7 +1,9 @@
 package com.roiquery.analytics.taskqueue
 
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.data.EventDataAdapter
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.quality.ROIQueryErrorParams
@@ -11,13 +13,13 @@ import org.slf4j.helpers.Util
 import java.lang.Thread.sleep
 
 // 需要上报的场景，记录下
-//1 上报gaid获取不到，检测是不是用户未授权
+//1 上报gaid获取不到，检测是不是用户未授权 (done)
 //2 检测用户是否重启了系统，或者修改了本地时间 (done)
 //3 uploadData的每个子步骤的超时（现在定的是5秒）
 //4 MainQueue任务执行耗时超过1秒
 //5 所有串行队列是否卡死（1分钟无响应）(done)
 //6 DB的未上报记录超过100条 (done)
-//7 uploadData连续3次执行失败
+//7 uploadData连续3次执行失败 (done)
 class MonitorQueue private constructor() : AsyncTaskQueue("MonitorQueue") {
     @Volatile
     var mMainQueueFlag = 1
@@ -42,14 +44,35 @@ class MonitorQueue private constructor() : AsyncTaskQueue("MonitorQueue") {
             if (it > 100) {
                 ROIQueryQualityHelper.instance.reportQualityMessage(
                     ROIQueryErrorParams.CODE_DB_DATA_COUNT,
-                    null
+                    ""
                 )
             }
         }
     }
 
-    fun reportUploadError(reason: Int) {
+    fun reportUploadError(reason: Int, msg: String? = "") {
+        ROIQueryQualityHelper.instance.reportQualityMessage(
+            reason,
+            msg,
+            ROIQueryErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,
+            ROIQueryErrorParams.TYPE_WARNING
+        )
+    }
 
+    fun findReasonForGAIDFail(context: Context) {
+        val info = AdvertisingIdClient.getAdvertisingIdInfo(context)
+        val isLimit = info.isLimitAdTrackingEnabled
+        if (isLimit) {
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_GAID_LIMIT,
+                "",
+            )
+        } else {
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_GAID_UNKOWN,
+                "",
+            )
+        }
     }
 
     fun loop() {
@@ -99,7 +122,7 @@ class MonitorQueue private constructor() : AsyncTaskQueue("MonitorQueue") {
                     }
                 }
             }
-        }, 10000)
+        }, 6 * 1000)
     }
 
     companion object {

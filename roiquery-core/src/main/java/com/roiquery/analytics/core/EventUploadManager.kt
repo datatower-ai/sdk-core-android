@@ -15,6 +15,7 @@ import com.roiquery.analytics.network.HttpService
 import com.roiquery.analytics.network.RemoteService
 import com.roiquery.analytics.taskqueue.DataUploadQueue
 import com.roiquery.analytics.taskqueue.MainQueue
+import com.roiquery.analytics.taskqueue.MonitorQueue
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
 import com.roiquery.analytics.utils.TimeCalibration
@@ -41,6 +42,14 @@ class EventUploadManager private constructor(
     private val mDateAdapter: EventDataAdapter? = EventDataAdapter.getInstance()
     private val mPoster: RemoteService = HttpService()
     private val mErrorInsertDataMap: MutableMap<String, JSONObject> = mutableMapOf()
+    private var uploadErrorCount: Int = 0
+        set(value) {
+            field = value
+            if (value > 3) {
+                // 连续三次都没有成功
+                MonitorQueue.get()?.reportUploadError(ROIQueryErrorParams.CODE_UPLOAD_ERROR_MULTi_TIMES)
+            }
+        }
 
     fun enqueueEventMessage(
         name: String,
@@ -184,25 +193,38 @@ class EventUploadManager private constructor(
 
             //读取数据库数据
             PerfLogger.doPerfLog(PerfAction.READEVENTDATAFROMDBBEGIN, System.currentTimeMillis())
-            val eventsData = runBlocking {
-                withTimeoutOrNull(5000) {
-                    mDateAdapter.readEventsDataFromDb(Constant.EVENT_REPORT_SIZE).await()
+
+            var eventsData = ""
+            try {
+                 eventsData = runBlocking {
+                    withTimeoutOrNull(5000) {
+                        mDateAdapter.readEventsDataFromDb(Constant.EVENT_REPORT_SIZE).await()
+                    }
+                }?.getOrThrow() ?: return
+                PerfLogger.doPerfLog(PerfAction.READEVENTDATAFROMDBEND, System.currentTimeMillis())
+
+                if (JSONArray(eventsData).length() == 0) {
+                    LogUtils.d(TAG, "db count = 0，disable upload")
+                    PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
+                    break
                 }
-            }?.getOrThrow() ?: return
-            PerfLogger.doPerfLog(PerfAction.READEVENTDATAFROMDBEND, System.currentTimeMillis())
 
-            if (JSONArray(eventsData).length() == 0) {
-                LogUtils.d(TAG, "db count = 0，disable upload")
-                PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
-                break
-            }
+                //如果未进行时间同步，发空参数进行时间同步
+                if (TimeCalibration.TIME_NOT_VERIFY_VALUE == TimeCalibration.instance.getVerifyTimeAsync()) {
+                    LogUtils.d(TAG, "time do not calibrate yet")
+                    TimeCalibration.instance.getReferenceTime()
+                    PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
+                    break
+                }
+            } catch (e: Exception) {
+                uploadErrorCount++
 
-            //如果未进行时间同步，发空参数进行时间同步
-            if (TimeCalibration.TIME_NOT_VERIFY_VALUE == TimeCalibration.instance.getVerifyTimeAsync()) {
-                LogUtils.d(TAG, "time do not calibrate yet")
-                TimeCalibration.instance.getReferenceTime()
-                PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
-                break
+//                ROIQueryQualityHelper.instance.reportQualityMessage(
+//                    ROIQueryErrorParams.CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
+//                    e.message,
+//                    ROIQueryErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,
+//                    ROIQueryErrorParams.TYPE_WARNING
+//                )
             }
 
             //事件主体，json格式
@@ -217,6 +239,8 @@ class EventUploadManager private constructor(
                             uploadSucceed = uploadDataToNet(info, mDateAdapter)
                         }
                     } catch (e: Exception) {
+                        uploadErrorCount++
+
                         ROIQueryQualityHelper.instance.reportQualityMessage(
                             ROIQueryErrorParams.CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
                             e.message,
@@ -243,6 +267,7 @@ class EventUploadManager private constructor(
                 PerfLogger.doPerfLog(PerfAction.DELETEDBEND, System.currentTimeMillis())
             }
 
+            uploadErrorCount = 0
             PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
 
         } while (false)
@@ -334,6 +359,8 @@ class EventUploadManager private constructor(
                 }
             }
         } catch (e: Exception) {
+            uploadErrorCount++
+
             ROIQueryQualityHelper.instance.reportQualityMessage(
                 ROIQueryErrorParams.CODE_DELETE_UPLOADED_EXCEPTION,
                 e.message, ROIQueryErrorParams.DELETE_DB_EXCEPTION
