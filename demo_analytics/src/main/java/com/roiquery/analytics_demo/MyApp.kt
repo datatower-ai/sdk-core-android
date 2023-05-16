@@ -26,7 +26,7 @@ class MyApp : Application() {
             "dt_beb231f90a5a20ba", // test app
             SERVER_URL_TEST,
             DTChannel.GP,
-            false,
+            true,
             Log.VERBOSE
         )
         Log.d("initSDK end", (SystemClock.elapsedRealtime() - initBeginTime).toString())
