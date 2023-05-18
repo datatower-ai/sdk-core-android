@@ -83,6 +83,7 @@ dependencies {
     val kotlinVersion: String by rootProject.extra
     val coroutinesVersion: String by rootProject.extra
     val roomDbVersion: String by rootProject.extra
+    val slf4jLogVersion: String by rootProject.extra
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
@@ -91,7 +92,7 @@ dependencies {
     implementation("com.android.installreferrer:installreferrer:2.2")
     implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
 
-    implementation("org.slf4j:slf4j-api:2.0.0")
+    implementation("org.slf4j:slf4j-api:$slf4jLogVersion")
 
     // Room DB
     implementation("androidx.room:room-ktx:$roomDbVersion")
