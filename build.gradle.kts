@@ -1,5 +1,5 @@
 buildscript {
-    apply(from = "conf.gradle")
+    apply(from = "conf.gradle.kts")
 
     rootProject.extra.apply {
         set("applicationId", "ai.datatower.sdk.android")
@@ -10,7 +10,6 @@ buildscript {
 
         set("androidGradlePluginMvnTriple", "com.android.tools.build:gradle:8.0.1")
         set("javaVersion", JavaVersion.VERSION_17)
-        set("kotlinVersion", "1.8.21")
         set("coroutinesVersion", "1.6.4")
         set("firebaseBomVersion", "31.5.0")
         set("roomDbVersion", "2.5.1")
@@ -27,9 +26,10 @@ buildscript {
     dependencies {
         val androidGradlePluginMvnTriple: String by rootProject.extra
         val kotlinVersion: String by rootProject.extra
+        val combineVersion: String by rootProject.extra
 
         classpath(androidGradlePluginMvnTriple)
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         // classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.5")
         classpath("com.google.gms:google-services:4.3.15")
         // The version of Dokka could be different from the version of Kotlin.
@@ -37,7 +37,7 @@ buildscript {
         // maven publish
         classpath("com.vanniktech:gradle-maven-publish-plugin:0.25.2")
         classpath("org.yaml:snakeyaml:2.0")
-        classpath("com.google.devtools.ksp:symbol-processing-gradle-plugin:$kotlinVersion-1.0.11")
+        classpath("com.google.devtools.ksp:symbol-processing-gradle-plugin:$kotlinVersion-$combineVersion")
     }
 
     /* TODO: Unresolved token reference.

@@ -39,8 +39,8 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             proguardFile(getDefaultProguardFile("proguard-android-optimize.txt"))
-            proguardFile("${rootProject.path}/proguard-rules/common-rules.pro")
-            proguardFile("${rootProject.path}/proguard-rules/core-proguard-rules.pro")
+            proguardFile("${rootProject.rootDir}/proguard-rules/common-rules.pro")
+            proguardFile("${rootProject.rootDir}/proguard-rules/core-proguard-rules.pro")
             buildConfigField("String", "VERSION_NAME", "\"$dtsdkCoreVersionName\"")
             /* 上报域名
              * 0 : 测试
@@ -62,10 +62,12 @@ android {
         create("public") {
             dimension = "slf4jLogging"
             buildConfigField("Boolean", "IS_LOGGING_ENABLED", "false")
+            missingDimensionStrategy("slf4jLogging", "public")
         }
         create("internal") {
             dimension = "slf4jLogging"
             buildConfigField("Boolean", "IS_LOGGING_ENABLED", "true")
+            missingDimensionStrategy("slf4jLogging", "internal")
         }
     }
 
