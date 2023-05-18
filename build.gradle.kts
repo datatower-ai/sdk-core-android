@@ -12,7 +12,7 @@ buildscript {
         set("javaVersion", JavaVersion.VERSION_17)
         set("coroutinesVersion", "1.6.4")
         set("firebaseBomVersion", "31.5.0")
-        set("roomDbVersion", "2.5.1")
+        set("roomDbVersion", "2.4.2")
 
         set("dtsdkCoreVersionName", "0.1.0")
     }

@@ -89,7 +89,7 @@ public final class LogUtils {
 
     private static final HashMap<Class, IFormatter> I_FORMATTER_MAP = new HashMap<>();
 
-    private static final Logger slf4jLogger = new DtInternalUseOnlyLogger(LoggerFactory.getLogger(LogUtils.class));
+//    private static final Logger slf4jLogger = new DtInternalUseOnlyLogger(LoggerFactory.getLogger(LogUtils.class));
 
     private LogUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -218,17 +218,17 @@ public final class LogUtils {
     }
 
     private static void slf4jLog(final int type, final String tag, final Object... contents) {
-        final int type_low = type & 0x0f, type_high = type & 0xf0;
-        Level loggingLevel = switch (type_low) {
-            case LogUtils.V -> Level.TRACE;
-            case LogUtils.D -> Level.DEBUG;
-            case LogUtils.I -> Level.INFO;
-            case LogUtils.W -> Level.WARN;
-            default -> Level.ERROR;
-        };
-        if (!slf4jLogger.isEnabledForLevel(loggingLevel)) return;
-        final String body = processBody(type_high, contents);
-        slf4jLogger.atLevel(loggingLevel).addMarker(MarkerFactory.getMarker(tag)).log(body);
+//        final int type_low = type & 0x0f, type_high = type & 0xf0;
+//        Level loggingLevel = switch (type_low) {
+//            case LogUtils.V -> Level.TRACE;
+//            case LogUtils.D -> Level.DEBUG;
+//            case LogUtils.I -> Level.INFO;
+//            case LogUtils.W -> Level.WARN;
+//            default -> Level.ERROR;
+//        };
+//        if (!slf4jLogger.isEnabledForLevel(loggingLevel)) return;
+//        final String body = processBody(type_high, contents);
+//        slf4jLogger.atLevel(loggingLevel).addMarker(MarkerFactory.getMarker(tag)).log(body);
     }
 
 
