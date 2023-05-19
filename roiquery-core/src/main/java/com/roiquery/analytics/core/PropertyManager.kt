@@ -92,14 +92,16 @@ class PropertyManager private constructor() {
     fun getDataTowerId(callBack: OnDataTowerIdListener) {
         PerfLogger.doPerfLog(PerfAction.GETDTIDBEGIN, System.currentTimeMillis())
 
-        if (getDTID().isNotEmpty()) {
-            Handler(Looper.getMainLooper()).post {
-                PerfLogger.doPerfLog(PerfAction.GETDTIDEND, System.currentTimeMillis())
+        MainQueue.get().postTask {
+            if (getDTID().isNotEmpty()) {
+                Handler(Looper.getMainLooper()).post {
+                    PerfLogger.doPerfLog(PerfAction.GETDTIDEND, System.currentTimeMillis())
 
-                callBack.onDataTowerIdCompleted(getDTID())
+                    callBack.onDataTowerIdCompleted(getDTID())
+                }
+            } else {
+                dtidCallbacks.add(callBack)
             }
-        } else {
-            dtidCallbacks.add(callBack)
         }
     }
 
