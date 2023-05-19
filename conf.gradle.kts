@@ -11,3 +11,4 @@ extra["slf4jLogVersion"] = "2.0.7"
 //extra["slf4jLogVersion"] = "2.0.0"
 
 
+extra["dtsdkCoreVersionName"] = "2.0.0-beta0"

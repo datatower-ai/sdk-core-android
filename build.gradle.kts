@@ -10,7 +10,6 @@ buildscript {
         set("androidGradlePluginMvnTriple", "com.android.tools.build:gradle:8.0.1")
         set("coroutinesVersion", "1.6.4")
         set("firebaseBomVersion", "31.5.0")
-        set("dtsdkCoreVersionName", "0.1.0")
     }
 
     repositories {
