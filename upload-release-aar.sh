@@ -23,17 +23,20 @@ modifyDependenceType(){
 modifyVersionName(){
   aar_version_name=$1
   aar_type=$2
-  versionName="${aar_type}VersionName"
+  versionName="dtsdkCoreVersionName"
   #获取aar 版本名称
   # shellcheck disable=SC2128
-  version_name=$(cat -v ./conf.gradle | grep  "${versionName}")
-  old_version_name=$(echo "${version_name##*versionName}" |awk -F ":" '{print $2}' |awk -F "," '{print $1}'|awk -F "'" '{print $2}')
+  version_name=$(cat -v conf.gradle.kts | grep  "${versionName}")
+  old_version_name=$(echo "${version_name}" |awk -F "=" '{print $2}' |awk -F "\"" '{print $2}')
 
+  version_name=${version_name//\"/\\\"}
+  version_name=${version_name//\[/\\\[}
+  version_name=${version_name//\]/\\\]}
+ 
   #比较输入的版本名称，不同则修改
   if [ "${aar_version_name}" != "${old_version_name}" ]; then
       # shellcheck disable=SC2128
-      sed -i.bak "s/${version_name}/\t\t\t${versionName}      :'${aar_version_name}',/g" conf.gradle
-      rm -rf conf.gradle.bak
+      sed -i "" "s/${version_name}/extra\[\"${versionName}\"\] = \"${aar_version_name}\"/g" conf.gradle.kts
   fi
 
 }
@@ -45,7 +48,7 @@ mavenAarByType(){
 
   modifyVersionName "${aar_version_name}"  "${aar_type}"
 
-    # shellcheck disable=SC2164
+#     shellcheck disable=SC2164
   cd roiquery-"${aar_type}"
   gradle clean
   gradle assemblePublicRelease
