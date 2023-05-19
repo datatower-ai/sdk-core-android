@@ -267,10 +267,10 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         private var instance: AnalyticsImp? = null
 
         internal fun getInstance(): AbstractAnalytics {
-            if (!mHasInit.get()) {
-                Log.e(Constant.LOG_TAG,"Call DT.init() first")
-                return AnalyticsEmptyImp()
-            }
+//            if (!mHasInit.get()) {
+//                Log.e(Constant.LOG_TAG,"Call DT.init() first")
+//                return AnalyticsEmptyImp()
+//            }
             if (AnalyticsConfig.instance.isSdkDisable()) {
 //                Log.e(Constant.LOG_TAG,"sdk is disable")
                 return AnalyticsEmptyImp()
@@ -289,11 +289,12 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             }
 
             PerfLogger.doPerfLog(PerfAction.SDKINITBEGIN, System.currentTimeMillis())
-            MainQueue.get().postTask {
-                if (instance == null) {
-                    instance = AnalyticsImp()
-                }
 
+            // 必须第一时间初始化
+            instance ?: synchronized(this) {
+                instance ?: AnalyticsImp().also { instance = it }
+            }
+            MainQueue.get().postTask {
                 instance?.init(context)
                 MonitorQueue.get()?.startMonitor()
                 PerfLogger.doPerfLog(PerfAction.SDKINITEND, System.currentTimeMillis())
