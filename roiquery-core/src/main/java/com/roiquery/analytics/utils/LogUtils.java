@@ -14,15 +14,9 @@ import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
 import androidx.annotation.RequiresApi;
 
-import com.roiquery.quality.DtInternalUseOnlyLogger;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MarkerFactory;
-import org.slf4j.event.Level;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -88,8 +82,6 @@ public final class LogUtils {
     private static SimpleDateFormat simpleDateFormat;
 
     private static final HashMap<Class, IFormatter> I_FORMATTER_MAP = new HashMap<>();
-
-    private static final Logger slf4jLogger = new DtInternalUseOnlyLogger(LoggerFactory.getLogger(LogUtils.class));
 
     private LogUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -202,7 +194,6 @@ public final class LogUtils {
     public static void log(final int type, final String tag, final Object... contents) {
         if (!CONFIG.isLogSwitch()) return;
         final int type_low = type & 0x0f, type_high = type & 0xf0;
-        LogUtils.slf4jLog(type, tag, contents);
         if (CONFIG.isLog2ConsoleSwitch() || type_high == FILE) {
             if (type_low < CONFIG.mConsoleFilter ) return;
 
@@ -216,32 +207,6 @@ public final class LogUtils {
             }
         }
     }
-
-    private static void slf4jLog(final int type, final String tag, final Object... contents) {
-        final int type_low = type & 0x0f, type_high = type & 0xf0;
-        Level loggingLevel;
-        switch (type_low) {
-            case LogUtils.V:
-                loggingLevel = Level.TRACE;
-                break;
-            case LogUtils.D:
-                loggingLevel = Level.DEBUG;
-                break;
-            case LogUtils.I:
-                loggingLevel = Level.INFO;
-                break;
-            case LogUtils.W:
-                loggingLevel = Level.WARN;
-                break;
-            default:
-                loggingLevel = Level.ERROR;
-                break;
-        }
-        if (!slf4jLogger.isEnabledForLevel(loggingLevel)) return;
-        final String body = processBody(type_high, contents);
-        slf4jLogger.atLevel(loggingLevel).addMarker(MarkerFactory.getMarker(tag)).log(body);
-    }
-
 
     private static TagHead processTagAndHead(String tag) {
         if (!CONFIG.mTagIsSpace && !CONFIG.isLogHeadSwitch()) {

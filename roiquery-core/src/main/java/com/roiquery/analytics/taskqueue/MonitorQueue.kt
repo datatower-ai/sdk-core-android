@@ -5,12 +5,9 @@ import android.os.Handler
 import android.os.Looper
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.roiquery.analytics.data.EventDataAdapter
-import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
 import kotlinx.coroutines.runBlocking
-import org.slf4j.helpers.Util
-import java.lang.Thread.sleep
 
 // 需要上报的场景，记录下
 //1 上报gaid获取不到，检测是不是用户未授权 (done)
