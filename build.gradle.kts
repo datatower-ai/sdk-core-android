@@ -1,16 +1,23 @@
 buildscript {
-    apply(from = "conf.gradle.kts")
-
     rootProject.extra.apply {
         set("applicationId", "ai.datatower.sdk.android")
-        set("compileSdkVersion", 33)
         set("buildToolsVersion", "33.0.2")
+        set("compileSdkVersion", 33)
         set("minSdkVersion", 23)
         set("targetSdkVersion", 33)
+
+        set("dtsdkCoreVersionName", "2.0.0-beta1")
+
+        set("javaVersion", JavaVersion.VERSION_17)
+        set("kotlinVersion", "1.8.21")
         set("androidGradlePluginMvnTriple", "com.android.tools.build:gradle:8.0.1")
         set("coroutinesVersion", "1.6.4")
         set("firebaseBomVersion", "31.5.0")
+        set("roomDbVersion", "2.5.1")
+        set("gradleKspVersion", "${properties["kotlinVersion"]}-1.0.11")
     }
+    // NOTE: Uncomment to build with Kotlin 1.6 and other older dependencies.
+    // apply("kt-1_6-compat.gradle.kts")
 
     repositories {
         mavenCentral()
@@ -21,7 +28,7 @@ buildscript {
     dependencies {
         val androidGradlePluginMvnTriple: String by rootProject.extra
         val kotlinVersion: String by rootProject.extra
-        val combineVersion: String by rootProject.extra
+        val gradleKspVersion: String by rootProject.extra
 
         classpath(androidGradlePluginMvnTriple)
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
@@ -32,7 +39,7 @@ buildscript {
         // maven publish
         classpath("com.vanniktech:gradle-maven-publish-plugin:0.25.2")
         classpath("org.yaml:snakeyaml:2.0")
-        classpath("com.google.devtools.ksp:symbol-processing-gradle-plugin:$kotlinVersion-$combineVersion")
+        classpath("com.google.devtools.ksp:symbol-processing-gradle-plugin:$gradleKspVersion")
     }
 
     /* TODO: Unresolved token reference.
