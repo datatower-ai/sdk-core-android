@@ -161,24 +161,24 @@ publishing {
     }
 
     repositories {
-        maven {
-            name = "LocalReposilite"
-            url = URI.create("http://localhost:8080/releases/")
-            isAllowInsecureProtocol = true
-            credentials.username = props["maven.repo.local.username"].toString()
-            credentials.password = props["maven.repo.local.password"].toString()
-        }
-        maven {
-            name = "En2joyNexus3"
-            url = URI.create("https://repo-public.en2joy.com/repository/maven-releases/")
-            credentials.username = props["maven.repo.en2joy-nexus3.username"].toString()
-            credentials.password = props["maven.repo.en2joy-nexus3.password"].toString()
-        }
+//        maven {
+//            name = "LocalReposilite"
+//            url = URI.create("http://localhost:8080/releases/")
+//            isAllowInsecureProtocol = true
+//            credentials.username = props["maven.repo.local.username"].toString()
+//            credentials.password = props["maven.repo.local.password"].toString()
+//        }
+//        maven {
+//            name = "En2joyNexus3"
+//            url = URI.create("https://repo-public.en2joy.com/repository/maven-releases/")
+//            credentials.username = props["maven.repo.en2joy-nexus3.username"].toString()
+//            credentials.password = props["maven.repo.en2joy-nexus3.password"].toString()
+//        }
         maven {
             name = "MavenCentral"
             url = URI.create("https://s01.oss.sonatype.org/content/repositories/releases/")
-            credentials.username = props["maven.repo.central.username"].toString()
-            credentials.password = props["maven.repo.central.password"].toString()
+            credentials.username = props["ossrhUsername"].toString()
+            credentials.password = props["ossrhPassword"].toString()
         }
     }
 }
