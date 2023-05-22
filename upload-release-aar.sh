@@ -32,7 +32,7 @@ modifyVersionName(){
   version_name=${version_name//\"/\\\"}
   version_name=${version_name//\[/\\\[}
   version_name=${version_name//\]/\\\]}
- 
+
   #比较输入的版本名称，不同则修改
   if [ "${aar_version_name}" != "${old_version_name}" ]; then
       # shellcheck disable=SC2128
@@ -45,8 +45,6 @@ modifyVersionName(){
 mavenAarByType(){
   aar_type=$(echo  ${project_name} | awk -F "-"  '{print $2}')
   echo ---------------------${aar_type}  start --------------------------
-
-  modifyVersionName "${aar_version_name}"  "${aar_type}"
 
 #     shellcheck disable=SC2164
   cd roiquery-"${aar_type}"
@@ -80,7 +78,8 @@ copyMappingFile(){
 aar_version_name=$1
 type=$2
 project_name=roiquery-core
-echo "aar_version_name:"${aar_version_name}
+echo "aar_version_name:${aar_version_name}"
+echo "WARN: 'aar_version_name' is ignored, you should always double-check 'dtsdkCoreVersionName' before publishing releases."
 echo "type:"${type}
 
 if [  $? -ne 0 ]; then
