@@ -15,6 +15,7 @@ buildscript {
         set("firebaseBomVersion", "31.5.0")
         set("roomDbVersion", "2.5.1")
         set("gradleKspVersion", "${properties["kotlinVersion"]}-1.0.11")
+        set("androidxAnnotationVersion", "1.6.0")
     }
     // NOTE: Uncomment to build with Kotlin 1.6 and other older dependencies.
     // apply("kt-1_6-compat.gradle.kts")

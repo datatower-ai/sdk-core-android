@@ -83,10 +83,13 @@ dependencies {
     val kotlinVersion: String by rootProject.extra
     val coroutinesVersion: String by rootProject.extra
     val roomDbVersion: String by rootProject.extra
+    val androidxAnnotationVersion: String by rootProject.extra
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib") {
+        version { strictly("$kotlinVersion") }
+    }
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
-    implementation("androidx.annotation:annotation:1.5.0")
+    implementation("androidx.annotation:annotation:$androidxAnnotationVersion")
 
     implementation("com.android.installreferrer:installreferrer:2.2")
     implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
