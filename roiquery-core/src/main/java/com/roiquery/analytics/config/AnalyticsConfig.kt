@@ -116,7 +116,7 @@ private constructor() : AbstractAnalyticsConfig() {
 
     fun isSdkDisable() = sdkDisable
 
-    fun reportUrl() = reportUrl
+    fun reportUrl() = reportUrl ?: mServerUrl
 
     fun setContext(context: Context): AnalyticsConfig {
         mContext = context
