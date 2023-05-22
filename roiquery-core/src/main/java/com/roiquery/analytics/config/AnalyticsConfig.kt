@@ -37,7 +37,7 @@ private constructor() : AbstractAnalyticsConfig() {
     private var reportUrlStorage: StorageReportUrl? = null
 
     private var sdkDisable: Boolean = false
-    private lateinit var reportUrl: String
+    private var reportUrl: String? = null
 
     @Volatile
     private var hasGetRemoteConfig = false
@@ -116,7 +116,7 @@ private constructor() : AbstractAnalyticsConfig() {
 
     fun isSdkDisable() = sdkDisable
 
-    fun reportUrl() = reportUrl ?: mServerUrl
+    fun reportUrl(): String = reportUrl ?: mServerUrl
 
     fun setContext(context: Context): AnalyticsConfig {
         mContext = context
