@@ -106,8 +106,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
 
     implementation("org.greenrobot:eventbus:3.3.1")
-    // FIXME: jackson requires the exact version of JDK '17.0.4' to work.
-    // implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.1")
 
     implementation(project(":roiquery-core"))
 
