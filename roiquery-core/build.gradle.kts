@@ -86,7 +86,7 @@ dependencies {
     val androidxAnnotationVersion: String by rootProject.extra
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib") {
-        version { strictly("$kotlinVersion") }
+        version { strictly(kotlinVersion) }
     }
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     implementation("androidx.annotation:annotation:$androidxAnnotationVersion")

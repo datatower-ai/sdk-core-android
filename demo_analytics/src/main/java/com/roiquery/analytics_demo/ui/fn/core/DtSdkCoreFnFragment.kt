@@ -15,14 +15,12 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.get
 import com.roiquery.analytics.DTAnalytics
 import com.roiquery.analytics.OnDataTowerIdListener
-import com.roiquery.analytics.data.EventDataAdapter
 import com.roiquery.analytics_demo.R
 import com.roiquery.quality.PerfLogger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -99,7 +97,7 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             pref.summary = "DTID=<Loading..>"
 
             val dtid = async(Dispatchers.IO) {
-                suspendCoroutine {
+                suspendCoroutine<String> {
                     DTAnalytics.getDataTowerId(object : OnDataTowerIdListener {
                         override fun onDataTowerIdCompleted(dataTowerId: String) {
                             it.resume(dataTowerId)

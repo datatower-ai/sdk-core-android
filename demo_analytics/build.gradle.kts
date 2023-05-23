@@ -90,12 +90,14 @@ dependencies {
     val kotlinVersion: String by rootProject.extra
     val coroutinesVersion: String by rootProject.extra
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib") {
+        version { strictly(kotlinVersion) }
+    }
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
-    implementation("androidx.core:core-ktx:1.10.0")
-    implementation("androidx.annotation:annotation:1.5.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.annotation:annotation:1.4.0")
+    implementation("androidx.appcompat:appcompat:1.4.2")
     implementation("androidx.fragment:fragment-ktx:1.5.7")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("com.google.android.material:material:1.9.0-rc01")
@@ -104,8 +106,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
 
     implementation("org.greenrobot:eventbus:3.3.1")
-    // FIXME: jackson not compatible with AGP 8.1.1.
-    // implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
+    // FIXME: jackson requires the exact version of JDK '17.0.4' to work.
+    // implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.1")
 
     implementation(project(":roiquery-core"))
 
