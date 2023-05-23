@@ -95,6 +95,8 @@ dependencies {
     }
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
+    /* NOTE: Do NOT update dependencies as it works with Kotlin 1.6, for more information see file
+     * 'kt-1_6-compat.gradle.kts'. */
     implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.annotation:annotation:1.4.0")
     implementation("androidx.appcompat:appcompat:1.4.2")
