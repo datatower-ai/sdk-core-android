@@ -186,3 +186,8 @@ publishing {
 signing {
     // TODO: sign(publishing.publications)
 }
+
+tasks.create("copyProguardMappingFiles", Copy::class) {
+    from("$buildDir/outputs/mapping/publicRelease/")
+    into(File(projectDir, "proguard-mapping"))
+}
