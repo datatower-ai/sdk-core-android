@@ -27,6 +27,7 @@ gradle :roiquery-core:clean
 gradle :roiquery-core:assemblePublicRelease
 gradle :roiquery-core:copyProguardMappingFiles
 # 上述3个命令执行完成并且都没有错误后, 执行如下命令
+git add roiquery-core/proguard-mapping
 git commit -m "Bump version to '$dtsdkCoreVersionName'." # 'dtsdkCoreVersionName' 替换掉之前记录的文本, 下同。
 git tag "core/$dtsdkCoreVersionName"
 git push --tags
