@@ -59,7 +59,7 @@ gradle :roiquery-core:publishReleasePublicationToMavenCentralRepository
 proguard mapping 文件将放在工程根目录下的 `/roiquery-core/proguard-mapping` 目录内,
 每一次公开发布 SDK 版本都**必须**更新该目录内的文件。
 
-旧版的 proguard mapping 文件存放于深圳办公室的 NAS 服务器, 以下是服务器地址以和登录凭证:
+旧版的 proguard mapping 文件存放于深圳办公室的 NAS 服务器, 以下是服务器地址和登录凭证:
 
 ```
 smb://192.168.50.100/LovinJoy/roiquery/
