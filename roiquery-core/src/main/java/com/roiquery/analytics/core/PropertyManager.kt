@@ -214,11 +214,8 @@ class PropertyManager private constructor() {
      * @return
      */
     private fun initEventInfo(context: Context) {
-        try {
-            MainQueue.get().launch {
-                EventUtils.getEventInfo(context, dataAdapter, eventInfo, disableList)
-            }
-        } catch (ignored: Exception) {
+        runBlocking {
+            EventUtils.getEventInfo(context, dataAdapter, eventInfo, disableList)
         }
     }
 
