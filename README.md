@@ -45,8 +45,8 @@ git push --tags
 
 ```properties
 ossrhEmail=develop@nodetower.com
-ossrhUsername=lovinjoy
-ossrhPassword=j82+HQ6p%kcCayf
+ossrhUsername=xxxxxxxx
+ossrhPassword=xxxxxxxx
 ```
 
 然后在工程目根目录下运行如下命令:
