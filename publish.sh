@@ -1,4 +1,5 @@
 #参考readme
+set -e
 dtsdkCoreVersionName=$(cat -v build.gradle.kts | grep "dtsdkCoreVersionName")
 dtsdkCoreVersionName=$(echo "${dtsdkCoreVersionName}" |awk -F "," '{print $2}' |awk -F "\"" '{print $2}')
 echo ${dtsdkCoreVersionName}
