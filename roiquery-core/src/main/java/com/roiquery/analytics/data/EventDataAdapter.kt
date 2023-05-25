@@ -4,11 +4,11 @@ import android.content.Context
 import com.roiquery.analytics.taskqueue.DBQueue
 import com.roiquery.analytics.taskqueue.asyncCatching
 import com.roiquery.analytics.taskqueue.asyncChained
+import com.roiquery.analytics.taskqueue.asyncSequential
+import com.roiquery.analytics.taskqueue.launchSequential
 import com.roiquery.analytics.utils.TimeCalibration
 import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
 import org.json.JSONObject
 
 class EventDataAdapter private constructor(
@@ -25,7 +25,7 @@ class EventDataAdapter private constructor(
         getBooleanConfig(DataParams.CONFIG_ENABLE_UPLOADS, true)
     }
 
-    fun setIsUploadEnabled(value: Boolean) = DBQueue.get().async {
+    fun setIsUploadEnabled(value: Boolean) = DBQueue.get().asyncSequential {
         setBooleanConfig(DataParams.CONFIG_ENABLE_UPLOADS, value)
     }
 
@@ -36,7 +36,7 @@ class EventDataAdapter private constructor(
         getBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE, false)
     }
 
-    fun setIsAppInstallInserted(value: Boolean) = DBQueue.get().async {
+    fun setIsAppInstallInserted(value: Boolean) = DBQueue.get().asyncSequential {
         setBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE, value)
     }
 
@@ -47,7 +47,7 @@ class EventDataAdapter private constructor(
         getBooleanConfig(DataParams.CONFIG_FIRST_SESSION_START_INSERT_STATE, false)
     }
 
-    fun setIsFirstSessionStartInserted(value: Boolean) = DBQueue.get().async {
+    fun setIsFirstSessionStartInserted(value: Boolean) = DBQueue.get().asyncSequential {
         setBooleanConfig(DataParams.CONFIG_FIRST_SESSION_START_INSERT_STATE, value)
     }
 
@@ -56,7 +56,7 @@ class EventDataAdapter private constructor(
          getStringConfig(DataParams.CONFIG_DT_ID)
     }
 
-    fun setDtIdIfNeeded(value: String) = DBQueue.get().async {
+    fun setDtIdIfNeeded(value: String) = DBQueue.get().asyncSequential {
         val ret = getStringConfig(DataParams.CONFIG_DT_ID)
         if (ret.isEmpty()) {
             setStringConfig(DataParams.CONFIG_DT_ID, value)
@@ -67,7 +67,7 @@ class EventDataAdapter private constructor(
         getLongConfig(DataParams.LATEST_NET_TIME, TimeCalibration.TIME_NOT_VERIFY_VALUE)
     }
 
-    fun setLatestNetTime(value: Long) = DBQueue.get().async {
+    fun setLatestNetTime(value: Long) = DBQueue.get().launchSequential {
         setLongConfig(DataParams.LATEST_NET_TIME, value)
     }
 
@@ -75,7 +75,7 @@ class EventDataAdapter private constructor(
         getLongConfig(DataParams.LATEST_GAP_TIME, TimeCalibration.TIME_NOT_VERIFY_VALUE)
     }
 
-    fun setLatestGapTime(value: Long) = DBQueue.get().async {
+    fun setLatestGapTime(value: Long) = DBQueue.get().launchSequential {
         setLongConfig(DataParams.LATEST_GAP_TIME, value)
     }
 
@@ -94,8 +94,8 @@ class EventDataAdapter private constructor(
         }
     }
 
-    fun setAccountId(value: String) = DBQueue.get().async {
-        if (accountIdCached == value) return@async
+    fun setAccountId(value: String) = DBQueue.get().launchSequential {
+        if (accountIdCached == value) return@launchSequential
         accountIdCached = value
         setStringConfig(DataParams.CONFIG_ACCOUNT_ID, value)
     }
@@ -135,7 +135,7 @@ class EventDataAdapter private constructor(
     /**
      * Removes all events from table
      */
-    fun deleteAllEvents() = DBQueue.get().async {
+    fun deleteAllEvents() = DBQueue.get().launchSequential {
         mOperation?.deleteAllEventData()
     }
 

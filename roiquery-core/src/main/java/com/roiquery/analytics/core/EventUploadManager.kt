@@ -16,6 +16,7 @@ import com.roiquery.analytics.network.RemoteService
 import com.roiquery.analytics.taskqueue.DataUploadQueue
 import com.roiquery.analytics.taskqueue.MainQueue
 import com.roiquery.analytics.taskqueue.MonitorQueue
+import com.roiquery.analytics.taskqueue.launchSequential
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.analytics.utils.NetworkUtils.isNetworkAvailable
 import com.roiquery.analytics.utils.TimeCalibration
@@ -23,7 +24,6 @@ import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 import org.json.JSONArray
@@ -411,7 +411,7 @@ class EventUploadManager private constructor(
                     when (msg.what) {
                         FLUSH_QUEUE -> {
                             if (DataUploadQueue.get().taskCount() <= 1) {
-                                DataUploadQueue.get().launch { uploadData() }
+                                DataUploadQueue.get().launchSequential { uploadData() }
                             }
                         }
 

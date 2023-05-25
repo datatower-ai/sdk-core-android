@@ -38,7 +38,7 @@ abstract class AbstractAnalytics : IAnalytics {
         internal var mHasInit: AtomicBoolean = AtomicBoolean(false)
     }
 
-    fun init(context: Context) {
+    suspend fun init(context: Context) {
         if (mHasInit.get() || isInitRunning.get()) {
             return
         }
@@ -47,7 +47,7 @@ abstract class AbstractAnalytics : IAnalytics {
     }
 
 
-    private fun internalInit(context: Context) {
+    private suspend fun internalInit(context: Context) {
         try {
             generateFirstOpenTime()
             initConfig(context)
@@ -108,7 +108,7 @@ abstract class AbstractAnalytics : IAnalytics {
     /**
      * 初始化预置、通用属性
      */
-    private fun initProperties(context: Context) {
+    private suspend fun initProperties(context: Context) {
         PropertyManager.instance.init(context, configOptions)
     }
 
@@ -182,7 +182,7 @@ abstract class AbstractAnalytics : IAnalytics {
             isLogSwitch = enable
             globalTag = Constant.LOG_TAG
             setConsoleSwitch(enable)
-            setConsoleFilter(logLevel)
+            setConsoleFilter(LogUtils.D)
         }
     }
 }

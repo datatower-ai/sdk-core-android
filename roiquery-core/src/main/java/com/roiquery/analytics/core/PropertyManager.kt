@@ -16,7 +16,6 @@ import com.roiquery.quality.PerfAction
 import com.roiquery.quality.PerfLogger
 import com.roiquery.quality.ROIQueryErrorParams
 import com.roiquery.quality.ROIQueryQualityHelper
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -54,7 +53,7 @@ class PropertyManager private constructor() {
         ConcurrentLinkedQueue()
 
 
-    fun init(
+    suspend fun init(
         context: Context,
         initConfig: AnalyticsConfig?,
     ) {
@@ -213,10 +212,8 @@ class PropertyManager private constructor() {
      *
      * @return
      */
-    private fun initEventInfo(context: Context) {
-        runBlocking {
-            EventUtils.getEventInfo(context, dataAdapter, eventInfo, disableList)
-        }
+    private suspend fun initEventInfo(context: Context) {
+        EventUtils.getEventInfo(context, dataAdapter, eventInfo, disableList)
     }
 
     private fun updateEventInfo(key: String, value: String) {

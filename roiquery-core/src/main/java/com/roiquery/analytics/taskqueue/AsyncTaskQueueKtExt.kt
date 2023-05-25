@@ -3,6 +3,7 @@ package com.roiquery.analytics.taskqueue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -11,7 +12,7 @@ import kotlin.coroutines.suspendCoroutine
 
 suspend fun <T> AsyncTaskQueue.postTaskSuspended(
     timeoutMs: Long? = 10000,
-    task: suspend () -> T?,
+    task: suspend CoroutineScope.() -> T?,
 ): Result<T?> = suspendCoroutine { continuation ->
     val latch = CountDownLatch(1)
     var result: Result<T?> = Result.failure(InterruptedException())
@@ -30,10 +31,18 @@ suspend fun <T> AsyncTaskQueue.postTaskSuspended(
     continuation.resume(result)
 }
 
+fun <T> AsyncTaskQueue.launchSequential(
+    task: suspend CoroutineScope.() -> T,
+) = this.launch { runBlocking { task() } }
+
+fun <T> AsyncTaskQueue.asyncSequential(
+    task: suspend CoroutineScope.() -> T,
+) = this.async { runBlocking { task() } }
+
 fun <T> AsyncTaskQueue.asyncCatching(
-    task: suspend () -> T,
+    task: suspend CoroutineScope.() -> T,
 ): Deferred<Result<T>> = this.async {
-    Result.runCatching { task() }
+    runBlocking { Result.runCatching { task() } }
 }
 
 class AsyncTaskRescheduled<T>(
@@ -48,4 +57,5 @@ class AsyncTaskRescheduled<T>(
 
 fun <T> AsyncTaskQueue.asyncChained(
     block: suspend CoroutineScope.() -> T,
-): AsyncTaskRescheduled<T> = AsyncTaskRescheduled(async(block = block), this)
+): AsyncTaskRescheduled<T> =
+    AsyncTaskRescheduled(asyncSequential(block), this)
