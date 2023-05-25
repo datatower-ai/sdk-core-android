@@ -22,12 +22,8 @@ object EventUtils {
                      eventInfo: MutableMap<String, Any?>,
                      disableList: ArrayList<String>
     ) {
+
         //登录账号id
-//        dataAdapter?.accountId?.let {
-//            if (it.isNotEmpty()) {
-//                eventInfo[Constant.EVENT_INFO_ACID] = it
-//            }
-//        }
         dataAdapter?.getAccountId()?.await()?.let {
             eventInfo[Constant.EVENT_INFO_ACID] = it
         }
