@@ -39,10 +39,10 @@ fun <T> AsyncTaskQueue.asyncSequential(
     task: suspend CoroutineScope.() -> T,
 ) = this.async { runBlocking { task() } }
 
-fun <T> AsyncTaskQueue.asyncCatching(
+fun <T> AsyncTaskQueue.asyncSequentialCatching(
     task: suspend CoroutineScope.() -> T,
-): Deferred<Result<T>> = this.async {
-    runBlocking { Result.runCatching { task() } }
+): Deferred<Result<T>> = this.asyncSequential {
+    Result.runCatching { task() }
 }
 
 class AsyncTaskRescheduled<T>(
@@ -55,7 +55,7 @@ class AsyncTaskRescheduled<T>(
     suspend fun await(): T = deferred.await()
 }
 
-fun <T> AsyncTaskQueue.asyncChained(
+fun <T> AsyncTaskQueue.asyncSequentialChained(
     block: suspend CoroutineScope.() -> T,
 ): AsyncTaskRescheduled<T> =
     AsyncTaskRescheduled(asyncSequential(block), this)

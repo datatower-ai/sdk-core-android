@@ -2,8 +2,8 @@ package com.roiquery.analytics.data
 
 import android.content.Context
 import com.roiquery.analytics.taskqueue.DBQueue
-import com.roiquery.analytics.taskqueue.asyncCatching
-import com.roiquery.analytics.taskqueue.asyncChained
+import com.roiquery.analytics.taskqueue.asyncSequentialCatching
+import com.roiquery.analytics.taskqueue.asyncSequentialChained
 import com.roiquery.analytics.taskqueue.asyncSequential
 import com.roiquery.analytics.taskqueue.launchSequential
 import com.roiquery.analytics.utils.TimeCalibration
@@ -21,7 +21,7 @@ class EventDataAdapter private constructor(
     /**
      * 是否上报数据，默认是
      */
-    fun isUploadEnabled() = DBQueue.get().asyncChained {
+    fun isUploadEnabled() = DBQueue.get().asyncSequentialChained {
         getBooleanConfig(DataParams.CONFIG_ENABLE_UPLOADS, true)
     }
 
@@ -32,7 +32,7 @@ class EventDataAdapter private constructor(
     /**
      * install 事件的插入数据库状态
      */
-    fun isAppInstallInserted() = DBQueue.get().asyncChained {
+    fun isAppInstallInserted() = DBQueue.get().asyncSequentialChained {
         getBooleanConfig(DataParams.CONFIG_APP_INSTALL_INSERT_STATE, false)
     }
 
@@ -43,7 +43,7 @@ class EventDataAdapter private constructor(
     /**
      * 第一次 session_start 事件的插入数据库状态
      */
-    fun isFirstSessionStartInserted() = DBQueue.get().asyncChained {
+    fun isFirstSessionStartInserted() = DBQueue.get().asyncSequentialChained {
         getBooleanConfig(DataParams.CONFIG_FIRST_SESSION_START_INSERT_STATE, false)
     }
 
@@ -52,7 +52,7 @@ class EventDataAdapter private constructor(
     }
 
     /** DataTower id */
-    fun getDtId() = DBQueue.get().asyncChained {
+    fun getDtId() = DBQueue.get().asyncSequentialChained {
          getStringConfig(DataParams.CONFIG_DT_ID)
     }
 
@@ -63,7 +63,7 @@ class EventDataAdapter private constructor(
         }
     }
 
-    fun getLatestNetTime() = DBQueue.get().asyncChained {
+    fun getLatestNetTime() = DBQueue.get().asyncSequentialChained {
         getLongConfig(DataParams.LATEST_NET_TIME, TimeCalibration.TIME_NOT_VERIFY_VALUE)
     }
 
@@ -71,7 +71,7 @@ class EventDataAdapter private constructor(
         setLongConfig(DataParams.LATEST_NET_TIME, value)
     }
 
-    fun getLatestGapTime() = DBQueue.get().asyncChained {
+    fun getLatestGapTime() = DBQueue.get().asyncSequentialChained {
         getLongConfig(DataParams.LATEST_GAP_TIME, TimeCalibration.TIME_NOT_VERIFY_VALUE)
     }
 
@@ -88,7 +88,7 @@ class EventDataAdapter private constructor(
      */
     private var accountIdCached = ""
 
-    fun getAccountId() = DBQueue.get().asyncChained {
+    fun getAccountId() = DBQueue.get().asyncSequentialChained {
         if (accountIdCached.isEmpty()) {
             accountIdCached = getStringConfig(DataParams.CONFIG_ACCOUNT_ID)
         }
@@ -120,7 +120,7 @@ class EventDataAdapter private constructor(
      * @return the number of rows in the table, or DB_OUT_OF_MEMORY_ERROR/DB_UPDATE_ERROR
      * on failure
      */
-    fun addJSON(data: JSONObject?, eventSyn: String) = DBQueue.get().asyncChained {
+    fun addJSON(data: JSONObject?, eventSyn: String) = DBQueue.get().asyncSequentialChained {
          PerfLogger.doPerfLog(PerfAction.WRITEEVENTTODBBEGIN, System.currentTimeMillis())
          val returns = Result.runCatching {
              mOperation?.insertData(data, eventSyn) ?: DataParams.DB_ADD_JSON_ERROR
@@ -176,7 +176,7 @@ class EventDataAdapter private constructor(
      * @return the number of rows in the table
      */
     fun cleanupBatchEvents(eventSyns: List<String>) =
-        DBQueue.get().asyncCatching {
+        DBQueue.get().asyncSequentialCatching {
             mOperation?.deleteBatchEventByEventSyn(eventSyns)
         }
 
@@ -191,12 +191,12 @@ class EventDataAdapter private constructor(
      * @return 数据
      */
     fun readEventsDataFromDb(limit: Int) =
-        DBQueue.get().asyncCatching {
+        DBQueue.get().asyncSequentialCatching {
             mOperation?.queryData(limit)
         }
 
     fun queryDataCount() =
-        DBQueue.get().asyncChained {
+        DBQueue.get().asyncSequentialChained {
             mOperation?.queryDataCount()
         }
 
