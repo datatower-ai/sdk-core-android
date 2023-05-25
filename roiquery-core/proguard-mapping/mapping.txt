@@ -2,8 +2,8 @@
 # compiler_version: 8.0.40
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.1"}
-# pg_map_id: 7aa4ee5
-# pg_map_hash: SHA-256 7aa4ee5beb197833d4d3d9cff11802c168b7d082275d98a22b9d71f4c99513f8
+# pg_map_id: f30c9a7
+# pg_map_hash: SHA-256 f30c9a7cbb76693e131d83f08cf2b4e28117c2c2edd5505375e372b92cad0963
 com.roiquery.ad.AD_CONVERSION_SOURCE -> com.roiquery.ad.a:
 # {"id":"sourceFile","fileName":"constant.kt"}
     java.lang.String LEFT_APP -> c
@@ -396,7 +396,7 @@ com.roiquery.ad.DTAdReport$Companion -> com.roiquery.ad.DTAdReport$Companion:
 com.roiquery.ad.DTAdReport$Companion$$ExternalSyntheticOutline0 -> com.roiquery.ad.c:
 # {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
 # {"id":"com.android.tools.r8.synthesized"}
-    1:5:void com.roiquery.ad.DTAdReport$Companion$$InternalSyntheticOutline$33$d369cdc6a2d02d6d5d6e83d0d9cdf7319860d0a12e9110f8b5ab15fec6134828$0.m(java.lang.String,java.lang.String,com.roiquery.ad.AdType,java.lang.String,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String):0:4 -> a
+    1:5:void com.roiquery.ad.DTAdReport$Companion$$InternalSyntheticOutline$32$d369cdc6a2d02d6d5d6e83d0d9cdf7319860d0a12e9110f8b5ab15fec6134828$0.m(java.lang.String,java.lang.String,com.roiquery.ad.AdType,java.lang.String,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String):0:4 -> a
       # {"id":"com.android.tools.r8.synthesized"}
       # {"id":"com.android.tools.r8.outline"}
 com.roiquery.ad.ROIQueryAdReport -> com.roiquery.ad.ROIQueryAdReport:
@@ -1369,21 +1369,21 @@ com.roiquery.analytics.api.AbstractAnalytics -> c.a:
     2:2:void setFirstOpenTime(java.lang.Long):31:31 -> a
     3:3:void setConfigOptions(com.roiquery.analytics.config.AnalyticsConfig):33:33 -> a
     4:8:void init(android.content.Context):42:46 -> a
-    9:9:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):177:177 -> a
+    9:9:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):178:178 -> a
     10:10:boolean com.roiquery.analytics.config.AbstractAnalyticsConfig.getMEnabledDebug():28:28 -> a
     10:10:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):178 -> a
-    11:11:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):177:177 -> a
+    11:11:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):179:179 -> a
     12:12:int com.roiquery.analytics.config.AbstractAnalyticsConfig.getMLogLevel():33:33 -> a
     12:12:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):179 -> a
     13:13:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):177:177 -> a
     14:14:void configLog(boolean,int):181:181 -> a
-    15:15:com.roiquery.analytics.utils.LogUtils$Config com.roiquery.analytics.utils.LogUtils$Config.setLogSwitch(boolean):540:540 -> a
+    15:15:com.roiquery.analytics.utils.LogUtils$Config com.roiquery.analytics.utils.LogUtils$Config.setLogSwitch(boolean):505:505 -> a
     15:15:void configLog(boolean,int):182 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
     16:16:void configLog(boolean,int):183:183 -> a
-    17:17:com.roiquery.analytics.utils.LogUtils$Config com.roiquery.analytics.utils.LogUtils$Config.setConsoleSwitch(boolean):545:545 -> a
+    17:17:com.roiquery.analytics.utils.LogUtils$Config com.roiquery.analytics.utils.LogUtils$Config.setConsoleSwitch(boolean):510:510 -> a
     17:17:void configLog(boolean,int):184 -> a
-    18:18:com.roiquery.analytics.utils.LogUtils$Config com.roiquery.analytics.utils.LogUtils$Config.setConsoleFilter(int):578:578 -> a
+    18:18:com.roiquery.analytics.utils.LogUtils$Config com.roiquery.analytics.utils.LogUtils$Config.setConsoleFilter(int):543:543 -> a
     18:18:void configLog(boolean,int):185 -> a
     1:15:void initConfig(android.content.Context):143:157 -> b
     16:28:void initConfig(android.content.Context):155:167 -> b
@@ -1748,6 +1748,8 @@ com.roiquery.analytics.config.AnalyticsConfig -> d.b:
     17:17:void initRemoteConfig():110:110 -> r
     1:1:boolean isSdkDisable():117:117 -> s
     1:1:java.lang.String reportUrl():119:119 -> t
+    2:2:java.lang.String com.roiquery.analytics.config.AbstractAnalyticsConfig.getMServerUrl():54:54 -> t
+    2:2:java.lang.String reportUrl():119 -> t
 com.roiquery.analytics.config.AnalyticsConfig$Companion -> d.b$b:
 # {"id":"sourceFile","fileName":"AnalyticsConfig.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
@@ -1927,24 +1929,24 @@ com.roiquery.analytics.core.EventTrackManager -> e.e:
     86:86:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):220:220 -> a
     87:101:kotlin.Pair getEventTime(java.lang.String,long):229:243 -> a
     102:102:void appendDynamicProperties(java.lang.String,org.json.JSONObject):249:249 -> a
-    103:103:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():255:255 -> a
+    103:103:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():252:252 -> a
     103:103:void appendDynamicProperties(java.lang.String,org.json.JSONObject):249 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    104:104:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():255:255 -> a
+    104:104:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():252:252 -> a
     104:104:void appendDynamicProperties(java.lang.String,org.json.JSONObject):249 -> a
     105:108:void appendDynamicProperties(java.lang.String,org.json.JSONObject):249:252 -> a
     109:116:void appendDynamicProperties(java.lang.String,org.json.JSONObject):250:257 -> a
-    117:117:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():255:255 -> a
+    117:117:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():252:252 -> a
     117:117:void appendDynamicProperties(java.lang.String,org.json.JSONObject):257 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    118:118:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():255:255 -> a
+    118:118:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():252:252 -> a
     118:118:void appendDynamicProperties(java.lang.String,org.json.JSONObject):257 -> a
     119:122:void appendDynamicProperties(java.lang.String,org.json.JSONObject):257:260 -> a
     123:130:void appendDynamicProperties(java.lang.String,org.json.JSONObject):258:265 -> a
-    131:131:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():255:255 -> a
+    131:131:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():252:252 -> a
     131:131:void appendDynamicProperties(java.lang.String,org.json.JSONObject):265 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    132:132:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():255:255 -> a
+    132:132:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():252:252 -> a
     132:132:void appendDynamicProperties(java.lang.String,org.json.JSONObject):265 -> a
     133:136:void appendDynamicProperties(java.lang.String,org.json.JSONObject):265:268 -> a
     137:145:void appendDynamicProperties(java.lang.String,org.json.JSONObject):266:274 -> a
@@ -2038,27 +2040,27 @@ com.roiquery.analytics.core.EventUploadManager -> e.f:
     178:181:java.lang.Object uploadData(kotlin.coroutines.Continuation):213:216 -> a
     182:182:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
     182:182:java.lang.Object uploadData(kotlin.coroutines.Continuation):216 -> a
-    183:218:java.lang.Object uploadData(kotlin.coroutines.Continuation):220:255 -> a
-    219:219:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
-    219:219:java.lang.Object uploadData(kotlin.coroutines.Continuation):255 -> a
-    220:230:java.lang.Object uploadData(kotlin.coroutines.Continuation):257:267 -> a
-    231:231:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
-    231:231:java.lang.Object uploadData(kotlin.coroutines.Continuation):267 -> a
-    232:233:java.lang.Object uploadData(kotlin.coroutines.Continuation):270:271 -> a
-    234:234:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
-    234:234:java.lang.Object uploadData(kotlin.coroutines.Continuation):271 -> a
-    235:235:java.lang.Object uploadData(kotlin.coroutines.Continuation):274:274 -> a
-    236:239:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):284:287 -> a
-    240:266:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):286:312 -> a
-    267:274:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):305:312 -> a
-    275:284:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):303:312 -> a
-    285:297:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):300:312 -> a
-    298:312:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter) -> a
-    313:317:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):308:312 -> a
-    318:351:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):336:369 -> a
-    352:367:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):336:351 -> a
-    368:386:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):348:366 -> a
-    387:392:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):364:369 -> a
+    183:235:java.lang.Object uploadData(kotlin.coroutines.Continuation):203:255 -> a
+    236:236:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
+    236:236:java.lang.Object uploadData(kotlin.coroutines.Continuation):255 -> a
+    237:247:java.lang.Object uploadData(kotlin.coroutines.Continuation):257:267 -> a
+    248:248:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
+    248:248:java.lang.Object uploadData(kotlin.coroutines.Continuation):267 -> a
+    249:250:java.lang.Object uploadData(kotlin.coroutines.Continuation):270:271 -> a
+    251:251:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
+    251:251:java.lang.Object uploadData(kotlin.coroutines.Continuation):271 -> a
+    252:252:java.lang.Object uploadData(kotlin.coroutines.Continuation):274:274 -> a
+    253:256:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):284:287 -> a
+    257:283:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):286:312 -> a
+    284:291:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):305:312 -> a
+    292:301:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):303:312 -> a
+    302:314:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):300:312 -> a
+    315:329:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):298:312 -> a
+    330:334:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):308:312 -> a
+    335:368:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):336:369 -> a
+    369:384:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):336:351 -> a
+    385:403:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):348:366 -> a
+    404:409:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):364:369 -> a
     1:1:com.roiquery.analytics.core.EventUploadManager$Worker access$getMWorker$p(com.roiquery.analytics.core.EventUploadManager):39:39 -> b
     2:2:void deleteAll():150:150 -> b
     1:1:int access$getUploadErrorCount$p(com.roiquery.analytics.core.EventUploadManager):39:39 -> c
@@ -2205,10 +2207,10 @@ com.roiquery.analytics.core.PresetEventManager -> e.g:
     2:2:void setActiveUserProperties(android.content.Context):70 -> c
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
     3:6:void setActiveUserProperties(android.content.Context):73:76 -> c
-    7:7:java.util.Map com.roiquery.analytics.core.PropertyManager.getActiveProperties():253:253 -> c
+    7:7:java.util.Map com.roiquery.analytics.core.PropertyManager.getActiveProperties():250:250 -> c
     7:7:void setActiveUserProperties(android.content.Context):76 -> c
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    8:8:java.util.Map com.roiquery.analytics.core.PropertyManager.getActiveProperties():253:253 -> c
+    8:8:java.util.Map com.roiquery.analytics.core.PropertyManager.getActiveProperties():250:250 -> c
     8:8:void setActiveUserProperties(android.content.Context):76 -> c
     9:16:void setActiveUserProperties(android.content.Context):76:83 -> c
     1:1:void setLatestUserProperties(android.content.Context):57:57 -> d
@@ -2216,10 +2218,10 @@ com.roiquery.analytics.core.PresetEventManager -> e.g:
     2:2:void setLatestUserProperties(android.content.Context):57 -> d
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
     3:8:void setLatestUserProperties(android.content.Context):60:65 -> d
-    9:9:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():255:255 -> d
+    9:9:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():252:252 -> d
     9:9:void setLatestUserProperties(android.content.Context):65 -> d
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    10:10:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():255:255 -> d
+    10:10:java.util.List com.roiquery.analytics.core.PropertyManager.getDisableList():252:252 -> d
     10:10:void setLatestUserProperties(android.content.Context):65 -> d
     11:11:void setLatestUserProperties(android.content.Context):65:65 -> d
     12:12:void setLatestUserProperties(android.content.Context):62:62 -> d
@@ -2304,100 +2306,100 @@ com.roiquery.analytics.core.PropertyManager -> e.h:
     72:72:void initDTIdOrUpdateOriginalId(android.content.Context,boolean):146:146 -> a
     73:84:java.lang.String initDTId(java.lang.String):159:170 -> a
     85:90:java.lang.String initDTId(java.lang.String):168:173 -> a
-    91:91:void updateEventInfo(java.lang.String,java.lang.String):226:226 -> a
-    92:92:void updateCommonProperties(java.lang.String,java.lang.Object):242:242 -> a
-    93:93:java.util.Map com.roiquery.analytics.core.PropertyManager.getCommonProperties():251:251 -> a
-    93:93:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):289 -> a
-    94:96:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):289:291 -> a
-    97:97:java.util.Map com.roiquery.analytics.core.PropertyManager.getCommonProperties():251:251 -> a
-    97:97:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):298 -> a
-    98:100:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):298:300 -> a
-    101:101:void updateIsForeground$default(com.roiquery.analytics.core.PropertyManager,boolean,boolean,java.lang.String,int,java.lang.Object):309:309 -> a
-    102:103:void updateIsForeground(boolean,boolean,java.lang.String):310:311 -> a
-    104:107:void updateIsForeground$lambda-10(com.roiquery.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):312:315 -> a
-    108:108:void com.roiquery.analytics.core.PropertyManager.updateCommonProperties(java.lang.String,java.lang.Object):242:242 -> a
-    108:108:void updateIsForeground$lambda-10(com.roiquery.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):313 -> a
-    109:113:void updateIsForeground$lambda-10(com.roiquery.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):320:324 -> a
-    114:114:void com.roiquery.analytics.core.PropertyManager.updateCommonProperties(java.lang.String,java.lang.Object):242:242 -> a
-    114:114:void updateIsForeground$lambda-10(com.roiquery.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):322 -> a
-    115:153:void updateIsForeground$lambda-10(com.roiquery.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):327:365 -> a
-    154:154:void updateIsForeground$lambda-10(com.roiquery.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):356:356 -> a
-    155:156:void updateNetworkType(com.roiquery.analytics.utils.NetworkUtil$NetworkType):470:471 -> a
-    157:157:void com.roiquery.analytics.core.PropertyManager.updateCommonProperties(java.lang.String,java.lang.Object):242:242 -> a
-    157:157:void updateNetworkType(com.roiquery.analytics.utils.NetworkUtil$NetworkType):469 -> a
-    158:159:void updateACID$lambda-19(java.lang.String,com.roiquery.analytics.core.PropertyManager):478:479 -> a
-    160:160:void com.roiquery.analytics.core.PropertyManager.updateEventInfo(java.lang.String,java.lang.String):226:226 -> a
-    160:160:void updateACID$lambda-19(java.lang.String,com.roiquery.analytics.core.PropertyManager):479 -> a
+    91:91:void updateEventInfo(java.lang.String,java.lang.String):223:223 -> a
+    92:92:void updateCommonProperties(java.lang.String,java.lang.Object):239:239 -> a
+    93:93:java.util.Map com.roiquery.analytics.core.PropertyManager.getCommonProperties():248:248 -> a
+    93:93:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):286 -> a
+    94:96:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):286:288 -> a
+    97:97:java.util.Map com.roiquery.analytics.core.PropertyManager.getCommonProperties():248:248 -> a
+    97:97:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):295 -> a
+    98:100:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):295:297 -> a
+    101:101:void updateIsForeground$default(com.roiquery.analytics.core.PropertyManager,boolean,boolean,java.lang.String,int,java.lang.Object):306:306 -> a
+    102:103:void updateIsForeground(boolean,boolean,java.lang.String):307:308 -> a
+    104:107:void updateIsForeground$lambda-10(com.roiquery.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):309:312 -> a
+    108:108:void com.roiquery.analytics.core.PropertyManager.updateCommonProperties(java.lang.String,java.lang.Object):239:239 -> a
+    108:108:void updateIsForeground$lambda-10(com.roiquery.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):310 -> a
+    109:113:void updateIsForeground$lambda-10(com.roiquery.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):317:321 -> a
+    114:114:void com.roiquery.analytics.core.PropertyManager.updateCommonProperties(java.lang.String,java.lang.Object):239:239 -> a
+    114:114:void updateIsForeground$lambda-10(com.roiquery.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):319 -> a
+    115:153:void updateIsForeground$lambda-10(com.roiquery.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):324:362 -> a
+    154:154:void updateIsForeground$lambda-10(com.roiquery.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):353:353 -> a
+    155:156:void updateNetworkType(com.roiquery.analytics.utils.NetworkUtil$NetworkType):467:468 -> a
+    157:157:void com.roiquery.analytics.core.PropertyManager.updateCommonProperties(java.lang.String,java.lang.Object):239:239 -> a
+    157:157:void updateNetworkType(com.roiquery.analytics.utils.NetworkUtil$NetworkType):466 -> a
+    158:159:void updateACID$lambda-19(java.lang.String,com.roiquery.analytics.core.PropertyManager):475:476 -> a
+    160:160:void com.roiquery.analytics.core.PropertyManager.updateEventInfo(java.lang.String,java.lang.String):223:223 -> a
+    160:160:void updateACID$lambda-19(java.lang.String,com.roiquery.analytics.core.PropertyManager):476 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    161:161:void com.roiquery.analytics.core.PropertyManager.updateEventInfo(java.lang.String,java.lang.String):226:226 -> a
-    161:161:void updateACID$lambda-19(java.lang.String,com.roiquery.analytics.core.PropertyManager):479 -> a
-    162:167:void updateFireBaseInstanceId$lambda-22(long,java.lang.String):498:503 -> a
-    168:168:void updateFireBaseInstanceId$lambda-22(long,java.lang.String):498:498 -> a
+    161:161:void com.roiquery.analytics.core.PropertyManager.updateEventInfo(java.lang.String,java.lang.String):223:223 -> a
+    161:161:void updateACID$lambda-19(java.lang.String,com.roiquery.analytics.core.PropertyManager):476 -> a
+    162:167:void updateFireBaseInstanceId$lambda-22(long,java.lang.String):495:500 -> a
+    168:168:void updateFireBaseInstanceId$lambda-22(long,java.lang.String):495:495 -> a
     1:1:java.util.ArrayList access$getDisableList$p(com.roiquery.analytics.core.PropertyManager):25:25 -> b
     2:2:void onDataTowerIdCallback(java.lang.String):109:109 -> b
     3:3:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> b
     3:3:void onDataTowerIdCallback(java.lang.String):109 -> b
     4:4:void onDataTowerIdCallback(java.lang.String):111:111 -> b
-    5:443:void onDataTowerIdCallback$lambda-5(com.roiquery.analytics.core.PropertyManager,java.lang.String):112:550 -> b
-    444:446:void onDataTowerIdCallback$lambda-5(com.roiquery.analytics.core.PropertyManager,java.lang.String):113:115 -> b
-    447:451:void initDTIdWithAndroidId(android.content.Context,boolean):178:182 -> b
-    452:460:void initDisableList(android.content.Context):190:198 -> b
-    461:461:void initDisableList(android.content.Context):195:195 -> b
-    462:473:void initDisableList(android.content.Context):194:205 -> b
-    474:479:void initDisableList(android.content.Context):203:208 -> b
-    480:480:void initDisableList(android.content.Context):190:190 -> b
-    481:481:java.util.Map com.roiquery.analytics.core.PropertyManager.getEventInfo():229:229 -> b
-    481:481:java.lang.String getACID():484 -> b
-    482:487:java.lang.String getACID():484:489 -> b
-    488:488:void initCommonProperties(android.content.Context,com.roiquery.analytics.config.AnalyticsConfig):237:237 -> b
+    5:440:void onDataTowerIdCallback$lambda-5(com.roiquery.analytics.core.PropertyManager,java.lang.String):112:547 -> b
+    441:443:void onDataTowerIdCallback$lambda-5(com.roiquery.analytics.core.PropertyManager,java.lang.String):113:115 -> b
+    444:448:void initDTIdWithAndroidId(android.content.Context,boolean):178:182 -> b
+    449:457:void initDisableList(android.content.Context):190:198 -> b
+    458:458:void initDisableList(android.content.Context):195:195 -> b
+    459:470:void initDisableList(android.content.Context):194:205 -> b
+    471:476:void initDisableList(android.content.Context):203:208 -> b
+    477:477:void initDisableList(android.content.Context):190:190 -> b
+    478:478:java.util.Map com.roiquery.analytics.core.PropertyManager.getEventInfo():226:226 -> b
+    478:478:java.lang.String getACID():481 -> b
+    479:484:java.lang.String getACID():481:486 -> b
+    485:485:void initCommonProperties(android.content.Context,com.roiquery.analytics.config.AnalyticsConfig):234:234 -> b
     1:1:java.util.Map access$getEventInfo$p(com.roiquery.analytics.core.PropertyManager):25:25 -> c
-    2:2:void initEventInfo(android.content.Context):218:218 -> c
-    3:4:void removeCommonProperty(java.lang.String):246:247 -> c
-    5:5:java.util.Map getActiveProperties():253:253 -> c
-    6:8:void updateDTID$lambda-12(com.roiquery.analytics.core.PropertyManager,java.lang.String):390:392 -> c
-    9:9:void com.roiquery.analytics.core.PropertyManager.updateEventInfo(java.lang.String,java.lang.String):226:226 -> c
-    9:9:void updateDTID$lambda-12(com.roiquery.analytics.core.PropertyManager,java.lang.String):391 -> c
-    1:1:java.util.Map com.roiquery.analytics.core.PropertyManager.getEventInfo():229:229 -> d
-    1:1:java.lang.String getAndroidId():444 -> d
-    2:7:java.lang.String getAndroidId():444:449 -> d
-    8:8:void registerNetworkStatusChangedListener(android.content.Context):273:273 -> d
+    2:2:void initEventInfo(android.content.Context):217:217 -> c
+    3:4:void removeCommonProperty(java.lang.String):243:244 -> c
+    5:5:java.util.Map getActiveProperties():250:250 -> c
+    6:8:void updateDTID$lambda-12(com.roiquery.analytics.core.PropertyManager,java.lang.String):387:389 -> c
+    9:9:void com.roiquery.analytics.core.PropertyManager.updateEventInfo(java.lang.String,java.lang.String):223:223 -> c
+    9:9:void updateDTID$lambda-12(com.roiquery.analytics.core.PropertyManager,java.lang.String):388 -> c
+    1:1:java.util.Map com.roiquery.analytics.core.PropertyManager.getEventInfo():226:226 -> d
+    1:1:java.lang.String getAndroidId():441 -> d
+    2:7:java.lang.String getAndroidId():441:446 -> d
+    8:8:void registerNetworkStatusChangedListener(android.content.Context):270:270 -> d
     9:9:void com.roiquery.analytics.utils.NetworkUtil.registerNetworkStatusChangedListener(android.content.Context,com.roiquery.analytics.utils.NetworkUtil$OnNetworkStatusChangedListener):284:284 -> d
-    9:9:void registerNetworkStatusChangedListener(android.content.Context):271 -> d
-    10:11:void updateACID(java.lang.String):476:477 -> d
-    1:1:java.util.Map getCommonProperties():251:251 -> e
-    2:10:void updateAFID(java.lang.String):509:517 -> e
-    11:11:void updateAFID(java.lang.String):512:512 -> e
-    1:1:java.util.Map com.roiquery.analytics.core.PropertyManager.getEventInfo():229:229 -> f
-    1:1:java.lang.String getDTID():377 -> f
-    2:7:java.lang.String getDTID():377:382 -> f
-    8:16:void updateAdjustId(java.lang.String):535:543 -> f
-    17:17:void updateAdjustId(java.lang.String):538:538 -> f
-    1:1:java.util.List getDisableList():255:255 -> g
-    2:7:void updateAndroidId(java.lang.String):453:458 -> g
-    8:8:void com.roiquery.analytics.core.PropertyManager.updateEventInfo(java.lang.String,java.lang.String):226:226 -> g
-    8:8:void updateAndroidId(java.lang.String):458 -> g
-    9:13:void updateAndroidId(java.lang.String):460:464 -> g
-    14:14:void updateAndroidId(java.lang.String):461:461 -> g
-    1:1:java.util.Map getEventInfo():229:229 -> h
-    2:5:void updateDTID(java.lang.String):386:389 -> h
-    1:1:java.util.Map com.roiquery.analytics.core.PropertyManager.getEventInfo():229:229 -> i
-    1:1:java.lang.String getGAID():398 -> i
-    2:7:java.lang.String getGAID():398:403 -> i
-    8:12:void updateFireBaseInstanceId(java.lang.String):493:497 -> i
-    1:1:java.util.Map com.roiquery.analytics.core.PropertyManager.getCommonProperties():251:251 -> j
-    1:1:java.lang.String getSDKType():416 -> j
-    2:7:java.lang.String getSDKType():416:421 -> j
-    8:15:void updateGAID(java.lang.String):425:432 -> j
-    16:16:void com.roiquery.analytics.core.PropertyManager.updateEventInfo(java.lang.String,java.lang.String):226:226 -> j
-    16:16:void updateGAID(java.lang.String):432 -> j
-    17:21:void updateGAID(java.lang.String):435:439 -> j
-    22:22:void updateGAID(java.lang.String):436:436 -> j
-    1:1:java.util.Map com.roiquery.analytics.core.PropertyManager.getCommonProperties():251:251 -> k
-    1:1:java.lang.String getSDKVersion():407 -> k
-    2:7:java.lang.String getSDKVersion():407:412 -> k
-    8:16:void updateKOID(java.lang.String):522:530 -> k
-    17:17:void updateKOID(java.lang.String):525:525 -> k
-    1:4:void registerFPSListener():261:264 -> l
+    9:9:void registerNetworkStatusChangedListener(android.content.Context):268 -> d
+    10:11:void updateACID(java.lang.String):473:474 -> d
+    1:1:java.util.Map getCommonProperties():248:248 -> e
+    2:10:void updateAFID(java.lang.String):506:514 -> e
+    11:11:void updateAFID(java.lang.String):509:509 -> e
+    1:1:java.util.Map com.roiquery.analytics.core.PropertyManager.getEventInfo():226:226 -> f
+    1:1:java.lang.String getDTID():374 -> f
+    2:7:java.lang.String getDTID():374:379 -> f
+    8:16:void updateAdjustId(java.lang.String):532:540 -> f
+    17:17:void updateAdjustId(java.lang.String):535:535 -> f
+    1:1:java.util.List getDisableList():252:252 -> g
+    2:7:void updateAndroidId(java.lang.String):450:455 -> g
+    8:8:void com.roiquery.analytics.core.PropertyManager.updateEventInfo(java.lang.String,java.lang.String):223:223 -> g
+    8:8:void updateAndroidId(java.lang.String):455 -> g
+    9:13:void updateAndroidId(java.lang.String):457:461 -> g
+    14:14:void updateAndroidId(java.lang.String):458:458 -> g
+    1:1:java.util.Map getEventInfo():226:226 -> h
+    2:5:void updateDTID(java.lang.String):383:386 -> h
+    1:1:java.util.Map com.roiquery.analytics.core.PropertyManager.getEventInfo():226:226 -> i
+    1:1:java.lang.String getGAID():395 -> i
+    2:7:java.lang.String getGAID():395:400 -> i
+    8:12:void updateFireBaseInstanceId(java.lang.String):490:494 -> i
+    1:1:java.util.Map com.roiquery.analytics.core.PropertyManager.getCommonProperties():248:248 -> j
+    1:1:java.lang.String getSDKType():413 -> j
+    2:7:java.lang.String getSDKType():413:418 -> j
+    8:15:void updateGAID(java.lang.String):422:429 -> j
+    16:16:void com.roiquery.analytics.core.PropertyManager.updateEventInfo(java.lang.String,java.lang.String):223:223 -> j
+    16:16:void updateGAID(java.lang.String):429 -> j
+    17:21:void updateGAID(java.lang.String):432:436 -> j
+    22:22:void updateGAID(java.lang.String):433:433 -> j
+    1:1:java.util.Map com.roiquery.analytics.core.PropertyManager.getCommonProperties():248:248 -> k
+    1:1:java.lang.String getSDKVersion():404 -> k
+    2:7:java.lang.String getSDKVersion():404:409 -> k
+    8:16:void updateKOID(java.lang.String):519:527 -> k
+    17:17:void updateKOID(java.lang.String):522:522 -> k
+    1:4:void registerFPSListener():258:261 -> l
 com.roiquery.analytics.core.PropertyManager$Companion -> e.h$b:
 # {"id":"sourceFile","fileName":"PropertyManager.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
@@ -2429,19 +2431,19 @@ com.roiquery.analytics.core.PropertyManager$initEventInfo$1 -> e.h$d:
     com.roiquery.analytics.core.PropertyManager this$0 -> c
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:3:java.lang.Object invokeSuspend(java.lang.Object):218:220 -> invokeSuspend
-    4:5:java.lang.Object invokeSuspend(java.lang.Object):218:219 -> invokeSuspend
+    1:3:java.lang.Object invokeSuspend(java.lang.Object):217:219 -> invokeSuspend
+    4:5:java.lang.Object invokeSuspend(java.lang.Object):217:218 -> invokeSuspend
     6:6:java.util.Map com.roiquery.analytics.core.PropertyManager.access$getEventInfo$p(com.roiquery.analytics.core.PropertyManager):25:25 -> invokeSuspend
-    6:6:java.lang.Object invokeSuspend(java.lang.Object):219 -> invokeSuspend
+    6:6:java.lang.Object invokeSuspend(java.lang.Object):218 -> invokeSuspend
     7:7:java.util.ArrayList com.roiquery.analytics.core.PropertyManager.access$getDisableList$p(com.roiquery.analytics.core.PropertyManager):25:25 -> invokeSuspend
-    7:7:java.lang.Object invokeSuspend(java.lang.Object):219 -> invokeSuspend
-    8:9:java.lang.Object invokeSuspend(java.lang.Object):219:220 -> invokeSuspend
+    7:7:java.lang.Object invokeSuspend(java.lang.Object):218 -> invokeSuspend
+    8:9:java.lang.Object invokeSuspend(java.lang.Object):218:219 -> invokeSuspend
 com.roiquery.analytics.core.PropertyManager$registerNetworkStatusChangedListener$1 -> e.h$e:
 # {"id":"sourceFile","fileName":"PropertyManager.kt"}
     com.roiquery.analytics.core.PropertyManager this$0 -> a
-    1:1:void <init>(com.roiquery.analytics.core.PropertyManager):273:273 -> <init>
-    1:3:void onConnected(com.roiquery.analytics.utils.NetworkUtil$NetworkType):279:281 -> onConnected
-    1:1:void onDisconnected():275:275 -> onDisconnected
+    1:1:void <init>(com.roiquery.analytics.core.PropertyManager):270:270 -> <init>
+    1:3:void onConnected(com.roiquery.analytics.utils.NetworkUtil$NetworkType):276:278 -> onConnected
+    1:1:void onDisconnected():272:272 -> onDisconnected
 com.roiquery.analytics.core.PropertyManager$updateIsForeground$1$1 -> e.h$f:
 # {"id":"sourceFile","fileName":"PropertyManager.kt"}
     long $happenTime -> c
@@ -2450,19 +2452,19 @@ com.roiquery.analytics.core.PropertyManager$updateIsForeground$1$1 -> e.h$f:
     int label -> a
     boolean $resumeFromBackground -> d
     1:1:java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,boolean,kotlin.coroutines.Continuation):0:0 -> a
-    2:14:void invokeSuspend$lambda-1(boolean,long,boolean,java.lang.String):333:345 -> a
-    15:15:void invokeSuspend$lambda-1(boolean,long,boolean,java.lang.String):333:333 -> a
-    1:28:java.lang.Object invokeSuspend(java.lang.Object):327:354 -> invokeSuspend
+    2:14:void invokeSuspend$lambda-1(boolean,long,boolean,java.lang.String):330:342 -> a
+    15:15:void invokeSuspend$lambda-1(boolean,long,boolean,java.lang.String):330:330 -> a
+    1:28:java.lang.Object invokeSuspend(java.lang.Object):324:351 -> invokeSuspend
 com.roiquery.analytics.core.PropertyManager$updateIsForeground$1$1$1$2 -> e.h$f$a:
 # {"id":"sourceFile","fileName":"PropertyManager.kt"}
     boolean $isFirstOpen -> a
-    1:3:void invoke(int,java.lang.String):347:349 -> a
-    1:1:java.lang.Object invoke(java.lang.Object,java.lang.Object):333:333 -> invoke
+    1:3:void invoke(int,java.lang.String):344:346 -> a
+    1:1:java.lang.Object invoke(java.lang.Object,java.lang.Object):330:330 -> invoke
 com.roiquery.analytics.core.PropertyManager$updateIsForeground$1$3 -> e.h$g:
 # {"id":"sourceFile","fileName":"PropertyManager.kt"}
     com.roiquery.analytics.core.PropertyManager this$0 -> a
-    1:1:void invoke(int,java.lang.String):368:368 -> a
-    1:1:java.lang.Object invoke(java.lang.Object,java.lang.Object):356:356 -> invoke
+    1:1:void invoke(int,java.lang.String):365:365 -> a
+    1:1:java.lang.Object invoke(java.lang.Object,java.lang.Object):353:353 -> invoke
 com.roiquery.analytics.data.DataParams -> f.a:
 # {"id":"sourceFile","fileName":"DataParams.kt"}
     java.lang.String CONFIG_GAID -> f
@@ -2547,18 +2549,14 @@ com.roiquery.analytics.data.EventDataAdapter -> f.b:
     12:12:kotlinx.coroutines.Deferred cleanupBatchEvents(java.util.List):179:179 -> a
     13:13:kotlinx.coroutines.Deferred readEventsDataFromDb(int):194:194 -> a
     14:16:java.lang.Object getBooleanConfig(java.lang.String,boolean,kotlin.coroutines.Continuation):206:208 -> a
-    17:18:java.lang.Object getBooleanConfig(java.lang.String,boolean,kotlin.coroutines.Continuation):206:207 -> a
-    19:23:java.lang.Object getBooleanConfig(java.lang.String,boolean,kotlin.coroutines.Continuation):206:210 -> a
-    24:24:java.lang.Object getBooleanConfig$default(com.roiquery.analytics.data.EventDataAdapter,java.lang.String,boolean,kotlin.coroutines.Continuation,int,java.lang.Object):206:206 -> a
-    25:27:java.lang.Object getStringConfig(java.lang.String,kotlin.coroutines.Continuation):236:238 -> a
-    28:29:java.lang.Object getStringConfig(java.lang.String,kotlin.coroutines.Continuation):236:237 -> a
-    30:32:java.lang.Object getStringConfig(java.lang.String,kotlin.coroutines.Continuation):236:238 -> a
-    33:34:java.lang.Object setStringConfig(java.lang.String,java.lang.String,kotlin.coroutines.Continuation):242:243 -> a
-    35:35:java.lang.Object setStringConfig(java.lang.String,java.lang.String,kotlin.coroutines.Continuation):242:242 -> a
-    36:42:java.lang.Object getLongConfig(java.lang.String,long,kotlin.coroutines.Continuation):245:251 -> a
-    43:48:java.lang.Object getLongConfig(java.lang.String,long,kotlin.coroutines.Continuation):245:250 -> a
-    49:57:java.lang.Object getLongConfig(java.lang.String,long,kotlin.coroutines.Continuation):245:253 -> a
-    58:58:java.lang.Object getLongConfig$default(com.roiquery.analytics.data.EventDataAdapter,java.lang.String,long,kotlin.coroutines.Continuation,int,java.lang.Object):245:245 -> a
+    17:21:java.lang.Object getBooleanConfig(java.lang.String,boolean,kotlin.coroutines.Continuation):206:210 -> a
+    22:22:java.lang.Object getBooleanConfig$default(com.roiquery.analytics.data.EventDataAdapter,java.lang.String,boolean,kotlin.coroutines.Continuation,int,java.lang.Object):206:206 -> a
+    23:25:java.lang.Object getStringConfig(java.lang.String,kotlin.coroutines.Continuation):236:238 -> a
+    26:28:java.lang.Object getStringConfig(java.lang.String,kotlin.coroutines.Continuation):236:238 -> a
+    29:30:java.lang.Object setStringConfig(java.lang.String,java.lang.String,kotlin.coroutines.Continuation):242:243 -> a
+    31:37:java.lang.Object getLongConfig(java.lang.String,long,kotlin.coroutines.Continuation):245:251 -> a
+    38:46:java.lang.Object getLongConfig(java.lang.String,long,kotlin.coroutines.Continuation):245:253 -> a
+    47:47:java.lang.Object getLongConfig$default(com.roiquery.analytics.data.EventDataAdapter,java.lang.String,long,kotlin.coroutines.Continuation,int,java.lang.Object):245:245 -> a
     1:1:com.roiquery.analytics.data.EventDataOperation access$getMOperation$p(com.roiquery.analytics.data.EventDataAdapter):14:14 -> b
     2:2:java.lang.Object access$setBooleanConfig(com.roiquery.analytics.data.EventDataAdapter,java.lang.String,boolean,kotlin.coroutines.Continuation):14:14 -> b
     3:3:java.lang.Object access$setLongConfig(com.roiquery.analytics.data.EventDataAdapter,java.lang.String,long,kotlin.coroutines.Continuation):14:14 -> b
@@ -2567,8 +2565,7 @@ com.roiquery.analytics.data.EventDataAdapter -> f.b:
     6:6:kotlinx.coroutines.Deferred setLatestNetTime(long):70:70 -> b
     7:7:kotlinx.coroutines.Deferred deleteAllEvents():138:138 -> b
     8:9:java.lang.Object setBooleanConfig(java.lang.String,boolean,kotlin.coroutines.Continuation):214:215 -> b
-    10:10:java.lang.Object setBooleanConfig(java.lang.String,boolean,kotlin.coroutines.Continuation):214:214 -> b
-    11:11:java.lang.Object setLongConfig(java.lang.String,long,kotlin.coroutines.Continuation):257:257 -> b
+    10:10:java.lang.Object setLongConfig(java.lang.String,long,kotlin.coroutines.Continuation):257:257 -> b
     1:1:void access$setInstance$cp(com.roiquery.analytics.data.EventDataAdapter):14:14 -> c
     2:2:kotlinx.coroutines.Deferred setIsUploadEnabled(boolean):28:28 -> c
     3:3:com.roiquery.analytics.taskqueue.AsyncTaskRescheduled getAccountId():91:91 -> c
@@ -2781,31 +2778,32 @@ com.roiquery.analytics.data.EventDataOperation -> f.c:
     1:7:void <init>(android.content.Context):17:23 -> <init>
     1:14:java.lang.Object insertData(org.json.JSONObject,java.lang.String,kotlin.coroutines.Continuation):26:39 -> a
     15:15:java.lang.Object insertData(org.json.JSONObject,java.lang.String,kotlin.coroutines.Continuation):35:35 -> a
-    16:35:java.lang.Object insertData(org.json.JSONObject,java.lang.String,kotlin.coroutines.Continuation):34:53 -> a
-    36:40:java.lang.Object insertData(org.json.JSONObject,java.lang.String,kotlin.coroutines.Continuation):51:55 -> a
-    41:41:java.lang.Object insertData(org.json.JSONObject,java.lang.String,kotlin.coroutines.Continuation):26:26 -> a
-    42:57:java.lang.Object insertConfig(java.lang.String,java.lang.String,kotlin.coroutines.Continuation):63:78 -> a
-    58:63:java.lang.Object insertConfig(java.lang.String,java.lang.String,kotlin.coroutines.Continuation):76:81 -> a
-    64:64:java.lang.Object insertConfig(java.lang.String,java.lang.String,kotlin.coroutines.Continuation):63:63 -> a
-    65:71:java.lang.Object queryConfig(java.lang.String,kotlin.coroutines.Continuation):88:94 -> a
-    72:78:java.lang.Object queryConfig(java.lang.String,kotlin.coroutines.Continuation):92:98 -> a
-    79:79:java.lang.Object queryConfig(java.lang.String,kotlin.coroutines.Continuation):88:88 -> a
-    80:99:java.lang.Object queryData(int,kotlin.coroutines.Continuation):106:125 -> a
-    100:102:java.lang.Object queryData(int,kotlin.coroutines.Continuation):120:122 -> a
-    103:110:java.lang.Object queryData(int,kotlin.coroutines.Continuation):120:127 -> a
-    111:130:java.lang.Object queryData(int,kotlin.coroutines.Continuation):106:125 -> a
-    131:140:java.lang.Object deleteBatchEventByEventSyn(java.util.List,kotlin.coroutines.Continuation):169:178 -> a
-    141:146:java.lang.Object deleteBatchEventByEventSyn(java.util.List,kotlin.coroutines.Continuation):176:181 -> a
-    147:147:java.lang.Object deleteBatchEventByEventSyn(java.util.List,kotlin.coroutines.Continuation):169:169 -> a
-    148:155:void deleteTheOldestData(int):188:195 -> a
-    156:156:void deleteTheOldestData(int):193:193 -> a
-    157:165:java.lang.String parseData(java.lang.String):204:212 -> a
-    166:172:boolean deleteDataWhenOverMaxRows():229:235 -> a
-    173:185:boolean deleteDataWhenOverMaxRows():233:245 -> a
-    186:186:boolean deleteDataWhenOverMaxRows():243:243 -> a
-    187:194:java.lang.Object deleteAllEventData(kotlin.coroutines.Continuation):251:258 -> a
-    195:200:java.lang.Object deleteAllEventData(kotlin.coroutines.Continuation):256:261 -> a
-    201:201:java.lang.Object deleteAllEventData(kotlin.coroutines.Continuation):251:251 -> a
+    16:26:java.lang.Object insertData(org.json.JSONObject,java.lang.String,kotlin.coroutines.Continuation):34:44 -> a
+    27:37:java.lang.Object insertData(org.json.JSONObject,java.lang.String,kotlin.coroutines.Continuation):43:53 -> a
+    38:42:java.lang.Object insertData(org.json.JSONObject,java.lang.String,kotlin.coroutines.Continuation):51:55 -> a
+    43:43:java.lang.Object insertData(org.json.JSONObject,java.lang.String,kotlin.coroutines.Continuation):26:26 -> a
+    44:59:java.lang.Object insertConfig(java.lang.String,java.lang.String,kotlin.coroutines.Continuation):63:78 -> a
+    60:65:java.lang.Object insertConfig(java.lang.String,java.lang.String,kotlin.coroutines.Continuation):76:81 -> a
+    66:66:java.lang.Object insertConfig(java.lang.String,java.lang.String,kotlin.coroutines.Continuation):63:63 -> a
+    67:73:java.lang.Object queryConfig(java.lang.String,kotlin.coroutines.Continuation):88:94 -> a
+    74:80:java.lang.Object queryConfig(java.lang.String,kotlin.coroutines.Continuation):92:98 -> a
+    81:81:java.lang.Object queryConfig(java.lang.String,kotlin.coroutines.Continuation):88:88 -> a
+    82:101:java.lang.Object queryData(int,kotlin.coroutines.Continuation):106:125 -> a
+    102:104:java.lang.Object queryData(int,kotlin.coroutines.Continuation):120:122 -> a
+    105:112:java.lang.Object queryData(int,kotlin.coroutines.Continuation):120:127 -> a
+    113:132:java.lang.Object queryData(int,kotlin.coroutines.Continuation):106:125 -> a
+    133:142:java.lang.Object deleteBatchEventByEventSyn(java.util.List,kotlin.coroutines.Continuation):169:178 -> a
+    143:148:java.lang.Object deleteBatchEventByEventSyn(java.util.List,kotlin.coroutines.Continuation):176:181 -> a
+    149:149:java.lang.Object deleteBatchEventByEventSyn(java.util.List,kotlin.coroutines.Continuation):169:169 -> a
+    150:157:void deleteTheOldestData(int):188:195 -> a
+    158:158:void deleteTheOldestData(int):193:193 -> a
+    159:167:java.lang.String parseData(java.lang.String):204:212 -> a
+    168:174:boolean deleteDataWhenOverMaxRows():229:235 -> a
+    175:187:boolean deleteDataWhenOverMaxRows():233:245 -> a
+    188:188:boolean deleteDataWhenOverMaxRows():243:243 -> a
+    189:196:java.lang.Object deleteAllEventData(kotlin.coroutines.Continuation):251:258 -> a
+    197:202:java.lang.Object deleteAllEventData(kotlin.coroutines.Continuation):256:261 -> a
+    203:203:java.lang.Object deleteAllEventData(kotlin.coroutines.Continuation):251:251 -> a
     1:1:java.lang.String getTAG():20:20 -> b
     2:2:void setTAG(java.lang.String):20:20 -> b
     1:5:int queryDataCount():139:143 -> c
@@ -3467,55 +3465,55 @@ com.roiquery.analytics.taskqueue.MonitorQueue -> m.g:
     1:1:void <clinit>():0 -> <clinit>
     2:2:void <clinit>():0:0 -> <clinit>
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:6:void <init>():23:27 -> <init>
-    1:1:void access$setSingleton$cp(com.roiquery.analytics.taskqueue.MonitorQueue):23:23 -> a
-    2:2:void setMDBQueueFlag(int):27:27 -> a
-    3:3:void reportUploadError$default(com.roiquery.analytics.taskqueue.MonitorQueue,int,java.lang.String,int,java.lang.Object):53:53 -> a
-    4:4:void reportUploadError(int,java.lang.String):54:54 -> a
-    5:13:void findReasonForGAIDFail(android.content.Context):63:71 -> a
-    1:1:void setMMainQueueFlag(int):25:25 -> b
-    2:2:void loop$lambda-7(com.roiquery.analytics.taskqueue.MonitorQueue):89:89 -> b
-    1:1:void setMUploadQueueFlag(int):26:26 -> c
-    2:32:void loop$lambda-7$lambda-6(com.roiquery.analytics.taskqueue.MonitorQueue):90:120 -> c
-    1:1:void loop$lambda-7$lambda-6$lambda-5(com.roiquery.analytics.taskqueue.MonitorQueue):121:121 -> d
-    1:1:com.roiquery.analytics.taskqueue.MonitorQueue access$getSingleton$cp():23:23 -> e
-    2:2:void startMonitor$lambda-0(com.roiquery.analytics.taskqueue.MonitorQueue):33:33 -> e
-    1:4:void checkDBCount():42:45 -> f
-    1:1:int getMDBQueueFlag():27:27 -> g
-    1:1:int getMMainQueueFlag():25:25 -> h
-    1:1:int getMUploadQueueFlag():26:26 -> i
-    1:8:void loop():80:87 -> j
-    1:1:void loop$lambda-2():83:83 -> k
-    1:1:void loop$lambda-3():84:84 -> l
-    1:1:void loop$lambda-4():85:85 -> m
-    1:3:void startMonitor():30:32 -> n
-    1:1:void stopMonitor():38:38 -> o
+    2:6:void <init>():20:24 -> <init>
+    1:1:void access$setSingleton$cp(com.roiquery.analytics.taskqueue.MonitorQueue):20:20 -> a
+    2:2:void setMDBQueueFlag(int):24:24 -> a
+    3:3:void reportUploadError$default(com.roiquery.analytics.taskqueue.MonitorQueue,int,java.lang.String,int,java.lang.Object):50:50 -> a
+    4:4:void reportUploadError(int,java.lang.String):51:51 -> a
+    5:13:void findReasonForGAIDFail(android.content.Context):60:68 -> a
+    1:1:void setMMainQueueFlag(int):22:22 -> b
+    2:2:void loop$lambda-7(com.roiquery.analytics.taskqueue.MonitorQueue):86:86 -> b
+    1:1:void setMUploadQueueFlag(int):23:23 -> c
+    2:32:void loop$lambda-7$lambda-6(com.roiquery.analytics.taskqueue.MonitorQueue):87:117 -> c
+    1:1:void loop$lambda-7$lambda-6$lambda-5(com.roiquery.analytics.taskqueue.MonitorQueue):118:118 -> d
+    1:1:com.roiquery.analytics.taskqueue.MonitorQueue access$getSingleton$cp():20:20 -> e
+    2:2:void startMonitor$lambda-0(com.roiquery.analytics.taskqueue.MonitorQueue):30:30 -> e
+    1:4:void checkDBCount():39:42 -> f
+    1:1:int getMDBQueueFlag():24:24 -> g
+    1:1:int getMMainQueueFlag():22:22 -> h
+    1:1:int getMUploadQueueFlag():23:23 -> i
+    1:8:void loop():77:84 -> j
+    1:1:void loop$lambda-2():80:80 -> k
+    1:1:void loop$lambda-3():81:81 -> l
+    1:1:void loop$lambda-4():82:82 -> m
+    1:3:void startMonitor():27:29 -> n
+    1:1:void stopMonitor():35:35 -> o
 com.roiquery.analytics.taskqueue.MonitorQueue$Companion -> m.g$a:
 # {"id":"sourceFile","fileName":"MonitorQueue.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():128:128 -> <init>
-    1:2:com.roiquery.analytics.taskqueue.MonitorQueue get():134:135 -> a
-    3:3:com.roiquery.analytics.taskqueue.MonitorQueue com.roiquery.analytics.taskqueue.MonitorQueue.access$getSingleton$cp():23:23 -> a
-    3:3:com.roiquery.analytics.taskqueue.MonitorQueue get():136 -> a
-    4:4:com.roiquery.analytics.taskqueue.MonitorQueue get():137:137 -> a
+    2:2:void <init>():125:125 -> <init>
+    1:2:com.roiquery.analytics.taskqueue.MonitorQueue get():131:132 -> a
+    3:3:com.roiquery.analytics.taskqueue.MonitorQueue com.roiquery.analytics.taskqueue.MonitorQueue.access$getSingleton$cp():20:20 -> a
+    3:3:com.roiquery.analytics.taskqueue.MonitorQueue get():133 -> a
+    4:4:com.roiquery.analytics.taskqueue.MonitorQueue get():134:134 -> a
     5:5:void com.roiquery.analytics.taskqueue.MonitorQueue.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> a
-    5:5:com.roiquery.analytics.taskqueue.MonitorQueue get():137 -> a
-    6:6:void com.roiquery.analytics.taskqueue.MonitorQueue.access$setSingleton$cp(com.roiquery.analytics.taskqueue.MonitorQueue):23:23 -> a
-    6:6:com.roiquery.analytics.taskqueue.MonitorQueue get():137 -> a
-    7:7:com.roiquery.analytics.taskqueue.MonitorQueue get():139:139 -> a
-    8:8:com.roiquery.analytics.taskqueue.MonitorQueue get():135:135 -> a
-    9:9:com.roiquery.analytics.taskqueue.MonitorQueue com.roiquery.analytics.taskqueue.MonitorQueue.access$getSingleton$cp():23:23 -> a
-    9:9:com.roiquery.analytics.taskqueue.MonitorQueue get():141 -> a
+    5:5:com.roiquery.analytics.taskqueue.MonitorQueue get():134 -> a
+    6:6:void com.roiquery.analytics.taskqueue.MonitorQueue.access$setSingleton$cp(com.roiquery.analytics.taskqueue.MonitorQueue):20:20 -> a
+    6:6:com.roiquery.analytics.taskqueue.MonitorQueue get():134 -> a
+    7:7:com.roiquery.analytics.taskqueue.MonitorQueue get():136:136 -> a
+    8:8:com.roiquery.analytics.taskqueue.MonitorQueue get():132:132 -> a
+    9:9:com.roiquery.analytics.taskqueue.MonitorQueue com.roiquery.analytics.taskqueue.MonitorQueue.access$getSingleton$cp():20:20 -> a
+    9:9:com.roiquery.analytics.taskqueue.MonitorQueue get():138 -> a
 com.roiquery.analytics.taskqueue.MonitorQueue$checkDBCount$count$1 -> m.g$b:
 # {"id":"sourceFile","fileName":"MonitorQueue.kt"}
     int label -> a
     1:1:kotlin.coroutines.Continuation com.roiquery.analytics.taskqueue.MonitorQueue$checkDBCount$count$1.create(java.lang.Object,kotlin.coroutines.Continuation):0:0 -> a
     1:1:java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation):0 -> a
     2:2:java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation):0:0 -> a
-    1:1:java.lang.Object invokeSuspend(java.lang.Object):42:42 -> invokeSuspend
+    1:1:java.lang.Object invokeSuspend(java.lang.Object):39:39 -> invokeSuspend
     2:2:java.lang.Object com.roiquery.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):46:46 -> invokeSuspend
-    2:2:java.lang.Object invokeSuspend(java.lang.Object):42 -> invokeSuspend
-    3:3:java.lang.Object invokeSuspend(java.lang.Object):42:42 -> invokeSuspend
+    2:2:java.lang.Object invokeSuspend(java.lang.Object):39 -> invokeSuspend
+    3:3:java.lang.Object invokeSuspend(java.lang.Object):39:39 -> invokeSuspend
 com.roiquery.analytics.utils.AdtUtil -> n.a:
 # {"id":"sourceFile","fileName":"AdtUtil.java"}
     java.lang.ref.SoftReference mContext -> a
@@ -3649,17 +3647,17 @@ com.roiquery.analytics.utils.DeviceUtils -> n.e:
 com.roiquery.analytics.utils.DeviceUtils$sManufacturer$1 -> n.e$a:
 # {"id":"sourceFile","fileName":"DeviceUtils.kt"}
     1:5:void <init>():25:29 -> <init>
-    1:1:int getSize():25:25 -> a
-    2:2:int indexOf(java.lang.String):25:25 -> a
+    1:1:boolean contains(java.lang.String):25:25 -> a
+    2:2:int getSize():25:25 -> a
     3:3:java.lang.String com.roiquery.analytics.utils.DeviceUtils$sManufacturer$1.removeAt(int):25:25 -> a
     3:3:java.lang.String remove(int):25 -> a
-    1:1:int lastIndexOf(java.lang.String):25:25 -> b
+    1:1:int indexOf(java.lang.String):25:25 -> b
     2:2:java.lang.String removeAt(int):25:25 -> b
-    1:1:boolean remove(java.lang.String):25:25 -> c
+    1:1:int lastIndexOf(java.lang.String):25:25 -> c
     1:1:boolean contains(java.lang.Object):25:25 -> contains
     2:2:boolean com.roiquery.analytics.utils.DeviceUtils$sManufacturer$1.contains(java.lang.String):25:25 -> contains
     2:2:boolean contains(java.lang.Object):25 -> contains
-    3:3:boolean contains(java.lang.String):25:25 -> contains
+    1:1:boolean remove(java.lang.String):25:25 -> d
     1:1:int indexOf(java.lang.Object):25:25 -> indexOf
     2:2:int com.roiquery.analytics.utils.DeviceUtils$sManufacturer$1.indexOf(java.lang.String):25:25 -> indexOf
     2:2:int indexOf(java.lang.Object):25 -> indexOf
@@ -3685,42 +3683,42 @@ com.roiquery.analytics.utils.EventUtils -> n.g:
     java.lang.String TAG -> b
     1:1:void <clinit>():18:18 -> <clinit>
     1:1:void <init>():15:15 -> <init>
-    1:31:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):20:50 -> a
-    32:43:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):20:31 -> a
-    44:44:java.lang.Object com.roiquery.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):46:46 -> a
-    44:44:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):31 -> a
-    45:54:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):31:40 -> a
-    55:55:java.lang.String com.roiquery.analytics.config.AbstractAnalyticsConfig.getMAppId():48:48 -> a
-    55:55:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):40 -> a
+    1:27:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):20:46 -> a
+    28:35:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):20:27 -> a
+    36:36:java.lang.Object com.roiquery.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):46:46 -> a
+    36:36:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):27 -> a
+    37:46:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):27:36 -> a
+    47:47:java.lang.String com.roiquery.analytics.config.AbstractAnalyticsConfig.getMAppId():48:48 -> a
+    47:47:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):36 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    56:59:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):40:43 -> a
-    60:60:boolean com.roiquery.analytics.config.AbstractAnalyticsConfig.getMEnabledDebug():28:28 -> a
-    60:60:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):43 -> a
+    48:51:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):36:39 -> a
+    52:52:boolean com.roiquery.analytics.config.AbstractAnalyticsConfig.getMEnabledDebug():28:28 -> a
+    52:52:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):39 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    61:64:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):44:47 -> a
-    65:65:java.lang.Object com.roiquery.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):46:46 -> a
-    65:65:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):47 -> a
-    66:69:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):47:50 -> a
-    70:74:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):54:58 -> a
-    75:75:boolean com.roiquery.analytics.config.AbstractAnalyticsConfig.getMEnabledDebug():28:28 -> a
-    75:75:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):58 -> a
+    53:56:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):40:43 -> a
+    57:57:java.lang.Object com.roiquery.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):46:46 -> a
+    57:57:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):43 -> a
+    58:61:java.lang.Object getEventInfo(android.content.Context,com.roiquery.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):43:46 -> a
+    62:66:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):50:54 -> a
+    67:67:boolean com.roiquery.analytics.config.AbstractAnalyticsConfig.getMEnabledDebug():28:28 -> a
+    67:67:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):54 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    76:76:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):58:58 -> a
-    77:84:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):56:63 -> a
-    85:94:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):61:70 -> a
-    95:95:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):68:68 -> a
-    96:256:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):82:242 -> a
-    257:257:java.lang.String com.roiquery.analytics.utils.NetworkUtil.getNetworkTypeString(android.content.Context):86:86 -> a
-    257:257:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):246 -> a
-    258:288:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):247:277 -> a
-    289:303:boolean isValidProperty(org.json.JSONObject):303:317 -> a
-    304:316:boolean isValidProperty(org.json.JSONObject):315:327 -> a
-    317:331:boolean isValidProperty(org.json.JSONObject):325:339 -> a
-    332:332:boolean isValidProperty(org.json.JSONObject):305:305 -> a
-    333:333:boolean hasPresetTag(java.lang.String):347:347 -> a
-    1:11:boolean isValidEventName(java.lang.String):283:293 -> b
-    12:12:boolean isValidEventName(java.lang.String):292:292 -> b
-    13:13:boolean isValidEventName(java.lang.String):284:284 -> b
+    68:68:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):54:54 -> a
+    69:76:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):52:59 -> a
+    77:86:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):57:66 -> a
+    87:87:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):64:64 -> a
+    88:248:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):78:238 -> a
+    249:249:java.lang.String com.roiquery.analytics.utils.NetworkUtil.getNetworkTypeString(android.content.Context):86:86 -> a
+    249:249:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):242 -> a
+    250:280:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):243:273 -> a
+    281:295:boolean isValidProperty(org.json.JSONObject):299:313 -> a
+    296:308:boolean isValidProperty(org.json.JSONObject):311:323 -> a
+    309:323:boolean isValidProperty(org.json.JSONObject):321:335 -> a
+    324:324:boolean isValidProperty(org.json.JSONObject):301:301 -> a
+    325:325:boolean hasPresetTag(java.lang.String):343:343 -> a
+    1:11:boolean isValidEventName(java.lang.String):279:289 -> b
+    12:12:boolean isValidEventName(java.lang.String):288:288 -> b
+    13:13:boolean isValidEventName(java.lang.String):280:280 -> b
 com.roiquery.analytics.utils.EventUtils$getEventInfo$1 -> n.g$a:
 # {"id":"sourceFile","fileName":"EventUtils.kt"}
     com.roiquery.analytics.utils.EventUtils this$0 -> f
@@ -3790,7 +3788,6 @@ com.roiquery.analytics.utils.LogUtils -> com.roiquery.analytics.utils.LogUtils:
     char[] T -> g
     java.lang.String TOP_CORNER -> m
     int JSON -> i
-    org.slf4j.Logger slf4jLogger -> D
     java.lang.String LEFT_BORDER -> o
     java.lang.String SIDE_DIVIDER -> q
     int E -> e
@@ -3803,171 +3800,165 @@ com.roiquery.analytics.utils.LogUtils -> com.roiquery.analytics.utils.LogUtils:
     java.lang.String ARGS -> y
     int MAX_LEN -> v
     com.roiquery.analytics.utils.LogUtils$Config CONFIG -> A
-    1:25:void <clinit>():62:86 -> <clinit>
-    26:26:void com.roiquery.analytics.utils.LogUtils$Config.<init>(com.roiquery.analytics.utils.LogUtils$1):514:514 -> <clinit>
-    26:26:void <clinit>():86 -> <clinit>
-    27:33:void <clinit>():86:92 -> <clinit>
-    1:2:void <init>():94:95 -> <init>
-    1:1:boolean access$400(java.lang.String):48:48 -> a
-    2:2:java.lang.Class access$500(com.roiquery.analytics.utils.LogUtils$IFormatter):48:48 -> a
-    3:3:java.util.HashMap access$600():48:48 -> a
-    4:4:java.lang.String access$900(java.lang.Object):48:48 -> a
-    5:5:void a(java.lang.Object[]):147:147 -> a
-    6:6:void a(java.lang.String,java.lang.Object[]):151:151 -> a
-    7:7:void file(int,java.lang.Object):159:159 -> a
-    8:8:void file(java.lang.String,java.lang.Object):163:163 -> a
-    9:9:void file(int,java.lang.String,java.lang.Object):167:167 -> a
-    10:10:void xml(int,java.lang.String):191:191 -> a
-    11:11:void xml(java.lang.String,java.lang.String):195:195 -> a
-    12:12:void log(int,java.lang.String,java.lang.Object[]):203:203 -> a
-    13:13:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogSwitch():615:615 -> a
-    13:13:void log(int,java.lang.String,java.lang.Object[]):203 -> a
+    1:25:void <clinit>():56:80 -> <clinit>
+    26:26:void com.roiquery.analytics.utils.LogUtils$Config.<init>(com.roiquery.analytics.utils.LogUtils$1):479:479 -> <clinit>
+    26:26:void <clinit>():80 -> <clinit>
+    27:31:void <clinit>():80:84 -> <clinit>
+    1:2:void <init>():86:87 -> <init>
+    1:1:boolean access$400(java.lang.String):42:42 -> a
+    2:2:java.lang.Class access$500(com.roiquery.analytics.utils.LogUtils$IFormatter):42:42 -> a
+    3:3:java.util.HashMap access$600():42:42 -> a
+    4:4:java.lang.String access$900(java.lang.Object):42:42 -> a
+    5:5:void a(java.lang.Object[]):139:139 -> a
+    6:6:void a(java.lang.String,java.lang.Object[]):143:143 -> a
+    7:7:void file(int,java.lang.Object):151:151 -> a
+    8:8:void file(java.lang.String,java.lang.Object):155:155 -> a
+    9:9:void file(int,java.lang.String,java.lang.Object):159:159 -> a
+    10:10:void xml(int,java.lang.String):183:183 -> a
+    11:11:void xml(java.lang.String,java.lang.String):187:187 -> a
+    12:12:void log(int,java.lang.String,java.lang.Object[]):195:195 -> a
+    13:13:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogSwitch():580:580 -> a
+    13:13:void log(int,java.lang.String,java.lang.Object[]):195 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    14:14:void log(int,java.lang.String,java.lang.Object[]):205:205 -> a
-    15:15:boolean com.roiquery.analytics.utils.LogUtils$Config.isLog2ConsoleSwitch():619:619 -> a
-    15:15:void log(int,java.lang.String,java.lang.Object[]):206 -> a
+    14:14:boolean com.roiquery.analytics.utils.LogUtils$Config.isLog2ConsoleSwitch():584:584 -> a
+    14:14:void log(int,java.lang.String,java.lang.Object[]):197 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    16:16:int com.roiquery.analytics.utils.LogUtils$Config.access$100(com.roiquery.analytics.utils.LogUtils$Config):514:514 -> a
-    16:16:void log(int,java.lang.String,java.lang.Object[]):207 -> a
-    17:18:void log(int,java.lang.String,java.lang.Object[]):209:210 -> a
-    19:19:com.roiquery.analytics.utils.LogUtils$OnConsoleOutputListener com.roiquery.analytics.utils.LogUtils$Config.access$200(com.roiquery.analytics.utils.LogUtils$Config):514:514 -> a
-    19:19:void log(int,java.lang.String,java.lang.Object[]):211 -> a
-    20:20:void log(int,java.lang.String,java.lang.Object[]):212:212 -> a
-    21:21:boolean com.roiquery.analytics.utils.LogUtils$Config.isLog2ConsoleSwitch():619:619 -> a
-    21:21:void log(int,java.lang.String,java.lang.Object[]):214 -> a
+    15:15:int com.roiquery.analytics.utils.LogUtils$Config.access$100(com.roiquery.analytics.utils.LogUtils$Config):479:479 -> a
+    15:15:void log(int,java.lang.String,java.lang.Object[]):198 -> a
+    16:17:void log(int,java.lang.String,java.lang.Object[]):200:201 -> a
+    18:18:com.roiquery.analytics.utils.LogUtils$OnConsoleOutputListener com.roiquery.analytics.utils.LogUtils$Config.access$200(com.roiquery.analytics.utils.LogUtils$Config):479:479 -> a
+    18:18:void log(int,java.lang.String,java.lang.Object[]):202 -> a
+    19:19:void log(int,java.lang.String,java.lang.Object[]):203:203 -> a
+    20:20:boolean com.roiquery.analytics.utils.LogUtils$Config.isLog2ConsoleSwitch():584:584 -> a
+    20:20:void log(int,java.lang.String,java.lang.Object[]):205 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    22:22:int com.roiquery.analytics.utils.LogUtils$Config.access$100(com.roiquery.analytics.utils.LogUtils$Config):514:514 -> a
-    22:22:void log(int,java.lang.String,java.lang.Object[]):214 -> a
-    23:23:void log(int,java.lang.String,java.lang.Object[]):215:215 -> a
-    24:37:java.lang.String getFileName(java.lang.StackTraceElement):308:321 -> a
-    38:57:java.lang.String processBody(int,java.lang.Object[]):325:344 -> a
-    58:58:void print2Console(int,java.lang.String,java.lang.String[],java.lang.String):370:370 -> a
-    59:59:boolean com.roiquery.analytics.utils.LogUtils$Config.isSingleTagSwitch():637:637 -> a
-    59:59:void print2Console(int,java.lang.String,java.lang.String[],java.lang.String):370 -> a
+    21:21:int com.roiquery.analytics.utils.LogUtils$Config.access$100(com.roiquery.analytics.utils.LogUtils$Config):479:479 -> a
+    21:21:void log(int,java.lang.String,java.lang.Object[]):205 -> a
+    22:22:void log(int,java.lang.String,java.lang.Object[]):206:206 -> a
+    23:36:java.lang.String getFileName(java.lang.StackTraceElement):273:286 -> a
+    37:56:java.lang.String processBody(int,java.lang.Object[]):290:309 -> a
+    57:57:void print2Console(int,java.lang.String,java.lang.String[],java.lang.String):335:335 -> a
+    58:58:boolean com.roiquery.analytics.utils.LogUtils$Config.isSingleTagSwitch():602:602 -> a
+    58:58:void print2Console(int,java.lang.String,java.lang.String[],java.lang.String):335 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    60:65:void print2Console(int,java.lang.String,java.lang.String[],java.lang.String):371:376 -> a
-    66:66:void printBorder(int,java.lang.String,boolean):381:381 -> a
-    67:67:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogBorderSwitch():633:633 -> a
-    67:67:void printBorder(int,java.lang.String,boolean):381 -> a
+    59:64:void print2Console(int,java.lang.String,java.lang.String[],java.lang.String):336:341 -> a
+    65:65:void printBorder(int,java.lang.String,boolean):346:346 -> a
+    66:66:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogBorderSwitch():598:598 -> a
+    66:66:void printBorder(int,java.lang.String,boolean):346 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    68:68:void printBorder(int,java.lang.String,boolean):382:382 -> a
-    69:69:void print2Console(int,java.lang.String,java.lang.String):489:489 -> a
-    69:69:void printBorder(int,java.lang.String,boolean):382 -> a
-    70:71:void printHead(int,java.lang.String,java.lang.String[]):388:389 -> a
-    72:72:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogBorderSwitch():633:633 -> a
-    72:72:void printHead(int,java.lang.String,java.lang.String[]):389 -> a
+    67:67:void printBorder(int,java.lang.String,boolean):347:347 -> a
+    68:68:void print2Console(int,java.lang.String,java.lang.String):454:454 -> a
+    68:68:void printBorder(int,java.lang.String,boolean):347 -> a
+    69:70:void printHead(int,java.lang.String,java.lang.String[]):353:354 -> a
+    71:71:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogBorderSwitch():598:598 -> a
+    71:71:void printHead(int,java.lang.String,java.lang.String[]):354 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    73:73:void printHead(int,java.lang.String,java.lang.String[]):389:389 -> a
-    74:74:void print2Console(int,java.lang.String,java.lang.String):489:489 -> a
-    74:74:void printHead(int,java.lang.String,java.lang.String[]):389 -> a
-    75:75:void printHead(int,java.lang.String,java.lang.String[]):391:391 -> a
-    76:76:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogBorderSwitch():633:633 -> a
-    76:76:void printHead(int,java.lang.String,java.lang.String[]):391 -> a
+    72:72:void printHead(int,java.lang.String,java.lang.String[]):354:354 -> a
+    73:73:void print2Console(int,java.lang.String,java.lang.String):454:454 -> a
+    73:73:void printHead(int,java.lang.String,java.lang.String[]):354 -> a
+    74:74:void printHead(int,java.lang.String,java.lang.String[]):356:356 -> a
+    75:75:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogBorderSwitch():598:598 -> a
+    75:75:void printHead(int,java.lang.String,java.lang.String[]):356 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    77:77:void printHead(int,java.lang.String,java.lang.String[]):391:391 -> a
-    78:78:void print2Console(int,java.lang.String,java.lang.String):489:489 -> a
-    78:78:void printHead(int,java.lang.String,java.lang.String[]):391 -> a
-    79:79:void print2Console(int,java.lang.String,java.lang.String):489:489 -> a
-    1:1:char[] access$700():48:48 -> b
-    2:2:void d(java.lang.Object[]):115:115 -> b
-    3:3:void d(java.lang.String,java.lang.Object[]):119:119 -> b
-    4:4:void file(java.lang.Object):155:155 -> b
-    5:5:void json(java.lang.String,java.lang.Object):179:179 -> b
-    6:6:void json(int,java.lang.String,java.lang.Object):183:183 -> b
-    7:7:void slf4jLog(int,java.lang.String,java.lang.Object[]):237:237 -> b
-    8:8:void slf4jLog(int,java.lang.String,java.lang.Object[]):234:234 -> b
-    9:9:void slf4jLog(int,java.lang.String,java.lang.Object[]):231:231 -> b
-    10:10:void slf4jLog(int,java.lang.String,java.lang.Object[]):228:228 -> b
-    11:28:void slf4jLog(int,java.lang.String,java.lang.Object[]):225:242 -> b
-    29:32:java.lang.String formatObject(int,java.lang.Object):348:351 -> b
-    33:45:void printMsg(int,java.lang.String,java.lang.String):396:408 -> b
-    46:47:java.lang.String processSingleTagMsg(int,java.lang.String,java.lang.String[],java.lang.String):428:429 -> b
-    48:48:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogBorderSwitch():633:633 -> b
-    48:48:java.lang.String processSingleTagMsg(int,java.lang.String,java.lang.String[],java.lang.String):429 -> b
+    76:76:void printHead(int,java.lang.String,java.lang.String[]):356:356 -> a
+    77:77:void print2Console(int,java.lang.String,java.lang.String):454:454 -> a
+    77:77:void printHead(int,java.lang.String,java.lang.String[]):356 -> a
+    78:78:void print2Console(int,java.lang.String,java.lang.String):454:454 -> a
+    1:1:char[] access$700():42:42 -> b
+    2:2:void d(java.lang.Object[]):107:107 -> b
+    3:3:void d(java.lang.String,java.lang.Object[]):111:111 -> b
+    4:4:void file(java.lang.Object):147:147 -> b
+    5:5:void json(java.lang.String,java.lang.Object):171:171 -> b
+    6:6:void json(int,java.lang.String,java.lang.Object):175:175 -> b
+    7:10:java.lang.String formatObject(int,java.lang.Object):313:316 -> b
+    11:23:void printMsg(int,java.lang.String,java.lang.String):361:373 -> b
+    24:25:java.lang.String processSingleTagMsg(int,java.lang.String,java.lang.String[],java.lang.String):393:394 -> b
+    26:26:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogBorderSwitch():598:598 -> b
+    26:26:java.lang.String processSingleTagMsg(int,java.lang.String,java.lang.String[],java.lang.String):394 -> b
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    49:70:java.lang.String processSingleTagMsg(int,java.lang.String,java.lang.String[],java.lang.String):430:451 -> b
-    71:72:boolean isSpace(java.lang.String):504:505 -> b
-    73:93:java.lang.Class getTypeClassFromParadigm(com.roiquery.analytics.utils.LogUtils$IFormatter):967:987 -> b
-    1:1:java.lang.String access$800():48:48 -> c
-    2:2:void e(java.lang.Object[]):139:139 -> c
-    3:3:void e(java.lang.String,java.lang.Object[]):143:143 -> c
-    4:4:void json(int,java.lang.Object):175:175 -> c
-    5:5:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):247:247 -> c
-    6:6:boolean com.roiquery.analytics.utils.LogUtils$Config.access$300(com.roiquery.analytics.utils.LogUtils$Config):514:514 -> c
-    6:6:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):247 -> c
-    7:7:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogHeadSwitch():628:628 -> c
-    7:7:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):247 -> c
+    27:48:java.lang.String processSingleTagMsg(int,java.lang.String,java.lang.String[],java.lang.String):395:416 -> b
+    49:50:boolean isSpace(java.lang.String):469:470 -> b
+    51:71:java.lang.Class getTypeClassFromParadigm(com.roiquery.analytics.utils.LogUtils$IFormatter):932:952 -> b
+    1:1:java.lang.String access$800():42:42 -> c
+    2:2:void e(java.lang.Object[]):131:131 -> c
+    3:3:void e(java.lang.String,java.lang.Object[]):135:135 -> c
+    4:4:void json(int,java.lang.Object):167:167 -> c
+    5:5:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):212:212 -> c
+    6:6:boolean com.roiquery.analytics.utils.LogUtils$Config.access$300(com.roiquery.analytics.utils.LogUtils$Config):479:479 -> c
+    6:6:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):212 -> c
+    7:7:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogHeadSwitch():593:593 -> c
+    7:7:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):212 -> c
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    8:10:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):248:250 -> c
-    11:11:int com.roiquery.analytics.utils.LogUtils$Config.getStackOffset():651:651 -> c
-    11:11:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):251 -> c
+    8:10:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):213:215 -> c
+    11:11:int com.roiquery.analytics.utils.LogUtils$Config.getStackOffset():616:616 -> c
+    11:11:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):216 -> c
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    12:14:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):252:254 -> c
-    15:15:boolean com.roiquery.analytics.utils.LogUtils$Config.access$300(com.roiquery.analytics.utils.LogUtils$Config):514:514 -> c
-    15:15:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):255 -> c
-    16:23:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):255:262 -> c
-    24:24:boolean com.roiquery.analytics.utils.LogUtils$Config.access$300(com.roiquery.analytics.utils.LogUtils$Config):514:514 -> c
-    24:24:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):263 -> c
-    25:27:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):263:265 -> c
-    28:28:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogHeadSwitch():628:628 -> c
-    28:28:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):267 -> c
+    12:14:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):217:219 -> c
+    15:15:boolean com.roiquery.analytics.utils.LogUtils$Config.access$300(com.roiquery.analytics.utils.LogUtils$Config):479:479 -> c
+    15:15:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):220 -> c
+    16:23:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):220:227 -> c
+    24:24:boolean com.roiquery.analytics.utils.LogUtils$Config.access$300(com.roiquery.analytics.utils.LogUtils$Config):479:479 -> c
+    24:24:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):228 -> c
+    25:27:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):228:230 -> c
+    28:28:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogHeadSwitch():593:593 -> c
+    28:28:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):232 -> c
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    29:36:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):268:275 -> c
-    37:44:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):270:277 -> c
-    45:45:int com.roiquery.analytics.utils.LogUtils$Config.getStackDeep():647:647 -> c
-    45:45:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):278 -> c
+    29:36:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):233:240 -> c
+    37:44:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):235:242 -> c
+    45:45:int com.roiquery.analytics.utils.LogUtils$Config.getStackDeep():612:612 -> c
+    45:45:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):243 -> c
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    46:50:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):279:283 -> c
-    51:66:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):282:297 -> c
-    67:79:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):292:304 -> c
-    80:85:java.lang.String formatObject(java.lang.Object):355:360 -> c
-    86:86:java.lang.String com.roiquery.analytics.utils.LogUtils$LogFormatter.object2String(java.lang.Object):713:713 -> c
-    86:86:java.lang.String formatObject(java.lang.Object):363 -> c
-    87:88:void printSingleTagMsg(int,java.lang.String,java.lang.String):455:456 -> c
-    89:89:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogBorderSwitch():633:633 -> c
-    89:89:void printSingleTagMsg(int,java.lang.String,java.lang.String):456 -> c
+    46:50:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):244:248 -> c
+    51:66:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):247:262 -> c
+    67:79:com.roiquery.analytics.utils.LogUtils$TagHead processTagAndHead(java.lang.String):257:269 -> c
+    80:85:java.lang.String formatObject(java.lang.Object):320:325 -> c
+    86:86:java.lang.String com.roiquery.analytics.utils.LogUtils$LogFormatter.object2String(java.lang.Object):678:678 -> c
+    86:86:java.lang.String formatObject(java.lang.Object):328 -> c
+    87:88:void printSingleTagMsg(int,java.lang.String,java.lang.String):420:421 -> c
+    89:89:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogBorderSwitch():598:598 -> c
+    89:89:void printSingleTagMsg(int,java.lang.String,java.lang.String):421 -> c
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    90:93:void printSingleTagMsg(int,java.lang.String,java.lang.String):456:459 -> c
-    94:94:void print2Console(int,java.lang.String,java.lang.String):489:489 -> c
-    94:94:void printSingleTagMsg(int,java.lang.String,java.lang.String):459 -> c
-    95:96:void printSingleTagMsg(int,java.lang.String,java.lang.String):462:463 -> c
-    97:97:void print2Console(int,java.lang.String,java.lang.String):489:489 -> c
-    97:97:void printSingleTagMsg(int,java.lang.String,java.lang.String):462 -> c
-    98:99:void printSingleTagMsg(int,java.lang.String,java.lang.String):468:469 -> c
-    100:100:void print2Console(int,java.lang.String,java.lang.String):489:489 -> c
-    100:100:void printSingleTagMsg(int,java.lang.String,java.lang.String):468 -> c
-    101:101:void printSingleTagMsg(int,java.lang.String,java.lang.String):472:472 -> c
-    102:102:void print2Console(int,java.lang.String,java.lang.String):489:489 -> c
-    102:102:void printSingleTagMsg(int,java.lang.String,java.lang.String):472 -> c
-    103:104:void printSingleTagMsg(int,java.lang.String,java.lang.String):475:476 -> c
-    105:105:void print2Console(int,java.lang.String,java.lang.String):489:489 -> c
-    105:105:void printSingleTagMsg(int,java.lang.String,java.lang.String):475 -> c
-    106:106:void printSingleTagMsg(int,java.lang.String,java.lang.String):480:480 -> c
-    107:107:void print2Console(int,java.lang.String,java.lang.String):489:489 -> c
-    107:107:void printSingleTagMsg(int,java.lang.String,java.lang.String):480 -> c
-    108:108:void print2Console(int,java.lang.String,java.lang.String):489:489 -> c
-    108:108:void printSingleTagMsg(int,java.lang.String,java.lang.String):484 -> c
-    1:1:com.roiquery.analytics.utils.LogUtils$Config getConfig():99:99 -> d
-    2:2:void i(java.lang.Object[]):123:123 -> d
-    3:3:void i(java.lang.String,java.lang.Object[]):127:127 -> d
-    4:4:void xml(java.lang.String):187:187 -> d
-    5:5:void printSubMsg(int,java.lang.String,java.lang.String):413:413 -> d
-    6:6:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogBorderSwitch():633:633 -> d
-    6:6:void printSubMsg(int,java.lang.String,java.lang.String):413 -> d
+    90:93:void printSingleTagMsg(int,java.lang.String,java.lang.String):421:424 -> c
+    94:94:void print2Console(int,java.lang.String,java.lang.String):454:454 -> c
+    94:94:void printSingleTagMsg(int,java.lang.String,java.lang.String):424 -> c
+    95:96:void printSingleTagMsg(int,java.lang.String,java.lang.String):427:428 -> c
+    97:97:void print2Console(int,java.lang.String,java.lang.String):454:454 -> c
+    97:97:void printSingleTagMsg(int,java.lang.String,java.lang.String):427 -> c
+    98:99:void printSingleTagMsg(int,java.lang.String,java.lang.String):433:434 -> c
+    100:100:void print2Console(int,java.lang.String,java.lang.String):454:454 -> c
+    100:100:void printSingleTagMsg(int,java.lang.String,java.lang.String):433 -> c
+    101:101:void printSingleTagMsg(int,java.lang.String,java.lang.String):437:437 -> c
+    102:102:void print2Console(int,java.lang.String,java.lang.String):454:454 -> c
+    102:102:void printSingleTagMsg(int,java.lang.String,java.lang.String):437 -> c
+    103:104:void printSingleTagMsg(int,java.lang.String,java.lang.String):440:441 -> c
+    105:105:void print2Console(int,java.lang.String,java.lang.String):454:454 -> c
+    105:105:void printSingleTagMsg(int,java.lang.String,java.lang.String):440 -> c
+    106:106:void printSingleTagMsg(int,java.lang.String,java.lang.String):445:445 -> c
+    107:107:void print2Console(int,java.lang.String,java.lang.String):454:454 -> c
+    107:107:void printSingleTagMsg(int,java.lang.String,java.lang.String):445 -> c
+    108:108:void print2Console(int,java.lang.String,java.lang.String):454:454 -> c
+    108:108:void printSingleTagMsg(int,java.lang.String,java.lang.String):449 -> c
+    1:1:com.roiquery.analytics.utils.LogUtils$Config getConfig():91:91 -> d
+    2:2:void i(java.lang.Object[]):115:115 -> d
+    3:3:void i(java.lang.String,java.lang.Object[]):119:119 -> d
+    4:4:void xml(java.lang.String):179:179 -> d
+    5:5:void printSubMsg(int,java.lang.String,java.lang.String):378:378 -> d
+    6:6:boolean com.roiquery.analytics.utils.LogUtils$Config.isLogBorderSwitch():598:598 -> d
+    6:6:void printSubMsg(int,java.lang.String,java.lang.String):378 -> d
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    7:7:void print2Console(int,java.lang.String,java.lang.String):489:489 -> d
-    7:7:void printSubMsg(int,java.lang.String,java.lang.String):414 -> d
-    8:10:void printSubMsg(int,java.lang.String,java.lang.String):418:420 -> d
-    11:11:void print2Console(int,java.lang.String,java.lang.String):489:489 -> d
-    11:11:void printSubMsg(int,java.lang.String,java.lang.String):420 -> d
-    12:38:java.lang.Class getClassFromObject(java.lang.Object):993:1019 -> d
-    1:1:void printStackTrace(java.lang.Object[]):104:104 -> e
-    2:2:void v(java.lang.String,java.lang.Object[]):111:111 -> e
-    3:3:void json(java.lang.Object):171:171 -> e
-    4:4:void xml(int,java.lang.String,java.lang.String):199:199 -> e
-    1:1:void v(java.lang.Object[]):107:107 -> f
-    2:2:void w(java.lang.String,java.lang.Object[]):135:135 -> f
-    1:1:void w(java.lang.Object[]):131:131 -> g
+    7:7:void print2Console(int,java.lang.String,java.lang.String):454:454 -> d
+    7:7:void printSubMsg(int,java.lang.String,java.lang.String):379 -> d
+    8:10:void printSubMsg(int,java.lang.String,java.lang.String):383:385 -> d
+    11:11:void print2Console(int,java.lang.String,java.lang.String):454:454 -> d
+    11:11:void printSubMsg(int,java.lang.String,java.lang.String):385 -> d
+    12:38:java.lang.Class getClassFromObject(java.lang.Object):958:984 -> d
+    1:1:void printStackTrace(java.lang.Object[]):96:96 -> e
+    2:2:void v(java.lang.String,java.lang.Object[]):103:103 -> e
+    3:3:void json(java.lang.Object):163:163 -> e
+    4:4:void xml(int,java.lang.String,java.lang.String):191:191 -> e
+    1:1:void v(java.lang.Object[]):99:99 -> f
+    2:2:void w(java.lang.String,java.lang.Object[]):127:127 -> f
+    1:1:void w(java.lang.Object[]):123:123 -> g
 com.roiquery.analytics.utils.LogUtils$1 -> com.roiquery.analytics.utils.LogUtils$a:
 # {"id":"sourceFile","fileName":"LogUtils.java"}
 com.roiquery.analytics.utils.LogUtils$Config -> com.roiquery.analytics.utils.LogUtils$b:
@@ -3984,90 +3975,90 @@ com.roiquery.analytics.utils.LogUtils$Config -> com.roiquery.analytics.utils.Log
     java.lang.String mGlobalTag -> c
     boolean mLog2ConsoleSwitch -> b
     boolean mTagIsSpace -> d
-    1:1:void <init>(com.roiquery.analytics.utils.LogUtils$1):514:514 -> <init>
-    2:2:void <init>():535:535 -> <init>
-    3:15:void <init>():517:529 -> <init>
-    1:1:int access$100(com.roiquery.analytics.utils.LogUtils$Config):514:514 -> a
-    2:7:com.roiquery.analytics.utils.LogUtils$Config setGlobalTag(java.lang.String):550:555 -> a
-    8:8:com.roiquery.analytics.utils.LogUtils$Config setBorderSwitch(boolean):568:568 -> a
-    9:9:com.roiquery.analytics.utils.LogUtils$Config setConsoleFilter(int):578:578 -> a
-    10:10:com.roiquery.analytics.utils.LogUtils$Config addFormatter(com.roiquery.analytics.utils.LogUtils$IFormatter):600:600 -> a
-    11:11:java.lang.Class com.roiquery.analytics.utils.LogUtils.access$500(com.roiquery.analytics.utils.LogUtils$IFormatter):48:48 -> a
-    11:11:com.roiquery.analytics.utils.LogUtils$Config addFormatter(com.roiquery.analytics.utils.LogUtils$IFormatter):600 -> a
-    12:12:com.roiquery.analytics.utils.LogUtils$Config addFormatter(com.roiquery.analytics.utils.LogUtils$IFormatter):600:600 -> a
-    13:13:com.roiquery.analytics.utils.LogUtils$Config setOnConsoleOutputListener(com.roiquery.analytics.utils.LogUtils$OnConsoleOutputListener):607:607 -> a
-    14:14:char getConsoleFilter():641:641 -> a
-    1:1:com.roiquery.analytics.utils.LogUtils$OnConsoleOutputListener access$200(com.roiquery.analytics.utils.LogUtils$Config):514:514 -> b
-    2:2:com.roiquery.analytics.utils.LogUtils$Config setConsoleSwitch(boolean):545:545 -> b
-    3:3:com.roiquery.analytics.utils.LogUtils$Config setSaveDays(int):594:594 -> b
-    4:5:java.lang.String getGlobalTag():623:624 -> b
-    1:1:boolean access$300(com.roiquery.analytics.utils.LogUtils$Config):514:514 -> c
-    2:2:com.roiquery.analytics.utils.LogUtils$Config setLogHeadSwitch(boolean):561:561 -> c
-    3:3:com.roiquery.analytics.utils.LogUtils$Config setStackDeep(int):584:584 -> c
-    4:4:int getSaveDays():655:655 -> c
-    1:1:com.roiquery.analytics.utils.LogUtils$Config setLogSwitch(boolean):540:540 -> d
-    2:2:com.roiquery.analytics.utils.LogUtils$Config setStackOffset(int):589:589 -> d
-    3:3:int getStackDeep():647:647 -> d
-    1:1:com.roiquery.analytics.utils.LogUtils$Config setSingleTagSwitch(boolean):573:573 -> e
-    2:2:int getStackOffset():651:651 -> e
-    1:1:boolean isLog2ConsoleSwitch():619:619 -> f
-    1:1:boolean isLogBorderSwitch():633:633 -> g
-    1:1:boolean isLogHeadSwitch():628:628 -> h
-    1:1:boolean isLogSwitch():615:615 -> i
-    1:1:boolean isSingleTagSwitch():637:637 -> j
-    1:2:java.lang.String toString():664:665 -> toString
-    3:3:boolean isLogSwitch():615:615 -> toString
-    3:3:java.lang.String toString():665 -> toString
-    4:4:java.lang.String toString():665:665 -> toString
-    5:5:java.lang.String com.roiquery.analytics.utils.LogUtils.access$800():48:48 -> toString
-    5:5:java.lang.String toString():666 -> toString
-    6:6:java.lang.String toString():666:666 -> toString
-    7:7:boolean isLog2ConsoleSwitch():619:619 -> toString
-    7:7:java.lang.String toString():666 -> toString
-    8:10:java.lang.String toString():666:668 -> toString
-    11:11:boolean isLogHeadSwitch():628:628 -> toString
-    11:11:java.lang.String toString():668 -> toString
-    12:13:java.lang.String toString():668:669 -> toString
-    14:14:boolean isLogBorderSwitch():633:633 -> toString
-    14:14:java.lang.String toString():669 -> toString
-    15:16:java.lang.String toString():669:670 -> toString
-    17:17:boolean isSingleTagSwitch():637:637 -> toString
-    17:17:java.lang.String toString():670 -> toString
-    18:20:java.lang.String toString():670:672 -> toString
-    21:21:int getStackDeep():647:647 -> toString
-    21:21:java.lang.String toString():672 -> toString
-    22:23:java.lang.String toString():672:673 -> toString
-    24:24:int getStackOffset():651:651 -> toString
-    24:24:java.lang.String toString():673 -> toString
-    25:26:java.lang.String toString():673:674 -> toString
-    27:27:int getSaveDays():655:655 -> toString
-    27:27:java.lang.String toString():674 -> toString
-    28:29:java.lang.String toString():674:675 -> toString
-    30:30:java.util.HashMap com.roiquery.analytics.utils.LogUtils.access$600():48:48 -> toString
-    30:30:java.lang.String toString():675 -> toString
-    31:32:java.lang.String toString():675:676 -> toString
+    1:1:void <init>(com.roiquery.analytics.utils.LogUtils$1):479:479 -> <init>
+    2:2:void <init>():500:500 -> <init>
+    3:15:void <init>():482:494 -> <init>
+    1:1:int access$100(com.roiquery.analytics.utils.LogUtils$Config):479:479 -> a
+    2:7:com.roiquery.analytics.utils.LogUtils$Config setGlobalTag(java.lang.String):515:520 -> a
+    8:8:com.roiquery.analytics.utils.LogUtils$Config setBorderSwitch(boolean):533:533 -> a
+    9:9:com.roiquery.analytics.utils.LogUtils$Config setConsoleFilter(int):543:543 -> a
+    10:10:com.roiquery.analytics.utils.LogUtils$Config addFormatter(com.roiquery.analytics.utils.LogUtils$IFormatter):565:565 -> a
+    11:11:java.lang.Class com.roiquery.analytics.utils.LogUtils.access$500(com.roiquery.analytics.utils.LogUtils$IFormatter):42:42 -> a
+    11:11:com.roiquery.analytics.utils.LogUtils$Config addFormatter(com.roiquery.analytics.utils.LogUtils$IFormatter):565 -> a
+    12:12:com.roiquery.analytics.utils.LogUtils$Config addFormatter(com.roiquery.analytics.utils.LogUtils$IFormatter):565:565 -> a
+    13:13:com.roiquery.analytics.utils.LogUtils$Config setOnConsoleOutputListener(com.roiquery.analytics.utils.LogUtils$OnConsoleOutputListener):572:572 -> a
+    14:14:char getConsoleFilter():606:606 -> a
+    1:1:com.roiquery.analytics.utils.LogUtils$OnConsoleOutputListener access$200(com.roiquery.analytics.utils.LogUtils$Config):479:479 -> b
+    2:2:com.roiquery.analytics.utils.LogUtils$Config setConsoleSwitch(boolean):510:510 -> b
+    3:3:com.roiquery.analytics.utils.LogUtils$Config setSaveDays(int):559:559 -> b
+    4:5:java.lang.String getGlobalTag():588:589 -> b
+    1:1:boolean access$300(com.roiquery.analytics.utils.LogUtils$Config):479:479 -> c
+    2:2:com.roiquery.analytics.utils.LogUtils$Config setLogHeadSwitch(boolean):526:526 -> c
+    3:3:com.roiquery.analytics.utils.LogUtils$Config setStackDeep(int):549:549 -> c
+    4:4:int getSaveDays():620:620 -> c
+    1:1:com.roiquery.analytics.utils.LogUtils$Config setLogSwitch(boolean):505:505 -> d
+    2:2:com.roiquery.analytics.utils.LogUtils$Config setStackOffset(int):554:554 -> d
+    3:3:int getStackDeep():612:612 -> d
+    1:1:com.roiquery.analytics.utils.LogUtils$Config setSingleTagSwitch(boolean):538:538 -> e
+    2:2:int getStackOffset():616:616 -> e
+    1:1:boolean isLog2ConsoleSwitch():584:584 -> f
+    1:1:boolean isLogBorderSwitch():598:598 -> g
+    1:1:boolean isLogHeadSwitch():593:593 -> h
+    1:1:boolean isLogSwitch():580:580 -> i
+    1:1:boolean isSingleTagSwitch():602:602 -> j
+    1:2:java.lang.String toString():629:630 -> toString
+    3:3:boolean isLogSwitch():580:580 -> toString
+    3:3:java.lang.String toString():630 -> toString
+    4:4:java.lang.String toString():630:630 -> toString
+    5:5:java.lang.String com.roiquery.analytics.utils.LogUtils.access$800():42:42 -> toString
+    5:5:java.lang.String toString():631 -> toString
+    6:6:java.lang.String toString():631:631 -> toString
+    7:7:boolean isLog2ConsoleSwitch():584:584 -> toString
+    7:7:java.lang.String toString():631 -> toString
+    8:10:java.lang.String toString():631:633 -> toString
+    11:11:boolean isLogHeadSwitch():593:593 -> toString
+    11:11:java.lang.String toString():633 -> toString
+    12:13:java.lang.String toString():633:634 -> toString
+    14:14:boolean isLogBorderSwitch():598:598 -> toString
+    14:14:java.lang.String toString():634 -> toString
+    15:16:java.lang.String toString():634:635 -> toString
+    17:17:boolean isSingleTagSwitch():602:602 -> toString
+    17:17:java.lang.String toString():635 -> toString
+    18:20:java.lang.String toString():635:637 -> toString
+    21:21:int getStackDeep():612:612 -> toString
+    21:21:java.lang.String toString():637 -> toString
+    22:23:java.lang.String toString():637:638 -> toString
+    24:24:int getStackOffset():616:616 -> toString
+    24:24:java.lang.String toString():638 -> toString
+    25:26:java.lang.String toString():638:639 -> toString
+    27:27:int getSaveDays():620:620 -> toString
+    27:27:java.lang.String toString():639 -> toString
+    28:29:java.lang.String toString():639:640 -> toString
+    30:30:java.util.HashMap com.roiquery.analytics.utils.LogUtils.access$600():42:42 -> toString
+    30:30:java.lang.String toString():640 -> toString
+    31:32:java.lang.String toString():640:641 -> toString
 com.roiquery.analytics.utils.LogUtils$IFileWriter -> com.roiquery.analytics.utils.LogUtils$c:
 # {"id":"sourceFile","fileName":"LogUtils.java"}
     void write(java.lang.String,java.lang.String) -> a
 com.roiquery.analytics.utils.LogUtils$IFormatter -> com.roiquery.analytics.utils.LogUtils$d:
 # {"id":"sourceFile","fileName":"LogUtils.java"}
-    1:1:void <init>():682:682 -> <init>
+    1:1:void <init>():647:647 -> <init>
     java.lang.String format(java.lang.Object) -> a
 com.roiquery.analytics.utils.LogUtils$LogFormatter -> com.roiquery.analytics.utils.LogUtils$e:
 # {"id":"sourceFile","fileName":"LogUtils.java"}
-    1:1:void <init>():710:710 -> <init>
-    1:11:java.lang.String object2String(java.lang.Object,int):717:727 -> a
-    12:28:java.lang.String bundle2String(android.os.Bundle):731:747 -> a
-    29:135:java.lang.String intent2String(android.content.Intent):752:858 -> a
-    136:170:void clipData2String(android.content.ClipData,java.lang.StringBuilder):863:897 -> a
-    171:182:java.lang.String formatJson(java.lang.String):911:922 -> a
-    183:202:java.lang.String array2String(java.lang.Object):943:962 -> a
-    1:2:java.lang.String object2Json(java.lang.Object):901:902 -> b
+    1:1:void <init>():675:675 -> <init>
+    1:11:java.lang.String object2String(java.lang.Object,int):682:692 -> a
+    12:28:java.lang.String bundle2String(android.os.Bundle):696:712 -> a
+    29:135:java.lang.String intent2String(android.content.Intent):717:823 -> a
+    136:170:void clipData2String(android.content.ClipData,java.lang.StringBuilder):828:862 -> a
+    171:182:java.lang.String formatJson(java.lang.String):876:887 -> a
+    183:202:java.lang.String array2String(java.lang.Object):908:927 -> a
+    1:2:java.lang.String object2Json(java.lang.Object):866:867 -> b
     3:3:java.lang.String com.roiquery.analytics.utils.JsonUtils.formatJson(java.lang.String):212:212 -> b
-    3:3:java.lang.String object2Json(java.lang.Object):902 -> b
-    4:4:java.lang.String object2Json(java.lang.Object):904:904 -> b
-    5:13:java.lang.String formatXml(java.lang.String):929:937 -> b
-    1:1:java.lang.String object2String(java.lang.Object):713:713 -> c
+    3:3:java.lang.String object2Json(java.lang.Object):867 -> b
+    4:4:java.lang.String object2Json(java.lang.Object):869:869 -> b
+    5:13:java.lang.String formatXml(java.lang.String):894:902 -> b
+    1:1:java.lang.String object2String(java.lang.Object):678:678 -> c
 com.roiquery.analytics.utils.LogUtils$OnConsoleOutputListener -> com.roiquery.analytics.utils.LogUtils$OnConsoleOutputListener:
 # {"id":"sourceFile","fileName":"LogUtils.java"}
 com.roiquery.analytics.utils.LogUtils$OnFileOutputListener -> com.roiquery.analytics.utils.LogUtils$OnFileOutputListener:
@@ -4079,7 +4070,7 @@ com.roiquery.analytics.utils.LogUtils$TagHead -> com.roiquery.analytics.utils.Lo
     java.lang.String tag -> a
     java.lang.String fileHead -> c
     java.lang.String[] consoleHead -> b
-    1:4:void <init>(java.lang.String,java.lang.String[],java.lang.String):703:706 -> <init>
+    1:4:void <init>(java.lang.String,java.lang.String[],java.lang.String):668:671 -> <init>
 com.roiquery.analytics.utils.MemoryUtils -> n.i:
 # {"id":"sourceFile","fileName":"MemoryUtils.java"}
     long secondVsync -> b
@@ -4976,46 +4967,31 @@ com.roiquery.ias.ROIQueryIasReportImp$Companion -> com.roiquery.ias.b$a:
     2:2:void trackIasSubSuccessEvent$default(com.roiquery.ias.ROIQueryIasReportImp$Companion,java.lang.String,java.lang.String,java.lang.String,double,java.lang.String,java.util.Map,int,java.lang.Object):15:15 -> a
     3:11:void trackIasSubSuccessEvent(java.lang.String,java.lang.String,java.lang.String,double,java.lang.String,java.util.Map):23:31 -> a
     12:12:void trackIasSubSuccessEvent(java.lang.String,java.lang.String,java.lang.String,double,java.lang.String,java.util.Map):23:23 -> a
-com.roiquery.quality.DtInternalUseOnlyLogger -> com.roiquery.quality.a:
-# {"id":"sourceFile","fileName":"DtInternalUseOnlyLogger.kt"}
-    org.slf4j.Logger delegate -> a
-    1:1:void <init>(org.slf4j.Logger):9:9 -> <init>
-    1:5:void handleNormalizedLoggingCall(org.slf4j.event.Level,org.slf4j.Marker,java.lang.String,java.lang.Object[],java.lang.Throwable):39:43 -> handleNormalizedLoggingCall
-    1:1:boolean isDebugEnabled():14:14 -> isDebugEnabled
-    2:2:boolean isDebugEnabled(org.slf4j.Marker):16:16 -> isDebugEnabled
-    1:1:boolean isErrorEnabled():26:26 -> isErrorEnabled
-    2:2:boolean isErrorEnabled(org.slf4j.Marker):28:28 -> isErrorEnabled
-    1:1:boolean isInfoEnabled():18:18 -> isInfoEnabled
-    2:2:boolean isInfoEnabled(org.slf4j.Marker):20:20 -> isInfoEnabled
-    1:1:boolean isTraceEnabled():10:10 -> isTraceEnabled
-    2:2:boolean isTraceEnabled(org.slf4j.Marker):12:12 -> isTraceEnabled
-    1:1:boolean isWarnEnabled():22:22 -> isWarnEnabled
-    2:2:boolean isWarnEnabled(org.slf4j.Marker):24:24 -> isWarnEnabled
-com.roiquery.quality.PerfAction -> com.roiquery.quality.b:
+com.roiquery.quality.PerfAction -> com.roiquery.quality.a:
 # {"id":"sourceFile","fileName":"PerfLogger.kt"}
-    com.roiquery.quality.PerfAction DELETEDBEND -> q
-    com.roiquery.quality.PerfAction TRACKEND -> r
-    com.roiquery.quality.PerfAction[] $VALUES -> s
-    com.roiquery.quality.PerfAction UPLOADDATAEND -> o
     com.roiquery.quality.PerfAction DELETEDBBEGIN -> p
-    com.roiquery.quality.PerfAction TRACKBEGIN -> i
-    com.roiquery.quality.PerfAction WRITEEVENTTODBBEGIN -> j
-    com.roiquery.quality.PerfAction GETCONFIGBEGIN -> g
-    com.roiquery.quality.PerfAction GETCONFIGEND -> h
-    com.roiquery.quality.PerfAction READEVENTDATAFROMDBEND -> m
+    com.roiquery.quality.PerfAction[] $VALUES -> s
+    com.roiquery.quality.PerfAction DELETEDBEND -> q
     com.roiquery.quality.PerfAction UPLOADDATABEGIN -> n
-    com.roiquery.quality.PerfAction WRITEEVENTTODBEND -> k
-    com.roiquery.quality.PerfAction READEVENTDATAFROMDBBEGIN -> l
-    com.roiquery.quality.PerfAction SDKINITBEGIN -> a
-    com.roiquery.quality.PerfAction SDKINITEND -> b
-    com.roiquery.quality.PerfAction GETSRVTIMEBEGIN -> e
+    com.roiquery.quality.PerfAction UPLOADDATAEND -> o
+    com.roiquery.quality.PerfAction TRACKEND -> r
+    com.roiquery.quality.PerfAction GETCONFIGEND -> h
+    com.roiquery.quality.PerfAction TRACKBEGIN -> i
     com.roiquery.quality.PerfAction GETSRVTIMEEND -> f
-    com.roiquery.quality.PerfAction GETDTIDBEGIN -> c
+    com.roiquery.quality.PerfAction GETCONFIGBEGIN -> g
+    com.roiquery.quality.PerfAction READEVENTDATAFROMDBBEGIN -> l
+    com.roiquery.quality.PerfAction READEVENTDATAFROMDBEND -> m
+    com.roiquery.quality.PerfAction WRITEEVENTTODBBEGIN -> j
+    com.roiquery.quality.PerfAction WRITEEVENTTODBEND -> k
+    com.roiquery.quality.PerfAction SDKINITBEGIN -> a
     com.roiquery.quality.PerfAction GETDTIDEND -> d
+    com.roiquery.quality.PerfAction GETSRVTIMEBEGIN -> e
+    com.roiquery.quality.PerfAction SDKINITEND -> b
+    com.roiquery.quality.PerfAction GETDTIDBEGIN -> c
     1:18:void <clinit>():9:26 -> <clinit>
     1:1:void <init>(java.lang.String,int):8:8 -> <init>
     com.roiquery.quality.PerfAction[] $values() -> a
-com.roiquery.quality.PerfLogger -> com.roiquery.quality.c:
+com.roiquery.quality.PerfLogger -> com.roiquery.quality.b:
 # {"id":"sourceFile","fileName":"PerfLogger.kt"}
     com.roiquery.quality.PerfLogger INSTANCE -> a
     java.lang.String tag -> b
@@ -5079,7 +5055,7 @@ com.roiquery.quality.ROIQueryErrorParams$ROIQueryErrorLevel -> com.roiquery.qual
 # {"id":"sourceFile","fileName":"ROIQueryErrorParams.kt"}
 com.roiquery.quality.ROIQueryErrorParams$ROIQueryErrorMsg -> com.roiquery.quality.ROIQueryErrorParams$ROIQueryErrorMsg:
 # {"id":"sourceFile","fileName":"ROIQueryErrorParams.kt"}
-com.roiquery.quality.ROIQueryQualityHelper -> com.roiquery.quality.d:
+com.roiquery.quality.ROIQueryQualityHelper -> com.roiquery.quality.c:
 # {"id":"sourceFile","fileName":"ROIQueryQualityHelper.kt"}
     java.lang.String SDK_VERSION_NAME -> g
     java.lang.String SDK_TYPE -> f
@@ -5092,8 +5068,8 @@ com.roiquery.quality.ROIQueryQualityHelper -> com.roiquery.quality.d:
     kotlin.Lazy instance$delegate -> n
     java.util.Map mJsonParams -> b
     java.lang.String TAG -> a
-    java.lang.String INSTANCE_ID -> e
     com.roiquery.quality.ROIQueryQualityHelper$Companion Companion -> c
+    java.lang.String INSTANCE_ID -> e
     java.lang.String APP_ID -> d
     1:1:void com.roiquery.quality.ROIQueryQualityHelper$Companion.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <clinit>
     1:1:void <clinit>():0 -> <clinit>
@@ -5115,25 +5091,25 @@ com.roiquery.quality.ROIQueryQualityHelper -> com.roiquery.quality.d:
     9:9:void reportQualityMessage(int,java.lang.String,java.lang.String,int):39 -> b
     10:10:void reportQualityMessage(int,java.lang.String,java.lang.String,int):51:51 -> b
     11:13:java.util.Map generateJsonParams():77:79 -> b
-    14:14:java.util.Map com.roiquery.analytics.core.PropertyManager.getEventInfo():229:229 -> b
+    14:14:java.util.Map com.roiquery.analytics.core.PropertyManager.getEventInfo():226:226 -> b
     14:14:java.util.Map generateJsonParams():79 -> b
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    15:15:java.util.Map com.roiquery.analytics.core.PropertyManager.getEventInfo():229:229 -> b
+    15:15:java.util.Map com.roiquery.analytics.core.PropertyManager.getEventInfo():226:226 -> b
     15:15:java.util.Map generateJsonParams():79 -> b
     16:19:java.util.Map generateJsonParams():80:83 -> b
-    20:20:java.util.Map com.roiquery.analytics.core.PropertyManager.getCommonProperties():251:251 -> b
+    20:20:java.util.Map com.roiquery.analytics.core.PropertyManager.getCommonProperties():248:248 -> b
     20:20:java.util.Map generateJsonParams():83 -> b
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    21:21:java.util.Map com.roiquery.analytics.core.PropertyManager.getCommonProperties():251:251 -> b
+    21:21:java.util.Map com.roiquery.analytics.core.PropertyManager.getCommonProperties():248:248 -> b
     21:21:java.util.Map generateJsonParams():83 -> b
     22:26:java.util.Map generateJsonParams():84:88 -> b
     27:41:java.util.Map generateJsonParams():78:92 -> b
-com.roiquery.quality.ROIQueryQualityHelper$Companion -> com.roiquery.quality.d$b:
+com.roiquery.quality.ROIQueryQualityHelper$Companion -> com.roiquery.quality.c$b:
 # {"id":"sourceFile","fileName":"ROIQueryQualityHelper.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
     2:2:void <init>():95:95 -> <init>
     1:1:com.roiquery.quality.ROIQueryQualityHelper getInstance():106:106 -> a
-com.roiquery.quality.ROIQueryQualityHelper$Companion$instance$2 -> com.roiquery.quality.d$a:
+com.roiquery.quality.ROIQueryQualityHelper$Companion$instance$2 -> com.roiquery.quality.c$a:
 # {"id":"sourceFile","fileName":"ROIQueryQualityHelper.kt"}
     com.roiquery.quality.ROIQueryQualityHelper$Companion$instance$2 INSTANCE -> a
     1:1:com.roiquery.quality.ROIQueryQualityHelper invoke():107:107 -> a
@@ -5144,7 +5120,7 @@ com.roiquery.quality.ROIQueryQualityHelper$Companion$instance$2 -> com.roiquery.
     2:2:void com.roiquery.quality.ROIQueryQualityHelper.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> invoke
     2:2:com.roiquery.quality.ROIQueryQualityHelper invoke():107 -> invoke
     2:2:java.lang.Object invoke():106 -> invoke
-com.roiquery.quality.ROIQueryQualityHelper$reportQualityMessage$1 -> com.roiquery.quality.d$c:
+com.roiquery.quality.ROIQueryQualityHelper$reportQualityMessage$1 -> com.roiquery.quality.c$c:
 # {"id":"sourceFile","fileName":"ROIQueryQualityHelper.kt"}
     com.roiquery.quality.ROIQueryQualityHelper this$0 -> c
     java.lang.String $data -> d
