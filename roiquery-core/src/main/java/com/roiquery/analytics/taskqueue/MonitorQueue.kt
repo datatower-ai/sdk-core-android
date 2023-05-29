@@ -72,7 +72,7 @@ class MonitorQueue private constructor() : AsyncTaskQueue("MonitorQueue") {
         }
     }
 
-    fun loop() {
+    private fun loop() {
         // db count
         checkDBCount()
 
@@ -119,7 +119,7 @@ class MonitorQueue private constructor() : AsyncTaskQueue("MonitorQueue") {
                     }
                 }
             }
-        }, 6 * 1000)
+        }, 60 * 1000)
     }
 
     companion object {
