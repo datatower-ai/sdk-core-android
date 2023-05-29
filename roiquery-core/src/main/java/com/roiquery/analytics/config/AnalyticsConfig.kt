@@ -46,6 +46,8 @@ private constructor() : AbstractAnalyticsConfig() {
     private var isFetching = false
 
     fun getRemoteConfig() {
+        // NOTE: Feature disabled for now, may be enabled in the future.
+        /*
         Thread {
             if (hasGetRemoteConfig) {
                 return@Thread
@@ -92,6 +94,7 @@ private constructor() : AbstractAnalyticsConfig() {
             isFetching = false
             PerfLogger.doPerfLog(PerfAction.GETCONFIGEND, System.currentTimeMillis())
         }.start()
+         */
     }
 
     private fun initRemoteConfig(){
