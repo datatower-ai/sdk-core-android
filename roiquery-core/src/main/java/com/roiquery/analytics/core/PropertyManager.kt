@@ -311,7 +311,7 @@ class PropertyManager private constructor() {
             }
 
             if (isForeground) {
-                sessionStartTime = SystemClock.elapsedRealtime()
+                sessionStartTime = happenTime
 
                 updateCommonProperties(
                     Constant.COMMON_PROPERTY_EVENT_SESSION,
