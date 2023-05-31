@@ -164,7 +164,7 @@ class EventInfoCheckHelper private constructor() {
 //                                没重启过，系统时间与实际时间的差是固定的
                                 infoTime - updateSystemUpTime + serverTime
                             } else {
-                                eventInfo.put(
+                                eventInfo.optJSONObject(Constant.EVENT_INFO_PROPERTIES)?.put(
                                     Constant.EVENT_TIME_CAN_TRUSTED,
                                     false
                                 )
