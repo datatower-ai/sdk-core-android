@@ -57,14 +57,22 @@ class MonitorQueue private constructor() : AsyncTaskQueue("MonitorQueue") {
     }
 
     fun findReasonForGAIDFail(context: Context) {
-        val info = AdvertisingIdClient.getAdvertisingIdInfo(context)
-        val isLimit = info.isLimitAdTrackingEnabled
-        if (isLimit) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_GAID_LIMIT,
-                "",
-            )
-        } else {
+        try {
+            val info = AdvertisingIdClient.getAdvertisingIdInfo(context)
+            val isLimit = info.isLimitAdTrackingEnabled
+            if (isLimit) {
+                ROIQueryQualityHelper.instance.reportQualityMessage(
+                    ROIQueryErrorParams.CODE_GAID_LIMIT,
+                    "",
+                )
+            } else {
+                ROIQueryQualityHelper.instance.reportQualityMessage(
+                    ROIQueryErrorParams.CODE_GAID_UNKOWN,
+                    "",
+                )
+            }
+        } catch (e: Exception) {
+            //googleService not available
             ROIQueryQualityHelper.instance.reportQualityMessage(
                 ROIQueryErrorParams.CODE_GAID_UNKOWN,
                 "",
