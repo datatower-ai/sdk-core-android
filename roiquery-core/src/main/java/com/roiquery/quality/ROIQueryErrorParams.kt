@@ -42,6 +42,8 @@ internal object ROIQueryErrorParams {
     const val CODE_REPORT_ERROR_ON_FAIL = 3003
     const val CODE_REPORT_ERROR_ON_RESPONSE = 3004
     const val CODE_UPLOAD_ERROR_MULTi_TIMES = 3005
+    const val CODE_UPLOAD_ERROR_READ_DATA = 3006
+    const val CODE_UPLOAD_ERROR_OVER_MAX = 3007
 
     //queue
     const val CODE_QUEUE_MAIN_DEAD = 4001
@@ -76,6 +78,8 @@ internal object ROIQueryErrorParams {
         CODE_REPORT_ERROR_ON_FAIL,
         CODE_REPORT_ERROR_ON_RESPONSE,
         CODE_UPLOAD_ERROR_MULTi_TIMES,
+        CODE_UPLOAD_ERROR_READ_DATA,
+        CODE_UPLOAD_ERROR_OVER_MAX,
 
         CODE_QUEUE_MAIN_DEAD,
         CODE_QUEUE_UPLOAD_DEAD,

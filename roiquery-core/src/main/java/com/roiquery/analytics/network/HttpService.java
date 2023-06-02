@@ -40,6 +40,8 @@ public class HttpService implements RemoteService {
         try {
             final URL url = new URL(endpointUrl);
             connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(15 * 1000);
+            connection.setReadTimeout(15 * 1000);
             if (null != socketFactory && connection instanceof HttpsURLConnection) {
                 ((HttpsURLConnection) connection).setSSLSocketFactory(socketFactory);
             }

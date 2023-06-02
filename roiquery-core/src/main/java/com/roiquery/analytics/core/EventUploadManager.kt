@@ -218,13 +218,14 @@ class EventUploadManager private constructor(
                 }
             } catch (e: Exception) {
                 uploadErrorCount++
+                checkFailTimes()
 
-//                ROIQueryQualityHelper.instance.reportQualityMessage(
-//                    ROIQueryErrorParams.CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
-//                    e.message,
-//                    ROIQueryErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,
-//                    ROIQueryErrorParams.TYPE_WARNING
-//                )
+                ROIQueryQualityHelper.instance.reportQualityMessage(
+                    ROIQueryErrorParams.CODE_UPLOAD_ERROR_READ_DATA,
+                    e.message,
+                    ROIQueryErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,
+                    ROIQueryErrorParams.TYPE_WARNING
+                )
             }
 
             //事件主体，json格式
@@ -240,6 +241,7 @@ class EventUploadManager private constructor(
                         }
                     } catch (e: Exception) {
                         uploadErrorCount++
+                        checkFailTimes()
 
                         ROIQueryQualityHelper.instance.reportQualityMessage(
                             ROIQueryErrorParams.CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
@@ -314,20 +316,6 @@ class EventUploadManager private constructor(
                     errorMessage, level = ROIQueryErrorParams.TYPE_WARNING
                 )
             }
-//            if (deleteEvents) {
-//                synchronized(mDateAdapter) {
-//                    //上报成功后，删除数据库数据
-//                    deleteEventAfterReport(event, mDateAdapter)
-//                    mDateAdapter.enableUpload = true
-//                    //避免事件积压，成功后再次上报
-//                    flush(FLUSH_DELAY)
-//                    //如果远程控制之前获取失败，这里再次获取
-//                    AnalyticsConfig.instance.getRemoteConfig()
-//                }
-//            } else {
-//                mDateAdapter.enableUpload = true
-//            }
-
             return deleteEvents
         }
 
@@ -360,10 +348,21 @@ class EventUploadManager private constructor(
             }
         } catch (e: Exception) {
             uploadErrorCount++
+            checkFailTimes()
 
             ROIQueryQualityHelper.instance.reportQualityMessage(
                 ROIQueryErrorParams.CODE_DELETE_UPLOADED_EXCEPTION,
                 e.message, ROIQueryErrorParams.DELETE_DB_EXCEPTION
+            )
+        }
+    }
+
+    private fun checkFailTimes() {
+        if (uploadErrorCount == 3) {
+//            连续三次出错，主动上报一次
+            ROIQueryQualityHelper.instance.reportQualityMessage(
+                ROIQueryErrorParams.CODE_UPLOAD_ERROR_OVER_MAX,
+                null
             )
         }
     }
