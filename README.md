@@ -37,7 +37,7 @@ git push --tags
 当前版本的 Proguard Mapping 文件将被一同保存在 `/roiquery-core/proguard-mapping/`
 目录下。
 
-## 版本发布
+## 版本发布（下面的命令已经整合入package.sh，确认本地配置都ok后，可以执行package.sh）
 
 ### 发布至 Maven Central
 
