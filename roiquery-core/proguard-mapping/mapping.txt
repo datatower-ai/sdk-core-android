@@ -2,8 +2,8 @@
 # compiler_version: 8.0.40
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.1"}
-# pg_map_id: 82d410e
-# pg_map_hash: SHA-256 82d410e29a851a85fe96bbbaad6c19d47b97cfccb14938099ca379b71d52ff2a
+# pg_map_id: 35b8249
+# pg_map_hash: SHA-256 35b8249d12553c0b3d9bd18a83616a3421de346ec03c05ccb8975f09c3aa30c0
 com.roiquery.ad.AD_CONVERSION_SOURCE -> com.roiquery.ad.a:
 # {"id":"sourceFile","fileName":"constant.kt"}
     java.lang.String LEFT_APP -> c
@@ -2018,10 +2018,10 @@ com.roiquery.analytics.core.EventUploadManager -> e.f:
     2:2:void <clinit>():0:0 -> <clinit>
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
     2:7:void <init>():39:44 -> <init>
-    1:1:void access$checkInsertResult(com.roiquery.analytics.core.EventUploadManager,int,java.lang.String,org.json.JSONObject,java.lang.String,kotlin.jvm.functions.Function2):39:39 -> a
-    2:2:java.lang.Object access$deleteEventAfterReport(com.roiquery.analytics.core.EventUploadManager,java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):39:39 -> a
-    3:3:com.roiquery.analytics.core.EventUploadManager access$getInstancessss$cp():39:39 -> a
-    4:4:com.roiquery.analytics.data.EventDataAdapter access$getMDateAdapter$p(com.roiquery.analytics.core.EventUploadManager):39:39 -> a
+    1:1:void access$checkFailTimes(com.roiquery.analytics.core.EventUploadManager):39:39 -> a
+    2:2:void access$checkInsertResult(com.roiquery.analytics.core.EventUploadManager,int,java.lang.String,org.json.JSONObject,java.lang.String,kotlin.jvm.functions.Function2):39:39 -> a
+    3:3:java.lang.Object access$deleteEventAfterReport(com.roiquery.analytics.core.EventUploadManager,java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):39:39 -> a
+    4:4:com.roiquery.analytics.core.EventUploadManager access$getInstancessss$cp():39:39 -> a
     5:5:void access$setUploadErrorCount(com.roiquery.analytics.core.EventUploadManager,int):39:39 -> a
     6:6:java.lang.Object access$uploadData(com.roiquery.analytics.core.EventUploadManager,kotlin.coroutines.Continuation):39:39 -> a
     7:7:boolean access$uploadDataToNet(com.roiquery.analytics.core.EventUploadManager,java.lang.String,com.roiquery.analytics.data.EventDataAdapter):39:39 -> a
@@ -2039,94 +2039,97 @@ com.roiquery.analytics.core.EventUploadManager -> e.f:
     53:53:void flush(long):136 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
     54:57:void flush(long):139:142 -> a
-    58:150:java.lang.Object uploadData(kotlin.coroutines.Continuation):182:274 -> a
-    151:161:java.lang.Object uploadData(kotlin.coroutines.Continuation):182:192 -> a
-    162:162:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
-    162:162:java.lang.Object uploadData(kotlin.coroutines.Continuation):192 -> a
-    163:163:java.lang.Object uploadData(kotlin.coroutines.Continuation):195:195 -> a
+    58:152:java.lang.Object uploadData(kotlin.coroutines.Continuation):182:276 -> a
+    153:163:java.lang.Object uploadData(kotlin.coroutines.Continuation):182:192 -> a
     164:164:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
-    164:164:java.lang.Object uploadData(kotlin.coroutines.Continuation):195 -> a
-    165:172:java.lang.Object uploadData(kotlin.coroutines.Continuation):197:204 -> a
-    173:173:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
-    173:173:java.lang.Object uploadData(kotlin.coroutines.Continuation):204 -> a
-    174:176:java.lang.Object uploadData(kotlin.coroutines.Continuation):206:208 -> a
-    177:177:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
-    177:177:java.lang.Object uploadData(kotlin.coroutines.Continuation):208 -> a
-    178:181:java.lang.Object uploadData(kotlin.coroutines.Continuation):213:216 -> a
-    182:182:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
-    182:182:java.lang.Object uploadData(kotlin.coroutines.Continuation):216 -> a
-    183:235:java.lang.Object uploadData(kotlin.coroutines.Continuation):203:255 -> a
-    236:236:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
-    236:236:java.lang.Object uploadData(kotlin.coroutines.Continuation):255 -> a
-    237:247:java.lang.Object uploadData(kotlin.coroutines.Continuation):257:267 -> a
-    248:248:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
-    248:248:java.lang.Object uploadData(kotlin.coroutines.Continuation):267 -> a
-    249:250:java.lang.Object uploadData(kotlin.coroutines.Continuation):270:271 -> a
-    251:251:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
-    251:251:java.lang.Object uploadData(kotlin.coroutines.Continuation):271 -> a
-    252:252:java.lang.Object uploadData(kotlin.coroutines.Continuation):274:274 -> a
-    253:256:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):284:287 -> a
-    257:283:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):286:312 -> a
-    284:291:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):305:312 -> a
-    292:301:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):303:312 -> a
-    302:314:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):300:312 -> a
-    315:329:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):298:312 -> a
-    330:334:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):308:312 -> a
-    335:368:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):336:369 -> a
-    369:384:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):336:351 -> a
-    385:403:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):348:366 -> a
-    404:409:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):364:369 -> a
-    1:1:com.roiquery.analytics.core.EventUploadManager$Worker access$getMWorker$p(com.roiquery.analytics.core.EventUploadManager):39:39 -> b
-    2:2:void deleteAll():150:150 -> b
-    1:1:int access$getUploadErrorCount$p(com.roiquery.analytics.core.EventUploadManager):39:39 -> c
-    2:2:boolean enableUploadData():157:157 -> c
-    3:3:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> c
-    3:3:boolean enableUploadData():157 -> c
+    164:164:java.lang.Object uploadData(kotlin.coroutines.Continuation):192 -> a
+    165:165:java.lang.Object uploadData(kotlin.coroutines.Continuation):195:195 -> a
+    166:166:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
+    166:166:java.lang.Object uploadData(kotlin.coroutines.Continuation):195 -> a
+    167:174:java.lang.Object uploadData(kotlin.coroutines.Continuation):197:204 -> a
+    175:175:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
+    175:175:java.lang.Object uploadData(kotlin.coroutines.Continuation):204 -> a
+    176:178:java.lang.Object uploadData(kotlin.coroutines.Continuation):206:208 -> a
+    179:179:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
+    179:179:java.lang.Object uploadData(kotlin.coroutines.Continuation):208 -> a
+    180:183:java.lang.Object uploadData(kotlin.coroutines.Continuation):213:216 -> a
+    184:184:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
+    184:184:java.lang.Object uploadData(kotlin.coroutines.Continuation):216 -> a
+    185:207:java.lang.Object uploadData(kotlin.coroutines.Continuation):203:225 -> a
+    208:242:java.lang.Object uploadData(kotlin.coroutines.Continuation):223:257 -> a
+    243:243:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
+    243:243:java.lang.Object uploadData(kotlin.coroutines.Continuation):257 -> a
+    244:254:java.lang.Object uploadData(kotlin.coroutines.Continuation):259:269 -> a
+    255:255:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
+    255:255:java.lang.Object uploadData(kotlin.coroutines.Continuation):269 -> a
+    256:257:java.lang.Object uploadData(kotlin.coroutines.Continuation):272:273 -> a
+    258:258:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> a
+    258:258:java.lang.Object uploadData(kotlin.coroutines.Continuation):273 -> a
+    259:259:java.lang.Object uploadData(kotlin.coroutines.Continuation):276:276 -> a
+    260:263:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):286:289 -> a
+    264:290:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):288:314 -> a
+    291:298:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):307:314 -> a
+    299:308:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):305:314 -> a
+    309:321:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):302:314 -> a
+    322:336:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):300:314 -> a
+    337:341:boolean uploadDataToNet(java.lang.String,com.roiquery.analytics.data.EventDataAdapter):310:314 -> a
+    342:376:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):324:358 -> a
+    377:392:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):324:339 -> a
+    393:412:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):336:355 -> a
+    413:418:java.lang.Object deleteEventAfterReport(java.lang.String,com.roiquery.analytics.data.EventDataAdapter,kotlin.coroutines.Continuation):353:358 -> a
+    1:1:com.roiquery.analytics.data.EventDataAdapter access$getMDateAdapter$p(com.roiquery.analytics.core.EventUploadManager):39:39 -> b
+    2:4:void checkFailTimes():361:363 -> b
+    1:1:com.roiquery.analytics.core.EventUploadManager$Worker access$getMWorker$p(com.roiquery.analytics.core.EventUploadManager):39:39 -> c
+    2:2:void deleteAll():150:150 -> c
+    1:1:int access$getUploadErrorCount$p(com.roiquery.analytics.core.EventUploadManager):39:39 -> d
+    2:2:boolean enableUploadData():157:157 -> d
+    3:3:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> d
+    3:3:boolean enableUploadData():157 -> d
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    4:12:boolean enableUploadData():161:169 -> c
-    13:13:boolean enableUploadData():167:167 -> c
-    1:1:void access$setInstancessss$cp(com.roiquery.analytics.core.EventUploadManager):39:39 -> d
-    2:13:void enqueueErrorInsertEventMessage():90:101 -> d
-    1:5:java.lang.String getEventUploadUrl():372:376 -> e
+    4:12:boolean enableUploadData():161:169 -> d
+    13:13:boolean enableUploadData():167:167 -> d
+    1:1:void access$setInstancessss$cp(com.roiquery.analytics.core.EventUploadManager):39:39 -> e
+    2:13:void enqueueErrorInsertEventMessage():90:101 -> e
+    1:5:java.lang.String getEventUploadUrl():371:375 -> f
 com.roiquery.analytics.core.EventUploadManager$Companion -> e.f$a:
 # {"id":"sourceFile","fileName":"EventUploadManager.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():457:457 -> <init>
-    1:2:com.roiquery.analytics.core.EventUploadManager getInstance():467:468 -> a
+    2:2:void <init>():456:456 -> <init>
+    1:2:com.roiquery.analytics.core.EventUploadManager getInstance():466:467 -> a
     3:3:void com.roiquery.analytics.core.EventUploadManager.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> a
-    3:3:com.roiquery.analytics.core.EventUploadManager getInstance():468 -> a
+    3:3:com.roiquery.analytics.core.EventUploadManager getInstance():467 -> a
     4:4:void com.roiquery.analytics.core.EventUploadManager.access$setInstancessss$cp(com.roiquery.analytics.core.EventUploadManager):39:39 -> a
-    4:4:com.roiquery.analytics.core.EventUploadManager getInstance():468 -> a
+    4:4:com.roiquery.analytics.core.EventUploadManager getInstance():467 -> a
     5:5:com.roiquery.analytics.core.EventUploadManager com.roiquery.analytics.core.EventUploadManager.access$getInstancessss$cp():39:39 -> a
-    5:5:com.roiquery.analytics.core.EventUploadManager getInstance():470 -> a
+    5:5:com.roiquery.analytics.core.EventUploadManager getInstance():469 -> a
 com.roiquery.analytics.core.EventUploadManager$Worker -> e.f$b:
 # {"id":"sourceFile","fileName":"EventUploadManager.kt"}
     android.os.Handler mHandler -> b
     java.lang.Object mHandlerLock -> a
     com.roiquery.analytics.core.EventUploadManager this$0 -> c
-    1:75:void <init>(com.roiquery.analytics.core.EventUploadManager):379:453 -> <init>
-    1:5:void runMessage(android.os.Message):383:387 -> a
-    6:6:void runMessage(android.os.Message):385:385 -> a
-    7:7:void runMessage(android.os.Message):383:383 -> a
-    8:12:void runMessageOnce(android.os.Message,long):393:397 -> a
-    13:22:void runMessageOnce(android.os.Message,long):395:404 -> a
-    23:23:void runMessageOnce(android.os.Message,long):393:393 -> a
+    1:75:void <init>(com.roiquery.analytics.core.EventUploadManager):378:452 -> <init>
+    1:5:void runMessage(android.os.Message):382:386 -> a
+    6:6:void runMessage(android.os.Message):384:384 -> a
+    7:7:void runMessage(android.os.Message):382:382 -> a
+    8:12:void runMessageOnce(android.os.Message,long):392:396 -> a
+    13:22:void runMessageOnce(android.os.Message,long):394:403 -> a
+    23:23:void runMessageOnce(android.os.Message,long):392:392 -> a
 com.roiquery.analytics.core.EventUploadManager$Worker$AnalyticsMessageHandler -> e.f$b$a:
 # {"id":"sourceFile","fileName":"EventUploadManager.kt"}
     com.roiquery.analytics.core.EventUploadManager$Worker this$0 -> a
-    1:2:void <init>(com.roiquery.analytics.core.EventUploadManager$Worker,android.os.Looper):407:408 -> <init>
-    1:19:void handleMessage(android.os.Message):411:429 -> handleMessage
-    20:20:void handleMessage(android.os.Message):427:427 -> handleMessage
-    21:23:void handleMessage(android.os.Message):420:422 -> handleMessage
-    24:47:void handleMessage(android.os.Message):413:436 -> handleMessage
-    48:55:void handleMessage(android.os.Message):434:441 -> handleMessage
-    56:56:void handleMessage(android.os.Message):438:438 -> handleMessage
+    1:2:void <init>(com.roiquery.analytics.core.EventUploadManager$Worker,android.os.Looper):406:407 -> <init>
+    1:19:void handleMessage(android.os.Message):410:428 -> handleMessage
+    20:20:void handleMessage(android.os.Message):426:426 -> handleMessage
+    21:23:void handleMessage(android.os.Message):419:421 -> handleMessage
+    24:47:void handleMessage(android.os.Message):412:435 -> handleMessage
+    48:55:void handleMessage(android.os.Message):433:440 -> handleMessage
+    56:56:void handleMessage(android.os.Message):437:437 -> handleMessage
 com.roiquery.analytics.core.EventUploadManager$Worker$AnalyticsMessageHandler$handleMessage$1 -> e.f$b$a$a:
 # {"id":"sourceFile","fileName":"EventUploadManager.kt"}
     com.roiquery.analytics.core.EventUploadManager this$0 -> b
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:1:java.lang.Object invokeSuspend(java.lang.Object):414:414 -> invokeSuspend
+    1:1:java.lang.Object invokeSuspend(java.lang.Object):413:413 -> invokeSuspend
 com.roiquery.analytics.core.EventUploadManager$deleteEventAfterReport$1 -> e.f$c:
 # {"id":"sourceFile","fileName":"EventUploadManager.kt"}
     java.lang.Object result -> b
@@ -2139,8 +2142,8 @@ com.roiquery.analytics.core.EventUploadManager$deleteEventAfterReport$3 -> e.f$d
     com.roiquery.analytics.data.EventDataAdapter $mDateAdapter -> b
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:2:java.lang.Object invokeSuspend(java.lang.Object):357:358 -> invokeSuspend
-    3:4:java.lang.Object invokeSuspend(java.lang.Object):357:358 -> invokeSuspend
+    1:2:java.lang.Object invokeSuspend(java.lang.Object):345:346 -> invokeSuspend
+    3:4:java.lang.Object invokeSuspend(java.lang.Object):345:346 -> invokeSuspend
 com.roiquery.analytics.core.EventUploadManager$enqueueEventMessage$1 -> e.f$e:
 # {"id":"sourceFile","fileName":"EventUploadManager.kt"}
     kotlin.jvm.functions.Function2 $insertHandler -> g
@@ -2181,15 +2184,18 @@ com.roiquery.analytics.core.EventUploadManager$uploadData$3$1 -> e.f$h:
     kotlin.jvm.internal.Ref$BooleanRef $uploadSucceed -> b
     kotlin.jvm.internal.Ref$ObjectRef $uploadInfo -> a
     com.roiquery.analytics.core.EventUploadManager this$0 -> c
-    1:4:void invoke(java.lang.String):236:239 -> a
+    1:4:void invoke(java.lang.String):237:240 -> a
     5:5:boolean com.roiquery.analytics.core.EventUploadManager.access$uploadDataToNet(com.roiquery.analytics.core.EventUploadManager,java.lang.String,com.roiquery.analytics.data.EventDataAdapter):39:39 -> a
-    5:5:void invoke(java.lang.String):239 -> a
-    6:9:void invoke(java.lang.String):239:242 -> a
+    5:5:void invoke(java.lang.String):240 -> a
+    6:9:void invoke(java.lang.String):240:243 -> a
     10:10:void com.roiquery.analytics.core.EventUploadManager.access$setUploadErrorCount(com.roiquery.analytics.core.EventUploadManager,int):39:39 -> a
-    10:10:void invoke(java.lang.String):242 -> a
-    11:13:void invoke(java.lang.String):244:246 -> a
-    14:14:void invoke(java.lang.String):244:244 -> a
-    1:1:java.lang.Object invoke(java.lang.Object):234:234 -> invoke
+    10:10:void invoke(java.lang.String):243 -> a
+    11:11:void invoke(java.lang.String):244:244 -> a
+    12:12:void com.roiquery.analytics.core.EventUploadManager.access$checkFailTimes(com.roiquery.analytics.core.EventUploadManager):39:39 -> a
+    12:12:void invoke(java.lang.String):244 -> a
+    13:15:void invoke(java.lang.String):246:248 -> a
+    16:16:void invoke(java.lang.String):246:246 -> a
+    1:1:java.lang.Object invoke(java.lang.Object):235:235 -> invoke
 com.roiquery.analytics.core.PresetEventManager -> e.g:
 # {"id":"sourceFile","fileName":"PresetEventManager.kt"}
     kotlin.Lazy instance$delegate -> d
@@ -3170,9 +3176,9 @@ com.roiquery.analytics.network.HttpService -> l.c:
 # {"id":"sourceFile","fileName":"HttpService.java"}
     1:1:void <init>():26:26 -> <init>
     1:1:java.lang.String encodeData(java.lang.String):0:0 -> a
-    2:95:java.lang.String performRequest(java.lang.String,java.lang.String,boolean,javax.net.ssl.SSLSocketFactory,java.util.Map):41:134 -> a
-    96:96:java.lang.String performRequest(java.lang.String,java.lang.String,boolean,javax.net.ssl.SSLSocketFactory,java.util.Map) -> a
-    97:170:java.lang.String performRequest(java.lang.String,java.lang.String,boolean,javax.net.ssl.SSLSocketFactory,java.util.Map):63:136 -> a
+    2:97:java.lang.String performRequest(java.lang.String,java.lang.String,boolean,javax.net.ssl.SSLSocketFactory,java.util.Map):41:136 -> a
+    98:98:java.lang.String performRequest(java.lang.String,java.lang.String,boolean,javax.net.ssl.SSLSocketFactory,java.util.Map) -> a
+    99:172:java.lang.String performRequest(java.lang.String,java.lang.String,boolean,javax.net.ssl.SSLSocketFactory,java.util.Map):65:138 -> a
 com.roiquery.analytics.network.HttpTaskManager -> l.d:
 # {"id":"sourceFile","fileName":"HttpTaskManager.java"}
     java.util.concurrent.ExecutorService executor -> b
@@ -3510,40 +3516,42 @@ com.roiquery.analytics.taskqueue.MonitorQueue -> m.g:
     2:2:void setMDBQueueFlag(int):24:24 -> a
     3:3:void reportUploadError$default(com.roiquery.analytics.taskqueue.MonitorQueue,int,java.lang.String,int,java.lang.Object):50:50 -> a
     4:4:void reportUploadError(int,java.lang.String):51:51 -> a
-    5:13:void findReasonForGAIDFail(android.content.Context):60:68 -> a
+    5:10:void findReasonForGAIDFail(android.content.Context):61:66 -> a
+    11:18:void findReasonForGAIDFail(android.content.Context):64:71 -> a
+    19:26:void findReasonForGAIDFail(android.content.Context):69:76 -> a
     1:1:void setMMainQueueFlag(int):22:22 -> b
-    2:2:void loop$lambda-7(com.roiquery.analytics.taskqueue.MonitorQueue):86:86 -> b
+    2:2:void loop$lambda-7(com.roiquery.analytics.taskqueue.MonitorQueue):94:94 -> b
     1:1:void setMUploadQueueFlag(int):23:23 -> c
-    2:32:void loop$lambda-7$lambda-6(com.roiquery.analytics.taskqueue.MonitorQueue):87:117 -> c
-    1:1:void loop$lambda-7$lambda-6$lambda-5(com.roiquery.analytics.taskqueue.MonitorQueue):118:118 -> d
+    2:32:void loop$lambda-7$lambda-6(com.roiquery.analytics.taskqueue.MonitorQueue):95:125 -> c
+    1:1:void loop$lambda-7$lambda-6$lambda-5(com.roiquery.analytics.taskqueue.MonitorQueue):126:126 -> d
     1:1:com.roiquery.analytics.taskqueue.MonitorQueue access$getSingleton$cp():20:20 -> e
     2:2:void startMonitor$lambda-0(com.roiquery.analytics.taskqueue.MonitorQueue):30:30 -> e
     1:4:void checkDBCount():39:42 -> f
     1:1:int getMDBQueueFlag():24:24 -> g
     1:1:int getMMainQueueFlag():22:22 -> h
     1:1:int getMUploadQueueFlag():23:23 -> i
-    1:8:void loop():77:84 -> j
-    1:1:void loop$lambda-2():80:80 -> k
-    1:1:void loop$lambda-3():81:81 -> l
-    1:1:void loop$lambda-4():82:82 -> m
+    1:8:void loop():85:92 -> j
+    1:1:void loop$lambda-2():88:88 -> k
+    1:1:void loop$lambda-3():89:89 -> l
+    1:1:void loop$lambda-4():90:90 -> m
     1:3:void startMonitor():27:29 -> n
     1:1:void stopMonitor():35:35 -> o
 com.roiquery.analytics.taskqueue.MonitorQueue$Companion -> m.g$a:
 # {"id":"sourceFile","fileName":"MonitorQueue.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():125:125 -> <init>
-    1:2:com.roiquery.analytics.taskqueue.MonitorQueue get():131:132 -> a
+    2:2:void <init>():133:133 -> <init>
+    1:2:com.roiquery.analytics.taskqueue.MonitorQueue get():139:140 -> a
     3:3:com.roiquery.analytics.taskqueue.MonitorQueue com.roiquery.analytics.taskqueue.MonitorQueue.access$getSingleton$cp():20:20 -> a
-    3:3:com.roiquery.analytics.taskqueue.MonitorQueue get():133 -> a
-    4:4:com.roiquery.analytics.taskqueue.MonitorQueue get():134:134 -> a
+    3:3:com.roiquery.analytics.taskqueue.MonitorQueue get():141 -> a
+    4:4:com.roiquery.analytics.taskqueue.MonitorQueue get():142:142 -> a
     5:5:void com.roiquery.analytics.taskqueue.MonitorQueue.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> a
-    5:5:com.roiquery.analytics.taskqueue.MonitorQueue get():134 -> a
+    5:5:com.roiquery.analytics.taskqueue.MonitorQueue get():142 -> a
     6:6:void com.roiquery.analytics.taskqueue.MonitorQueue.access$setSingleton$cp(com.roiquery.analytics.taskqueue.MonitorQueue):20:20 -> a
-    6:6:com.roiquery.analytics.taskqueue.MonitorQueue get():134 -> a
-    7:7:com.roiquery.analytics.taskqueue.MonitorQueue get():136:136 -> a
-    8:8:com.roiquery.analytics.taskqueue.MonitorQueue get():132:132 -> a
+    6:6:com.roiquery.analytics.taskqueue.MonitorQueue get():142 -> a
+    7:7:com.roiquery.analytics.taskqueue.MonitorQueue get():144:144 -> a
+    8:8:com.roiquery.analytics.taskqueue.MonitorQueue get():140:140 -> a
     9:9:com.roiquery.analytics.taskqueue.MonitorQueue com.roiquery.analytics.taskqueue.MonitorQueue.access$getSingleton$cp():20:20 -> a
-    9:9:com.roiquery.analytics.taskqueue.MonitorQueue get():138 -> a
+    9:9:com.roiquery.analytics.taskqueue.MonitorQueue get():146 -> a
 com.roiquery.analytics.taskqueue.MonitorQueue$checkDBCount$count$1 -> m.g$b:
 # {"id":"sourceFile","fileName":"MonitorQueue.kt"}
     int label -> a
@@ -5044,20 +5052,21 @@ com.roiquery.quality.ROIQueryErrorParams -> com.roiquery.quality.ROIQueryErrorPa
 # {"id":"sourceFile","fileName":"ROIQueryErrorParams.kt"}
     int CODE_INSERT_JSON_EXCEPTION -> n
     int CODE_INSERT_DB_OUT_OF_ROW_ERROR -> l
-    java.lang.String INIT_EXCEPTION -> I
     int CODE_INIT_DB_ERROR -> j
-    java.lang.String TRACK_GENERATE_EVENT_ERROR -> K
+    java.lang.String INIT_EXCEPTION -> K
     int CODE_TRACK_EVENT_NAME_EMPTY -> h
-    java.lang.String INSERT_DB_NORMAL_ERROR -> M
+    java.lang.String TRACK_GENERATE_EVENT_ERROR -> M
+    int TYPE_MESSAGE -> I
     int CODE_SHA1_DTID_EXCEPTION -> f
-    java.lang.String INSERT_DB_EXCEPTION -> O
-    int TYPE_MESSAGE -> G
+    java.lang.String INSERT_DB_NORMAL_ERROR -> O
+    int TYPE_ERROR -> G
     int CODE_GET_ORIGINAL_ID_EXCEPTION -> d
-    java.lang.String INSERT_OLD_DATA_EXCEPTION -> Q
-    int TYPE_ERROR -> E
+    java.lang.String INSERT_DB_EXCEPTION -> Q
+    int CODE_QUEUE_UPLOAD_DEAD -> E
     int CODE_INIT_CONFIG_ERROR -> b
-    java.lang.String HANDLE_UPLOAD_MESSAGE_ERROR -> S
-    int CODE_QUEUE_UPLOAD_DEAD -> C
+    java.lang.String INSERT_OLD_DATA_EXCEPTION -> S
+    int CODE_UPLOAD_ERROR_OVER_MAX -> C
+    java.lang.String HANDLE_UPLOAD_MESSAGE_ERROR -> U
     int CODE_UPLOAD_ERROR_MULTi_TIMES -> A
     int CODE_REPORT_ERROR_ON_FAIL -> y
     int CODE_HANDLE_UPLOAD_MESSAGE_ERROR -> w
@@ -5066,21 +5075,22 @@ com.roiquery.quality.ROIQueryErrorParams -> com.roiquery.quality.ROIQueryErrorPa
     int CODE_QUERY_DB_EXCEPTION -> q
     int CODE_INSERT_DATA_EXCEPTION -> o
     int CODE_INSERT_DB_EXCEPTION -> m
-    java.lang.String INIT_CONFIG_ERROR -> H
     int CODE_INSERT_DB_NORMAL_ERROR -> k
-    java.lang.String TRACK_MANAGER_ERROR -> J
+    java.lang.String INIT_CONFIG_ERROR -> J
+    int TYPE_WARNING -> H
     int CODE_TRACK_EVENT_ILLEGAL -> i
-    java.lang.String INIT_DB_ERROR -> L
-    int TYPE_WARNING -> F
+    java.lang.String TRACK_MANAGER_ERROR -> L
+    int CODE_QUEUE_DB_DEAD -> F
     int CODE_TRACK_ERROR -> g
-    java.lang.String INSERT_DB_OUT_OF_ROW_ERROR -> N
-    int CODE_QUEUE_DB_DEAD -> D
+    java.lang.String INIT_DB_ERROR -> N
+    int CODE_QUEUE_MAIN_DEAD -> D
     int CODE_INIT_DTID_EXCEPTION -> e
-    java.lang.String INSERT_JSON_EXCEPTION -> P
-    int CODE_QUEUE_MAIN_DEAD -> B
+    java.lang.String INSERT_DB_OUT_OF_ROW_ERROR -> P
+    int CODE_UPLOAD_ERROR_READ_DATA -> B
     int CODE_INIT_EXCEPTION -> c
-    java.lang.String DELETE_DB_EXCEPTION -> R
-    java.lang.String CHECK_ENABLE_UPLOAD_EXCEPTION -> T
+    java.lang.String INSERT_JSON_EXCEPTION -> R
+    java.lang.String DELETE_DB_EXCEPTION -> T
+    java.lang.String CHECK_ENABLE_UPLOAD_EXCEPTION -> V
     int CODE_REPORT_ERROR_ON_RESPONSE -> z
     int CODE_CHECK_ENABLE_UPLOAD_EXCEPTION -> x
     int CODE_GAID_UNKOWN -> v
