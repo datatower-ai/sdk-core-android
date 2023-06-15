@@ -16,11 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
-
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +34,6 @@
         <activity
             android:name=".ui.fn.core.TrackEventCustomizedActivity"
             android:label="Track Event Customized" />
-
         <activity android:name=".CoreActivity" />
         <activity android:name=".AdReportActivity" />
         <activity android:name=".IapReportActivity" />
@@ -44,6 +41,7 @@
         <activity android:name=".UtilsActivity" />
         <activity android:name=".ui.fn.core.UserApiActivity"
             android:label="User related API" ></activity>
+        <activity android:name=".DisplayAllApiActivity" />
 
         <service
             android:name=".SubProcessService"
