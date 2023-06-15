@@ -78,11 +78,13 @@ android {
         this.targetCompatibility = javaVersion
     }
 
-    kotlinOptions.jvmTarget = javaVersion.majorVersion
-
     buildFeatures {
+        this.compose = true
         this.viewBinding = true
         this.buildConfig = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.2.0-rc02"
     }
 }
 
@@ -99,7 +101,7 @@ dependencies {
      * 'kt-1_6-compat.gradle.kts'. */
     implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.annotation:annotation:1.4.0")
-    implementation("androidx.appcompat:appcompat:1.4.2")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.fragment:fragment-ktx:1.5.7")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("com.google.android.material:material:1.9.0-rc01")
@@ -111,5 +113,17 @@ dependencies {
 
     implementation(project(":roiquery-core"))
 
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
+    implementation("androidx.activity:activity-compose:1.6.0")
+    implementation(platform("androidx.compose:compose-bom:2022.10.00"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material3:material3")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
