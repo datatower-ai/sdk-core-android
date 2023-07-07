@@ -76,7 +76,7 @@ android {
         targetCompatibility = javaVersion
     }
 
-    kotlinOptions.jvmTarget = javaVersion.majorVersion
+    kotlinOptions.jvmTarget = javaVersion.toString()
 }
 
 dependencies {
