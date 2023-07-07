@@ -3,12 +3,12 @@ buildscript {
         set("applicationId", "ai.datatower.sdk.android")
         set("buildToolsVersion", "33.0.2")
         set("compileSdkVersion", 33)
-        set("minSdkVersion", 23)
+        set("minSdkVersion", 19)
         set("targetSdkVersion", 33)
 
-        set("dtsdkCoreVersionName", "2.0.0")
+        set("dtsdkCoreVersionName", "2.0.1")
 
-        set("javaVersion", JavaVersion.VERSION_17)
+        set("javaVersion", JavaVersion.VERSION_1_8)
         set("kotlinVersion", "1.8.21")
         set("androidGradlePluginMvnTriple", "com.android.tools.build:gradle:8.0.1")
         set("coroutinesVersion", "1.6.4")

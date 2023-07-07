@@ -23,6 +23,8 @@ android {
         this.versionCode = 10
         this.versionName = "1.1.10"
 
+        multiDexEnabled = true
+
         javaCompileOptions.annotationProcessorOptions.arguments.also {
             it["room.schemaLocation"] = "$projectDir/schemas"
         }
@@ -118,12 +120,10 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2022.10.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    implementation("androidx.multidex:multidex:2.0.1")
 }
