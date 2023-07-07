@@ -1,8 +1,10 @@
 package com.roiquery.analytics_demo
 
 import android.app.Application
+import android.content.Context
 import android.os.SystemClock
 import android.util.Log
+import androidx.multidex.MultiDex
 import com.roiquery.ad.DTAdReport
 import com.roiquery.analytics.*
 import org.json.JSONObject
@@ -60,4 +62,8 @@ class MyApp : Application() {
         DTAnalyticsUtils.trackTimerEnd("initApp")
     }
 
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
+    }
 }

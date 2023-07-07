@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.roiquery.analytics_demo.ui.theme.DataTowerSDKCoreTheme
 
@@ -60,7 +59,6 @@ class DisplayAllApiActivity : AppCompatActivity() {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 private fun ApiList() {
     val clipboardManager: ClipboardManager = LocalClipboardManager.current
