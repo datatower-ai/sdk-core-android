@@ -294,6 +294,8 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             instance ?: synchronized(this) {
                 instance ?: AnalyticsImp().also { instance = it }
             }
+
+            instance?.initSync(context);
             MainQueue.get().launchSequential {
                 instance?.init(context)
                 MonitorQueue.get()?.startMonitor()

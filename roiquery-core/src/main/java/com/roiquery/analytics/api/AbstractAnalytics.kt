@@ -46,6 +46,10 @@ abstract class AbstractAnalytics : IAnalytics {
         internalInit(context)
     }
 
+    fun initSync(context: Context) {
+        registerAppLifecycleListener(context)
+    }
+
 
     private suspend fun internalInit(context: Context) {
         try {
@@ -54,7 +58,6 @@ abstract class AbstractAnalytics : IAnalytics {
             initLocalData(context)
             initTracker()
             initProperties(context)
-            registerAppLifecycleListener(context)
             onInitSuccess(context)
         } catch (e: Exception) {
             onInitFailed(e.message)
