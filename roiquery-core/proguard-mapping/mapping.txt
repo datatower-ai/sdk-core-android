@@ -2,8 +2,8 @@
 # compiler_version: 8.0.40
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.1"}
-# pg_map_id: 4396a17
-# pg_map_hash: SHA-256 4396a175f2f0e4021933f36d87c85be8606f2d0a1f87a5cf0ff7cabfd509a357
+# pg_map_id: 61354b4
+# pg_map_hash: SHA-256 61354b483564be0273d86fa6c780d0152a033b9ab807061874ecdea6f2293dd8
 com.roiquery.ad.AD_CONVERSION_SOURCE -> com.roiquery.ad.a:
 # {"id":"sourceFile","fileName":"constant.kt"}
     java.lang.String LEFT_APP -> c
@@ -1126,8 +1126,9 @@ com.roiquery.analytics.Constant -> com.roiquery.analytics.b:
     java.lang.String COMMON_PROPERTY_SDK_TYPE -> I
     java.lang.String EVENT_INFO_ANDROID_ID -> j
     java.lang.String USER_PROPERTY_ACTIVE_USER_AGENT -> E0
+    java.lang.String SDK_TYPE_ANDROID -> f1
     java.lang.String USER_PROPERTY_ACTIVE_MEMORY_USED -> A0
-    java.lang.String PRESET_EVENT_USER_UNIQ_APPEND -> b1
+    java.lang.String PRESET_EVENT_USER_UNSET -> b1
     java.lang.String COMMON_PROPERTY_NETWORK_TYPE -> Q
     java.lang.String EVENT_INFO_NAME -> r
     java.lang.String COMMON_PROPERTY_IS_FOREGROUND -> Y
@@ -1142,18 +1143,18 @@ com.roiquery.analytics.Constant -> com.roiquery.analytics.b:
     java.lang.String EVENT_INFO_TIME -> q
     java.lang.String COMMON_PROPERTY_BUILD_DEVICE -> P
     java.lang.String USER_PROPERTY_ACTIVE_SCREEN_HEIGHT -> y0
-    java.lang.String PRESET_EVENT_USER_UNSET -> Z0
+    java.lang.String PRESET_EVENT_USER_SET -> Z0
     java.lang.String EVENT_TIME_DEVICE -> y
     java.lang.String COMMON_PROPERTY_SCREEN_WIDTH -> X
-    java.lang.String PRESET_EVENT_SESSION_END -> V0
-    java.lang.String EVENT_TYPE_USER -> R0
-    java.lang.String SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND -> N0
+    java.lang.String PRESET_EVENT_APP_INSTALL -> V0
+    java.lang.String SESSION_END_PROPERTY_SESSION_DURATION -> R0
+    java.lang.String ATTRIBUTE_PROPERTY_APP_INSTALL_TIME_SERVER -> N0
     java.lang.String ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME -> H0
     java.lang.String COMMON_PROPERTY_OS -> K
     java.lang.String USER_PROPERTY_ACTIVE_SIMULATOR -> D0
-    java.lang.String TIME_FROM_ROI_NET_BODY -> e1
+    java.lang.String PRESET_EVENT_USER_DEL -> e1
     java.lang.String EVENT_INFO_ACID -> l
-    java.lang.String PRESET_EVENT_USER_APPEND -> a1
+    java.lang.String PRESET_EVENT_USER_SET_ONCE -> a1
     java.lang.String COMMON_PROPERTY_MEMORY_USED -> S
     java.lang.String PRE_EVENT_INFO_SYN -> t
     java.lang.String USER_PROPERTY_ACTIVE_OS_VERSION_CODE -> u0
@@ -1169,19 +1170,19 @@ com.roiquery.analytics.Constant -> com.roiquery.analytics.b:
     java.lang.String EVENT_INFO_TYPE -> s
     java.lang.String COMMON_PROPERTY_SIMULATOR -> R
     java.lang.String USER_PROPERTY_ACTIVE_SCREEN_WIDTH -> z0
-    java.lang.String PRESET_EVENT_USER_SET_ONCE -> Y0
+    java.lang.String PRESET_EVENT_USER_ADD -> Y0
     java.lang.String COMMON_PROPERTY_EVENT_DURATION -> Z
-    java.lang.String PRESET_EVENT_SESSION_START -> U0
-    java.lang.String EVENT_TYPE_TRACK -> Q0
+    java.lang.String PRESET_EVENT_APP_INITIALIZE -> U0
+    java.lang.String SESSION_START_PROPERTY_START_REASON -> Q0
     java.lang.String EVENT_TIME_CAN_TRUSTED -> A
     java.lang.String LOG_TAG -> b
-    java.lang.String SESSION_START_PROPERTY_IS_FIRST_TIME -> M0
+    java.lang.String ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME_SERVER -> M0
     java.lang.String EVENT_REPORT_PATH -> f
     java.lang.String ATTRIBUTE_PROPERTY_REFERRER_URL -> G0
     int EVENT_REPORT_SIZE -> h
     java.lang.String COMMON_PROPERTY_OS_VERSION_CODE -> M
     java.lang.String USER_PROPERTY_ACTIVE_NETWORK_TYPE -> C0
-    java.lang.String SDK_TYPE_ANDROID -> d1
+    java.lang.String PRESET_EVENT_USER_UNIQ_APPEND -> d1
     java.lang.String EVENT_INFO_BUNDLE_ID -> n
     java.lang.String COMMON_PROPERTY_STORAGE_USED -> U
     java.lang.String EVENT_INFO_PROPERTIES -> v
@@ -1199,18 +1200,19 @@ com.roiquery.analytics.Constant -> com.roiquery.analytics.b:
     java.lang.String COMMON_PROPERTY_OS_VERSION_NAME -> L
     java.lang.String EVENT_INFO_SYN -> u
     java.lang.String COMMON_PROPERTY_FPS -> T
-    java.lang.String PRESET_EVENT_USER_SET -> X0
-    java.lang.String PRESET_EVENT_APP_INSTALL -> T0
-    java.lang.String SESSION_END_PROPERTY_SESSION_DURATION -> P0
+    java.lang.String PRESET_EVENT_SESSION_END -> X0
+    java.lang.String EVENT_TYPE_USER -> T0
+    java.lang.String SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND -> P0
     java.lang.String COMMON_PROPERTY_MCC -> C
     java.lang.String ATTRIBUTE_PROPERTY_CNL -> L0
     java.lang.String SERVER_URL_INNER -> d
     java.lang.String COMMON_PROPERTY_APP_VERSION_CODE -> G
     java.lang.String ATTRIBUTE_PROPERTY_INSTANT_EXPERIENCE_LAUNCHED -> J0
     java.lang.String USER_PROPERTY_ACTIVE_BUILD_DEVICE -> F0
+    java.lang.String TIME_FROM_ROI_NET_BODY -> g1
     java.lang.String COMMON_PROPERTY_DEVICE_BRAND -> O
     java.lang.String USER_PROPERTY_ACTIVE_STORAGE_USED -> B0
-    java.lang.String PRESET_EVENT_USER_DEL -> c1
+    java.lang.String PRESET_EVENT_USER_APPEND -> c1
     java.lang.String EVENT_INFO_DEBUG -> p
     java.lang.String COMMON_PROPERTY_SCREEN_HEIGHT -> W
     java.lang.String EVENT_TIME_CALIBRATED -> x
@@ -1226,9 +1228,9 @@ com.roiquery.analytics.Constant -> com.roiquery.analytics.b:
     java.lang.String COMMON_PROPERTY_DEVICE_MANUFACTURER -> N
     java.lang.String EVENT_BODY -> w
     java.lang.String COMMON_PROPERTY_DEVICE_MODEL -> V
-    java.lang.String PRESET_EVENT_USER_ADD -> W0
-    java.lang.String PRESET_EVENT_APP_INITIALIZE -> S0
-    java.lang.String SESSION_START_PROPERTY_START_REASON -> O0
+    java.lang.String PRESET_EVENT_SESSION_START -> W0
+    java.lang.String EVENT_TYPE_TRACK -> S0
+    java.lang.String SESSION_START_PROPERTY_IS_FIRST_TIME -> O0
     java.lang.String COMMON_PROPERTY_OS_COUNTRY -> E
     java.lang.String ATTRIBUTE_PROPERTY_FAILED_REASON -> K0
     1:1:void <init>():4:4 -> <init>
@@ -1322,10 +1324,10 @@ com.roiquery.analytics.DTAnalyticsUtils$Companion -> com.roiquery.analytics.DTAn
     1:1:void trackTimerStart(java.lang.String):17:17 -> trackTimerStart
 com.roiquery.analytics.DTChannel -> com.roiquery.analytics.DTChannel:
 # {"id":"sourceFile","fileName":"constant.kt"}
-    1:1:void <init>():153:153 -> <init>
+    1:1:void <init>():155:155 -> <init>
 com.roiquery.analytics.DTThirdPartyShareType -> com.roiquery.analytics.DTThirdPartyShareType:
 # {"id":"sourceFile","fileName":"constant.kt"}
-    1:1:void <init>():156:156 -> <init>
+    1:1:void <init>():158:158 -> <init>
 com.roiquery.analytics.OnDataTowerIdListener -> com.roiquery.analytics.OnDataTowerIdListener:
 # {"id":"sourceFile","fileName":"constant.kt"}
 com.roiquery.analytics.ROIQuery -> com.roiquery.analytics.ROIQuery:
@@ -1400,7 +1402,7 @@ com.roiquery.analytics.ROIQueryAnalytics$Companion -> com.roiquery.analytics.ROI
     1:1:void userUnset(java.lang.String[]):82:82 -> userUnset
 com.roiquery.analytics.ROIQueryChannel -> com.roiquery.analytics.ROIQueryChannel:
 # {"id":"sourceFile","fileName":"constant.kt"}
-    1:1:void <init>():148:148 -> <init>
+    1:1:void <init>():150:150 -> <init>
 com.roiquery.analytics.api.AbstractAnalytics -> c.a:
 # {"id":"sourceFile","fileName":"AbstractAnalytics.kt"}
     java.util.concurrent.atomic.AtomicBoolean mHasInit -> i
@@ -2325,8 +2327,10 @@ com.roiquery.analytics.core.PresetEventManager -> e.g:
     24:30:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):175:181 -> a
     31:37:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):179:185 -> a
     38:44:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):183:189 -> a
-    45:59:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):187:201 -> a
-    60:60:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):170:170 -> a
+    45:51:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):187:193 -> a
+    52:58:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):191:197 -> a
+    59:73:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):195:209 -> a
+    74:74:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):170:170 -> a
     1:3:void trackPresetEvent$lambda-0(com.roiquery.analytics.core.PresetEventManager,android.content.Context):38:40 -> b
     4:5:void getAppAttribute(android.content.Context):109:110 -> b
     1:1:void setActiveUserProperties(android.content.Context):70:70 -> c
@@ -2391,7 +2395,7 @@ com.roiquery.analytics.core.PresetEventManager$getAppAttribute$1 -> e.g$d:
 com.roiquery.analytics.core.PresetEventManager$trackAppInstallEvent$2 -> e.g$e:
 # {"id":"sourceFile","fileName":"PresetEventManager.kt"}
     com.roiquery.analytics.core.PresetEventManager this$0 -> a
-    1:3:void invoke(int,java.lang.String):204:206 -> a
+    1:3:void invoke(int,java.lang.String):212:214 -> a
     1:1:java.lang.Object invoke(java.lang.Object,java.lang.Object):170:170 -> invoke
 com.roiquery.analytics.core.PropertyManager -> e.h:
 # {"id":"sourceFile","fileName":"PropertyManager.kt"}
