@@ -109,6 +109,8 @@ internal object Constant {
     const val ATTRIBUTE_PROPERTY_INSTANT_EXPERIENCE_LAUNCHED = "#instant_experience_launched"
     const val ATTRIBUTE_PROPERTY_FAILED_REASON               = "#failed_reason"
     const val ATTRIBUTE_PROPERTY_CNL                         = "#cnl"
+    const val ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME_SERVER  = "#referrer_click_time_server"
+    const val ATTRIBUTE_PROPERTY_APP_INSTALL_TIME_SERVER     = "#app_install_time_server"
 
     //session_start
     const val SESSION_START_PROPERTY_IS_FIRST_TIME           = "#is_first_time"

@@ -181,8 +181,16 @@ class PresetEventManager {
                     if (isOK) response.referrerClickTimestampSeconds else 0
                 )
                 put(
+                    Constant.ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME_SERVER,
+                    if (isOK) response.referrerClickTimestampServerSeconds else 0
+                )
+                put(
                     Constant.ATTRIBUTE_PROPERTY_APP_INSTALL_TIME,
                     if (isOK) response.installBeginTimestampSeconds else 0
+                )
+                put(
+                    Constant.ATTRIBUTE_PROPERTY_APP_INSTALL_TIME_SERVER,
+                    if (isOK) response.installBeginTimestampServerSeconds else 0
                 )
                 put(
                     Constant.ATTRIBUTE_PROPERTY_INSTANT_EXPERIENCE_LAUNCHED,
