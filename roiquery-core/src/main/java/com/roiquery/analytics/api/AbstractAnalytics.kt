@@ -119,10 +119,9 @@ abstract class AbstractAnalytics : IAnalytics {
      * 监听应用生命周期
      */
     private fun registerAppLifecycleListener(context: Context) {
+        if (activityLifecycleCallbacks != null) return      // 已注册过，防止重复注册
         activityLifecycleCallbacks = DTActivityLifecycleCallbacks()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            (context.applicationContext as Application).registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
-        }
+        (context.applicationContext as Application).registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
     }
 
     /**
