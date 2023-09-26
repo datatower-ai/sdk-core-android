@@ -3,7 +3,6 @@ package com.roiquery.analytics.api
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import com.roiquery.analytics.Constant
@@ -186,6 +185,11 @@ abstract class AbstractAnalytics : IAnalytics {
             setConsoleSwitch(enable)
             setConsoleFilter(LogUtils.D)
         }
+    }
+
+    internal fun reportFirstSessionStart() {
+        // 调原方法做标识位校验，防止重复上报
+        activityLifecycleCallbacks?.trackSessionStart()
     }
 }
 
