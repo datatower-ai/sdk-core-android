@@ -49,7 +49,7 @@ public class DTActivityLifecycleCallbacks implements Application.ActivityLifecyc
         return  null;
     }
 
-    private void trackSessionStart(){
+    public void trackSessionStart(){
         if (AnalyticsConfig.Companion.getInstance().isSdkDisable()) {
             return;
         }

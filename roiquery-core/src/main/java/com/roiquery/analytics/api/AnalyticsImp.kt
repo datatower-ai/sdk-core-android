@@ -290,6 +290,8 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
 
             PerfLogger.doPerfLog(PerfAction.SDKINITBEGIN, System.currentTimeMillis())
 
+            val isFirstTimeInit = instance == null;
+
             // 必须第一时间初始化
             instance ?: synchronized(this) {
                 instance ?: AnalyticsImp().also { instance = it }
@@ -300,8 +302,16 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
                 instance?.init(context)
                 MonitorQueue.get()?.startMonitor()
                 PerfLogger.doPerfLog(PerfAction.SDKINITEND, System.currentTimeMillis())
+
+                if (isFirstTimeInit) {
+                    // 只在第一次 init 时调用
+                    onFirstInitAsync()
+                }
             }
         }
 
+        private fun onFirstInitAsync() {
+            instance?.reportFirstSessionStart()
+        }
     }
 }
