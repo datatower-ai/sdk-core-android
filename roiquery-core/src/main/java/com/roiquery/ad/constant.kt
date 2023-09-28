@@ -73,7 +73,10 @@ enum class AdMediation(val value: Int) {
     MOPUB(0),
     MAX(1),
     HISAVANA(2),
-    COMBO(3)
+    COMBO(3),
+    Topon(4),
+    TradPlus(5),
+    ToBid(6),
 }
 
 enum class AdPlatform(val value: Int) {
@@ -98,5 +101,26 @@ enum class AdPlatform(val value: Int) {
     BIGO(16),
     HISAVANA(17),
     APPLOVIN_EXCHANGE(18),
-    LOVINJOYADS(33)
+    Mintegral(19),
+    Liftoff(20),
+    Chartboost(21),
+    AdColony(22),
+    IronSource(23),
+    InMobi(24),
+    A4G(25),
+    Google_Ad_Manager(26),
+    Fyber(27),
+    Tapjoy(28),
+    Maio(29),
+    Criteo(30),
+    MyTarget(31),
+    Ogury(32),
+    LOVINJOYADS(33),
+    Appnext(34),
+    Kidoz(35),
+    Smaato(36),
+    Start_io(37),
+    Verve(38),
+    Yandex(39),
+    ReklamUp(40),
 }
