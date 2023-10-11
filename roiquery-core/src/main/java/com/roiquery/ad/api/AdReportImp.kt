@@ -29,9 +29,13 @@ class AdReportImp : IAdReport {
         type: Int,
         platform: Int,
         seq: String,
-        properties: MutableMap<String, Any>?
+        properties: MutableMap<String, Any>?,
+        mediation: Int,
+        mediationId: String
     ) {
-        updateAdEventProperty(id, type, platform, "", seq, properties, "") ?: return
+        updateAdEventProperty(id, type, platform, "", seq, properties, "",
+            mediation = mediation, mediationId = mediationId
+        ) ?: return
         adTrack(
             AdReportConstant.EVENT_AD_LOAD_BEGIN,
             generateAdReportJson(seq)
@@ -47,9 +51,13 @@ class AdReportImp : IAdReport {
         seq: String,
         errorCode: Int,
         errorMessage: String,
-        properties: MutableMap<String, Any>?
+        properties: MutableMap<String, Any>?,
+        mediation: Int,
+        mediationId: String
     ) {
-        updateAdEventProperty(id, type, platform, "", seq, properties, "") ?: return
+        updateAdEventProperty(id, type, platform, "", seq, properties, "",
+            mediation = mediation, mediationId = mediationId
+        ) ?: return
         adTrack(
             AdReportConstant.EVENT_AD_LOAD_END,
             generateAdReportJson(seq).apply {
@@ -69,7 +77,9 @@ class AdReportImp : IAdReport {
         location: String,
         seq: String,
         properties: MutableMap<String, Any>?,
-        entrance: String?
+        entrance: String?,
+        mediation: Int,
+        mediationId: String
     ) {
 //        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
 //        adTrack(
@@ -85,9 +95,13 @@ class AdReportImp : IAdReport {
         location: String,
         seq: String,
         properties: MutableMap<String, Any>?,
-        entrance: String?
+        entrance: String?,
+        mediation: Int,
+        mediationId: String
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance,
+            mediation = mediation, mediationId = mediationId
+        ) ?: return
         adTrack(
             AdReportConstant.EVENT_AD_TO_SHOW,
             generateAdReportJson(seq)
@@ -101,9 +115,13 @@ class AdReportImp : IAdReport {
         location: String,
         seq: String,
         properties: MutableMap<String, Any>?,
-        entrance: String?
+        entrance: String?,
+        mediation: Int,
+        mediationId: String
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance,
+            mediation = mediation, mediationId = mediationId
+        )?.apply {
             showTS = SystemClock.elapsedRealtime()
         } ?: return
         adTrack(
@@ -121,9 +139,13 @@ class AdReportImp : IAdReport {
         errorCode: Int,
         errorMessage: String,
         properties: MutableMap<String, Any>?,
-        entrance: String?
+        entrance: String?,
+        mediation: Int,
+        mediationId: String
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance,
+            mediation = mediation, mediationId = mediationId
+        )?.apply {
             showTS = SystemClock.elapsedRealtime()
             this.properties?.set(PROPERTY_AD_SHOW_ERROR_CODE, errorCode)
             this.properties?.set(PROPERTY_AD_SHOW_ERROR_MESSAGE, errorMessage)
@@ -141,7 +163,9 @@ class AdReportImp : IAdReport {
         location: String,
         seq: String,
         properties: MutableMap<String, Any>?,
-        entrance: String?
+        entrance: String?,
+        mediation: Int,
+        mediationId: String
     ) {
 //        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
 //            showTS = SystemClock.elapsedRealtime()
@@ -159,7 +183,9 @@ class AdReportImp : IAdReport {
         location: String,
         seq: String,
         properties: MutableMap<String, Any>?,
-        entrance: String?
+        entrance: String?,
+        mediation: Int,
+        mediationId: String
     ) {
 //        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
 //        adTrack(
@@ -176,8 +202,12 @@ class AdReportImp : IAdReport {
         seq: String,
         properties: MutableMap<String, Any>?,
         entrance: String?,
+        mediation: Int,
+        mediationId: String
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance,
+            mediation = mediation, mediationId = mediationId
+        ) ?: return
         adTrack(
             AdReportConstant.EVENT_AD_CLOSE,
             generateAdReportJson(seq)
@@ -192,8 +222,12 @@ class AdReportImp : IAdReport {
         seq: String,
         properties: MutableMap<String, Any>?,
         entrance: String?,
+        mediation: Int,
+        mediationId: String
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance,
+            mediation = mediation, mediationId = mediationId
+        )?.apply {
             clickTS = SystemClock.elapsedRealtime()
         } ?: return
         adTrack(
@@ -210,8 +244,12 @@ class AdReportImp : IAdReport {
         seq: String,
         properties: MutableMap<String, Any>?,
         entrance: String?,
+        mediation: Int,
+        mediationId: String
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance,
+            mediation = mediation, mediationId = mediationId
+        ) ?: return
         adTrack(
             AdReportConstant.EVENT_AD_REWARDED,
             generateAdReportJson(seq)
@@ -226,9 +264,13 @@ class AdReportImp : IAdReport {
         seq: String,
         conversionSource: String,
         properties: MutableMap<String, Any>?,
-        entrance: String?
+        entrance: String?,
+        mediation: Int,
+        mediationId: String
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance) ?: return
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance,
+            mediation = mediation, mediationId = mediationId
+        ) ?: return
         adTrack(
             AdReportConstant.EVENT_AD_CONVERSION,
             generateAdReportJson(seq).apply {
@@ -245,8 +287,12 @@ class AdReportImp : IAdReport {
         seq: String,
         properties: MutableMap<String, Any>?,
         entrance: String?,
+        mediation: Int,
+        mediationId: String
     ) {
-        updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
+        updateAdEventProperty(id, type, platform, location, seq, properties, entrance,
+            mediation = mediation, mediationId = mediationId
+        )?.apply {
             leftApplicationTS = SystemClock.elapsedRealtime()
             isLeftApplication = true
         } ?: return
@@ -266,7 +312,9 @@ class AdReportImp : IAdReport {
         currency: String,
         precision: String,
         properties: MutableMap<String, Any>?,
-        entrance: String?
+        entrance: String?,
+        mediation: Int,
+        mediationId: String
     ) {
         LogUtils.d(
             "reportPaid",
@@ -278,10 +326,14 @@ class AdReportImp : IAdReport {
                     "        value: $value,\n" +
                     "        currency: $currency,\n" +
                     "        precision: $precision,\n" +
-                    "        entrance: $entrance?"
+                    "        entrance: $entrance?\n" +
+                    "        mediation: $mediation,\n" +
+                    "        mediationId: $mediationId"
         )
         val property =
-            updateAdEventProperty(id, type, platform, location, seq, properties, entrance)?.apply {
+            updateAdEventProperty(id, type, platform, location, seq, properties, entrance,
+                mediation = mediation, mediationId = mediationId
+            )?.apply {
                 this.value = value
                 this.currency = currency
                 this.precision = precision
@@ -289,14 +341,6 @@ class AdReportImp : IAdReport {
         adTrack(
             AdReportConstant.EVENT_AD_PAID,
             generateAdReportJson(seq).apply {
-                put(
-                    AdReportConstant.PROPERTY_AD_MEDIAITON,
-                    if (properties?.containsKey(AdReportConstant.PROPERTY_AD_MEDIAITON) == true) properties[AdReportConstant.PROPERTY_AD_MEDIAITON] else property.mediation
-                )
-                put(
-                    AdReportConstant.PROPERTY_AD_MEDIAITON_ID,
-                    if (properties?.containsKey(AdReportConstant.PROPERTY_AD_MEDIAITON_ID) == true) properties[AdReportConstant.PROPERTY_AD_MEDIAITON_ID] else property.mediationId
-                )
                 put(
                     AdReportConstant.PROPERTY_AD_VALUE_MICROS,
                     if (properties?.containsKey(AdReportConstant.PROPERTY_AD_VALUE_MICROS) == true) properties[AdReportConstant.PROPERTY_AD_VALUE_MICROS] else property.value
@@ -358,10 +402,10 @@ class AdReportImp : IAdReport {
             location,
             seq,
             properties,
-            entrance
+            entrance,
+            mediation = mediation,
+            mediationId = mediationId
         )?.apply {
-            this.mediation = mediation
-            this.mediationId = mediationId
             this.value = value
             this.currency = currency
             this.precision = precision
@@ -370,8 +414,6 @@ class AdReportImp : IAdReport {
         adTrack(
             AdReportConstant.EVENT_AD_PAID,
             generateAdReportJson(seq).apply {
-                put(AdReportConstant.PROPERTY_AD_MEDIAITON, property.mediation)
-                put(AdReportConstant.PROPERTY_AD_MEDIAITON_ID, property.mediationId)
                 put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, property.value)
                 put(AdReportConstant.PROPERTY_AD_CURRENCY_CODE, property.currency)
                 put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE, property.precision)
@@ -405,21 +447,21 @@ class AdReportImp : IAdReport {
                     "        mediationId: $mediationId,\n" +
                     "        value: $value,\n" +
                     "        country: $country,\n" +
-                    "        precision: $precision,\n"
+                    "        precision: $precision,\n" +
+                    "        mediation: $mediation,\n" +
+                    "        mediationId: $mediationId"
 
         )
-        val property = updateAdEventProperty(id, type, platform, location, seq, properties)?.apply {
+        val property = updateAdEventProperty(id, type, platform, location, seq, properties,
+            mediation = mediation, mediationId = mediationId
+        )?.apply {
             this.value = value
             this.precision = precision
             this.country = country
-            this.mediation = mediation
-            this.mediationId = mediationId
         } ?: return
         adTrack(
             AdReportConstant.EVENT_AD_PAID,
             generateAdReportJson(seq).apply {
-                put(AdReportConstant.PROPERTY_AD_MEDIAITON, property.mediation)
-                put(AdReportConstant.PROPERTY_AD_MEDIAITON_ID, property.mediationId)
                 put(AdReportConstant.PROPERTY_AD_VALUE_MICROS, property.value)
                 put(AdReportConstant.PROPERTY_AD_PRECISION_TYPE, property.precision)
                 put(AdReportConstant.PROPERTY_AD_COUNTRY, property.country)
@@ -494,7 +536,9 @@ class AdReportImp : IAdReport {
         location: String,
         seq: String,
         properties: MutableMap<String, Any>?,
-        entrance: String? = ""
+        entrance: String? = "",
+        mediation: Int,
+        mediationId: String
     ): AdEventProperty? {
         try {
             checkSeqError(seq)
@@ -528,6 +572,8 @@ class AdReportImp : IAdReport {
             it.seq = seq
             it.properties = properties
             it.entrance = entrance ?: ""
+            it.mediation = mediation
+            it.mediationId = mediationId
         }
         return mSequenessMap[seq]
     }

@@ -17,6 +17,8 @@ open class DTAdReport {
          * @param platform 广告平台
          * @param seq 系列行为标识
          * @param properties 自定义事件属性
+         * @param mediation 聚合平台
+         * @param mediationId 聚合平台广告id
          */
         @JvmOverloads
         @JvmStatic
@@ -26,8 +28,10 @@ open class DTAdReport {
             platform: AdPlatform,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
+            mediation: AdMediation = AdMediation.IDLE,
+            mediationId: String = "",
         ) = AdReportImp.getInstance()
-            .reportLoadBegin(id, type.value, platform.value,  seq, properties)
+            .reportLoadBegin(id, type.value, platform.value,  seq, properties, mediation.value, mediationId)
 
 
 
@@ -44,6 +48,8 @@ open class DTAdReport {
          * @param errorCode 失败错误码
          * @param errorMessage 失败错误信息
          * @param properties 自定义事件属性
+         * @param mediation 聚合平台
+         * @param mediationId 聚合平台广告id
          */
         @JvmOverloads
         @JvmStatic
@@ -57,8 +63,10 @@ open class DTAdReport {
             errorCode: Int = 0,
             errorMessage: String = "",
             properties: MutableMap<String, Any>? = mutableMapOf(),
+            mediation: AdMediation = AdMediation.IDLE,
+            mediationId: String = "",
         ) = AdReportImp.getInstance()
-            .reportLoadEnd(id, type.value, platform.value, duration, result, seq,errorCode, errorMessage, properties)
+            .reportLoadEnd(id, type.value, platform.value, duration, result, seq,errorCode, errorMessage, properties, mediation.value, mediationId)
 
 
 
@@ -72,6 +80,8 @@ open class DTAdReport {
          * @param seq 系列行为标识
          * @param properties 额外事件属性
          * @param entrance 广告入口
+         * @param mediation 聚合平台
+         * @param mediationId 聚合平台广告id
          */
         @JvmOverloads
         @JvmStatic
@@ -82,9 +92,11 @@ open class DTAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
+            mediation: AdMediation = AdMediation.IDLE,
+            mediationId: String = "",
         ) = AdReportImp.getInstance()
-            .reportToShow(id, type.value, platform.value, location, seq, properties, entrance)
+            .reportToShow(id, type.value, platform.value, location, seq, properties, entrance, mediation.value, mediationId)
 
         /**
          * 上报 广告展示
@@ -96,6 +108,8 @@ open class DTAdReport {
          * @param seq 系列行为标识
          * @param properties 额外事件属性
          * @param entrance 广告入口
+         * @param mediation 聚合平台
+         * @param mediationId 聚合平台广告id
          */
         @JvmOverloads
         @JvmStatic
@@ -106,9 +120,11 @@ open class DTAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
+            mediation: AdMediation = AdMediation.IDLE,
+            mediationId: String = "",
         ) = AdReportImp.getInstance()
-            .reportShow(id, type.value, platform.value, location, seq, properties, entrance)
+            .reportShow(id, type.value, platform.value, location, seq, properties, entrance, mediation.value, mediationId)
 
         /**
          * 上报 广告展示失败
@@ -120,6 +136,8 @@ open class DTAdReport {
          * @param seq 系列行为标识
          * @param properties 额外事件属性
          * @param entrance 广告入口
+         * @param mediation 聚合平台
+         * @param mediationId 聚合平台广告id
          */
         @JvmOverloads
         @JvmStatic
@@ -132,9 +150,11 @@ open class DTAdReport {
             errorCode: Int,
             errorMessage: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
+            mediation: AdMediation = AdMediation.IDLE,
+            mediationId: String = "",
         ) = AdReportImp.getInstance()
-            .reportShowFailed(id, type.value, platform.value, location, seq, errorCode,errorMessage,properties,entrance)
+            .reportShowFailed(id, type.value, platform.value, location, seq, errorCode,errorMessage,properties,entrance, mediation.value, mediationId)
 
 
 
@@ -148,6 +168,8 @@ open class DTAdReport {
          * @param seq 系列行为标识
          * @param properties 额外事件属性
          * @param entrance 广告入口
+         * @param mediation 聚合平台
+         * @param mediationId 聚合平台广告id
          */
         @JvmOverloads
         @JvmStatic
@@ -158,9 +180,11 @@ open class DTAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
+            mediation: AdMediation = AdMediation.IDLE,
+            mediationId: String = "",
         ) = AdReportImp.getInstance()
-            .reportClose(id, type.value, platform.value, location, seq, properties, entrance)
+            .reportClose(id, type.value, platform.value, location, seq, properties, entrance, mediation.value, mediationId)
 
         /**
          * 上报 广告点击
@@ -172,6 +196,8 @@ open class DTAdReport {
          * @param seq 系列行为标识
          * @param properties 额外事件属性
          * @param entrance 广告入口
+         * @param mediation 聚合平台
+         * @param mediationId 聚合平台广告id
          */
         @JvmOverloads
         @JvmStatic
@@ -182,9 +208,11 @@ open class DTAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
+            mediation: AdMediation = AdMediation.IDLE,
+            mediationId: String = "",
         ) = AdReportImp.getInstance()
-            .reportClick(id, type.value, platform.value, location, seq, properties, entrance)
+            .reportClick(id, type.value, platform.value, location, seq, properties, entrance, mediation.value, mediationId)
 
         /**
          * 上报 激励广告已获得奖励
@@ -196,6 +224,8 @@ open class DTAdReport {
          * @param seq 系列行为标识
          * @param properties 额外事件属性
          * @param entrance 广告入口
+         * @param mediation 聚合平台
+         * @param mediationId 聚合平台广告id
          */
         @JvmOverloads
         @JvmStatic
@@ -206,9 +236,11 @@ open class DTAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
+            mediation: AdMediation = AdMediation.IDLE,
+            mediationId: String = "",
         ) = AdReportImp.getInstance()
-            .reportRewarded(id, type.value, platform.value, location, seq, properties, entrance)
+            .reportRewarded(id, type.value, platform.value, location, seq, properties, entrance, mediation.value, mediationId)
 
 
         /**
@@ -221,6 +253,8 @@ open class DTAdReport {
          * @param seq 系列行为标识
          * @param properties 额外事件属性
          * @param entrance 广告入口
+         * @param mediation 聚合平台
+         * @param mediationId 聚合平台广告id
          */
         @JvmOverloads
         @JvmStatic
@@ -231,10 +265,13 @@ open class DTAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
+            mediation: AdMediation = AdMediation.IDLE,
+            mediationId: String = "",
         ) = AdReportImp.getInstance()
             .reportConversion(id, type.value, platform.value, location, seq,
-                AD_CONVERSION_SOURCE.CLICK, properties, entrance)
+                AD_CONVERSION_SOURCE.CLICK, properties,
+                entrance, mediation.value, mediationId)
 
 
 
@@ -248,6 +285,8 @@ open class DTAdReport {
          * @param seq 系列行为标识
          * @param properties 额外事件属性
          * @param entrance 广告入口
+         * @param mediation 聚合平台
+         * @param mediationId 聚合平台广告id
          */
         @JvmOverloads
         @JvmStatic
@@ -258,10 +297,13 @@ open class DTAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
+            mediation: AdMediation = AdMediation.IDLE,
+            mediationId: String = "",
         ) = AdReportImp.getInstance()
             .reportConversion(id, type.value, platform.value, location, seq,
-                AD_CONVERSION_SOURCE.LEFT_APP, properties, entrance)
+                AD_CONVERSION_SOURCE.LEFT_APP, properties, entrance,
+                mediation.value, mediationId)
 
 
 
@@ -276,6 +318,8 @@ open class DTAdReport {
          * @param seq 系列行为标识
          * @param properties 额外事件属性
          * @param entrance 广告入口
+         * @param mediation 聚合平台
+         * @param mediationId 聚合平台广告id
          */
         @JvmOverloads
         @JvmStatic
@@ -286,10 +330,13 @@ open class DTAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
+            mediation: AdMediation = AdMediation.IDLE,
+            mediationId: String = "",
         ) = AdReportImp.getInstance()
             .reportConversion(id, type.value, platform.value, location, seq,
-                AD_CONVERSION_SOURCE.REWARDED, properties, entrance)
+                AD_CONVERSION_SOURCE.REWARDED, properties, entrance,
+                mediation.value, mediationId)
 
 
 
@@ -306,6 +353,8 @@ open class DTAdReport {
          * @param precision 精确度
          * @param properties 额外事件属性
          * @param entrance 广告入口
+         * @param mediation 聚合平台
+         * @param mediationId 聚合平台广告id
          */
         @JvmOverloads
         @JvmStatic
@@ -319,9 +368,11 @@ open class DTAdReport {
             currency: String,
             precision: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
+            mediation: AdMediation = AdMediation.IDLE,
+            mediationId: String = "",
         ) = AdReportImp.getInstance()
-            .reportPaid(id, type.value, platform.value, location, seq, value, currency, precision, properties,entrance)
+            .reportPaid(id, type.value, platform.value, location, seq, value, currency, precision, properties, entrance, mediation.value, mediationId)
 
         /**
          * 上报 广告展示价值，用于聚合广告平台MAX
@@ -365,6 +416,8 @@ open class DTAdReport {
          * @param seq 系列行为标识
          * @param properties 额外事件属性
          * @param entrance 广告入口
+         * @param mediation 聚合平台
+         * @param mediationId 聚合平台广告id
          */
         @JvmOverloads
         @JvmStatic
@@ -375,9 +428,11 @@ open class DTAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
+            mediation: AdMediation = AdMediation.IDLE,
+            mediationId: String = "",
         ) = AdReportImp.getInstance()
-            .reportLeftApp(id, type.value, platform.value, location, seq, properties, entrance)
+            .reportLeftApp(id, type.value, platform.value, location, seq, properties, entrance, mediation.value, mediationId)
         
 
         /**
