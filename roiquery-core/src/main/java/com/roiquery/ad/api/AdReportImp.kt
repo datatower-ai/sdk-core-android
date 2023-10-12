@@ -504,6 +504,8 @@ class AdReportImp : IAdReport {
                 put(AdReportConstant.PROPERTY_AD_ID, adEventProperty.adId)
                 put(AdReportConstant.PROPERTY_AD_TYPE, adEventProperty.adType)
                 put(AdReportConstant.PROPERTY_AD_PLATFORM, adEventProperty.adPlatform)
+                put(AdReportConstant.PROPERTY_AD_MEDIAITON, adEventProperty.mediation)
+                put(AdReportConstant.PROPERTY_AD_MEDIAITON_ID, adEventProperty.mediationId)
                 put(AdReportConstant.PROPERTY_AD_ENTRANCE, adEventProperty.entrance)
                 put(AdReportConstant.PROPERTY_AD_LOCATION, adEventProperty.location)
                 put(AdReportConstant.PROPERTY_AD_SEQ, seq)
