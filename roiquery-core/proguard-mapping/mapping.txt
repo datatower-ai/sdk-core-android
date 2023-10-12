@@ -2,8 +2,8 @@
 # compiler_version: 8.0.40
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.1"}
-# pg_map_id: f48d1c9
-# pg_map_hash: SHA-256 f48d1c978d85cbf43eca4a200a8cd582e487d9fa11cfad768d5e3f7ca17a8bc2
+# pg_map_id: 9019e82
+# pg_map_hash: SHA-256 9019e8257918d4503d2b107f71a8d23975c014da1ccc301ff628541ea0e5010a
 com.roiquery.ad.AD_CONVERSION_SOURCE -> com.roiquery.ad.a:
 # {"id":"sourceFile","fileName":"constant.kt"}
     java.lang.String LEFT_APP -> c
@@ -900,9 +900,9 @@ com.roiquery.ad.api.AdReportImp -> a.a:
     221:221:void com.roiquery.ad.api.AdReportImp.adTrack(java.lang.String,org.json.JSONObject):498:498 -> a
     221:221:void reportReturnApp():481 -> a
     222:222:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> a
-    223:224:void checkSeqError(java.lang.String):520:521 -> a
-    225:225:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty$default(com.roiquery.ad.api.AdReportImp,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):539:539 -> a
-    226:226:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty$default(com.roiquery.ad.api.AdReportImp,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):532:532 -> a
+    223:224:void checkSeqError(java.lang.String):522:523 -> a
+    225:225:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty$default(com.roiquery.ad.api.AdReportImp,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):541:541 -> a
+    226:226:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty$default(com.roiquery.ad.api.AdReportImp,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):534:534 -> a
     1:1:void reportEntrance(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):0:0 -> b
     2:2:com.roiquery.ad.api.AdReportImp access$getInstance$cp():22:22 -> b
     3:5:org.json.JSONObject generateAdReportJson(java.lang.String):502:504 -> b
@@ -915,27 +915,33 @@ com.roiquery.ad.api.AdReportImp -> a.a:
     12:12:int com.roiquery.ad.utils.AdEventProperty.getAdPlatform():80:80 -> b
     12:12:org.json.JSONObject generateAdReportJson(java.lang.String):506 -> b
     13:14:org.json.JSONObject generateAdReportJson(java.lang.String):506:507 -> b
-    15:15:java.lang.String com.roiquery.ad.utils.AdEventProperty.getEntrance():84:84 -> b
+    15:15:int com.roiquery.ad.utils.AdEventProperty.getMediation():86:86 -> b
     15:15:org.json.JSONObject generateAdReportJson(java.lang.String):507 -> b
     16:17:org.json.JSONObject generateAdReportJson(java.lang.String):507:508 -> b
-    18:18:java.lang.String com.roiquery.ad.utils.AdEventProperty.getLocation():78:78 -> b
+    18:18:java.lang.String com.roiquery.ad.utils.AdEventProperty.getMediationId():87:87 -> b
     18:18:org.json.JSONObject generateAdReportJson(java.lang.String):508 -> b
     19:20:org.json.JSONObject generateAdReportJson(java.lang.String):508:509 -> b
-    21:21:java.util.Map com.roiquery.ad.utils.AdEventProperty.getProperties():83:83 -> b
-    21:21:org.json.JSONObject generateAdReportJson(java.lang.String):511 -> b
-    22:22:org.json.JSONObject generateAdReportJson(java.lang.String):607:607 -> b
-    23:23:org.json.JSONObject generateAdReportJson(java.lang.String):513:513 -> b
+    21:21:java.lang.String com.roiquery.ad.utils.AdEventProperty.getEntrance():84:84 -> b
+    21:21:org.json.JSONObject generateAdReportJson(java.lang.String):509 -> b
+    22:23:org.json.JSONObject generateAdReportJson(java.lang.String):509:510 -> b
+    24:24:java.lang.String com.roiquery.ad.utils.AdEventProperty.getLocation():78:78 -> b
+    24:24:org.json.JSONObject generateAdReportJson(java.lang.String):510 -> b
+    25:26:org.json.JSONObject generateAdReportJson(java.lang.String):510:511 -> b
+    27:27:java.util.Map com.roiquery.ad.utils.AdEventProperty.getProperties():83:83 -> b
+    27:27:org.json.JSONObject generateAdReportJson(java.lang.String):513 -> b
+    28:28:org.json.JSONObject generateAdReportJson(java.lang.String):609:609 -> b
+    29:29:org.json.JSONObject generateAdReportJson(java.lang.String):515:515 -> b
     1:4:void reportClick(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):228:231 -> c
     5:5:void com.roiquery.ad.utils.AdEventProperty.setClickTS(long):94:94 -> c
     5:5:void reportClick(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):231 -> c
     6:7:void reportClick(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):234:235 -> c
     8:8:void com.roiquery.ad.api.AdReportImp.adTrack(java.lang.String,org.json.JSONObject):498:498 -> c
     8:8:void reportClick(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):233 -> c
-    9:12:void makeAdEventProperty(java.lang.String):526:529 -> c
-    13:14:com.roiquery.ad.utils.AdEventProperty getLeftApplicationEventProperty():582:583 -> c
+    9:12:void makeAdEventProperty(java.lang.String):528:531 -> c
+    13:14:com.roiquery.ad.utils.AdEventProperty getLeftApplicationEventProperty():584:585 -> c
     15:15:boolean com.roiquery.ad.utils.AdEventProperty.isLeftApplication():99:99 -> c
-    15:15:com.roiquery.ad.utils.AdEventProperty getLeftApplicationEventProperty():583 -> c
-    16:17:com.roiquery.ad.utils.AdEventProperty getLeftApplicationEventProperty():583:584 -> c
+    15:15:com.roiquery.ad.utils.AdEventProperty getLeftApplicationEventProperty():585 -> c
+    16:17:com.roiquery.ad.utils.AdEventProperty getLeftApplicationEventProperty():585:586 -> c
     1:6:void reportClose(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):208:213 -> d
     7:7:void com.roiquery.ad.api.AdReportImp.adTrack(java.lang.String,org.json.JSONObject):498:498 -> d
     7:7:void reportClose(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):211 -> d
@@ -960,34 +966,34 @@ com.roiquery.ad.api.AdReportImp -> a.a:
     7:8:void reportLeftApp(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):300:301 -> i
     9:9:void com.roiquery.ad.api.AdReportImp.adTrack(java.lang.String,org.json.JSONObject):498:498 -> i
     9:9:void reportLeftApp(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):299 -> i
-    1:66:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):544:609 -> j
-    67:67:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):551:551 -> j
-    68:82:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):549:563 -> j
+    1:66:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):546:611 -> j
+    67:67:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):553:553 -> j
+    68:82:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):551:565 -> j
     83:83:void com.roiquery.ad.utils.AdEventProperty.setAdType(int):79:79 -> j
-    83:83:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):564 -> j
-    84:84:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):566:566 -> j
+    83:83:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):566 -> j
+    84:84:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):568:568 -> j
     85:85:void com.roiquery.ad.utils.AdEventProperty.setAdPlatform(int):80:80 -> j
-    85:85:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):567 -> j
-    86:89:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):569:572 -> j
+    85:85:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):569 -> j
+    86:89:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):571:574 -> j
     90:90:void com.roiquery.ad.utils.AdEventProperty.setProperties(java.util.Map):83:83 -> j
-    90:90:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):573 -> j
-    91:91:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):574:574 -> j
+    90:90:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):575 -> j
+    91:91:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):576:576 -> j
     92:92:void com.roiquery.ad.utils.AdEventProperty.setMediation(int):86:86 -> j
-    92:92:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):575 -> j
-    93:95:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):576:578 -> j
-    96:96:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):546:546 -> j
+    92:92:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):577 -> j
+    93:95:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):578:580 -> j
+    96:96:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):548:548 -> j
 com.roiquery.ad.api.AdReportImp$Companion -> a.a$a:
 # {"id":"sourceFile","fileName":"AdReportImp.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():591:591 -> <init>
-    1:1:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease$default(com.roiquery.ad.api.AdReportImp$Companion,android.content.Context,int,java.lang.Object):596:596 -> a
-    2:2:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):598:598 -> a
+    2:2:void <init>():593:593 -> <init>
+    1:1:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease$default(com.roiquery.ad.api.AdReportImp$Companion,android.content.Context,int,java.lang.Object):598:598 -> a
+    2:2:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):600:600 -> a
     3:3:com.roiquery.ad.api.AdReportImp com.roiquery.ad.api.AdReportImp.access$getInstance$cp():22:22 -> a
-    3:3:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):599 -> a
-    4:4:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):599:599 -> a
+    3:3:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):601 -> a
+    4:4:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):601:601 -> a
     5:5:void com.roiquery.ad.api.AdReportImp.access$setInstance$cp(com.roiquery.ad.api.AdReportImp):22:22 -> a
-    5:5:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):599 -> a
-    6:6:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):598:598 -> a
+    5:5:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):601 -> a
+    6:6:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):600:600 -> a
 com.roiquery.ad.api.IAdReport -> a.b:
 # {"id":"sourceFile","fileName":"IAdReport.kt"}
     void reportConversion(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String) -> a
