@@ -1,6 +1,8 @@
 package com.roiquery.ad.api
 
- interface IAdReport {
+import com.roiquery.ad.AdMediation
+
+interface IAdReport {
 
      fun reportLoadBegin(
          id: String,
@@ -8,6 +10,8 @@ package com.roiquery.ad.api
          platform: Int,
          seq: String,
          properties: MutableMap<String, Any>? = mutableMapOf(),
+         mediation: Int,
+         mediationId: String,
      )
 
      fun reportLoadEnd(
@@ -20,6 +24,8 @@ package com.roiquery.ad.api
          errorCode: Int = 0,
          errorMessage: String = "",
          properties: MutableMap<String, Any>? = mutableMapOf(),
+         mediation: Int,
+         mediationId: String,
      )
 
 
@@ -41,7 +47,9 @@ package com.roiquery.ad.api
         location: String,
         seq: String,
         properties: MutableMap<String, Any>? = mutableMapOf(),
-        entrance: String? = ""
+        entrance: String? = "",
+        mediation: Int,
+        mediationId: String,
     )
 
 
@@ -63,8 +71,9 @@ package com.roiquery.ad.api
         location: String,
         seq: String,
         properties: MutableMap<String, Any>? = mutableMapOf(),
-        entrance: String? = ""
-
+        entrance: String? = "",
+        mediation: Int,
+        mediationId: String,
     )
     /**
      * 上报 广告展示
@@ -84,7 +93,9 @@ package com.roiquery.ad.api
         location: String,
         seq: String,
         properties: MutableMap<String, Any>? = mutableMapOf(),
-        entrance: String? = ""
+        entrance: String? = "",
+        mediation: Int,
+        mediationId: String,
     )
 
      /**
@@ -108,7 +119,9 @@ package com.roiquery.ad.api
          errorCode: Int,
          errorMessage: String,
          properties: MutableMap<String, Any>? = mutableMapOf(),
-         entrance: String? = ""
+         entrance: String? = "",
+         mediation: Int,
+         mediationId: String,
      )
 
      /**
@@ -129,7 +142,9 @@ package com.roiquery.ad.api
          location: String,
          seq: String,
          properties: MutableMap<String, Any>? = mutableMapOf(),
-         entrance: String? = ""
+         entrance: String? = "",
+         mediation: Int,
+         mediationId: String,
      )
      /**
       * 上报 广告打开
@@ -149,7 +164,9 @@ package com.roiquery.ad.api
          location: String,
          seq: String,
          properties: MutableMap<String, Any>? = mutableMapOf(),
-         entrance: String? = ""
+         entrance: String? = "",
+         mediation: Int,
+         mediationId: String,
      )
     /**
      * 上报 广告关闭
@@ -169,7 +186,9 @@ package com.roiquery.ad.api
         location: String,
         seq: String,
         properties: MutableMap<String, Any>? = mutableMapOf(),
-        entrance: String? = ""
+        entrance: String? = "",
+        mediation: Int,
+        mediationId: String,
     )
     /**
      * 上报 广告点击
@@ -189,7 +208,9 @@ package com.roiquery.ad.api
         location: String,
         seq: String,
         properties: MutableMap<String, Any>? = mutableMapOf(),
-        entrance: String? = ""
+        entrance: String? = "",
+        mediation: Int,
+        mediationId: String,
     )
     /**
      * 上报 激励广告已获得奖励
@@ -209,7 +230,9 @@ package com.roiquery.ad.api
         location: String,
         seq: String,
         properties: MutableMap<String, Any>? = mutableMapOf(),
-        entrance: String? = ""
+        entrance: String? = "",
+        mediation: Int,
+        mediationId: String,
     )
 
     /**
@@ -232,7 +255,9 @@ package com.roiquery.ad.api
         seq: String,
         conversionSource: String,
         properties: MutableMap<String, Any>? = mutableMapOf(),
-        entrance: String? = ""
+        entrance: String? = "",
+        mediation: Int,
+        mediationId: String,
     )
     /**
      * 上报 访问广告链接，离开当前app(页面)
@@ -252,7 +277,9 @@ package com.roiquery.ad.api
         location: String,
         seq: String,
         properties: MutableMap<String, Any>? = mutableMapOf(),
-        entrance: String? = ""
+        entrance: String? = "",
+        mediation: Int,
+        mediationId: String,
     )
 
      /**
@@ -279,7 +306,9 @@ package com.roiquery.ad.api
          currency: String,
          precision: String,
          properties: MutableMap<String, Any>? = mutableMapOf(),
-         entrance: String? = ""
+         entrance: String? = "",
+         mediation: Int,
+         mediationId: String,
      )
 
 

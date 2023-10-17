@@ -4,7 +4,10 @@ import com.roiquery.ad.api.AdReportImp
 import com.roiquery.ad.utils.AdPlatformUtils
 import com.roiquery.ad.utils.UUIDUtils
 
-@Deprecated("this class will be remove, Replace With \'DTAdReport\'",ReplaceWith("DTAdReport"))
+@Deprecated(
+    "this class is no longer maintained and will be removed, Replace With \'DTAdReport\'",
+    ReplaceWith("DTAdReport")
+)
 open class ROIQueryAdReport {
     companion object {
 
@@ -29,7 +32,8 @@ open class ROIQueryAdReport {
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
         ) = AdReportImp.getInstance()
-            .reportLoadBegin(id, type.value, platform.value,  seq, properties)
+            .reportLoadBegin(id, type.value, platform.value,  seq, properties,
+                AdMediation.IDLE.value, "")
 
 
 
@@ -58,7 +62,8 @@ open class ROIQueryAdReport {
             errorMessage: String = "",
             properties: MutableMap<String, Any>? = mutableMapOf(),
         ) = AdReportImp.getInstance()
-            .reportLoadEnd(id, type.value, platform.value, duration, result, seq,errorCode, errorMessage, properties)
+            .reportLoadEnd(id, type.value, platform.value, duration, result, seq,errorCode, errorMessage, properties,
+                AdMediation.IDLE.value, "")
 
 
 
@@ -82,9 +87,10 @@ open class ROIQueryAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
         ) = AdReportImp.getInstance()
-            .reportToShow(id, type.value, platform.value, location, seq, properties, entrance)
+            .reportToShow(id, type.value, platform.value, location, seq, properties, entrance,
+                AdMediation.IDLE.value, "")
 
         /**
          * 上报 广告展示
@@ -106,9 +112,10 @@ open class ROIQueryAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
         ) = AdReportImp.getInstance()
-            .reportShow(id, type.value, platform.value, location, seq, properties, entrance)
+            .reportShow(id, type.value, platform.value, location, seq, properties, entrance,
+                AdMediation.IDLE.value, "")
 
         /**
          * 上报 广告展示失败
@@ -132,9 +139,10 @@ open class ROIQueryAdReport {
             errorCode: Int,
             errorMessage: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
         ) = AdReportImp.getInstance()
-            .reportShowFailed(id, type.value, platform.value, location, seq, errorCode,errorMessage,properties,entrance)
+            .reportShowFailed(id, type.value, platform.value, location, seq, errorCode,errorMessage,properties,entrance,
+                AdMediation.IDLE.value, "")
 
 
 
@@ -158,9 +166,10 @@ open class ROIQueryAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
         ) = AdReportImp.getInstance()
-            .reportClose(id, type.value, platform.value, location, seq, properties, entrance)
+            .reportClose(id, type.value, platform.value, location, seq, properties, entrance,
+                AdMediation.IDLE.value, "")
 
         /**
          * 上报 广告点击
@@ -182,9 +191,10 @@ open class ROIQueryAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
         ) = AdReportImp.getInstance()
-            .reportClick(id, type.value, platform.value, location, seq, properties, entrance)
+            .reportClick(id, type.value, platform.value, location, seq, properties, entrance,
+                AdMediation.IDLE.value, "")
 
         /**
          * 上报 激励广告已获得奖励
@@ -206,9 +216,10 @@ open class ROIQueryAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
         ) = AdReportImp.getInstance()
-            .reportRewarded(id, type.value, platform.value, location, seq, properties, entrance)
+            .reportRewarded(id, type.value, platform.value, location, seq, properties, entrance,
+                AdMediation.IDLE.value, "")
 
 
         /**
@@ -231,10 +242,11 @@ open class ROIQueryAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
         ) = AdReportImp.getInstance()
             .reportConversion(id, type.value, platform.value, location, seq,
-                AD_CONVERSION_SOURCE.CLICK, properties, entrance)
+                AD_CONVERSION_SOURCE.CLICK, properties, entrance,
+                AdMediation.IDLE.value, "")
 
 
 
@@ -258,10 +270,11 @@ open class ROIQueryAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
         ) = AdReportImp.getInstance()
             .reportConversion(id, type.value, platform.value, location, seq,
-                AD_CONVERSION_SOURCE.LEFT_APP, properties, entrance)
+                AD_CONVERSION_SOURCE.LEFT_APP, properties, entrance,
+                AdMediation.IDLE.value, "")
 
 
 
@@ -286,10 +299,11 @@ open class ROIQueryAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
         ) = AdReportImp.getInstance()
             .reportConversion(id, type.value, platform.value, location, seq,
-                AD_CONVERSION_SOURCE.REWARDED, properties, entrance)
+                AD_CONVERSION_SOURCE.REWARDED, properties, entrance,
+                AdMediation.IDLE.value, "")
 
 
 
@@ -319,9 +333,9 @@ open class ROIQueryAdReport {
             currency: String,
             precision: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
         ) = AdReportImp.getInstance()
-            .reportPaid(id, type.value, platform.value, location, seq, value, currency, precision, properties,entrance)
+            .reportPaid(id, type.value, platform.value, location, seq, value, currency, precision, properties, entrance, AdMediation.IDLE.value, "")
 
         /**
          * 上报 广告展示价值
@@ -417,9 +431,9 @@ open class ROIQueryAdReport {
             location: String,
             seq: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
-            entrance: String? = ""
+            entrance: String? = "",
         ) = AdReportImp.getInstance()
-            .reportLeftApp(id, type.value, platform.value, location, seq, properties, entrance)
+            .reportLeftApp(id, type.value, platform.value, location, seq, properties, entrance, AdMediation.IDLE.value, "")
 
 
 

@@ -15,7 +15,9 @@
 
     <application
         android:usesCleartextTraffic="true"
-        >
+        android:fullBackupContent="@xml/dt_fbc"
+        android:dataExtractionRules="@xml/dt_der"
+        tools:targetApi="s">
         <meta-data
             android:name="com.roiquery.analytics.android.MainProcessName"
             android:value="${applicationId}" />
