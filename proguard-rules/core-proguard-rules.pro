@@ -50,4 +50,4 @@
 -keep class com.roiquery.ias.DTIASReport$Companion{*;}
 
 
--keeppackagenames com.roiquery.*
+-keeppackagenames com.roiquery.**
