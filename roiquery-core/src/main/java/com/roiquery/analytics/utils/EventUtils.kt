@@ -317,10 +317,11 @@ object EventUtils {
                 }
                 try {
                     val value = properties[key]
-                    if (!(value is String || value is Number || value is Boolean || value is Date || value is JSONArray || value is JSONObject)) {
+                    if (!(value is String || value is Number || value is Boolean || value is Date || value is JSONArray || value is JSONObject || value.equals(null))) {
                         LogUtils.e(
                             TAG,
-                            "Property value must be type String, Number, Boolean, Date, JSONObject or JSONArray"
+                            "Property value must be type String, Number, Boolean, Date, JSONObject or JSONArray. " +
+                                    "Invalid pair: \"$key\" = $value, type of value: ${value::class.java}"
                         )
                         return false
                     }
