@@ -2,11 +2,13 @@ package com.roiquery.analytics
 
 import com.roiquery.analytics.api.AnalyticsImp
 import com.roiquery.analytics.core.PropertyManager
+import com.roiquery.analytics.utils.DataCheck.findFirstNonJsonArray
 import com.roiquery.analytics.utils.LogUtils
 import com.roiquery.thirdparty.ThirdPartShareDataFactory
 
 import org.json.JSONObject
 import java.lang.Exception
+import java.lang.IllegalArgumentException
 
 open class DTAnalytics {
 
@@ -93,6 +95,10 @@ open class DTAnalytics {
          */
         @JvmStatic
         fun userAppend(properties: JSONObject?){
+            properties?.findFirstNonJsonArray()?.let {
+                throw IllegalArgumentException("The argument 'properties' only accepts JSONArray as the value of key-value! Given key-value is invalid (\"$it\": ${properties.get(it)})")
+            }
+
             AnalyticsImp.getInstance().userAppend(properties)
         }
 
@@ -103,6 +109,10 @@ open class DTAnalytics {
          */
         @JvmStatic
         fun userUniqAppend(properties: JSONObject?){
+            properties?.findFirstNonJsonArray()?.let {
+                throw IllegalArgumentException("The argument 'properties' only accepts JSONArray as the value of key-value! Given key-value is invalid (\"$it\": ${properties.get(it)})")
+            }
+
             AnalyticsImp.getInstance().userUniqAppend(properties)
         }
 

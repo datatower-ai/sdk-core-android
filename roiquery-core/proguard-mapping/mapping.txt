@@ -2,8 +2,8 @@
 # compiler_version: 8.0.40
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.1"}
-# pg_map_id: f83fd09
-# pg_map_hash: SHA-256 f83fd0962c741ca4e83e40f45c6242d1c468ce16dab5f326558a6ff74db66a7a
+# pg_map_id: 555c1ed
+# pg_map_hash: SHA-256 555c1ed2ee2fb3c1554f1280f7f78ede3c9adbf26e6ab8602c28c52969b15839
 com.roiquery.ad.AD_CONVERSION_SOURCE -> com.roiquery.ad.a:
 # {"id":"sourceFile","fileName":"constant.kt"}
     java.lang.String LEFT_APP -> c
@@ -1319,7 +1319,7 @@ com.roiquery.analytics.DT$Companion -> com.roiquery.analytics.DT$Companion:
     5:5:void initSDK$default(com.roiquery.analytics.DT$Companion,android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean,int,org.json.JSONObject,int,java.lang.Object):24:24 -> initSDK$default
 com.roiquery.analytics.DTAnalytics -> com.roiquery.analytics.DTAnalytics:
 # {"id":"sourceFile","fileName":"DTAnalytics.kt"}
-    1:1:void <init>():11:11 -> <init>
+    1:1:void <init>():13:13 -> <init>
     1:1:void track(java.lang.String):0:0 -> track
     2:2:void track(java.lang.String,java.util.Map):0:0 -> track
     3:3:void track(java.lang.String,org.json.JSONObject):0:0 -> track
@@ -1329,32 +1329,32 @@ com.roiquery.analytics.DTAnalytics -> com.roiquery.analytics.DTAnalytics:
 com.roiquery.analytics.DTAnalytics$Companion -> com.roiquery.analytics.DTAnalytics$Companion:
 # {"id":"sourceFile","fileName":"DTAnalytics.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():13:13 -> <init>
-    1:4:void enableThirdPartySharing(int):171:174 -> enableThirdPartySharing
-    1:1:void getDataTowerId(com.roiquery.analytics.OnDataTowerIdListener):115:115 -> getDataTowerId
-    1:1:boolean isSDKInitSuccess$roiquery_core_publicRelease():210:210 -> isSDKInitSuccess$roiquery_core_publicRelease
-    1:1:void setAccountId(java.lang.String):124:124 -> setAccountId
-    1:1:void setAdjustId(java.lang.String):161:161 -> setAdjustId
-    1:1:void setAppsFlyerId(java.lang.String):143:143 -> setAppsFlyerId
-    1:1:void setFirebaseAppInstanceId(java.lang.String):133:133 -> setFirebaseAppInstanceId
-    1:1:void setKochavaId(java.lang.String):152:152 -> setKochavaId
+    2:2:void <init>():15:15 -> <init>
+    1:4:void enableThirdPartySharing(int):181:184 -> enableThirdPartySharing
+    1:1:void getDataTowerId(com.roiquery.analytics.OnDataTowerIdListener):125:125 -> getDataTowerId
+    1:1:boolean isSDKInitSuccess$roiquery_core_publicRelease():220:220 -> isSDKInitSuccess$roiquery_core_publicRelease
+    1:1:void setAccountId(java.lang.String):134:134 -> setAccountId
+    1:1:void setAdjustId(java.lang.String):171:171 -> setAdjustId
+    1:1:void setAppsFlyerId(java.lang.String):153:153 -> setAppsFlyerId
+    1:1:void setFirebaseAppInstanceId(java.lang.String):143:143 -> setFirebaseAppInstanceId
+    1:1:void setKochavaId(java.lang.String):162:162 -> setKochavaId
     1:1:void track(java.lang.String):0:0 -> track
-    2:2:void track(java.lang.String,java.util.Map):28:28 -> track
-    3:3:void track(java.lang.String,org.json.JSONObject):39:39 -> track
-    1:1:void track$default(com.roiquery.analytics.DTAnalytics$Companion,java.lang.String,java.util.Map,int,java.lang.Object):26:26 -> track$default
-    2:2:void track$default(com.roiquery.analytics.DTAnalytics$Companion,java.lang.String,java.util.Map,int,java.lang.Object):24:24 -> track$default
+    2:2:void track(java.lang.String,java.util.Map):30:30 -> track
+    3:3:void track(java.lang.String,org.json.JSONObject):41:41 -> track
+    1:1:void track$default(com.roiquery.analytics.DTAnalytics$Companion,java.lang.String,java.util.Map,int,java.lang.Object):28:28 -> track$default
+    2:2:void track$default(com.roiquery.analytics.DTAnalytics$Companion,java.lang.String,java.util.Map,int,java.lang.Object):26:26 -> track$default
     1:1:void trackInternal$roiquery_core_publicRelease(java.lang.String):0:0 -> trackInternal$roiquery_core_publicRelease
-    2:2:void trackInternal$roiquery_core_publicRelease(java.lang.String,java.util.Map):192:192 -> trackInternal$roiquery_core_publicRelease
-    3:3:void trackInternal$roiquery_core_publicRelease(java.lang.String,org.json.JSONObject):203:203 -> trackInternal$roiquery_core_publicRelease
-    1:1:void trackInternal$roiquery_core_publicRelease$default(com.roiquery.analytics.DTAnalytics$Companion,java.lang.String,java.util.Map,int,java.lang.Object):190:190 -> trackInternal$roiquery_core_publicRelease$default
-    2:2:void trackInternal$roiquery_core_publicRelease$default(com.roiquery.analytics.DTAnalytics$Companion,java.lang.String,java.util.Map,int,java.lang.Object):188:188 -> trackInternal$roiquery_core_publicRelease$default
-    1:1:void userAdd(org.json.JSONObject):68:68 -> userAdd
-    1:1:void userAppend(org.json.JSONObject):96:96 -> userAppend
-    1:1:void userDelete():86:86 -> userDelete
-    1:1:void userSet(org.json.JSONObject):48:48 -> userSet
-    1:1:void userSetOnce(org.json.JSONObject):58:58 -> userSetOnce
-    1:1:void userUniqAppend(org.json.JSONObject):106:106 -> userUniqAppend
-    1:1:void userUnset(java.lang.String[]):78:78 -> userUnset
+    2:2:void trackInternal$roiquery_core_publicRelease(java.lang.String,java.util.Map):202:202 -> trackInternal$roiquery_core_publicRelease
+    3:3:void trackInternal$roiquery_core_publicRelease(java.lang.String,org.json.JSONObject):213:213 -> trackInternal$roiquery_core_publicRelease
+    1:1:void trackInternal$roiquery_core_publicRelease$default(com.roiquery.analytics.DTAnalytics$Companion,java.lang.String,java.util.Map,int,java.lang.Object):200:200 -> trackInternal$roiquery_core_publicRelease$default
+    2:2:void trackInternal$roiquery_core_publicRelease$default(com.roiquery.analytics.DTAnalytics$Companion,java.lang.String,java.util.Map,int,java.lang.Object):198:198 -> trackInternal$roiquery_core_publicRelease$default
+    1:1:void userAdd(org.json.JSONObject):70:70 -> userAdd
+    1:5:void userAppend(org.json.JSONObject):98:102 -> userAppend
+    1:1:void userDelete():88:88 -> userDelete
+    1:1:void userSet(org.json.JSONObject):50:50 -> userSet
+    1:1:void userSetOnce(org.json.JSONObject):60:60 -> userSetOnce
+    1:5:void userUniqAppend(org.json.JSONObject):112:116 -> userUniqAppend
+    1:1:void userUnset(java.lang.String[]):80:80 -> userUnset
 com.roiquery.analytics.DTAnalyticsUtils -> com.roiquery.analytics.DTAnalyticsUtils:
 # {"id":"sourceFile","fileName":"DTAnalyticsUtils.kt"}
     1:1:void <init>():6:6 -> <init>
@@ -1455,8 +1455,8 @@ com.roiquery.analytics.ROIQueryChannel -> com.roiquery.analytics.ROIQueryChannel
     1:1:void <init>():150:150 -> <init>
 com.roiquery.analytics.api.AbstractAnalytics -> com.roiquery.analytics.api.a:
 # {"id":"sourceFile","fileName":"AbstractAnalytics.kt"}
-    com.roiquery.analytics.utils.NotNullSingleVar firstOpenTime$delegate -> d
     java.util.concurrent.atomic.AtomicBoolean mHasInit -> i
+    com.roiquery.analytics.utils.NotNullSingleVar firstOpenTime$delegate -> d
     java.lang.String TAG -> h
     java.util.concurrent.atomic.AtomicBoolean isInitRunning -> b
     com.roiquery.analytics.api.AbstractAnalytics$Companion Companion -> f
@@ -3788,7 +3788,13 @@ com.roiquery.analytics.utils.AppLifecycleHelper$1 -> com.roiquery.analytics.util
     7:7:void onActivityStopped(android.app.Activity):72:72 -> onActivityStopped
 com.roiquery.analytics.utils.AppLifecycleHelper$OnAppStatusListener -> com.roiquery.analytics.utils.AppLifecycleHelper$OnAppStatusListener:
 # {"id":"sourceFile","fileName":"AppLifecycleHelper.java"}
-com.roiquery.analytics.utils.DataEncryption -> com.roiquery.analytics.utils.c:
+com.roiquery.analytics.utils.DataCheck -> com.roiquery.analytics.utils.c:
+# {"id":"sourceFile","fileName":"DataCheck.kt"}
+    com.roiquery.analytics.utils.DataCheck INSTANCE -> a
+    1:1:void <init>():5:5 -> <init>
+    1:7:java.lang.String findFirstNonJsonArray(org.json.JSONObject):7:13 -> a
+    8:8:java.lang.String findFirstNonJsonArray(org.json.JSONObject) -> a
+com.roiquery.analytics.utils.DataEncryption -> com.roiquery.analytics.utils.d:
 # {"id":"sourceFile","fileName":"DataEncryption.kt"}
     kotlin.Lazy instance$delegate -> b
     com.roiquery.analytics.utils.DataEncryption$Companion Companion -> a
@@ -3803,12 +3809,12 @@ com.roiquery.analytics.utils.DataEncryption -> com.roiquery.analytics.utils.c:
     15:31:java.lang.String toHex(byte[]):38:54 -> a
     32:39:java.lang.String toHex(byte[]):41:48 -> a
     40:40:java.lang.String toHex(byte[]):38:38 -> a
-com.roiquery.analytics.utils.DataEncryption$Companion -> com.roiquery.analytics.utils.c$b:
+com.roiquery.analytics.utils.DataEncryption$Companion -> com.roiquery.analytics.utils.d$b:
 # {"id":"sourceFile","fileName":"DataEncryption.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
     2:2:void <init>():16:16 -> <init>
     1:1:com.roiquery.analytics.utils.DataEncryption getInstance():17:17 -> a
-com.roiquery.analytics.utils.DataEncryption$Companion$instance$2 -> com.roiquery.analytics.utils.c$a:
+com.roiquery.analytics.utils.DataEncryption$Companion$instance$2 -> com.roiquery.analytics.utils.d$a:
 # {"id":"sourceFile","fileName":"DataEncryption.kt"}
     com.roiquery.analytics.utils.DataEncryption$Companion$instance$2 INSTANCE -> a
     1:1:com.roiquery.analytics.utils.DataEncryption invoke():18:18 -> a
@@ -3819,7 +3825,7 @@ com.roiquery.analytics.utils.DataEncryption$Companion$instance$2 -> com.roiquery
     2:2:void com.roiquery.analytics.utils.DataEncryption.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> invoke
     2:2:com.roiquery.analytics.utils.DataEncryption invoke():18 -> invoke
     2:2:java.lang.Object invoke():17 -> invoke
-com.roiquery.analytics.utils.DataUtils -> com.roiquery.analytics.utils.d:
+com.roiquery.analytics.utils.DataUtils -> com.roiquery.analytics.utils.e:
 # {"id":"sourceFile","fileName":"DataUtils.java"}
     1:1:void <init>():67:67 -> <init>
     1:3:java.lang.String getSession():78:80 -> a
@@ -3828,7 +3834,7 @@ com.roiquery.analytics.utils.DataUtils -> com.roiquery.analytics.utils.d:
     22:43:org.json.JSONObject formatJSONObject(org.json.JSONObject,java.util.TimeZone):116:137 -> a
     44:60:org.json.JSONArray formatJSONArray(org.json.JSONArray,java.util.TimeZone):146:162 -> a
     1:3:java.lang.String getUUID():71:73 -> b
-com.roiquery.analytics.utils.DeviceUtils -> com.roiquery.analytics.utils.e:
+com.roiquery.analytics.utils.DeviceUtils -> com.roiquery.analytics.utils.f:
 # {"id":"sourceFile","fileName":"DeviceUtils.kt"}
     com.roiquery.analytics.utils.DeviceUtils INSTANCE -> a
     java.util.ArrayList sManufacturer -> c
@@ -3868,7 +3874,7 @@ com.roiquery.analytics.utils.DeviceUtils -> com.roiquery.analytics.utils.e:
     2:7:java.lang.String getMnc(android.content.Context):167:172 -> f
     8:8:java.lang.String getMnc(android.content.Context):167:167 -> f
     1:8:java.lang.String getUserAgent(android.content.Context):211:218 -> g
-com.roiquery.analytics.utils.DeviceUtils$sManufacturer$1 -> com.roiquery.analytics.utils.e$a:
+com.roiquery.analytics.utils.DeviceUtils$sManufacturer$1 -> com.roiquery.analytics.utils.f$a:
 # {"id":"sourceFile","fileName":"DeviceUtils.kt"}
     1:5:void <init>():25:29 -> <init>
     1:1:boolean contains(java.lang.String):25:25 -> a
@@ -3893,14 +3899,14 @@ com.roiquery.analytics.utils.DeviceUtils$sManufacturer$1 -> com.roiquery.analyti
     2:2:boolean remove(java.lang.Object):25 -> remove
     1:1:int getSize():25:25 -> size
     1:1:int size():25 -> size
-com.roiquery.analytics.utils.EmulatorDetector -> com.roiquery.analytics.utils.f:
+com.roiquery.analytics.utils.EmulatorDetector -> com.roiquery.analytics.utils.g:
 # {"id":"sourceFile","fileName":"EmulatorDetector.java"}
     1:1:void <init>():7:7 -> <init>
     1:4:boolean isEmulator():15:18 -> a
     5:9:java.lang.String getProp(java.lang.String):38:42 -> a
     1:3:boolean isEmulatorFromAbi():30:32 -> b
     1:2:boolean mayOnEmulatorViaQEMU():25:26 -> c
-com.roiquery.analytics.utils.EventUtils -> com.roiquery.analytics.utils.g:
+com.roiquery.analytics.utils.EventUtils -> com.roiquery.analytics.utils.h:
 # {"id":"sourceFile","fileName":"EventUtils.kt"}
     com.roiquery.analytics.utils.EventUtils INSTANCE -> a
     java.util.regex.Pattern KEY_PATTERN -> c
@@ -3936,23 +3942,26 @@ com.roiquery.analytics.utils.EventUtils -> com.roiquery.analytics.utils.g:
     249:249:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):242 -> a
     250:280:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):243:273 -> a
     281:295:boolean isValidProperty(org.json.JSONObject):299:313 -> a
-    296:308:boolean isValidProperty(org.json.JSONObject):311:323 -> a
-    309:323:boolean isValidProperty(org.json.JSONObject):321:335 -> a
-    324:324:boolean isValidProperty(org.json.JSONObject):301:301 -> a
-    325:325:boolean hasPresetTag(java.lang.String):343:343 -> a
+    296:309:boolean isValidProperty(org.json.JSONObject):311:324 -> a
+    310:311:boolean isValidProperty(org.json.JSONObject):323:324 -> a
+    312:313:boolean isValidProperty(org.json.JSONObject):323:324 -> a
+    314:314:boolean isValidProperty(org.json.JSONObject):323:323 -> a
+    315:330:boolean isValidProperty(org.json.JSONObject):321:336 -> a
+    331:331:boolean isValidProperty(org.json.JSONObject):301:301 -> a
+    332:332:boolean hasPresetTag(java.lang.String):344:344 -> a
     1:11:boolean isValidEventName(java.lang.String):279:289 -> b
     12:12:boolean isValidEventName(java.lang.String):288:288 -> b
     13:13:boolean isValidEventName(java.lang.String):280:280 -> b
-com.roiquery.analytics.utils.EventUtils$getEventInfo$1 -> com.roiquery.analytics.utils.g$a:
+com.roiquery.analytics.utils.EventUtils$getEventInfo$1 -> com.roiquery.analytics.utils.h$a:
 # {"id":"sourceFile","fileName":"EventUtils.kt"}
+    com.roiquery.analytics.utils.EventUtils this$0 -> f
     java.lang.Object L$3 -> d
     java.lang.Object result -> e
     java.lang.Object L$1 -> b
     java.lang.Object L$2 -> c
     int label -> g
-    com.roiquery.analytics.utils.EventUtils this$0 -> f
     java.lang.Object L$0 -> a
-com.roiquery.analytics.utils.JsonUtils -> com.roiquery.analytics.utils.h:
+com.roiquery.analytics.utils.JsonUtils -> com.roiquery.analytics.utils.i:
 # {"id":"sourceFile","fileName":"JsonUtils.java"}
     byte TYPE_INT -> b
     byte TYPE_BOOLEAN -> a
@@ -4295,7 +4304,7 @@ com.roiquery.analytics.utils.LogUtils$TagHead -> com.roiquery.analytics.utils.Lo
     java.lang.String fileHead -> c
     java.lang.String[] consoleHead -> b
     1:4:void <init>(java.lang.String,java.lang.String[],java.lang.String):668:671 -> <init>
-com.roiquery.analytics.utils.MemoryUtils -> com.roiquery.analytics.utils.i:
+com.roiquery.analytics.utils.MemoryUtils -> com.roiquery.analytics.utils.j:
 # {"id":"sourceFile","fileName":"MemoryUtils.java"}
     long secondVsync -> b
     long firstVsync -> a
@@ -4331,16 +4340,16 @@ com.roiquery.analytics.utils.MemoryUtils -> com.roiquery.analytics.utils.i:
     6:6:java.lang.String com.roiquery.analytics.utils.StorageBean.getTotalStore():73:73 -> d
     6:6:java.lang.String getStorageUsed(android.content.Context):99 -> d
     7:7:java.lang.String getStorageUsed(android.content.Context):99:99 -> d
-com.roiquery.analytics.utils.MemoryUtils$1 -> com.roiquery.analytics.utils.i$a:
+com.roiquery.analytics.utils.MemoryUtils$1 -> com.roiquery.analytics.utils.j$a:
 # {"id":"sourceFile","fileName":"MemoryUtils.java"}
     1:1:void <init>():53:53 -> <init>
     1:9:void doFrame(long):56:64 -> doFrame
-com.roiquery.analytics.utils.MemoryUtils$2 -> com.roiquery.analytics.utils.i$b:
+com.roiquery.analytics.utils.MemoryUtils$2 -> com.roiquery.analytics.utils.j$b:
 # {"id":"sourceFile","fileName":"MemoryUtils.java"}
     android.view.Choreographer$FrameCallback val$secondCallBack -> a
     1:1:void <init>(android.view.Choreographer$FrameCallback):70:70 -> <init>
     1:2:void doFrame(long):73:74 -> doFrame
-com.roiquery.analytics.utils.MemoryUtils$3 -> com.roiquery.analytics.utils.i$c:
+com.roiquery.analytics.utils.MemoryUtils$3 -> com.roiquery.analytics.utils.j$c:
 # {"id":"sourceFile","fileName":"MemoryUtils.java"}
     android.os.Handler val$handler -> a
     android.view.Choreographer$FrameCallback val$firstCallBack -> b
@@ -4469,23 +4478,23 @@ com.roiquery.analytics.utils.NetworkUtil$NetworkType -> com.roiquery.analytics.u
     1:1:com.roiquery.analytics.utils.NetworkUtil$NetworkType[] values():46:46 -> values
 com.roiquery.analytics.utils.NetworkUtil$OnNetworkStatusChangedListener -> com.roiquery.analytics.utils.NetworkUtil$OnNetworkStatusChangedListener:
 # {"id":"sourceFile","fileName":"NetworkUtil.java"}
-com.roiquery.analytics.utils.NetworkUtils -> com.roiquery.analytics.utils.j:
+com.roiquery.analytics.utils.NetworkUtils -> com.roiquery.analytics.utils.k:
 # {"id":"sourceFile","fileName":"NetworkUtils.kt"}
-    com.roiquery.analytics.utils.NetworkUtils INSTANCE -> a
     int HTTP_307 -> b
+    com.roiquery.analytics.utils.NetworkUtils INSTANCE -> a
     1:1:void <init>():37:37 -> <init>
     1:9:boolean isNetworkAvailable(android.content.Context):54:62 -> a
     10:13:boolean isNetworkAvailable(android.content.Context):61:64 -> a
     14:19:boolean isNetworkValid(android.net.NetworkCapabilities):72:77 -> a
     20:30:boolean isNetworkAvailable(android.net.ConnectivityManager):89:99 -> a
     1:11:boolean isWiFiNetwork(android.net.ConnectivityManager):112:122 -> b
-com.roiquery.analytics.utils.NotNullSingleVar -> com.roiquery.analytics.utils.k:
+com.roiquery.analytics.utils.NotNullSingleVar -> com.roiquery.analytics.utils.l:
 # {"id":"sourceFile","fileName":"PropertiesUtils.kt"}
     java.lang.Object mValue -> a
     1:1:void <init>():6:6 -> <init>
     1:1:java.lang.Object getValue(java.lang.Object,kotlin.reflect.KProperty):9:9 -> getValue
     1:2:void setValue(java.lang.Object,kotlin.reflect.KProperty,java.lang.Object):13:14 -> setValue
-com.roiquery.analytics.utils.ProcessUtil -> com.roiquery.analytics.utils.l:
+com.roiquery.analytics.utils.ProcessUtil -> com.roiquery.analytics.utils.m:
 # {"id":"sourceFile","fileName":"ProcessUtil.java"}
     java.lang.String currentProcessName -> a
     1:1:void <init>():20:20 -> <init>
@@ -4494,7 +4503,7 @@ com.roiquery.analytics.utils.ProcessUtil -> com.roiquery.analytics.utils.l:
     1:2:java.lang.String getCurrentProcessNameByApplication():54:55 -> b
     3:10:java.lang.String getCurrentProcessNameByActivityManager(android.content.Context):86:93 -> b
     1:2:boolean isMainProcess(android.content.Context):103:104 -> c
-com.roiquery.analytics.utils.ReflectUtils -> com.roiquery.analytics.utils.m:
+com.roiquery.analytics.utils.ReflectUtils -> com.roiquery.analytics.utils.n:
 # {"id":"sourceFile","fileName":"ReflectUtils.kt"}
     kotlin.Lazy instance$delegate -> c
     com.roiquery.analytics.utils.ReflectUtils$Companion Companion -> a
@@ -4532,12 +4541,12 @@ com.roiquery.analytics.utils.ReflectUtils -> com.roiquery.analytics.utils.m:
     238:489:java.lang.Object invokeGetterMethod(java.lang.Object,java.lang.String):66:317 -> c
     490:490:java.lang.Object invokeGetterMethod(java.lang.Object,java.lang.String):295:295 -> c
     491:492:java.lang.Object invokeGetterMethod(java.lang.Object,java.lang.String):66:67 -> c
-com.roiquery.analytics.utils.ReflectUtils$Companion -> com.roiquery.analytics.utils.m$b:
+com.roiquery.analytics.utils.ReflectUtils$Companion -> com.roiquery.analytics.utils.n$b:
 # {"id":"sourceFile","fileName":"ReflectUtils.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
     2:2:void <init>():8:8 -> <init>
     1:1:com.roiquery.analytics.utils.ReflectUtils getInstance():10:10 -> a
-com.roiquery.analytics.utils.ReflectUtils$Companion$instance$2 -> com.roiquery.analytics.utils.m$a:
+com.roiquery.analytics.utils.ReflectUtils$Companion$instance$2 -> com.roiquery.analytics.utils.n$a:
 # {"id":"sourceFile","fileName":"ReflectUtils.kt"}
     com.roiquery.analytics.utils.ReflectUtils$Companion$instance$2 INSTANCE -> a
     1:1:com.roiquery.analytics.utils.ReflectUtils invoke():11:11 -> a
@@ -4548,7 +4557,7 @@ com.roiquery.analytics.utils.ReflectUtils$Companion$instance$2 -> com.roiquery.a
     2:2:void com.roiquery.analytics.utils.ReflectUtils.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> invoke
     2:2:com.roiquery.analytics.utils.ReflectUtils invoke():11 -> invoke
     2:2:java.lang.Object invoke():10 -> invoke
-com.roiquery.analytics.utils.StorageBean -> com.roiquery.analytics.utils.n:
+com.roiquery.analytics.utils.StorageBean -> com.roiquery.analytics.utils.o:
 # {"id":"sourceFile","fileName":"StorageBean.java"}
     java.lang.String usedMemory -> g
     java.lang.String freeMemory -> f
@@ -4941,7 +4950,7 @@ com.roiquery.analytics.utils.ThreadUtils$UtilsThreadFactory$2 -> com.roiquery.an
     com.roiquery.analytics.utils.ThreadUtils$UtilsThreadFactory this$0 -> a
     1:1:void <init>(com.roiquery.analytics.utils.ThreadUtils$UtilsThreadFactory):1143:1143 -> <init>
     1:1:void uncaughtException(java.lang.Thread,java.lang.Throwable):1146:1146 -> uncaughtException
-com.roiquery.analytics.utils.ThrowableUtils -> com.roiquery.analytics.utils.o:
+com.roiquery.analytics.utils.ThrowableUtils -> com.roiquery.analytics.utils.p:
 # {"id":"sourceFile","fileName":"ThrowableUtils.java"}
     java.lang.String LINE_SEP -> a
     1:1:void <clinit>():14:14 -> <clinit>
@@ -4949,13 +4958,13 @@ com.roiquery.analytics.utils.ThrowableUtils -> com.roiquery.analytics.utils.o:
     1:26:java.lang.String getFullStackTrace(java.lang.Throwable):21:46 -> a
     27:35:void removeCommonFrames(java.util.List,java.util.List):72:80 -> a
     1:14:java.util.List getStackFrameList(java.lang.Throwable):50:63 -> b
-com.roiquery.analytics.utils.TimeCalibration -> com.roiquery.analytics.utils.p:
+com.roiquery.analytics.utils.TimeCalibration -> com.roiquery.analytics.utils.q:
 # {"id":"sourceFile","fileName":"TimeCalibration.kt"}
     java.lang.String sessionId -> f
+    com.roiquery.analytics.utils.TimeCalibration$Companion Companion -> g
     java.util.concurrent.atomic.AtomicBoolean isVerifyTimeRunning -> d
     long _latestDeviceTime -> e
     long TIME_NOT_VERIFY_VALUE -> h
-    com.roiquery.analytics.utils.TimeCalibration$Companion Companion -> g
     kotlin.Lazy instance$delegate -> i
     long _latestSystemElapsedRealtime -> b
     long _latestTime -> a
@@ -4990,12 +4999,12 @@ com.roiquery.analytics.utils.TimeCalibration -> com.roiquery.analytics.utils.p:
     1:8:long getVerifyTimeAsync():116:123 -> h
     1:7:boolean isDeviceTimeCorrect():166:172 -> i
     1:6:void setVerifyTimeForSubProcess():107:112 -> j
-com.roiquery.analytics.utils.TimeCalibration$Companion -> com.roiquery.analytics.utils.p$b:
+com.roiquery.analytics.utils.TimeCalibration$Companion -> com.roiquery.analytics.utils.q$b:
 # {"id":"sourceFile","fileName":"TimeCalibration.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
     2:2:void <init>():28:28 -> <init>
     1:1:com.roiquery.analytics.utils.TimeCalibration getInstance():30:30 -> a
-com.roiquery.analytics.utils.TimeCalibration$Companion$instance$2 -> com.roiquery.analytics.utils.p$a:
+com.roiquery.analytics.utils.TimeCalibration$Companion$instance$2 -> com.roiquery.analytics.utils.q$a:
 # {"id":"sourceFile","fileName":"TimeCalibration.kt"}
     com.roiquery.analytics.utils.TimeCalibration$Companion$instance$2 INSTANCE -> a
     1:1:com.roiquery.analytics.utils.TimeCalibration invoke():31:31 -> a
@@ -5006,7 +5015,7 @@ com.roiquery.analytics.utils.TimeCalibration$Companion$instance$2 -> com.roiquer
     2:2:void com.roiquery.analytics.utils.TimeCalibration.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> invoke
     2:2:com.roiquery.analytics.utils.TimeCalibration invoke():31 -> invoke
     2:2:java.lang.Object invoke():30 -> invoke
-com.roiquery.analytics.utils.TimeCalibration$setVerifyTime$dbGamTime$1 -> com.roiquery.analytics.utils.p$c:
+com.roiquery.analytics.utils.TimeCalibration$setVerifyTime$dbGamTime$1 -> com.roiquery.analytics.utils.q$c:
 # {"id":"sourceFile","fileName":"TimeCalibration.kt"}
     int label -> a
     1:1:kotlin.coroutines.Continuation create(java.lang.Object,kotlin.coroutines.Continuation):0:0 -> a
@@ -5016,7 +5025,7 @@ com.roiquery.analytics.utils.TimeCalibration$setVerifyTime$dbGamTime$1 -> com.ro
     2:2:java.lang.Object com.roiquery.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):55:55 -> invokeSuspend
     2:2:java.lang.Object invokeSuspend(java.lang.Object):90 -> invokeSuspend
     3:3:java.lang.Object invokeSuspend(java.lang.Object):90:90 -> invokeSuspend
-com.roiquery.analytics.utils.TimeCalibration$setVerifyTime$dbTime$1 -> com.roiquery.analytics.utils.p$d:
+com.roiquery.analytics.utils.TimeCalibration$setVerifyTime$dbTime$1 -> com.roiquery.analytics.utils.q$d:
 # {"id":"sourceFile","fileName":"TimeCalibration.kt"}
     int label -> a
     1:1:kotlin.coroutines.Continuation create(java.lang.Object,kotlin.coroutines.Continuation):0:0 -> a
@@ -5026,7 +5035,7 @@ com.roiquery.analytics.utils.TimeCalibration$setVerifyTime$dbTime$1 -> com.roiqu
     2:2:java.lang.Object com.roiquery.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):55:55 -> invokeSuspend
     2:2:java.lang.Object invokeSuspend(java.lang.Object):89 -> invokeSuspend
     3:3:java.lang.Object invokeSuspend(java.lang.Object):89:89 -> invokeSuspend
-com.roiquery.analytics.utils.TimeCalibration$setVerifyTimeForSubProcess$dbGamTime$1 -> com.roiquery.analytics.utils.p$e:
+com.roiquery.analytics.utils.TimeCalibration$setVerifyTimeForSubProcess$dbGamTime$1 -> com.roiquery.analytics.utils.q$e:
 # {"id":"sourceFile","fileName":"TimeCalibration.kt"}
     int label -> a
     1:1:kotlin.coroutines.Continuation create(java.lang.Object,kotlin.coroutines.Continuation):0:0 -> a
@@ -5036,7 +5045,7 @@ com.roiquery.analytics.utils.TimeCalibration$setVerifyTimeForSubProcess$dbGamTim
     2:2:java.lang.Object com.roiquery.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):55:55 -> invokeSuspend
     2:2:java.lang.Object invokeSuspend(java.lang.Object):109 -> invokeSuspend
     3:3:java.lang.Object invokeSuspend(java.lang.Object):109:109 -> invokeSuspend
-com.roiquery.analytics.utils.TimeCalibration$setVerifyTimeForSubProcess$dbTime$1 -> com.roiquery.analytics.utils.p$f:
+com.roiquery.analytics.utils.TimeCalibration$setVerifyTimeForSubProcess$dbTime$1 -> com.roiquery.analytics.utils.q$f:
 # {"id":"sourceFile","fileName":"TimeCalibration.kt"}
     int label -> a
     1:1:kotlin.coroutines.Continuation create(java.lang.Object,kotlin.coroutines.Continuation):0:0 -> a
