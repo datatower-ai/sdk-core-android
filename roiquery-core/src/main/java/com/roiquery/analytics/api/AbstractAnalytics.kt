@@ -183,7 +183,7 @@ abstract class AbstractAnalytics : IAnalytics {
             isLogSwitch = enable
             globalTag = Constant.LOG_TAG
             setConsoleSwitch(enable)
-            setConsoleFilter(LogUtils.D)
+            setConsoleFilter(logLevel)
         }
     }
 
