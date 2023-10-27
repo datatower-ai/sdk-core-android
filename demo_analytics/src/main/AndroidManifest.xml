@@ -39,26 +39,9 @@
         <activity
             android:name=".ui.fn.core.TrackEventCustomizedActivity"
             android:label="Track Event Customized" />
-        <activity android:name=".CoreActivity" />
-        <activity android:name=".AdReportActivity" />
-        <activity android:name=".IapReportActivity" />
-        <activity android:name=".IasReportActivity" />
-        <activity android:name=".UtilsActivity" />
         <activity android:name=".ui.fn.core.UserApiActivity"
-            android:label="User related API" ></activity>
+            android:label="User related API" />
         <activity android:name=".DisplayAllApiActivity" />
-
-        <service
-            android:name=".SubProcessService"
-            android:process=":subProcessService" />
-
-        <activity
-            android:name=".ThirdPartyShareActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SubProcessActivity"
-            android:exported="false"
-            android:process=":sub" />
     </application>
 
 </manifest>

@@ -147,11 +147,6 @@ internal object Constant {
 
 }
 
-@Deprecated("this class will be remove",ReplaceWith("DTChannel"))
-object ROIQueryChannel{
-    const val GP = "gp"
-}
-
 object DTChannel{
     const val GP = "gp"
 }

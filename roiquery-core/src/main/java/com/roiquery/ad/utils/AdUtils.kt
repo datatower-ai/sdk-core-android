@@ -85,7 +85,7 @@ data class AdEventProperty(
 
     var mediation: Int = AdMediation.IDLE.value,
     var mediationId: String = "",
-    var value: String = "",
+    var value: Double = 0.0,
     var currency: String = "",
     var precision: String = "",
     var country: String = "",
