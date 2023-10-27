@@ -13,8 +13,6 @@ import com.roiquery.ad.AdType
 import com.roiquery.ad.utils.AdEventProperty
 import com.roiquery.ad.utils.AdPlatformUtils
 import com.roiquery.analytics.DTAnalytics
-import com.roiquery.analytics.utils.AppInfoUtils
-import com.roiquery.analytics.utils.AppLifecycleHelper.OnAppStatusListener
 import com.roiquery.analytics.utils.EventUtils
 import com.roiquery.analytics.utils.LogUtils
 import org.json.JSONObject
@@ -308,7 +306,7 @@ class AdReportImp : IAdReport {
         platform: Int,
         location: String,
         seq: String,
-        value: String,
+        value: Double,
         currency: String,
         precision: String,
         properties: MutableMap<String, Any>?,
@@ -371,7 +369,7 @@ class AdReportImp : IAdReport {
         seq: String,
         mediation: Int,
         mediationId: String,
-        value: String,
+        value: Double,
         currency: String,
         precision: String,
         country: String,
@@ -431,7 +429,7 @@ class AdReportImp : IAdReport {
         seq: String,
         mediation: Int,
         mediationId: String,
-        value: String,
+        value: Double,
         precision: String,
         country: String,
         properties: MutableMap<String, Any>?

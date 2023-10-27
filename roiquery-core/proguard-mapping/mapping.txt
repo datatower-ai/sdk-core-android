@@ -2,8 +2,8 @@
 # compiler_version: 8.0.40
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.1"}
-# pg_map_id: 555c1ed
-# pg_map_hash: SHA-256 555c1ed2ee2fb3c1554f1280f7f78ede3c9adbf26e6ab8602c28c52969b15839
+# pg_map_id: b878cc3
+# pg_map_hash: SHA-256 b878cc3d3cb691e193c0f3cadff70345938debac2ae307ff135edf9342b50284
 com.roiquery.ad.AD_CONVERSION_SOURCE -> com.roiquery.ad.a:
 # {"id":"sourceFile","fileName":"constant.kt"}
     java.lang.String LEFT_APP -> c
@@ -74,7 +74,7 @@ com.roiquery.ad.AdType -> com.roiquery.ad.AdType:
     1:1:int getValue():60:60 -> getValue
 com.roiquery.ad.DTAdReport -> com.roiquery.ad.DTAdReport:
 # {"id":"sourceFile","fileName":"DTAdReport.kt"}
-    1:1:void <init>():7:7 -> <init>
+    1:1:void <init>():6:6 -> <init>
     1:1:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClick
     2:2:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClick
     3:3:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClick
@@ -115,13 +115,13 @@ com.roiquery.ad.DTAdReport -> com.roiquery.ad.DTAdReport:
     4:4:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map):0:0 -> reportLoadEnd
     5:5:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation):0:0 -> reportLoadEnd
     6:6:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation,java.lang.String):0:0 -> reportLoadEnd
-    1:1:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String):0:0 -> reportPaid
-    2:2:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportPaid
-    3:3:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String):0:0 -> reportPaid
-    4:4:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportPaid
-    5:5:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportPaid
-    6:6:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation):0:0 -> reportPaid
-    7:7:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):0:0 -> reportPaid
+    1:1:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String):0:0 -> reportPaid
+    2:2:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportPaid
+    3:3:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportPaid
+    4:4:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation):0:0 -> reportPaid
+    5:5:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):0:0 -> reportPaid
+    6:6:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,double,java.lang.String,java.lang.String):0:0 -> reportPaid
+    7:7:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportPaid
     1:1:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportRewarded
     2:2:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportRewarded
     3:3:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportRewarded
@@ -145,8 +145,8 @@ com.roiquery.ad.DTAdReport -> com.roiquery.ad.DTAdReport:
 com.roiquery.ad.DTAdReport$Companion -> com.roiquery.ad.DTAdReport$Companion:
 # {"id":"sourceFile","fileName":"DTAdReport.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():8:8 -> <init>
-    1:1:java.lang.String generateUUID():442:442 -> generateUUID
+    2:2:void <init>():7:7 -> <init>
+    1:1:java.lang.String generateUUID():441:441 -> generateUUID
     1:1:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClick
       # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
     3:3:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClick
@@ -172,9 +172,9 @@ com.roiquery.ad.DTAdReport$Companion -> com.roiquery.ad.DTAdReport$Companion:
     21:21:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClick
     16:16:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClick
     22:22:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation):0:0 -> reportClick
-    23:24:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):214:215 -> reportClick
-    1:4:void reportClick$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):210:213 -> reportClick$default
-    5:5:void reportClick$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):204:204 -> reportClick$default
+    23:24:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):213:214 -> reportClick
+    1:4:void reportClick$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):209:212 -> reportClick$default
+    5:5:void reportClick$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):203:203 -> reportClick$default
     1:1:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClose
       # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
     3:3:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClose
@@ -200,9 +200,9 @@ com.roiquery.ad.DTAdReport$Companion -> com.roiquery.ad.DTAdReport$Companion:
     21:21:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClose
     16:16:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClose
     22:22:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation):0:0 -> reportClose
-    23:24:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):186:187 -> reportClose
-    1:4:void reportClose$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):182:185 -> reportClose$default
-    5:5:void reportClose$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):176:176 -> reportClose$default
+    23:24:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):185:186 -> reportClose
+    1:4:void reportClose$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):181:184 -> reportClose$default
+    5:5:void reportClose$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):175:175 -> reportClose$default
     1:1:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByClick
       # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
     3:3:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByClick
@@ -228,10 +228,10 @@ com.roiquery.ad.DTAdReport$Companion -> com.roiquery.ad.DTAdReport$Companion:
     21:21:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByClick
     16:16:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByClick
     22:22:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation):0:0 -> reportConversionByClick
-    23:26:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):271:274 -> reportConversionByClick
-    27:27:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):272:272 -> reportConversionByClick
-    1:4:void reportConversionByClick$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):267:270 -> reportConversionByClick$default
-    5:5:void reportConversionByClick$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):261:261 -> reportConversionByClick$default
+    23:26:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):270:273 -> reportConversionByClick
+    27:27:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):271:271 -> reportConversionByClick
+    1:4:void reportConversionByClick$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):266:269 -> reportConversionByClick$default
+    5:5:void reportConversionByClick$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):260:260 -> reportConversionByClick$default
     1:1:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByLeftApp
       # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
     3:3:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByLeftApp
@@ -257,10 +257,10 @@ com.roiquery.ad.DTAdReport$Companion -> com.roiquery.ad.DTAdReport$Companion:
     21:21:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByLeftApp
     16:16:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByLeftApp
     22:22:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation):0:0 -> reportConversionByLeftApp
-    23:26:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):303:306 -> reportConversionByLeftApp
-    27:27:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):304:304 -> reportConversionByLeftApp
-    1:4:void reportConversionByLeftApp$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):299:302 -> reportConversionByLeftApp$default
-    5:5:void reportConversionByLeftApp$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):293:293 -> reportConversionByLeftApp$default
+    23:26:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):302:305 -> reportConversionByLeftApp
+    27:27:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):303:303 -> reportConversionByLeftApp
+    1:4:void reportConversionByLeftApp$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):298:301 -> reportConversionByLeftApp$default
+    5:5:void reportConversionByLeftApp$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):292:292 -> reportConversionByLeftApp$default
     1:1:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByRewarded
       # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
     3:3:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByRewarded
@@ -286,10 +286,10 @@ com.roiquery.ad.DTAdReport$Companion -> com.roiquery.ad.DTAdReport$Companion:
     21:21:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByRewarded
     16:16:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByRewarded
     22:22:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation):0:0 -> reportConversionByRewarded
-    23:26:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):336:339 -> reportConversionByRewarded
-    27:27:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):337:337 -> reportConversionByRewarded
-    1:4:void reportConversionByRewarded$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):332:335 -> reportConversionByRewarded$default
-    5:5:void reportConversionByRewarded$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):326:326 -> reportConversionByRewarded$default
+    23:26:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):335:338 -> reportConversionByRewarded
+    27:27:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):336:336 -> reportConversionByRewarded
+    1:4:void reportConversionByRewarded$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):331:334 -> reportConversionByRewarded$default
+    5:5:void reportConversionByRewarded$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):325:325 -> reportConversionByRewarded$default
     1:1:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportLeftApp
       # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
     3:3:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportLeftApp
@@ -315,15 +315,15 @@ com.roiquery.ad.DTAdReport$Companion -> com.roiquery.ad.DTAdReport$Companion:
     21:21:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportLeftApp
     16:16:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportLeftApp
     22:22:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation):0:0 -> reportLeftApp
-    23:24:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):434:435 -> reportLeftApp
-    1:4:void reportLeftApp$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):430:433 -> reportLeftApp$default
-    5:5:void reportLeftApp$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):424:424 -> reportLeftApp$default
+    23:24:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):433:434 -> reportLeftApp
+    1:4:void reportLeftApp$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):429:432 -> reportLeftApp$default
+    5:5:void reportLeftApp$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):423:423 -> reportLeftApp$default
     1:1:void reportLoadBegin(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String):0:0 -> reportLoadBegin
     2:2:void reportLoadBegin(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.util.Map):0:0 -> reportLoadBegin
     3:3:void reportLoadBegin(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation):0:0 -> reportLoadBegin
-    4:5:void reportLoadBegin(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation,java.lang.String):33:34 -> reportLoadBegin
-    1:3:void reportLoadBegin$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):30:32 -> reportLoadBegin$default
-    4:4:void reportLoadBegin$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):25:25 -> reportLoadBegin$default
+    4:5:void reportLoadBegin(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation,java.lang.String):32:33 -> reportLoadBegin
+    1:3:void reportLoadBegin$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):29:31 -> reportLoadBegin$default
+    4:4:void reportLoadBegin$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):24:24 -> reportLoadBegin$default
     1:1:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String):0:0 -> reportLoadEnd
     2:2:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int):0:0 -> reportLoadEnd
     3:3:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String):0:0 -> reportLoadEnd
@@ -343,20 +343,20 @@ com.roiquery.ad.DTAdReport$Companion -> com.roiquery.ad.DTAdReport$Companion:
     16:16:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map):0:0 -> reportLoadEnd
     11:11:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map):0:0 -> reportLoadEnd
     17:17:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation):0:0 -> reportLoadEnd
-    18:19:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation,java.lang.String):68:69 -> reportLoadEnd
-    1:4:void reportLoadEnd$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):64:67 -> reportLoadEnd$default
-    5:5:void reportLoadEnd$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):56:56 -> reportLoadEnd$default
-    1:1:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String):0:0 -> reportPaid
-    2:2:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String):0:0 -> reportPaid
-    3:3:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportPaid
-    4:4:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportPaid
-    5:5:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation):0:0 -> reportPaid
-    6:7:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):374:375 -> reportPaid
-    8:9:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):406:407 -> reportPaid
-    1:4:void reportPaid$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):370:373 -> reportPaid$default
-    5:5:void reportPaid$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):361:361 -> reportPaid$default
-    6:6:void reportPaid$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,int,java.lang.Object):405:405 -> reportPaid$default
-    7:7:void reportPaid$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,int,java.lang.Object):394:394 -> reportPaid$default
+    18:19:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation,java.lang.String):67:68 -> reportLoadEnd
+    1:4:void reportLoadEnd$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):63:66 -> reportLoadEnd$default
+    5:5:void reportLoadEnd$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):55:55 -> reportLoadEnd$default
+    1:1:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String):0:0 -> reportPaid
+    2:2:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportPaid
+    3:3:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportPaid
+    4:4:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation):0:0 -> reportPaid
+    5:5:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,double,java.lang.String,java.lang.String):0:0 -> reportPaid
+    6:7:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):373:374 -> reportPaid
+    8:9:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):405:406 -> reportPaid
+    1:4:void reportPaid$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):369:372 -> reportPaid$default
+    5:5:void reportPaid$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):360:360 -> reportPaid$default
+    6:6:void reportPaid$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,int,java.lang.Object):404:404 -> reportPaid$default
+    7:7:void reportPaid$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,int,java.lang.Object):393:393 -> reportPaid$default
     1:1:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportRewarded
       # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
     3:3:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportRewarded
@@ -382,9 +382,9 @@ com.roiquery.ad.DTAdReport$Companion -> com.roiquery.ad.DTAdReport$Companion:
     21:21:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportRewarded
     16:16:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportRewarded
     22:22:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation):0:0 -> reportRewarded
-    23:24:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):242:243 -> reportRewarded
-    1:4:void reportRewarded$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):238:241 -> reportRewarded$default
-    5:5:void reportRewarded$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):232:232 -> reportRewarded$default
+    23:24:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):241:242 -> reportRewarded
+    1:4:void reportRewarded$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):237:240 -> reportRewarded$default
+    5:5:void reportRewarded$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):231:231 -> reportRewarded$default
     1:1:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportShow
       # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
     3:3:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportShow
@@ -410,16 +410,16 @@ com.roiquery.ad.DTAdReport$Companion -> com.roiquery.ad.DTAdReport$Companion:
     21:21:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportShow
     16:16:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportShow
     22:22:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation):0:0 -> reportShow
-    23:24:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):126:127 -> reportShow
-    1:4:void reportShow$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):122:125 -> reportShow$default
-    5:5:void reportShow$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):116:116 -> reportShow$default
+    23:24:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):125:126 -> reportShow
+    1:4:void reportShow$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):121:124 -> reportShow$default
+    5:5:void reportShow$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):115:115 -> reportShow$default
     1:1:void reportShowFailed(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String):0:0 -> reportShowFailed
     2:2:void reportShowFailed(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map):0:0 -> reportShowFailed
     3:3:void reportShowFailed(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportShowFailed
     4:4:void reportShowFailed(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation):0:0 -> reportShowFailed
-    5:6:void reportShowFailed(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):156:157 -> reportShowFailed
-    1:4:void reportShowFailed$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):152:155 -> reportShowFailed$default
-    5:5:void reportShowFailed$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):144:144 -> reportShowFailed$default
+    5:6:void reportShowFailed(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):155:156 -> reportShowFailed
+    1:4:void reportShowFailed$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):151:154 -> reportShowFailed$default
+    5:5:void reportShowFailed$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):143:143 -> reportShowFailed$default
     1:1:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportToShow
       # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
     3:3:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportToShow
@@ -445,355 +445,15 @@ com.roiquery.ad.DTAdReport$Companion -> com.roiquery.ad.DTAdReport$Companion:
     21:21:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportToShow
     16:16:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportToShow
     22:22:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation):0:0 -> reportToShow
-    23:24:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):98:99 -> reportToShow
-    1:4:void reportToShow$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):94:97 -> reportToShow$default
-    5:5:void reportToShow$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):88:88 -> reportToShow$default
+    23:24:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String):97:98 -> reportToShow
+    1:4:void reportToShow$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):93:96 -> reportToShow$default
+    5:5:void reportToShow$default(com.roiquery.ad.DTAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,int,java.lang.Object):87:87 -> reportToShow$default
 com.roiquery.ad.DTAdReport$Companion$$ExternalSyntheticOutline0 -> com.roiquery.ad.c:
 # {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
 # {"id":"com.android.tools.r8.synthesized"}
     1:5:void com.roiquery.ad.DTAdReport$Companion$$InternalSyntheticOutline$44$d369cdc6a2d02d6d5d6e83d0d9cdf7319860d0a12e9110f8b5ab15fec6134828$0.m(java.lang.String,java.lang.String,com.roiquery.ad.AdType,java.lang.String,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String):0:4 -> a
       # {"id":"com.android.tools.r8.synthesized"}
       # {"id":"com.android.tools.r8.outline"}
-com.roiquery.ad.ROIQueryAdReport -> com.roiquery.ad.ROIQueryAdReport:
-# {"id":"sourceFile","fileName":"ROIQueryAdReport.kt"}
-    1:1:void <init>():7:7 -> <init>
-    1:1:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClick
-    2:2:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClick
-    3:3:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClick
-    1:1:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClose
-    2:2:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClose
-    3:3:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClose
-    1:1:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByClick
-    2:2:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByClick
-    3:3:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByClick
-    1:1:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByLeftApp
-    2:2:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByLeftApp
-    3:3:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByLeftApp
-    1:1:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByRewarded
-    2:2:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByRewarded
-    3:3:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByRewarded
-    1:1:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportLeftApp
-    2:2:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportLeftApp
-    3:3:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportLeftApp
-    1:1:void reportLoadBegin(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String):0:0 -> reportLoadBegin
-    2:2:void reportLoadBegin(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.util.Map):0:0 -> reportLoadBegin
-    1:1:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String):0:0 -> reportLoadEnd
-    2:2:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int):0:0 -> reportLoadEnd
-    3:3:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String):0:0 -> reportLoadEnd
-    4:4:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map):0:0 -> reportLoadEnd
-    1:1:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String):0:0 -> reportPaid
-    2:2:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportPaid
-    3:3:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String):0:0 -> reportPaid
-    4:4:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportPaid
-    5:5:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportPaid
-    6:6:void reportPaid(java.lang.String,com.roiquery.ad.AdType,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String):0:0 -> reportPaid
-    7:7:void reportPaid(java.lang.String,com.roiquery.ad.AdType,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportPaid
-    8:8:void reportPaid(java.lang.String,com.roiquery.ad.AdType,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportPaid
-    1:1:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportRewarded
-    2:2:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportRewarded
-    3:3:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportRewarded
-    1:1:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportShow
-    2:2:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportShow
-    3:3:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportShow
-    1:1:void reportShowFailed(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String):0:0 -> reportShowFailed
-    2:2:void reportShowFailed(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map):0:0 -> reportShowFailed
-    3:3:void reportShowFailed(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportShowFailed
-    1:1:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportToShow
-    2:2:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportToShow
-    3:3:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportToShow
-com.roiquery.ad.ROIQueryAdReport$Companion -> com.roiquery.ad.ROIQueryAdReport$Companion:
-# {"id":"sourceFile","fileName":"ROIQueryAdReport.kt"}
-    1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():12:12 -> <init>
-    1:1:java.lang.String generateUUID():444:444 -> generateUUID
-    1:1:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClick
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    3:3:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClick
-    4:4:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClick
-    5:5:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClick
-    6:6:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClick
-    7:7:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClick
-    2:2:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClick
-    8:8:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClick
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":10,"2":11,"3":12,"4":13,"5":14},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    10:10:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClick
-    11:11:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClick
-    12:12:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClick
-    13:13:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClick
-    14:14:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClick
-    9:9:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClick
-    15:15:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClick
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":214,"2":215,"3":216,"4":217,"5":218},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    214:214:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClick
-    215:215:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClick
-    216:216:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClick
-    217:217:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClick
-    218:218:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClick
-    210:212:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):195:197 -> reportClick
-    213:213:void reportClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):196:196 -> reportClick
-    1:2:void reportClick$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):193:194 -> reportClick$default
-    3:3:void reportClick$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):187:187 -> reportClick$default
-    1:1:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClose
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    3:3:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClose
-    4:4:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClose
-    5:5:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClose
-    6:6:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClose
-    7:7:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClose
-    2:2:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportClose
-    8:8:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClose
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":10,"2":11,"3":12,"4":13,"5":14},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    10:10:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClose
-    11:11:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClose
-    12:12:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClose
-    13:13:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClose
-    14:14:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClose
-    9:9:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportClose
-    15:15:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClose
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":189,"2":190,"3":191,"4":192,"5":193},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    189:189:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClose
-    190:190:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClose
-    191:191:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClose
-    192:192:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClose
-    193:193:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportClose
-    185:187:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):170:172 -> reportClose
-    188:188:void reportClose(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):171:171 -> reportClose
-    1:2:void reportClose$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):168:169 -> reportClose$default
-    3:3:void reportClose$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):162:162 -> reportClose$default
-    1:1:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByClick
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    3:3:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByClick
-    4:4:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByClick
-    5:5:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByClick
-    6:6:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByClick
-    7:7:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByClick
-    2:2:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByClick
-    8:8:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByClick
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":10,"2":11,"3":12,"4":13,"5":14},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    10:10:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByClick
-    11:11:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByClick
-    12:12:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByClick
-    13:13:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByClick
-    14:14:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByClick
-    9:9:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByClick
-    15:15:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByClick
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":266,"2":267,"3":268,"4":269,"5":270},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    266:266:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByClick
-    267:267:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByClick
-    268:268:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByClick
-    269:269:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByClick
-    270:270:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByClick
-    261:264:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):246:249 -> reportConversionByClick
-    265:265:void reportConversionByClick(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):247:247 -> reportConversionByClick
-    1:2:void reportConversionByClick$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):244:245 -> reportConversionByClick$default
-    3:3:void reportConversionByClick$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):238:238 -> reportConversionByClick$default
-    1:1:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByLeftApp
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    3:3:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByLeftApp
-    4:4:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByLeftApp
-    5:5:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByLeftApp
-    6:6:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByLeftApp
-    7:7:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByLeftApp
-    2:2:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByLeftApp
-    8:8:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByLeftApp
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":10,"2":11,"3":12,"4":13,"5":14},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    10:10:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByLeftApp
-    11:11:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByLeftApp
-    12:12:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByLeftApp
-    13:13:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByLeftApp
-    14:14:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByLeftApp
-    9:9:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByLeftApp
-    15:15:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByLeftApp
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":294,"2":295,"3":296,"4":297,"5":298},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    294:294:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByLeftApp
-    295:295:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByLeftApp
-    296:296:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByLeftApp
-    297:297:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByLeftApp
-    298:298:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByLeftApp
-    289:292:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):274:277 -> reportConversionByLeftApp
-    293:293:void reportConversionByLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):275:275 -> reportConversionByLeftApp
-    1:2:void reportConversionByLeftApp$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):272:273 -> reportConversionByLeftApp$default
-    3:3:void reportConversionByLeftApp$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):266:266 -> reportConversionByLeftApp$default
-    1:1:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByRewarded
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    3:3:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByRewarded
-    4:4:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByRewarded
-    5:5:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByRewarded
-    6:6:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByRewarded
-    7:7:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByRewarded
-    2:2:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportConversionByRewarded
-    8:8:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByRewarded
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":10,"2":11,"3":12,"4":13,"5":14},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    10:10:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByRewarded
-    11:11:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByRewarded
-    12:12:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByRewarded
-    13:13:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByRewarded
-    14:14:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByRewarded
-    9:9:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportConversionByRewarded
-    15:15:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByRewarded
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":323,"2":324,"3":325,"4":326,"5":327},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    323:323:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByRewarded
-    324:324:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByRewarded
-    325:325:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByRewarded
-    326:326:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByRewarded
-    327:327:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportConversionByRewarded
-    318:321:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):303:306 -> reportConversionByRewarded
-    322:322:void reportConversionByRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):304:304 -> reportConversionByRewarded
-    1:2:void reportConversionByRewarded$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):301:302 -> reportConversionByRewarded$default
-    3:3:void reportConversionByRewarded$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):295:295 -> reportConversionByRewarded$default
-    1:1:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportLeftApp
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    3:3:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportLeftApp
-    4:4:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportLeftApp
-    5:5:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportLeftApp
-    6:6:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportLeftApp
-    7:7:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportLeftApp
-    2:2:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportLeftApp
-    8:8:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportLeftApp
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":10,"2":11,"3":12,"4":13,"5":14},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    10:10:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportLeftApp
-    11:11:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportLeftApp
-    12:12:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportLeftApp
-    13:13:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportLeftApp
-    14:14:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportLeftApp
-    9:9:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportLeftApp
-    15:15:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportLeftApp
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":452,"2":453,"3":454,"4":455,"5":456},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    452:452:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportLeftApp
-    453:453:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportLeftApp
-    454:454:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportLeftApp
-    455:455:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportLeftApp
-    456:456:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportLeftApp
-    450:451:void reportLeftApp(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):435:436 -> reportLeftApp
-    1:2:void reportLeftApp$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):433:434 -> reportLeftApp$default
-    3:3:void reportLeftApp$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):427:427 -> reportLeftApp$default
-    1:1:void reportLoadBegin(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String):0:0 -> reportLoadBegin
-    2:4:void reportLoadBegin(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.util.Map):34:36 -> reportLoadBegin
-    5:5:void reportLoadBegin(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.util.Map):35:35 -> reportLoadBegin
-    1:1:void reportLoadBegin$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.util.Map,int,java.lang.Object):33:33 -> reportLoadBegin$default
-    2:2:void reportLoadBegin$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.util.Map,int,java.lang.Object):28:28 -> reportLoadBegin$default
-    1:1:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String):0:0 -> reportLoadEnd
-    2:2:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int):0:0 -> reportLoadEnd
-    3:3:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String):0:0 -> reportLoadEnd
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":5,"2":6,"3":7,"4":8,"5":9},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    5:5:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String):0:0 -> reportLoadEnd
-    6:6:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String):0:0 -> reportLoadEnd
-    7:7:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String):0:0 -> reportLoadEnd
-    8:8:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String):0:0 -> reportLoadEnd
-    9:9:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String):0:0 -> reportLoadEnd
-    4:4:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String):0:0 -> reportLoadEnd
-    10:10:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map):0:0 -> reportLoadEnd
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":78,"2":79,"3":80,"4":81,"5":82},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    78:78:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map):0:0 -> reportLoadEnd
-    79:79:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map):0:0 -> reportLoadEnd
-    80:80:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map):0:0 -> reportLoadEnd
-    81:81:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map):0:0 -> reportLoadEnd
-    82:82:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map):0:0 -> reportLoadEnd
-    74:76:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map):64:66 -> reportLoadEnd
-    77:77:void reportLoadEnd(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map):65:65 -> reportLoadEnd
-    1:2:void reportLoadEnd$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,int,java.lang.Object):62:63 -> reportLoadEnd$default
-    3:3:void reportLoadEnd$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,int,java.lang.Object):54:54 -> reportLoadEnd$default
-    1:1:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String):0:0 -> reportPaid
-    2:2:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String):0:0 -> reportPaid
-    3:3:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportPaid
-    4:4:void reportPaid(java.lang.String,com.roiquery.ad.AdType,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String):0:0 -> reportPaid
-    5:5:void reportPaid(java.lang.String,com.roiquery.ad.AdType,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportPaid
-    6:7:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):337:338 -> reportPaid
-    8:9:void reportPaid(java.lang.String,com.roiquery.ad.AdType,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):377:378 -> reportPaid
-    10:11:void reportPaid(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):411:412 -> reportPaid
-    1:2:void reportPaid$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):335:336 -> reportPaid$default
-    3:3:void reportPaid$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):326:326 -> reportPaid$default
-    4:5:void reportPaid$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):375:376 -> reportPaid$default
-    6:6:void reportPaid$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):361:361 -> reportPaid$default
-    7:7:void reportPaid$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,int,java.lang.Object):410:410 -> reportPaid$default
-    8:8:void reportPaid$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,com.roiquery.ad.AdMediation,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,int,java.lang.Object):399:399 -> reportPaid$default
-    1:1:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportRewarded
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    3:3:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportRewarded
-    4:4:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportRewarded
-    5:5:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportRewarded
-    6:6:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportRewarded
-    7:7:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportRewarded
-    2:2:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportRewarded
-    8:8:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportRewarded
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":10,"2":11,"3":12,"4":13,"5":14},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    10:10:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportRewarded
-    11:11:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportRewarded
-    12:12:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportRewarded
-    13:13:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportRewarded
-    14:14:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportRewarded
-    9:9:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportRewarded
-    15:15:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportRewarded
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":239,"2":240,"3":241,"4":242,"5":243},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    239:239:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportRewarded
-    240:240:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportRewarded
-    241:241:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportRewarded
-    242:242:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportRewarded
-    243:243:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportRewarded
-    235:237:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):220:222 -> reportRewarded
-    238:238:void reportRewarded(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):221:221 -> reportRewarded
-    1:2:void reportRewarded$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):218:219 -> reportRewarded$default
-    3:3:void reportRewarded$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):212:212 -> reportRewarded$default
-    1:1:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportShow
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    3:3:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportShow
-    4:4:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportShow
-    5:5:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportShow
-    6:6:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportShow
-    7:7:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportShow
-    2:2:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportShow
-    8:8:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportShow
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":10,"2":11,"3":12,"4":13,"5":14},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    10:10:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportShow
-    11:11:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportShow
-    12:12:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportShow
-    13:13:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportShow
-    14:14:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportShow
-    9:9:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportShow
-    15:15:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportShow
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":135,"2":136,"3":137,"4":138,"5":139},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    135:135:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportShow
-    136:136:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportShow
-    137:137:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportShow
-    138:138:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportShow
-    139:139:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportShow
-    131:133:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):116:118 -> reportShow
-    134:134:void reportShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):117:117 -> reportShow
-    1:2:void reportShow$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):114:115 -> reportShow$default
-    3:3:void reportShow$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):108:108 -> reportShow$default
-    1:1:void reportShowFailed(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String):0:0 -> reportShowFailed
-    2:2:void reportShowFailed(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map):0:0 -> reportShowFailed
-    3:5:void reportShowFailed(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String):143:145 -> reportShowFailed
-    6:6:void reportShowFailed(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String):144:144 -> reportShowFailed
-    1:2:void reportShowFailed$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):141:142 -> reportShowFailed$default
-    3:3:void reportShowFailed$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):133:133 -> reportShowFailed$default
-    1:1:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportToShow
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3,"2":4,"3":5,"4":6,"5":7},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    3:3:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportToShow
-    4:4:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportToShow
-    5:5:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportToShow
-    6:6:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportToShow
-    7:7:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportToShow
-    2:2:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String):0:0 -> reportToShow
-    8:8:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportToShow
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":10,"2":11,"3":12,"4":13,"5":14},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    10:10:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportToShow
-    11:11:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportToShow
-    12:12:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportToShow
-    13:13:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportToShow
-    14:14:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportToShow
-    9:9:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map):0:0 -> reportToShow
-    15:15:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportToShow
-      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":110,"2":111,"3":112,"4":113,"5":114},"outline":"Lcom/roiquery/ad/c;a(Ljava/lang/String;Ljava/lang/String;Lcom/roiquery/ad/AdType;Ljava/lang/String;Lcom/roiquery/ad/AdPlatform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"}
-    110:110:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportToShow
-    111:111:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportToShow
-    112:112:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportToShow
-    113:113:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportToShow
-    114:114:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):0:0 -> reportToShow
-    106:108:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):91:93 -> reportToShow
-    109:109:void reportToShow(java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String):92:92 -> reportToShow
-    1:2:void reportToShow$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):89:90 -> reportToShow$default
-    3:3:void reportToShow$default(com.roiquery.ad.ROIQueryAdReport$Companion,java.lang.String,com.roiquery.ad.AdType,com.roiquery.ad.AdPlatform,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):83:83 -> reportToShow$default
 com.roiquery.ad.api.AdReportImp -> com.roiquery.ad.api.a:
 # {"id":"sourceFile","fileName":"AdReportImp.kt"}
     java.util.Map mSequenessMap -> a
@@ -803,206 +463,216 @@ com.roiquery.ad.api.AdReportImp -> com.roiquery.ad.api.a:
     1:1:void com.roiquery.ad.api.AdReportImp$Companion.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <clinit>
     1:1:void <clinit>():0 -> <clinit>
     2:2:void <clinit>():0:0 -> <clinit>
-    1:4:void <init>():22:25 -> <init>
+    1:4:void <init>():20:23 -> <init>
     1:1:void reportOpen(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):0:0 -> a
-    2:2:void access$setInstance$cp(com.roiquery.ad.api.AdReportImp):22:22 -> a
-    3:8:void reportLoadBegin(java.lang.String,int,int,java.lang.String,java.util.Map,int,java.lang.String):36:41 -> a
-    9:9:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> a
-    9:9:void reportLoadBegin(java.lang.String,int,int,java.lang.String,java.util.Map,int,java.lang.String):39 -> a
-    10:20:void reportLoadEnd(java.lang.String,int,int,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,int,java.lang.String):58:68 -> a
-    21:21:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> a
-    21:21:void reportLoadEnd(java.lang.String,int,int,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,int,java.lang.String):61 -> a
-    22:25:void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):146:149 -> a
+    2:2:void access$setInstance$cp(com.roiquery.ad.api.AdReportImp):20:20 -> a
+    3:8:void reportLoadBegin(java.lang.String,int,int,java.lang.String,java.util.Map,int,java.lang.String):34:39 -> a
+    9:9:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> a
+    9:9:void reportLoadBegin(java.lang.String,int,int,java.lang.String,java.util.Map,int,java.lang.String):37 -> a
+    10:20:void reportLoadEnd(java.lang.String,int,int,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,int,java.lang.String):56:66 -> a
+    21:21:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> a
+    21:21:void reportLoadEnd(java.lang.String,int,int,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,int,java.lang.String):59 -> a
+    22:25:void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):144:147 -> a
     26:26:void com.roiquery.ad.utils.AdEventProperty.setShowTS(long):93:93 -> a
-    26:26:void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):149 -> a
+    26:26:void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):147 -> a
     27:27:java.util.Map com.roiquery.ad.utils.AdEventProperty.getProperties():83:83 -> a
-    27:27:void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):150 -> a
-    28:28:void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):150:150 -> a
+    27:27:void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):148 -> a
+    28:28:void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):148:148 -> a
     29:29:java.util.Map com.roiquery.ad.utils.AdEventProperty.getProperties():83:83 -> a
-    29:29:void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):151 -> a
-    30:34:void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):151:155 -> a
-    35:35:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> a
-    35:35:void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):153 -> a
-    36:43:void reportConversion(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):271:278 -> a
-    44:44:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> a
-    44:44:void reportConversion(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):274 -> a
-    45:45:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):321:321 -> a
-    46:73:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):319:346 -> a
-    74:74:java.lang.String com.roiquery.ad.utils.AdEventProperty.getValue():88:88 -> a
-    74:74:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):346 -> a
-    75:81:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):344:350 -> a
-    82:82:java.lang.String com.roiquery.ad.utils.AdEventProperty.getCurrency():89:89 -> a
-    82:82:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):350 -> a
-    83:89:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):348:354 -> a
-    90:90:java.lang.String com.roiquery.ad.utils.AdEventProperty.getPrecision() -> a
-    90:90:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):354 -> a
-    91:97:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):352:358 -> a
-    98:98:java.lang.String com.roiquery.ad.utils.AdEventProperty.getCountry():91:91 -> a
-    98:98:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):358 -> a
-    99:103:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):356:360 -> a
-    104:104:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> a
-    104:104:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):341 -> a
-    105:105:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):383:383 -> a
-    106:126:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):381:401 -> a
-    127:146:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):398:417 -> a
-    147:147:java.lang.String com.roiquery.ad.utils.AdEventProperty.getValue():88:88 -> a
-    147:147:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):417 -> a
-    148:149:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):417:418 -> a
-    150:150:java.lang.String com.roiquery.ad.utils.AdEventProperty.getCurrency():89:89 -> a
-    150:150:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):418 -> a
-    151:152:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):418:419 -> a
-    153:153:java.lang.String com.roiquery.ad.utils.AdEventProperty.getPrecision():90:90 -> a
-    153:153:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):419 -> a
-    154:155:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):419:420 -> a
-    156:156:java.lang.String com.roiquery.ad.utils.AdEventProperty.getCountry():91:91 -> a
-    156:156:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):420 -> a
-    157:158:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):420:421 -> a
-    159:159:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> a
-    159:159:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):414 -> a
-    160:160:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):441:441 -> a
-    161:187:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):439:465 -> a
-    188:188:java.lang.String com.roiquery.ad.utils.AdEventProperty.getValue():88:88 -> a
-    188:188:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):465 -> a
-    189:190:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):465:466 -> a
-    191:191:java.lang.String com.roiquery.ad.utils.AdEventProperty.getPrecision():90:90 -> a
-    191:191:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):466 -> a
-    192:193:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):466:467 -> a
-    194:194:java.lang.String com.roiquery.ad.utils.AdEventProperty.getCountry():91:91 -> a
-    194:194:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):467 -> a
-    195:196:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):467:468 -> a
-    197:197:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> a
-    197:197:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map):462 -> a
-    198:199:void reportReturnApp():474:475 -> a
-    200:200:void com.roiquery.ad.utils.AdEventProperty.setAppForegroundedTS(long):97:97 -> a
-    200:200:void reportReturnApp():475 -> a
-    201:201:void com.roiquery.ad.utils.AdEventProperty.setLeftApplication(boolean):99:99 -> a
-    201:201:void reportReturnApp():476 -> a
-    202:202:long com.roiquery.ad.utils.AdEventProperty.getClickTS():94:94 -> a
-    202:202:void reportReturnApp():478 -> a
-    203:203:long com.roiquery.ad.utils.AdEventProperty.getLeftApplicationTS():95:95 -> a
-    203:203:void reportReturnApp():478 -> a
-    204:204:long com.roiquery.ad.utils.AdEventProperty.getAppForegroundedTS():97:97 -> a
-    204:204:void reportReturnApp():478 -> a
-    205:205:void reportReturnApp():482:482 -> a
-    206:206:java.lang.String com.roiquery.ad.utils.AdEventProperty.getSeq():82:82 -> a
-    206:206:void reportReturnApp():483 -> a
-    207:208:void reportReturnApp():483:484 -> a
-    209:209:long com.roiquery.ad.utils.AdEventProperty.getClickTS():94:94 -> a
-    209:209:void reportReturnApp():484 -> a
-    210:210:long com.roiquery.ad.utils.AdEventProperty.getShowTS():93:93 -> a
-    210:210:void reportReturnApp():484 -> a
-    211:213:void reportReturnApp():484:486 -> a
-    214:214:long com.roiquery.ad.utils.AdEventProperty.getAppForegroundedTS():97:97 -> a
-    214:214:void reportReturnApp():487 -> a
-    215:215:long com.roiquery.ad.utils.AdEventProperty.getLeftApplicationTS():95:95 -> a
-    215:215:void reportReturnApp():487 -> a
-    216:220:void reportReturnApp():485:489 -> a
-    221:221:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> a
-    221:221:void reportReturnApp():481 -> a
-    222:222:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> a
-    223:224:void checkSeqError(java.lang.String):522:523 -> a
-    225:225:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty$default(com.roiquery.ad.api.AdReportImp,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):541:541 -> a
-    226:226:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty$default(com.roiquery.ad.api.AdReportImp,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):534:534 -> a
+    29:29:void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):149 -> a
+    30:34:void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):149:153 -> a
+    35:35:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> a
+    35:35:void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):151 -> a
+    36:43:void reportConversion(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):269:276 -> a
+    44:44:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> a
+    44:44:void reportConversion(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):272 -> a
+    45:45:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):319:319 -> a
+    46:61:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):317:332 -> a
+    62:62:void com.roiquery.ad.utils.AdEventProperty.setValue(double):88:88 -> a
+    62:62:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):335 -> a
+    63:71:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):336:344 -> a
+    72:72:double com.roiquery.ad.utils.AdEventProperty.getValue():88:88 -> a
+    72:72:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):344 -> a
+    73:73:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):344:344 -> a
+    74:80:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):342:348 -> a
+    81:81:java.lang.String com.roiquery.ad.utils.AdEventProperty.getCurrency():89:89 -> a
+    81:81:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):348 -> a
+    82:88:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):346:352 -> a
+    89:89:java.lang.String com.roiquery.ad.utils.AdEventProperty.getPrecision():90:90 -> a
+    89:89:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):352 -> a
+    90:96:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):350:356 -> a
+    97:97:java.lang.String com.roiquery.ad.utils.AdEventProperty.getCountry():91:91 -> a
+    97:97:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):356 -> a
+    98:102:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):354:358 -> a
+    103:103:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> a
+    103:103:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):339 -> a
+    104:104:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):381:381 -> a
+    105:125:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):379:399 -> a
+    126:126:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):396:396 -> a
+    127:127:void com.roiquery.ad.utils.AdEventProperty.setValue(double):88:88 -> a
+    127:127:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):407 -> a
+    128:135:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):408:415 -> a
+    136:136:double com.roiquery.ad.utils.AdEventProperty.getValue():88:88 -> a
+    136:136:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):415 -> a
+    137:138:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):415:416 -> a
+    139:139:java.lang.String com.roiquery.ad.utils.AdEventProperty.getCurrency():89:89 -> a
+    139:139:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):416 -> a
+    140:141:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):416:417 -> a
+    142:142:java.lang.String com.roiquery.ad.utils.AdEventProperty.getPrecision():90:90 -> a
+    142:142:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):417 -> a
+    143:144:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):417:418 -> a
+    145:145:java.lang.String com.roiquery.ad.utils.AdEventProperty.getCountry():91:91 -> a
+    145:145:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):418 -> a
+    146:147:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):418:419 -> a
+    148:148:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> a
+    148:148:void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String):412 -> a
+    149:149:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):439:439 -> a
+    150:166:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):437:453 -> a
+    167:167:void com.roiquery.ad.utils.AdEventProperty.setValue(double):88:88 -> a
+    167:167:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):456 -> a
+    168:174:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):457:463 -> a
+    175:175:double com.roiquery.ad.utils.AdEventProperty.getValue():88:88 -> a
+    175:175:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):463 -> a
+    176:177:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):463:464 -> a
+    178:178:java.lang.String com.roiquery.ad.utils.AdEventProperty.getPrecision():90:90 -> a
+    178:178:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):464 -> a
+    179:180:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):464:465 -> a
+    181:181:java.lang.String com.roiquery.ad.utils.AdEventProperty.getCountry():91:91 -> a
+    181:181:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):465 -> a
+    182:183:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):465:466 -> a
+    184:184:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> a
+    184:184:void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map):460 -> a
+    185:186:void reportReturnApp():472:473 -> a
+    187:187:void com.roiquery.ad.utils.AdEventProperty.setAppForegroundedTS(long):97:97 -> a
+    187:187:void reportReturnApp():473 -> a
+    188:188:void com.roiquery.ad.utils.AdEventProperty.setLeftApplication(boolean):99:99 -> a
+    188:188:void reportReturnApp():474 -> a
+    189:189:long com.roiquery.ad.utils.AdEventProperty.getClickTS():94:94 -> a
+    189:189:void reportReturnApp():476 -> a
+    190:190:long com.roiquery.ad.utils.AdEventProperty.getLeftApplicationTS():95:95 -> a
+    190:190:void reportReturnApp():476 -> a
+    191:191:long com.roiquery.ad.utils.AdEventProperty.getAppForegroundedTS():97:97 -> a
+    191:191:void reportReturnApp():476 -> a
+    192:192:void reportReturnApp():480:480 -> a
+    193:193:java.lang.String com.roiquery.ad.utils.AdEventProperty.getSeq():82:82 -> a
+    193:193:void reportReturnApp():481 -> a
+    194:195:void reportReturnApp():481:482 -> a
+    196:196:long com.roiquery.ad.utils.AdEventProperty.getClickTS():94:94 -> a
+    196:196:void reportReturnApp():482 -> a
+    197:197:long com.roiquery.ad.utils.AdEventProperty.getShowTS():93:93 -> a
+    197:197:void reportReturnApp():482 -> a
+    198:200:void reportReturnApp():482:484 -> a
+    201:201:long com.roiquery.ad.utils.AdEventProperty.getAppForegroundedTS():97:97 -> a
+    201:201:void reportReturnApp():485 -> a
+    202:202:long com.roiquery.ad.utils.AdEventProperty.getLeftApplicationTS():95:95 -> a
+    202:202:void reportReturnApp():485 -> a
+    203:207:void reportReturnApp():483:487 -> a
+    208:208:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> a
+    208:208:void reportReturnApp():479 -> a
+    209:209:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> a
+    210:211:void checkSeqError(java.lang.String):520:521 -> a
+    212:212:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty$default(com.roiquery.ad.api.AdReportImp,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):539:539 -> a
+    213:213:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty$default(com.roiquery.ad.api.AdReportImp,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):532:532 -> a
     1:1:void reportEntrance(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):0:0 -> b
-    2:2:com.roiquery.ad.api.AdReportImp access$getInstance$cp():22:22 -> b
-    3:5:org.json.JSONObject generateAdReportJson(java.lang.String):502:504 -> b
+    2:2:com.roiquery.ad.api.AdReportImp access$getInstance$cp():20:20 -> b
+    3:5:org.json.JSONObject generateAdReportJson(java.lang.String):500:502 -> b
     6:6:java.lang.String com.roiquery.ad.utils.AdEventProperty.getAdId():81:81 -> b
-    6:6:org.json.JSONObject generateAdReportJson(java.lang.String):504 -> b
-    7:8:org.json.JSONObject generateAdReportJson(java.lang.String):504:505 -> b
+    6:6:org.json.JSONObject generateAdReportJson(java.lang.String):502 -> b
+    7:8:org.json.JSONObject generateAdReportJson(java.lang.String):502:503 -> b
     9:9:int com.roiquery.ad.utils.AdEventProperty.getAdType():79:79 -> b
-    9:9:org.json.JSONObject generateAdReportJson(java.lang.String):505 -> b
-    10:11:org.json.JSONObject generateAdReportJson(java.lang.String):505:506 -> b
+    9:9:org.json.JSONObject generateAdReportJson(java.lang.String):503 -> b
+    10:11:org.json.JSONObject generateAdReportJson(java.lang.String):503:504 -> b
     12:12:int com.roiquery.ad.utils.AdEventProperty.getAdPlatform():80:80 -> b
-    12:12:org.json.JSONObject generateAdReportJson(java.lang.String):506 -> b
-    13:14:org.json.JSONObject generateAdReportJson(java.lang.String):506:507 -> b
+    12:12:org.json.JSONObject generateAdReportJson(java.lang.String):504 -> b
+    13:14:org.json.JSONObject generateAdReportJson(java.lang.String):504:505 -> b
     15:15:int com.roiquery.ad.utils.AdEventProperty.getMediation():86:86 -> b
-    15:15:org.json.JSONObject generateAdReportJson(java.lang.String):507 -> b
-    16:17:org.json.JSONObject generateAdReportJson(java.lang.String):507:508 -> b
+    15:15:org.json.JSONObject generateAdReportJson(java.lang.String):505 -> b
+    16:17:org.json.JSONObject generateAdReportJson(java.lang.String):505:506 -> b
     18:18:java.lang.String com.roiquery.ad.utils.AdEventProperty.getMediationId():87:87 -> b
-    18:18:org.json.JSONObject generateAdReportJson(java.lang.String):508 -> b
-    19:20:org.json.JSONObject generateAdReportJson(java.lang.String):508:509 -> b
+    18:18:org.json.JSONObject generateAdReportJson(java.lang.String):506 -> b
+    19:20:org.json.JSONObject generateAdReportJson(java.lang.String):506:507 -> b
     21:21:java.lang.String com.roiquery.ad.utils.AdEventProperty.getEntrance():84:84 -> b
-    21:21:org.json.JSONObject generateAdReportJson(java.lang.String):509 -> b
-    22:23:org.json.JSONObject generateAdReportJson(java.lang.String):509:510 -> b
+    21:21:org.json.JSONObject generateAdReportJson(java.lang.String):507 -> b
+    22:23:org.json.JSONObject generateAdReportJson(java.lang.String):507:508 -> b
     24:24:java.lang.String com.roiquery.ad.utils.AdEventProperty.getLocation():78:78 -> b
-    24:24:org.json.JSONObject generateAdReportJson(java.lang.String):510 -> b
-    25:26:org.json.JSONObject generateAdReportJson(java.lang.String):510:511 -> b
+    24:24:org.json.JSONObject generateAdReportJson(java.lang.String):508 -> b
+    25:26:org.json.JSONObject generateAdReportJson(java.lang.String):508:509 -> b
     27:27:java.util.Map com.roiquery.ad.utils.AdEventProperty.getProperties():83:83 -> b
-    27:27:org.json.JSONObject generateAdReportJson(java.lang.String):513 -> b
-    28:28:org.json.JSONObject generateAdReportJson(java.lang.String):609:609 -> b
-    29:29:org.json.JSONObject generateAdReportJson(java.lang.String):515:515 -> b
-    1:4:void reportClick(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):228:231 -> c
+    27:27:org.json.JSONObject generateAdReportJson(java.lang.String):511 -> b
+    28:28:org.json.JSONObject generateAdReportJson(java.lang.String):607:607 -> b
+    29:29:org.json.JSONObject generateAdReportJson(java.lang.String):513:513 -> b
+    1:4:void reportClick(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):226:229 -> c
     5:5:void com.roiquery.ad.utils.AdEventProperty.setClickTS(long):94:94 -> c
-    5:5:void reportClick(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):231 -> c
-    6:7:void reportClick(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):234:235 -> c
-    8:8:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> c
-    8:8:void reportClick(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):233 -> c
-    9:12:void makeAdEventProperty(java.lang.String):528:531 -> c
-    13:14:com.roiquery.ad.utils.AdEventProperty getLeftApplicationEventProperty():584:585 -> c
+    5:5:void reportClick(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):229 -> c
+    6:7:void reportClick(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):232:233 -> c
+    8:8:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> c
+    8:8:void reportClick(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):231 -> c
+    9:12:void makeAdEventProperty(java.lang.String):526:529 -> c
+    13:14:com.roiquery.ad.utils.AdEventProperty getLeftApplicationEventProperty():582:583 -> c
     15:15:boolean com.roiquery.ad.utils.AdEventProperty.isLeftApplication():99:99 -> c
-    15:15:com.roiquery.ad.utils.AdEventProperty getLeftApplicationEventProperty():585 -> c
-    16:17:com.roiquery.ad.utils.AdEventProperty getLeftApplicationEventProperty():585:586 -> c
-    1:6:void reportClose(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):208:213 -> d
-    7:7:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> d
-    7:7:void reportClose(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):211 -> d
+    15:15:com.roiquery.ad.utils.AdEventProperty getLeftApplicationEventProperty():583 -> c
+    16:17:com.roiquery.ad.utils.AdEventProperty getLeftApplicationEventProperty():583:584 -> c
+    1:6:void reportClose(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):206:211 -> d
+    7:7:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> d
+    7:7:void reportClose(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):209 -> d
     void reportImpression(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String) -> e
-    1:4:void reportShow(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):122:125 -> f
+    1:4:void reportShow(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):120:123 -> f
     5:5:void com.roiquery.ad.utils.AdEventProperty.setShowTS(long):93:93 -> f
-    5:5:void reportShow(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):125 -> f
-    6:7:void reportShow(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):128:129 -> f
-    8:8:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> f
-    8:8:void reportShow(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):127 -> f
-    1:6:void reportToShow(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):102:107 -> g
-    7:7:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> g
-    7:7:void reportToShow(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):105 -> g
-    1:6:void reportRewarded(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):250:255 -> h
-    7:7:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> h
-    7:7:void reportRewarded(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):253 -> h
-    1:4:void reportLeftApp(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):293:296 -> i
+    5:5:void reportShow(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):123 -> f
+    6:7:void reportShow(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):126:127 -> f
+    8:8:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> f
+    8:8:void reportShow(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):125 -> f
+    1:6:void reportToShow(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):100:105 -> g
+    7:7:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> g
+    7:7:void reportToShow(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):103 -> g
+    1:6:void reportRewarded(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):248:253 -> h
+    7:7:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> h
+    7:7:void reportRewarded(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):251 -> h
+    1:4:void reportLeftApp(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):291:294 -> i
     5:5:void com.roiquery.ad.utils.AdEventProperty.setLeftApplicationTS(long):95:95 -> i
-    5:5:void reportLeftApp(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):296 -> i
+    5:5:void reportLeftApp(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):294 -> i
     6:6:void com.roiquery.ad.utils.AdEventProperty.setLeftApplication(boolean):99:99 -> i
-    6:6:void reportLeftApp(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):297 -> i
-    7:8:void reportLeftApp(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):300:301 -> i
-    9:9:void adTrack(java.lang.String,org.json.JSONObject):498:498 -> i
-    9:9:void reportLeftApp(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):299 -> i
-    1:66:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):546:611 -> j
-    67:67:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):553:553 -> j
-    68:82:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):551:565 -> j
+    6:6:void reportLeftApp(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):295 -> i
+    7:8:void reportLeftApp(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):298:299 -> i
+    9:9:void adTrack(java.lang.String,org.json.JSONObject):496:496 -> i
+    9:9:void reportLeftApp(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):297 -> i
+    1:66:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):544:609 -> j
+    67:67:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):551:551 -> j
+    68:82:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):549:563 -> j
     83:83:void com.roiquery.ad.utils.AdEventProperty.setAdType(int):79:79 -> j
-    83:83:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):566 -> j
-    84:84:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):568:568 -> j
+    83:83:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):564 -> j
+    84:84:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):566:566 -> j
     85:85:void com.roiquery.ad.utils.AdEventProperty.setAdPlatform(int):80:80 -> j
-    85:85:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):569 -> j
-    86:89:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):571:574 -> j
+    85:85:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):567 -> j
+    86:89:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):569:572 -> j
     90:90:void com.roiquery.ad.utils.AdEventProperty.setProperties(java.util.Map):83:83 -> j
-    90:90:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):575 -> j
-    91:91:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):576:576 -> j
+    90:90:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):573 -> j
+    91:91:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):574:574 -> j
     92:92:void com.roiquery.ad.utils.AdEventProperty.setMediation(int):86:86 -> j
-    92:92:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):577 -> j
-    93:95:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):578:580 -> j
-    96:96:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):548:548 -> j
+    92:92:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):575 -> j
+    93:95:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):576:578 -> j
+    96:96:com.roiquery.ad.utils.AdEventProperty updateAdEventProperty(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String):546:546 -> j
 com.roiquery.ad.api.AdReportImp$Companion -> com.roiquery.ad.api.a$a:
 # {"id":"sourceFile","fileName":"AdReportImp.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():593:593 -> <init>
-    1:1:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease$default(com.roiquery.ad.api.AdReportImp$Companion,android.content.Context,int,java.lang.Object):598:598 -> a
-    2:2:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):600:600 -> a
-    3:3:com.roiquery.ad.api.AdReportImp com.roiquery.ad.api.AdReportImp.access$getInstance$cp():22:22 -> a
-    3:3:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):601 -> a
-    4:4:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):601:601 -> a
-    5:5:void com.roiquery.ad.api.AdReportImp.access$setInstance$cp(com.roiquery.ad.api.AdReportImp):22:22 -> a
-    5:5:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):601 -> a
-    6:6:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):600:600 -> a
+    2:2:void <init>():591:591 -> <init>
+    1:1:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease$default(com.roiquery.ad.api.AdReportImp$Companion,android.content.Context,int,java.lang.Object):596:596 -> a
+    2:2:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):598:598 -> a
+    3:3:com.roiquery.ad.api.AdReportImp com.roiquery.ad.api.AdReportImp.access$getInstance$cp():20:20 -> a
+    3:3:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):599 -> a
+    4:4:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):599:599 -> a
+    5:5:void com.roiquery.ad.api.AdReportImp.access$setInstance$cp(com.roiquery.ad.api.AdReportImp):20:20 -> a
+    5:5:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):599 -> a
+    6:6:com.roiquery.ad.api.AdReportImp getInstance$roiquery_core_publicRelease(android.content.Context):598:598 -> a
 com.roiquery.ad.api.IAdReport -> com.roiquery.ad.api.b:
 # {"id":"sourceFile","fileName":"IAdReport.kt"}
     void reportConversion(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String) -> a
     void reportLoadBegin(java.lang.String,int,int,java.lang.String,java.util.Map,int,java.lang.String) -> a
     void reportLoadEnd(java.lang.String,int,int,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,int,java.lang.String) -> a
     void reportOpen(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String) -> a
-    void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map) -> a
-    void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String) -> a
-    void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String) -> a
+    void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String) -> a
+    void reportPaid(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map) -> a
+    void reportPaid(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String) -> a
     void reportReturnApp() -> a
     void reportShowFailed(java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String) -> a
     void reportEntrance(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String) -> b
@@ -1015,50 +685,50 @@ com.roiquery.ad.api.IAdReport -> com.roiquery.ad.api.b:
     void reportLeftApp(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String) -> i
 com.roiquery.ad.api.IAdReport$DefaultImpls -> com.roiquery.ad.api.b$a:
 # {"id":"sourceFile","fileName":"IAdReport.kt"}
-    1:1:void reportLoadBegin$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.util.Map,int,java.lang.String,int,java.lang.Object):12:12 -> a
-    2:2:void reportLoadBegin$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.util.Map,int,java.lang.String,int,java.lang.Object):7:7 -> a
-    3:4:void reportLoadEnd$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,int,java.lang.String,int,java.lang.Object):25:26 -> a
-    5:5:void reportLoadEnd$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,int,java.lang.String,int,java.lang.Object):17:17 -> a
-    6:7:void reportShowFailed$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):121:122 -> a
-    8:8:void reportShowFailed$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):113:113 -> a
-    9:10:void reportClick$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):210:211 -> a
-    11:11:void reportClick$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):204:204 -> a
-    12:13:void reportConversion$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):257:258 -> a
-    14:14:void reportConversion$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):250:250 -> a
-    15:16:void reportPaid$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):308:309 -> a
-    17:17:void reportPaid$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):299:299 -> a
-    18:19:void reportPaid$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):348:349 -> a
-    20:20:void reportPaid$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):334:334 -> a
-    21:21:void reportPaid$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,int,java.lang.Object):379:379 -> a
-    22:22:void reportPaid$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,int,java.lang.Object):368:368 -> a
-    1:2:void reportClose$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):188:189 -> b
-    3:3:void reportClose$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):182:182 -> b
-    1:2:void reportEntrance$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):49:50 -> c
-    3:3:void reportEntrance$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):43:43 -> c
-    1:2:void reportImpression$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):144:145 -> d
-    3:3:void reportImpression$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):138:138 -> d
-    1:2:void reportLeftApp$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):279:280 -> e
-    3:3:void reportLeftApp$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):273:273 -> e
-    1:2:void reportOpen$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):166:167 -> f
-    3:3:void reportOpen$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):160:160 -> f
-    1:2:void reportRewarded$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):232:233 -> g
-    3:3:void reportRewarded$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):226:226 -> g
-    1:2:void reportShow$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):95:96 -> h
-    3:3:void reportShow$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):89:89 -> h
-    1:2:void reportToShow$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):73:74 -> i
-    3:3:void reportToShow$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):67:67 -> i
+    1:1:void reportLoadBegin$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.util.Map,int,java.lang.String,int,java.lang.Object):10:10 -> a
+    2:2:void reportLoadBegin$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.util.Map,int,java.lang.String,int,java.lang.Object):5:5 -> a
+    3:4:void reportLoadEnd$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,int,java.lang.String,int,java.lang.Object):23:24 -> a
+    5:5:void reportLoadEnd$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,long,boolean,java.lang.String,int,java.lang.String,java.util.Map,int,java.lang.String,int,java.lang.Object):15:15 -> a
+    6:7:void reportShowFailed$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):119:120 -> a
+    8:8:void reportShowFailed$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):111:111 -> a
+    9:10:void reportClick$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):208:209 -> a
+    11:11:void reportClick$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):202:202 -> a
+    12:13:void reportConversion$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):255:256 -> a
+    14:14:void reportConversion$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):248:248 -> a
+    15:16:void reportPaid$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):306:307 -> a
+    17:17:void reportPaid$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):297:297 -> a
+    18:19:void reportPaid$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):346:347 -> a
+    20:20:void reportPaid$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.Object):332:332 -> a
+    21:21:void reportPaid$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,int,java.lang.Object):377:377 -> a
+    22:22:void reportPaid$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.util.Map,int,java.lang.Object):366:366 -> a
+    1:2:void reportClose$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):186:187 -> b
+    3:3:void reportClose$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):180:180 -> b
+    1:2:void reportEntrance$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):47:48 -> c
+    3:3:void reportEntrance$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):41:41 -> c
+    1:2:void reportImpression$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):142:143 -> d
+    3:3:void reportImpression$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):136:136 -> d
+    1:2:void reportLeftApp$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):277:278 -> e
+    3:3:void reportLeftApp$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):271:271 -> e
+    1:2:void reportOpen$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):164:165 -> f
+    3:3:void reportOpen$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):158:158 -> f
+    1:2:void reportRewarded$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):230:231 -> g
+    3:3:void reportRewarded$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):224:224 -> g
+    1:2:void reportShow$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):93:94 -> h
+    3:3:void reportShow$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):87:87 -> h
+    1:2:void reportToShow$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):71:72 -> i
+    3:3:void reportToShow$default(com.roiquery.ad.api.IAdReport,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,int,java.lang.Object):65:65 -> i
 com.roiquery.ad.utils.AdEventProperty -> com.roiquery.ad.utils.a:
 # {"id":"sourceFile","fileName":"AdUtils.kt"}
     java.lang.String entrance -> g
     java.lang.String mediationId -> i
     java.lang.String currency -> k
-    java.lang.String value -> j
     int mediation -> h
     java.lang.String country -> m
     java.lang.String precision -> l
     int adType -> b
     int adPlatform -> c
     boolean isLeftApplication -> s
+    double value -> j
     long appForegroundedTS -> r
     long appBackgroundedTS -> q
     java.lang.String location -> a
@@ -1069,9 +739,9 @@ com.roiquery.ad.utils.AdEventProperty -> com.roiquery.ad.utils.a:
     java.lang.String adId -> d
     long clickTS -> o
     1:1:void <init>():0:0 -> <init>
-    2:24:void <init>(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,long,long,long,long,long,boolean):77:99 -> <init>
-    25:38:void <init>(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,long,long,long,long,long,boolean,int,kotlin.jvm.internal.DefaultConstructorMarker):78:91 -> <init>
-    39:39:void <init>(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,long,long,long,long,long,boolean,int,kotlin.jvm.internal.DefaultConstructorMarker):77:77 -> <init>
+    2:24:void <init>(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,long,long,long,long,long,boolean):77:99 -> <init>
+    25:38:void <init>(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,long,long,long,long,long,boolean,int,kotlin.jvm.internal.DefaultConstructorMarker):78:91 -> <init>
+    39:39:void <init>(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,long,long,long,long,long,boolean,int,kotlin.jvm.internal.DefaultConstructorMarker):77:77 -> <init>
     1:1:java.lang.String getCurrency():89:89 -> A
     1:1:java.lang.String getEntrance():84:84 -> B
     1:1:long getLeftApplicationTS():95:95 -> C
@@ -1082,17 +752,18 @@ com.roiquery.ad.utils.AdEventProperty -> com.roiquery.ad.utils.a:
     1:1:java.util.Map getProperties():83:83 -> H
     1:1:java.lang.String getSeq():82:82 -> I
     1:1:long getShowTS():93:93 -> J
-    1:1:java.lang.String getValue():88:88 -> K
+    1:1:double getValue():88:88 -> K
     1:1:boolean isLeftApplication():99:99 -> L
     1:1:java.lang.String component1():0:0 -> a
-    2:2:com.roiquery.ad.utils.AdEventProperty copy(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,long,long,long,long,long,boolean):0:0 -> a
-    3:3:com.roiquery.ad.utils.AdEventProperty copy$default(com.roiquery.ad.utils.AdEventProperty,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,long,long,long,long,long,boolean,int,java.lang.Object):0:0 -> a
+    2:2:com.roiquery.ad.utils.AdEventProperty copy(java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,long,long,long,long,long,boolean):0:0 -> a
+    3:3:com.roiquery.ad.utils.AdEventProperty copy$default(com.roiquery.ad.utils.AdEventProperty,java.lang.String,int,int,java.lang.String,java.lang.String,java.util.Map,java.lang.String,int,java.lang.String,double,java.lang.String,java.lang.String,java.lang.String,long,long,long,long,long,boolean,int,java.lang.Object):0:0 -> a
     4:4:void setAdPlatform(int):80:80 -> a
     5:5:void setAdId(java.lang.String):81:81 -> a
     6:6:void setProperties(java.util.Map):83:83 -> a
-    7:7:void setAppBackgroundedTS(long):96:96 -> a
-    8:8:void setLeftApplication(boolean):99:99 -> a
-    1:1:java.lang.String component10():0:0 -> b
+    7:7:void setValue(double):88:88 -> a
+    8:8:void setAppBackgroundedTS(long):96:96 -> a
+    9:9:void setLeftApplication(boolean):99:99 -> a
+    1:1:double component10():0:0 -> b
     2:2:void setAdType(int):79:79 -> b
     3:3:void setCountry(java.lang.String):91:91 -> b
     4:4:void setAppForegroundedTS(long):97:97 -> b
@@ -1112,8 +783,7 @@ com.roiquery.ad.utils.AdEventProperty -> com.roiquery.ad.utils.a:
     2:2:void setPrecision(java.lang.String):90:90 -> g
     1:1:long component16():0:0 -> h
     2:2:void setSeq(java.lang.String):82:82 -> h
-    1:1:long component17():0:0 -> i
-    2:2:void setValue(java.lang.String):88:88 -> i
+    long component17() -> i
     long component18() -> j
     boolean component19() -> k
     int component2() -> l
@@ -1374,85 +1044,12 @@ com.roiquery.analytics.DTAnalyticsUtils$Companion -> com.roiquery.analytics.DTAn
     1:1:void trackTimerStart(java.lang.String):17:17 -> trackTimerStart
 com.roiquery.analytics.DTChannel -> com.roiquery.analytics.DTChannel:
 # {"id":"sourceFile","fileName":"constant.kt"}
-    1:1:void <init>():155:155 -> <init>
+    1:1:void <init>():150:150 -> <init>
 com.roiquery.analytics.DTThirdPartyShareType -> com.roiquery.analytics.DTThirdPartyShareType:
 # {"id":"sourceFile","fileName":"constant.kt"}
-    1:1:void <init>():158:158 -> <init>
+    1:1:void <init>():153:153 -> <init>
 com.roiquery.analytics.OnDataTowerIdListener -> com.roiquery.analytics.OnDataTowerIdListener:
 # {"id":"sourceFile","fileName":"constant.kt"}
-com.roiquery.analytics.ROIQuery -> com.roiquery.analytics.ROIQuery:
-# {"id":"sourceFile","fileName":"ROIQuery.kt"}
-    1:1:void <init>():9:9 -> <init>
-    1:1:void initSDK(android.content.Context,java.lang.String,java.lang.String):0:0 -> initSDK
-    2:2:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String):0:0 -> initSDK
-    3:3:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean):0:0 -> initSDK
-    4:4:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean,int):0:0 -> initSDK
-    5:5:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean,int,org.json.JSONObject):0:0 -> initSDK
-com.roiquery.analytics.ROIQuery$Companion -> com.roiquery.analytics.ROIQuery$Companion:
-# {"id":"sourceFile","fileName":"ROIQuery.kt"}
-    1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():11:11 -> <init>
-    1:1:void initSDK(android.content.Context,java.lang.String,java.lang.String):0:0 -> initSDK
-    2:2:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String):0:0 -> initSDK
-    3:3:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean):0:0 -> initSDK
-    4:4:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean,int):0:0 -> initSDK
-    5:8:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean,int,org.json.JSONObject):34:37 -> initSDK
-    9:9:void com.roiquery.analytics.config.AbstractAnalyticsConfig.setMAppId(java.lang.String):48:48 -> initSDK
-    9:9:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.config.AnalyticsConfig.setAppId(java.lang.String):200 -> initSDK
-    9:9:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean,int,org.json.JSONObject):38 -> initSDK
-      # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(2)"]}
-    10:10:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean,int,org.json.JSONObject):39:39 -> initSDK
-    11:11:void com.roiquery.analytics.config.AbstractAnalyticsConfig.setMEnabledDebug(boolean):28:28 -> initSDK
-    11:11:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.config.AnalyticsConfig.setDebug(boolean,int):138 -> initSDK
-    11:11:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean,int,org.json.JSONObject):40 -> initSDK
-      # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(2)"]}
-    12:12:void com.roiquery.analytics.config.AbstractAnalyticsConfig.setMLogLevel(int):33:33 -> initSDK
-    12:12:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.config.AnalyticsConfig.setDebug(boolean,int):139 -> initSDK
-    12:12:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean,int,org.json.JSONObject):40 -> initSDK
-    13:14:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean,int,org.json.JSONObject):41:42 -> initSDK
-    15:15:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean,int,org.json.JSONObject):34:34 -> initSDK
-    1:4:void initSDK$default(com.roiquery.analytics.ROIQuery$Companion,android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean,int,org.json.JSONObject,int,java.lang.Object):29:32 -> initSDK$default
-    5:5:void initSDK$default(com.roiquery.analytics.ROIQuery$Companion,android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean,int,org.json.JSONObject,int,java.lang.Object):25:25 -> initSDK$default
-com.roiquery.analytics.ROIQueryAnalytics -> com.roiquery.analytics.ROIQueryAnalytics:
-# {"id":"sourceFile","fileName":"ROIQueryAnalytics.kt"}
-    1:1:void <clinit>():18:18 -> <clinit>
-    1:1:void <init>():13:13 -> <init>
-    1:1:void track(java.lang.String):0:0 -> track
-    2:2:void track(java.lang.String,java.util.Map):0:0 -> track
-    3:3:void track(java.lang.String,org.json.JSONObject):0:0 -> track
-    1:1:void trackInternal$roiquery_core_publicRelease(java.lang.String):0:0 -> trackInternal$roiquery_core_publicRelease
-    2:2:void trackInternal$roiquery_core_publicRelease(java.lang.String,java.util.Map):0:0 -> trackInternal$roiquery_core_publicRelease
-    3:3:void trackInternal$roiquery_core_publicRelease(java.lang.String,org.json.JSONObject):0:0 -> trackInternal$roiquery_core_publicRelease
-com.roiquery.analytics.ROIQueryAnalytics$Companion -> com.roiquery.analytics.ROIQueryAnalytics$Companion:
-# {"id":"sourceFile","fileName":"ROIQueryAnalytics.kt"}
-    1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():16:16 -> <init>
-    1:4:void enableThirdPartySharing(int):156:159 -> enableThirdPartySharing
-    1:1:void getDataTowerId(com.roiquery.analytics.OnDataTowerIdListener):109:109 -> getDataTowerId
-    1:1:boolean isSDKInitSuccess$roiquery_core_publicRelease():195:195 -> isSDKInitSuccess$roiquery_core_publicRelease
-    1:1:void setAccountId(java.lang.String):118:118 -> setAccountId
-    1:1:void setAppsFlyerId(java.lang.String):137:137 -> setAppsFlyerId
-    1:1:void setFirebaseAppInstanceId(java.lang.String):127:127 -> setFirebaseAppInstanceId
-    1:1:void setKochavaId(java.lang.String):146:146 -> setKochavaId
-    1:1:void track(java.lang.String):0:0 -> track
-    2:2:void track(java.lang.String,java.util.Map):32:32 -> track
-    3:3:void track(java.lang.String,org.json.JSONObject):43:43 -> track
-    1:1:void track$default(com.roiquery.analytics.ROIQueryAnalytics$Companion,java.lang.String,java.util.Map,int,java.lang.Object):30:30 -> track$default
-    2:2:void track$default(com.roiquery.analytics.ROIQueryAnalytics$Companion,java.lang.String,java.util.Map,int,java.lang.Object):28:28 -> track$default
-    1:1:void trackInternal$roiquery_core_publicRelease(java.lang.String):0:0 -> trackInternal$roiquery_core_publicRelease
-    2:2:void trackInternal$roiquery_core_publicRelease(java.lang.String,java.util.Map):177:177 -> trackInternal$roiquery_core_publicRelease
-    3:3:void trackInternal$roiquery_core_publicRelease(java.lang.String,org.json.JSONObject):188:188 -> trackInternal$roiquery_core_publicRelease
-    1:1:void trackInternal$roiquery_core_publicRelease$default(com.roiquery.analytics.ROIQueryAnalytics$Companion,java.lang.String,java.util.Map,int,java.lang.Object):175:175 -> trackInternal$roiquery_core_publicRelease$default
-    2:2:void trackInternal$roiquery_core_publicRelease$default(com.roiquery.analytics.ROIQueryAnalytics$Companion,java.lang.String,java.util.Map,int,java.lang.Object):173:173 -> trackInternal$roiquery_core_publicRelease$default
-    1:1:void userAdd(org.json.JSONObject):72:72 -> userAdd
-    1:1:void userAppend(org.json.JSONObject):100:100 -> userAppend
-    1:1:void userDelete():90:90 -> userDelete
-    1:1:void userSet(org.json.JSONObject):52:52 -> userSet
-    1:1:void userSetOnce(org.json.JSONObject):62:62 -> userSetOnce
-    1:1:void userUnset(java.lang.String[]):82:82 -> userUnset
-com.roiquery.analytics.ROIQueryChannel -> com.roiquery.analytics.ROIQueryChannel:
-# {"id":"sourceFile","fileName":"constant.kt"}
-    1:1:void <init>():150:150 -> <init>
 com.roiquery.analytics.api.AbstractAnalytics -> com.roiquery.analytics.api.a:
 # {"id":"sourceFile","fileName":"AbstractAnalytics.kt"}
     java.util.concurrent.atomic.AtomicBoolean mHasInit -> i
@@ -5087,20 +4684,6 @@ com.roiquery.iap.DTIAPReport$Companion -> com.roiquery.iap.DTIAPReport$Companion
     2:2:void reportPurchaseSuccess(java.lang.String,java.lang.String,double,java.lang.String,java.util.Map):27:27 -> reportPurchaseSuccess
     1:1:void reportPurchaseSuccess$default(com.roiquery.iap.DTIAPReport$Companion,java.lang.String,java.lang.String,double,java.lang.String,java.util.Map,int,java.lang.Object):26:26 -> reportPurchaseSuccess$default
     2:2:void reportPurchaseSuccess$default(com.roiquery.iap.DTIAPReport$Companion,java.lang.String,java.lang.String,double,java.lang.String,java.util.Map,int,java.lang.Object):21:21 -> reportPurchaseSuccess$default
-com.roiquery.iap.ROIQueryIAPReport -> com.roiquery.iap.ROIQueryIAPReport:
-# {"id":"sourceFile","fileName":"ROIQueryIAPReport.kt"}
-    1:1:void <init>():6:6 -> <init>
-    1:1:void reportPurchaseSuccess(java.lang.String,java.lang.String,double,java.lang.String):0:0 -> reportPurchaseSuccess
-    2:2:void reportPurchaseSuccess(java.lang.String,java.lang.String,double,java.lang.String,java.util.Map):0:0 -> reportPurchaseSuccess
-com.roiquery.iap.ROIQueryIAPReport$Companion -> com.roiquery.iap.ROIQueryIAPReport$Companion:
-# {"id":"sourceFile","fileName":"ROIQueryIAPReport.kt"}
-    1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():8:8 -> <init>
-    1:1:java.lang.String generateUUID():33:33 -> generateUUID
-    1:1:void reportPurchaseSuccess(java.lang.String,java.lang.String,double,java.lang.String):0:0 -> reportPurchaseSuccess
-    2:2:void reportPurchaseSuccess(java.lang.String,java.lang.String,double,java.lang.String,java.util.Map):27:27 -> reportPurchaseSuccess
-    1:1:void reportPurchaseSuccess$default(com.roiquery.iap.ROIQueryIAPReport$Companion,java.lang.String,java.lang.String,double,java.lang.String,java.util.Map,int,java.lang.Object):26:26 -> reportPurchaseSuccess$default
-    2:2:void reportPurchaseSuccess$default(com.roiquery.iap.ROIQueryIAPReport$Companion,java.lang.String,java.lang.String,double,java.lang.String,java.util.Map,int,java.lang.Object):21:21 -> reportPurchaseSuccess$default
 com.roiquery.iap.api.IAPReportImp -> com.roiquery.iap.api.a:
 # {"id":"sourceFile","fileName":"IAPReportImp.kt"}
     com.roiquery.iap.api.IAPReportImp instance -> c
@@ -5172,20 +4755,6 @@ com.roiquery.ias.ROIQueryIasConstant -> com.roiquery.ias.a:
     java.lang.String IAS_TO_SUBSCRIBE_EVENT -> e
     java.lang.String IAS_SHOW_FAIL_EVENT -> d
     1:1:void <init>():9:9 -> <init>
-com.roiquery.ias.ROIQueryIasReport -> com.roiquery.ias.ROIQueryIasReport:
-# {"id":"sourceFile","fileName":"ROIQueryIasReport.kt"}
-    1:1:void <init>():11:11 -> <init>
-    1:1:void reportSubscribeSuccess(java.lang.String,java.lang.String,java.lang.String,double,java.lang.String):0:0 -> reportSubscribeSuccess
-    2:2:void reportSubscribeSuccess(java.lang.String,java.lang.String,java.lang.String,double,java.lang.String,java.util.Map):0:0 -> reportSubscribeSuccess
-com.roiquery.ias.ROIQueryIasReport$Companion -> com.roiquery.ias.ROIQueryIasReport$Companion:
-# {"id":"sourceFile","fileName":"ROIQueryIasReport.kt"}
-    1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():13:13 -> <init>
-    1:1:java.lang.String generateUUID():42:42 -> generateUUID
-    1:1:void reportSubscribeSuccess(java.lang.String,java.lang.String,java.lang.String,double,java.lang.String):0:0 -> reportSubscribeSuccess
-    2:2:void reportSubscribeSuccess(java.lang.String,java.lang.String,java.lang.String,double,java.lang.String,java.util.Map):35:35 -> reportSubscribeSuccess
-    1:1:void reportSubscribeSuccess$default(com.roiquery.ias.ROIQueryIasReport$Companion,java.lang.String,java.lang.String,java.lang.String,double,java.lang.String,java.util.Map,int,java.lang.Object):33:33 -> reportSubscribeSuccess$default
-    2:2:void reportSubscribeSuccess$default(com.roiquery.ias.ROIQueryIasReport$Companion,java.lang.String,java.lang.String,java.lang.String,double,java.lang.String,java.util.Map,int,java.lang.Object):27:27 -> reportSubscribeSuccess$default
 com.roiquery.ias.ROIQueryIasReportImp -> com.roiquery.ias.b:
 # {"id":"sourceFile","fileName":"ROIQueryIasReportImp.kt"}
     com.roiquery.ias.ROIQueryIasReportImp$Companion Companion -> a

@@ -1,7 +1,5 @@
 package com.roiquery.ad.api
 
-import com.roiquery.ad.AdMediation
-
 interface IAdReport {
 
      fun reportLoadBegin(
@@ -302,7 +300,7 @@ interface IAdReport {
          platform: Int,
          location: String,
          seq: String,
-         value: String,
+         value: Double,
          currency: String,
          precision: String,
          properties: MutableMap<String, Any>? = mutableMapOf(),
@@ -341,7 +339,7 @@ interface IAdReport {
          seq: String,
          mediation: Int,
          mediationId: String,
-         value: String,
+         value: Double,
          currency: String,
          precision: String,
          country: String,
@@ -373,7 +371,7 @@ interface IAdReport {
          seq: String,
          mediation: Int,
          mediationId: String,
-         value: String,
+         value: Double,
          precision: String,
          country: String,
          properties: MutableMap<String, Any>? = mutableMapOf(),
