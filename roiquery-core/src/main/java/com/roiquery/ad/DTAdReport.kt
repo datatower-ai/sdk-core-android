@@ -1,7 +1,6 @@
 package com.roiquery.ad
 
 import com.roiquery.ad.api.AdReportImp
-import com.roiquery.ad.utils.AdPlatformUtils
 import com.roiquery.ad.utils.UUIDUtils
 
 open class DTAdReport {
@@ -364,7 +363,7 @@ open class DTAdReport {
             platform: AdPlatform,
             location: String,
             seq: String,
-            value: String,
+            value: Double,
             currency: String,
             precision: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
@@ -399,12 +398,12 @@ open class DTAdReport {
             seq: String,
             mediation: AdMediation,
             mediationId: String,
-            value: String,
+            value: Double,
             precision: String,
             country: String,
             properties: MutableMap<String, Any>? = mutableMapOf(),
         ) = AdReportImp.getInstance()
-            .reportPaid(id,type.value,platform.value,location,seq,mediation.value,mediationId,value,precision, country, properties)
+            .reportPaid(id,type.value,platform.value,location,seq,mediation.value,mediationId, value, precision, country, properties)
 
         /**
          * 上报 访问广告链接，离开当前app(页面)
