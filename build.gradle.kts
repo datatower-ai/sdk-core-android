@@ -6,7 +6,7 @@ buildscript {
         set("minSdkVersion", 19)
         set("targetSdkVersion", 33)
 
-        set("dtsdkCoreVersionName", "2.0.7")
+        set("dtsdkCoreVersionName", "2.1.0")
 
         set("javaVersion", JavaVersion.VERSION_1_8)
         set("kotlinVersion", "1.8.21")
