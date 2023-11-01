@@ -12,13 +12,13 @@ import android.os.StatFs;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Choreographer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.roiquery.analytics.taskqueue.thread.AndroidExecutor;
-import com.roiquery.analytics.taskqueue.thread.AndroidExecutorKt;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,12 +39,19 @@ public class MemoryUtils {
 
     static private Boolean shouldListenFps = true;
 
+    static volatile long sumFrameTime = 0;
+    static volatile int frames = 0;
+    static volatile Boolean isBucketFull = true;
+
+    static final int bucketInterval = 1500;
+
     /**
      * 获取FPS.
      * */
     public static int getFPS() {
         if (fps == 0) {
-            fps = 60;
+            // 统计不足一秒
+            return (int) (frames * sumFrameTime / 1000000000L);
         }
         return fps;
     }
@@ -55,40 +62,64 @@ public class MemoryUtils {
         if (shouldListenFps) listenFPS();
     }
 
+    synchronized private static void addFrameTime(long frameTime) {
+        final long newSum = sumFrameTime + frameTime;
+        if (newSum >= 1000000000L) {
+            // 本轮统计满 1 秒，计算，重置
+            fps = (int) (frames * newSum / 1000000000L);
+            frames = 0;
+            sumFrameTime = 0;
+            isBucketFull = true;
+        } else {
+            // 未凑满 1 秒，累加
+            ++frames;
+            sumFrameTime = newSum;
+        }
+    }
+
+    final static private Choreographer.FrameCallback secondCallBack = new Choreographer.FrameCallback() {
+        @Override
+        public void doFrame(long frameTimeNanos) {
+            secondVsync = frameTimeNanos;
+            if (secondVsync > firstVsync) {
+                // 合法时间差
+                addFrameTime(secondVsync - firstVsync);
+            }
+            Log.w("TESTTT", "secondCallBack, isBucketFull: " + isBucketFull + ", sumFrameTime: " + sumFrameTime + ", frames: " + frames);
+            if (!isBucketFull) {
+                // 未凑满 1 秒
+                Choreographer.getInstance().postFrameCallback(firstCallBack);
+            }
+        }
+    };
+
+    final static private Choreographer.FrameCallback firstCallBack = new Choreographer.FrameCallback() {
+        @Override
+        public void doFrame(long frameTimeNanos) {
+            Log.w("TESTTT", "firstCallBack, isBucketFull: " + isBucketFull + ", sumFrameTime: " + sumFrameTime + ", frames: " + frames);
+            firstVsync = frameTimeNanos;
+            Choreographer.getInstance().postFrameCallback(secondCallBack);
+        }
+    };
+
     /**
      * 监听FPS.
      * */
     public static void listenFPS() {
-        final Choreographer.FrameCallback secondCallBack = new Choreographer.FrameCallback() {
-            @Override
-            public void doFrame(long frameTimeNanos) {
-                secondVsync = frameTimeNanos;
-                if (secondVsync <= firstVsync) {
-                    fps = 60;
-                } else {
-                    long hz = 1000000000 / (secondVsync - firstVsync);
-                    fps = (int) hz;
-                }
-            }
-        };
-
-        final Choreographer.FrameCallback firstCallBack = new Choreographer.FrameCallback() {
-            @Override
-            public void doFrame(long frameTimeNanos) {
-                firstVsync = frameTimeNanos;
-                Choreographer.getInstance().postFrameCallback(secondCallBack);
-            }
-        };
-
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 if (!shouldListenFps) return;
-                AndroidExecutor.INSTANCE.execute(this, 500);
-                Choreographer.getInstance().postFrameCallback(firstCallBack);
+                AndroidExecutor.INSTANCE.execute(this, bucketInterval);
+                Log.w("TESTTT", "listenFPS, isBucketFull: " + isBucketFull + ", sumFrameTime: " + sumFrameTime + ", frames: " + frames);
+                if (isBucketFull) {
+                    // 上一轮已结束，才会进行下一轮，确保一个时间段内只会有一轮统计
+                    isBucketFull = false;
+                    Choreographer.getInstance().postFrameCallback(firstCallBack);
+                }
             }
         };
-        AndroidExecutor.INSTANCE.execute(runnable, 500);
+        AndroidExecutor.INSTANCE.execute(runnable, bucketInterval);
     }
 
 
