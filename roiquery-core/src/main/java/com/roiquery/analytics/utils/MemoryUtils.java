@@ -8,7 +8,6 @@ import android.app.usage.StorageStatsManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.StatFs;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
@@ -17,6 +16,9 @@ import android.view.Choreographer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.roiquery.analytics.taskqueue.thread.AndroidExecutor;
+import com.roiquery.analytics.taskqueue.thread.AndroidExecutorKt;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +37,8 @@ public class MemoryUtils {
     static  long secondVsync;
     static  volatile int fps;
 
+    static private Boolean shouldListenFps = true;
+
     /**
      * 获取FPS.
      * */
@@ -45,45 +49,46 @@ public class MemoryUtils {
         return fps;
     }
 
+    public static void toggleShouldListenFps(Boolean shouldListen) {
+        if (shouldListen == shouldListenFps) return;
+        shouldListenFps = shouldListen;
+        if (shouldListenFps) listenFPS();
+    }
+
     /**
      * 监听FPS.
      * */
     public static void listenFPS() {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            final Choreographer.FrameCallback secondCallBack = new Choreographer.FrameCallback() {
-                @Override
-                public void doFrame(long frameTimeNanos) {
-                    secondVsync = frameTimeNanos;
-                    if (secondVsync <= firstVsync) {
-                        fps = 60;
-                    } else {
-                        long hz = 1000000000 / (secondVsync - firstVsync);
-                        if (hz > 70) {
-                            fps = 60;
-                        } else {
-                            fps = (int) hz;
-                        }
-                    }
+        final Choreographer.FrameCallback secondCallBack = new Choreographer.FrameCallback() {
+            @Override
+            public void doFrame(long frameTimeNanos) {
+                secondVsync = frameTimeNanos;
+                if (secondVsync <= firstVsync) {
+                    fps = 60;
+                } else {
+                    long hz = 1000000000 / (secondVsync - firstVsync);
+                    fps = (int) hz;
                 }
-            };
+            }
+        };
 
-            final Choreographer.FrameCallback firstCallBack = new Choreographer.FrameCallback() {
-                @Override
-                public void doFrame(long frameTimeNanos) {
-                    firstVsync = frameTimeNanos;
-                    Choreographer.getInstance().postFrameCallback(secondCallBack);
-                }
-            };
-            final Handler handler = new Handler();
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    handler.postDelayed(this, 500);
-                    Choreographer.getInstance().postFrameCallback(firstCallBack);
-                }
-            };
-            handler.postDelayed(runnable, 500);
-        }
+        final Choreographer.FrameCallback firstCallBack = new Choreographer.FrameCallback() {
+            @Override
+            public void doFrame(long frameTimeNanos) {
+                firstVsync = frameTimeNanos;
+                Choreographer.getInstance().postFrameCallback(secondCallBack);
+            }
+        };
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (!shouldListenFps) return;
+                AndroidExecutor.INSTANCE.execute(this, 500);
+                Choreographer.getInstance().postFrameCallback(firstCallBack);
+            }
+        };
+        AndroidExecutor.INSTANCE.execute(runnable, 500);
     }
 
 
