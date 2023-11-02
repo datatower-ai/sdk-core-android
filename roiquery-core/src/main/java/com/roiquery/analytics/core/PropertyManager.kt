@@ -255,7 +255,7 @@ class PropertyManager private constructor() {
         if (null == Looper.myLooper()) {
             Looper.prepare()
         }
-        MemoryUtils.listenFPS()
+        MemoryUtils.listenFPS(0)
     }
 
     /**

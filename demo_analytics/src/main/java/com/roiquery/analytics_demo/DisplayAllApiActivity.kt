@@ -3,6 +3,8 @@ package com.roiquery.analytics_demo
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -64,6 +66,23 @@ private fun ApiList() {
     val clipboardManager: ClipboardManager = LocalClipboardManager.current
 
     Column(Modifier.verticalScroll(rememberScrollState())) {
+        Button(onClick = {
+            Handler(Looper.getMainLooper()).post {
+                Log.w("TESTTT", "====================")
+                for (i in 1..1000000) Log.i("T", "$i")
+            }
+        }) {
+            Text("Loop 1000000")
+        }
+        Button(onClick = {
+            Handler(Looper.getMainLooper()).post {
+                Log.w("TESTTT", "====================")
+                for (i in 1..10000) Log.i("T", "$i")
+            }
+        }) {
+            Text("Loop 10000")
+        }
+
         Button(onClick = {
             var result = ""
             DisplayAllApiActivity.apiClasses.forEach {

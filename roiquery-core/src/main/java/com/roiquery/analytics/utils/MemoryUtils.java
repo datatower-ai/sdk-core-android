@@ -18,7 +18,7 @@ import android.view.Choreographer;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.roiquery.analytics.taskqueue.thread.AndroidExecutor;
+import com.roiquery.analytics.taskqueue.thread.AndroidExecutorKt;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,94 +32,88 @@ import java.util.UUID;
 
 
 public class MemoryUtils {
-
-    static  long firstVsync;
-    static  long secondVsync;
     static  volatile int fps;
 
     static private Boolean shouldListenFps = true;
 
-    static volatile long sumFrameTime = 0;
     static volatile int frames = 0;
-    static volatile Boolean isBucketFull = true;
+    static volatile Boolean isFpsDoing = false;
+    static volatile long fpsStartTime = 0;
 
-    static final int bucketInterval = 1500;
+    static final int fpsInterval = 0;
 
     /**
      * 获取FPS.
      * */
     public static int getFPS() {
-        if (fps == 0) {
-            // 统计不足一秒
-            return (int) (frames * sumFrameTime / 1000000000L);
+        synchronized (MemoryUtils.class) {
+            if (fps == 0) {
+                // 统计不足一秒
+                return (int) (frames / ((System.nanoTime() - fpsStartTime) / 1000000000.0));
+            }
+            return fps;
         }
-        return fps;
     }
 
     public static void toggleShouldListenFps(Boolean shouldListen) {
         if (shouldListen == shouldListenFps) return;
         shouldListenFps = shouldListen;
-        if (shouldListenFps) listenFPS();
+        if (shouldListenFps) listenFPS(0);
     }
 
-    synchronized private static void addFrameTime(long frameTime) {
-        final long newSum = sumFrameTime + frameTime;
-        if (newSum >= 1000000000L) {
+    synchronized private static void newFrameComes(long frameTime) {
+        ++frames;
+
+        final long duration = frameTime - fpsStartTime;
+
+        if (duration >= 1000000000L) {
             // 本轮统计满 1 秒，计算，重置
-            fps = (int) (frames * newSum / 1000000000L);
+            double delta = duration / 1000000000.0;
+            fps = Math.max(1, (int) (frames / delta));      // 最低为 1，屏幕显示的当前帧
             frames = 0;
-            sumFrameTime = 0;
-            isBucketFull = true;
-        } else {
-            // 未凑满 1 秒，累加
-            ++frames;
-            sumFrameTime = newSum;
+            isFpsDoing = false;
         }
     }
 
-    final static private Choreographer.FrameCallback secondCallBack = new Choreographer.FrameCallback() {
+    final static private Choreographer.FrameCallback fpsListener = new Choreographer.FrameCallback() {
         @Override
         public void doFrame(long frameTimeNanos) {
-            secondVsync = frameTimeNanos;
-            if (secondVsync > firstVsync) {
-                // 合法时间差
-                addFrameTime(secondVsync - firstVsync);
+            Boolean isDoing;
+            synchronized (MemoryUtils.class) {
+                newFrameComes(frameTimeNanos);
+                isDoing = isFpsDoing;
             }
-            Log.w("TESTTT", "secondCallBack, isBucketFull: " + isBucketFull + ", sumFrameTime: " + sumFrameTime + ", frames: " + frames);
-            if (!isBucketFull) {
-                // 未凑满 1 秒
-                Choreographer.getInstance().postFrameCallback(firstCallBack);
+
+            if (isDoing) {
+                Choreographer.getInstance().postFrameCallback(this);
+            } else {
+                // 启动新一轮
+                listenFPS(fpsInterval);
             }
         }
     };
 
-    final static private Choreographer.FrameCallback firstCallBack = new Choreographer.FrameCallback() {
+    static final Runnable fpsListenerStarter = new Runnable() {
         @Override
-        public void doFrame(long frameTimeNanos) {
-            Log.w("TESTTT", "firstCallBack, isBucketFull: " + isBucketFull + ", sumFrameTime: " + sumFrameTime + ", frames: " + frames);
-            firstVsync = frameTimeNanos;
-            Choreographer.getInstance().postFrameCallback(secondCallBack);
+        public void run() {
+            if (!shouldListenFps) return;
+
+            synchronized (MemoryUtils.class) {
+                if (!isFpsDoing) {
+                    // 上一轮已结束，才会进行下一轮，确保一个时间段内只会有一轮统计
+                    isFpsDoing = true;
+                    fpsStartTime = System.nanoTime();
+                    Choreographer.getInstance().postFrameCallback(fpsListener);
+                }
+            }
         }
     };
 
     /**
      * 监听FPS.
      * */
-    public static void listenFPS() {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (!shouldListenFps) return;
-                AndroidExecutor.INSTANCE.execute(this, bucketInterval);
-                Log.w("TESTTT", "listenFPS, isBucketFull: " + isBucketFull + ", sumFrameTime: " + sumFrameTime + ", frames: " + frames);
-                if (isBucketFull) {
-                    // 上一轮已结束，才会进行下一轮，确保一个时间段内只会有一轮统计
-                    isBucketFull = false;
-                    Choreographer.getInstance().postFrameCallback(firstCallBack);
-                }
-            }
-        };
-        AndroidExecutor.INSTANCE.execute(runnable, bucketInterval);
+    public static void listenFPS(long delayMillis) {
+        AndroidExecutorKt.runInMain(fpsListenerStarter, delayMillis);
     }
 
 
