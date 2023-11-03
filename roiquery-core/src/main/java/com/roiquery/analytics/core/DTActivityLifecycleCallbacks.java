@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import com.roiquery.analytics.Constant;
 import com.roiquery.analytics.config.AnalyticsConfig;
 import com.roiquery.analytics.utils.LogUtils;
+import com.roiquery.analytics.utils.MemoryUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,6 +70,7 @@ public class DTActivityLifecycleCallbacks implements Application.ActivityLifecyc
     @Override
     public void onActivityCreated(Activity activity, Bundle bundle) {
         mCurrentActivity = new WeakReference<>(activity);
+        MemoryUtils.toggleShouldListenFps(true);
     }
 
     private boolean notStartedActivity(Activity activity, boolean remove) {
@@ -90,6 +92,7 @@ public class DTActivityLifecycleCallbacks implements Application.ActivityLifecyc
     @Override
     public void onActivityStarted(Activity activity) {
         mCurrentActivity = new WeakReference<>(activity);
+        MemoryUtils.toggleShouldListenFps(true);
         try {
             synchronized (mActivityLifecycleCallbacksLock) {
                 if (mStartedActivityList.size() == 0) {
@@ -110,6 +113,7 @@ public class DTActivityLifecycleCallbacks implements Application.ActivityLifecyc
     @Override
     public void onActivityResumed(Activity activity) {
         synchronized (mActivityLifecycleCallbacksLock) {
+            MemoryUtils.toggleShouldListenFps(true);
             if (notStartedActivity(activity, false)) {
                 LogUtils.i(TAG, "onActivityResumed: the SDK was initialized after the onActivityStart of " + activity);
                 mStartedActivityList.add(new WeakReference<>(activity));
@@ -123,6 +127,7 @@ public class DTActivityLifecycleCallbacks implements Application.ActivityLifecyc
     @Override
     public void onActivityPaused(Activity activity) {
         synchronized (mActivityLifecycleCallbacksLock) {
+            MemoryUtils.toggleShouldListenFps(false);
             if (notStartedActivity(activity, false)) {
                 LogUtils.i(TAG, "onActivityPaused: the SDK was initialized after the onActivityStart of " + activity);
                 mStartedActivityList.add(new WeakReference<>(activity));
