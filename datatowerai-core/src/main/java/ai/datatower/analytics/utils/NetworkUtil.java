@@ -1,5 +1,8 @@
 package ai.datatower.analytics.utils;
 
+import static android.Manifest.permission.ACCESS_NETWORK_STATE;
+import static android.Manifest.permission.INTERNET;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +12,6 @@ import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
 import androidx.annotation.RequiresPermission;
-
 
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
@@ -22,10 +24,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import static android.Manifest.permission.ACCESS_NETWORK_STATE;
-import static android.Manifest.permission.INTERNET;
-
-import ai.datatower.analytics.core.EventTrackManager;
 import ai.datatower.analytics.taskqueue.MainQueue;
 
 

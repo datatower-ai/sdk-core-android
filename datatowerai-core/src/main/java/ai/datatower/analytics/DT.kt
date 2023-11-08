@@ -1,9 +1,9 @@
 package ai.datatower.analytics
 
-import android.content.Context
-import android.util.Log
 import ai.datatower.analytics.api.AnalyticsImp
 import ai.datatower.analytics.config.AnalyticsConfig
+import android.content.Context
+import android.util.Log
 import org.json.JSONObject
 
 class DT {

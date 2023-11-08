@@ -1,6 +1,5 @@
 package ai.datatower.analytics.utils
 
-import android.os.SystemClock
 import ai.datatower.ad.utils.UUIDUtils
 import ai.datatower.analytics.Constant
 import ai.datatower.analytics.Constant.TIME_FROM_ROI_NET_BODY
@@ -12,6 +11,7 @@ import ai.datatower.analytics.network.HttpMethod
 import ai.datatower.analytics.network.RequestHelper
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
+import android.os.SystemClock
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.locks.ReentrantReadWriteLock

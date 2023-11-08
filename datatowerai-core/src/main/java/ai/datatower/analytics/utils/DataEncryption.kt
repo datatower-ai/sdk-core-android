@@ -2,7 +2,6 @@ package ai.datatower.analytics.utils
 
 import ai.datatower.quality.ROIQueryErrorParams
 import ai.datatower.quality.ROIQueryQualityHelper
-import java.lang.Exception
 import java.security.MessageDigest
 
 /**

@@ -1,8 +1,7 @@
+@file:JvmSynthetic
 package ai.datatower.quality
 
-import ai.datatower.analytics.data.EventDataAdapter
 import ai.datatower.analytics.utils.LogUtils
-import kotlinx.coroutines.runBlocking
 
 internal enum class PerfAction {
     SDKINITBEGIN,
@@ -54,12 +53,5 @@ internal object PerfLogger {
         }
 
         LogUtils.i(tag, action.name);
-    }
-
-    fun getDBItemCount(): Int? {
-        val ret = runBlocking {
-            EventDataAdapter.getInstance()?.queryDataCount()?.await()
-        }
-        return ret
     }
 }

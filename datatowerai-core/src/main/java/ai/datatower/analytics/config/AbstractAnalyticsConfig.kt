@@ -1,7 +1,7 @@
 package ai.datatower.analytics.config
 
-import android.content.Context
 import ai.datatower.analytics.utils.LogUtils
+import android.content.Context
 import org.json.JSONObject
 
 abstract class AbstractAnalyticsConfig {

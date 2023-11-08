@@ -1,10 +1,6 @@
 package ai.datatower.ad.api
 
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.os.SystemClock
-import android.text.TextUtils
 import ai.datatower.ad.AdPlatform
 import ai.datatower.ad.AdReportConstant
 import ai.datatower.ad.AdReportConstant.PROPERTY_AD_SHOW_ERROR_CODE
@@ -15,6 +11,10 @@ import ai.datatower.ad.utils.AdPlatformUtils
 import ai.datatower.analytics.DTAnalytics
 import ai.datatower.analytics.utils.EventUtils
 import ai.datatower.analytics.utils.LogUtils
+import android.annotation.SuppressLint
+import android.content.Context
+import android.os.SystemClock
+import android.text.TextUtils
 import org.json.JSONObject
 
 class AdReportImp : IAdReport {

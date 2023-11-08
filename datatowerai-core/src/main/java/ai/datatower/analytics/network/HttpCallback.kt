@@ -16,13 +16,12 @@
  */
 package ai.datatower.analytics.network
 
-import android.os.Handler
-import android.text.TextUtils
-import org.json.JSONObject
-import org.json.JSONException
-import android.os.Looper
 import ai.datatower.analytics.utils.LogUtils
-import ai.datatower.analytics.utils.ThreadUtils
+import android.os.Handler
+import android.os.Looper
+import android.text.TextUtils
+import org.json.JSONException
+import org.json.JSONObject
 
 abstract class HttpCallback<T> {
     fun onError(response: RealResponse) {

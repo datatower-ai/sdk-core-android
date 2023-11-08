@@ -1,15 +1,17 @@
 package ai.datatower.analytics.core
 
+import ai.datatower.analytics.Constant
+import ai.datatower.analytics.config.AnalyticsConfig
+import ai.datatower.analytics.data.EventDataAdapter
+import ai.datatower.analytics.taskqueue.MainQueue
+import ai.datatower.analytics.utils.EventUtils
+import ai.datatower.analytics.utils.LogUtils
+import ai.datatower.analytics.utils.ProcessUtil
 import android.content.Context
 import android.os.SystemClock
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
-import ai.datatower.analytics.Constant
-import ai.datatower.analytics.config.AnalyticsConfig
-import ai.datatower.analytics.data.EventDataAdapter
-import ai.datatower.analytics.taskqueue.MainQueue
-import ai.datatower.analytics.utils.*
 import org.json.JSONObject
 import java.util.concurrent.atomic.AtomicBoolean
 

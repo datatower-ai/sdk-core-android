@@ -1,14 +1,13 @@
 package ai.datatower.analytics.data
 
-import android.content.Context
-import android.text.TextUtils
 import ai.datatower.analytics.data.room.ROIQueryAnalyticsDB
 import ai.datatower.analytics.data.room.bean.Configs
 import ai.datatower.analytics.data.room.bean.Events
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.quality.ROIQueryErrorParams
 import ai.datatower.quality.ROIQueryQualityHelper
-import kotlinx.coroutines.suspendCancellableCoroutine
+import android.content.Context
+import android.text.TextUtils
 import org.json.JSONObject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine

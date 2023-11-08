@@ -17,7 +17,6 @@ import ai.datatower.analytics.DTAnalytics
 import ai.datatower.analytics.OnDataTowerIdListener
 import ai.datatower.analytics_demo.DisplayAllApiActivity
 import ai.datatower.analytics_demo.R
-import ai.datatower.quality.PerfLogger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -46,12 +45,6 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
                 if (pref.key?.startsWith("dt_anal_user_builtin_prop_") == true) {
                     pref.setOnPreferenceChangeListener(this::onBuiltinPropPrefChanged)
                 }
-            }
-        }
-
-        preferenceScreen.get<Preference>("dt_anal_get_db_count")?.let {
-            it.setOnPreferenceClickListener {
-                guiDBItemUpdate(it)
             }
         }
 
@@ -115,18 +108,6 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             clipboardMgr.setPrimaryClip(ClipData.newPlainText("DTID", dtid))
             Toast.makeText(requireActivity(), "DTID copied to clipboard.", Toast.LENGTH_SHORT)
                 .show()
-        }
-        return true
-    }
-
-    private fun guiDBItemUpdate(ignored: Preference): Boolean {
-        launch {
-            val pref = preferenceScreen.get<Preference>("dt_anal_get_db_count") ?: return@launch
-            pref.summary = "DB Item=<Loading..>"
-
-            val dbItmeCount = PerfLogger.getDBItemCount()
-
-            pref.summary = "DB Item=$dbItmeCount"
         }
         return true
     }

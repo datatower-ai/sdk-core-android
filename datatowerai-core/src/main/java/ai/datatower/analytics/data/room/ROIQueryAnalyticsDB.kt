@@ -1,17 +1,14 @@
 package ai.datatower.analytics.data.room
 
-import android.app.Application
-import android.content.Context
-import android.util.Log
-import androidx.room.AutoMigration
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
 import ai.datatower.analytics.data.DataParams.Companion.DATABASE_NAME
 import ai.datatower.analytics.data.room.bean.Configs
 import ai.datatower.analytics.data.room.bean.Events
 import ai.datatower.analytics.data.room.dao.ConfigsDao
 import ai.datatower.analytics.data.room.dao.EventInfoDao
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 
 /**
  * author: xiaosailing

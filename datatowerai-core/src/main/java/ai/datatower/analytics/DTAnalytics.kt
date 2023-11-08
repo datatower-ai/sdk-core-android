@@ -5,10 +5,7 @@ import ai.datatower.analytics.core.PropertyManager
 import ai.datatower.analytics.utils.DataCheck.findFirstNonJsonArray
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.thirdparty.ThirdPartShareDataFactory
-
 import org.json.JSONObject
-import java.lang.Exception
-import java.lang.IllegalArgumentException
 
 open class DTAnalytics {
 

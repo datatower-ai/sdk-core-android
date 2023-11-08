@@ -1,9 +1,9 @@
 package ai.datatower.analytics.data.room.dao
 
+import ai.datatower.analytics.data.room.bean.Configs
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import ai.datatower.analytics.data.room.bean.Configs
 
 /**
  * author: xiaosailing

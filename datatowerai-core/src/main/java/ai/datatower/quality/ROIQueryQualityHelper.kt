@@ -1,7 +1,5 @@
 package ai.datatower.quality
 
-import android.provider.MediaStore.MediaColumns.INSTANCE_ID
-import android.provider.UserDictionary.Words.APP_ID
 import ai.datatower.analytics.Constant
 import ai.datatower.analytics.core.PropertyManager
 import ai.datatower.analytics.network.HttpCallback

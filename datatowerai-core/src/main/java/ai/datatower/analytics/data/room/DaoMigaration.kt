@@ -1,11 +1,10 @@
 package ai.datatower.analytics.data.room
 
-import android.annotation.SuppressLint
-import android.util.Log
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import ai.datatower.analytics.Constant
 import ai.datatower.analytics.data.DataParams
+import android.annotation.SuppressLint
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import org.json.JSONObject
 
 /**

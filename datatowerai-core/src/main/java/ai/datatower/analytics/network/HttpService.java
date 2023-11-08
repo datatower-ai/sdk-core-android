@@ -6,7 +6,6 @@ package ai.datatower.analytics.network;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,7 +14,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.InvalidParameterException;
 import java.util.Map;
-import java.util.zip.GZIPOutputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;

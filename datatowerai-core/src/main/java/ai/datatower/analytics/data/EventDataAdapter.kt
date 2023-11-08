@@ -1,14 +1,14 @@
 package ai.datatower.analytics.data
 
-import android.content.Context
 import ai.datatower.analytics.taskqueue.DBQueue
+import ai.datatower.analytics.taskqueue.asyncSequential
 import ai.datatower.analytics.taskqueue.asyncSequentialCatching
 import ai.datatower.analytics.taskqueue.asyncSequentialChained
-import ai.datatower.analytics.taskqueue.asyncSequential
 import ai.datatower.analytics.taskqueue.launchSequential
 import ai.datatower.analytics.utils.TimeCalibration
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
+import android.content.Context
 import org.json.JSONObject
 
 class EventDataAdapter private constructor(

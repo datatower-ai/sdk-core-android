@@ -1,12 +1,5 @@
 package ai.datatower.analytics.taskqueue;
 
-import android.os.SystemClock;
-
-import ai.datatower.analytics.utils.LogUtils;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 public class MainQueue extends AsyncTaskQueue {
 
     private volatile static MainQueue singleton;  //1:volatile修饰

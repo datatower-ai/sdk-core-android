@@ -1,10 +1,5 @@
 package ai.datatower.analytics.core
 
-import android.os.Handler
-import android.os.HandlerThread
-import android.os.Looper
-import android.os.Message
-import android.text.TextUtils
 import ai.datatower.analytics.Constant
 import ai.datatower.analytics.Constant.EVENT_INFO_SYN
 import ai.datatower.analytics.Constant.PRE_EVENT_INFO_SYN
@@ -24,6 +19,11 @@ import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
 import ai.datatower.quality.ROIQueryErrorParams
 import ai.datatower.quality.ROIQueryQualityHelper
+import android.os.Handler
+import android.os.HandlerThread
+import android.os.Looper
+import android.os.Message
+import android.text.TextUtils
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 import org.json.JSONArray

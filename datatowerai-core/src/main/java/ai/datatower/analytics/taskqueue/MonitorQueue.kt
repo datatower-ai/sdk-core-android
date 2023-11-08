@@ -1,12 +1,12 @@
 package ai.datatower.analytics.taskqueue
 
+import ai.datatower.analytics.data.EventDataAdapter
+import ai.datatower.quality.ROIQueryErrorParams
+import ai.datatower.quality.ROIQueryQualityHelper
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
-import ai.datatower.analytics.data.EventDataAdapter
-import ai.datatower.quality.ROIQueryErrorParams
-import ai.datatower.quality.ROIQueryQualityHelper
 import kotlinx.coroutines.runBlocking
 
 // 需要上报的场景，记录下

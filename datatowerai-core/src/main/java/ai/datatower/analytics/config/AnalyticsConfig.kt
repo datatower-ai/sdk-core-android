@@ -1,13 +1,13 @@
 package ai.datatower.analytics.config
 
-import android.content.Context
-import android.content.SharedPreferences
 import ai.datatower.analytics.BuildConfig
 import ai.datatower.analytics.Constant
 import ai.datatower.analytics.data.persistence.SharedPreferencesLoader
 import ai.datatower.analytics.data.persistence.StorageDisableFlag
 import ai.datatower.analytics.data.persistence.StorageReportUrl
 import ai.datatower.analytics.utils.LogUtils
+import android.content.Context
+import android.content.SharedPreferences
 import org.json.JSONObject
 import java.util.concurrent.Future
 

@@ -11,11 +11,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import ai.datatower.analytics.Constant;
-import ai.datatower.analytics.config.AnalyticsConfig;
-import ai.datatower.analytics.utils.LogUtils;
-import ai.datatower.analytics.utils.MemoryUtils;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +25,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import ai.datatower.analytics.Constant;
+import ai.datatower.analytics.config.AnalyticsConfig;
+import ai.datatower.analytics.utils.LogUtils;
+import ai.datatower.analytics.utils.MemoryUtils;
 
 
 public class DTActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {

@@ -1,10 +1,5 @@
 package ai.datatower.analytics.api
 
-import android.app.Application
-import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Bundle
-import android.os.SystemClock
 import ai.datatower.analytics.Constant
 import ai.datatower.analytics.config.AnalyticsConfig
 import ai.datatower.analytics.core.DTActivityLifecycleCallbacks
@@ -12,9 +7,15 @@ import ai.datatower.analytics.core.EventTrackManager
 import ai.datatower.analytics.core.PresetEventManager
 import ai.datatower.analytics.core.PropertyManager
 import ai.datatower.analytics.data.EventDataAdapter
-import ai.datatower.analytics.utils.*
+import ai.datatower.analytics.utils.LogUtils
+import ai.datatower.analytics.utils.NotNullSingleVar
 import ai.datatower.quality.ROIQueryErrorParams
 import ai.datatower.quality.ROIQueryQualityHelper
+import android.app.Application
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Bundle
+import android.os.SystemClock
 import java.util.concurrent.atomic.AtomicBoolean
 
 

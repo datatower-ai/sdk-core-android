@@ -1,3 +1,4 @@
+@file:JvmSynthetic
 package ai.datatower.analytics.taskqueue.thread
 
 import android.os.Handler

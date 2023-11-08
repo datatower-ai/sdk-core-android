@@ -2,14 +2,13 @@ package ai.datatower.analytics.taskqueue;
 
 import androidx.annotation.NonNull;
 
-import ai.datatower.analytics.utils.LogUtils;
-
 import java.lang.ref.WeakReference;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import ai.datatower.analytics.utils.LogUtils;
 import kotlin.coroutines.CoroutineContext;
 import kotlinx.coroutines.CoroutineDispatcher;
 import kotlinx.coroutines.CoroutineScope;

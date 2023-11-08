@@ -1,7 +1,5 @@
 package ai.datatower.analytics.api
 
-import android.content.Context
-import android.os.SystemClock
 import ai.datatower.analytics.Constant
 import ai.datatower.analytics.OnDataTowerIdListener
 import ai.datatower.analytics.config.AnalyticsConfig
@@ -19,6 +17,8 @@ import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
 import ai.datatower.quality.ROIQueryErrorParams
 import ai.datatower.quality.ROIQueryQualityHelper
+import android.content.Context
+import android.os.SystemClock
 import kotlinx.coroutines.runBlocking
 import org.json.JSONException
 import org.json.JSONObject

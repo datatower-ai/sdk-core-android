@@ -12,13 +12,10 @@ import android.os.StatFs;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Choreographer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import ai.datatower.analytics.taskqueue.thread.AndroidExecutorKt;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +26,8 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+
+import ai.datatower.analytics.taskqueue.thread.AndroidExecutorKt;
 
 
 public class MemoryUtils {

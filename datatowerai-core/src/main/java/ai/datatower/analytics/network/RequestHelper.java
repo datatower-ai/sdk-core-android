@@ -17,16 +17,14 @@
 
 package ai.datatower.analytics.network;
 
+import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
+import static java.net.HttpURLConnection.HTTP_OK;
+
 import android.text.TextUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
-
-import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
-import static java.net.HttpURLConnection.HTTP_OK;
-
-import ai.datatower.analytics.utils.LogUtils;
 
 public class RequestHelper {
     //重定向 URL

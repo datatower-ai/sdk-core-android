@@ -1,10 +1,10 @@
 package ai.datatower.analytics.data.room.dao
 
+import ai.datatower.analytics.data.room.bean.Events
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import ai.datatower.analytics.data.room.bean.Events
 
 /**
  * author: xiaosailing

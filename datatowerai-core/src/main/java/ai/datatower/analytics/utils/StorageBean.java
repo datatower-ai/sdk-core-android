@@ -1,7 +1,5 @@
 package ai.datatower.analytics.utils;
 
-import org.json.JSONObject;
-
 /**
  * Created by chensongsong on 2020/6/1.
  */

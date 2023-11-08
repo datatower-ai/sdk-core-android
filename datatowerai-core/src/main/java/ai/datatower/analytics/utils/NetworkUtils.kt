@@ -23,15 +23,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import android.telephony.TelephonyManager
-import android.text.TextUtils
-import android.webkit.WebSettings
-import android.webkit.WebView
-import androidx.annotation.RequiresApi
-
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
 
 
 object NetworkUtils {

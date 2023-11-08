@@ -1,8 +1,8 @@
 package ai.datatower.analytics.core
 
-import android.os.SystemClock
 import ai.datatower.analytics.Constant
 import ai.datatower.analytics.utils.TimeCalibration
+import android.os.SystemClock
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject

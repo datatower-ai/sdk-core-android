@@ -1,15 +1,15 @@
 package ai.datatower.analytics.utils
 
-import android.content.Context
-import android.os.Build
-import android.text.TextUtils
 import ai.datatower.analytics.Constant
 import ai.datatower.analytics.config.AnalyticsConfig
 import ai.datatower.analytics.data.EventDataAdapter
+import android.content.Context
+import android.os.Build
+import android.text.TextUtils
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.*
+import java.util.Date
 import java.util.regex.Pattern
 
 object EventUtils {
