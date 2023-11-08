@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -28,8 +27,9 @@ import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import ai.datatower.analytics_demo.ui.theme.DataTowerSDKCoreTheme
+import androidx.activity.ComponentActivity
 
-class DisplayAllApiActivity : AppCompatActivity() {
+class DisplayAllApiActivity : ComponentActivity() {
     companion object {
         val apiClasses = listOf(
             Pair("ai.datatower.analytics.DT", "DT"),

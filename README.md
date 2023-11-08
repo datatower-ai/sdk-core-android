@@ -24,7 +24,7 @@
 
 ```shell
 gradle :roiquery-core:clean
-gradle :roiquery-core:assemblePublicRelease
+gradle :roiquery-core:assembleRelease
 gradle :roiquery-core:copyProguardMappingFiles
 # 上述3个命令执行完成并且都没有错误后, 执行如下命令
 git add roiquery-core/build.gradle.kts
@@ -41,19 +41,8 @@ git push --tags
 
 ### 发布至 Maven Central
 
-向工程根目录下文件 `local.properties` 添加如下内容:
-
-```properties
-ossrhEmail=xxxxxxxx
-ossrhUsername=xxxxxxxx
-ossrhPassword=xxxxxxxx
-```
-
-然后在工程目根目录下运行如下命令:
-
-```shell
-gradle :roiquery-core:publishReleasePublicationToMavenCentralRepository
-```
+- 运行上面的命令或脚本（`sh ./publish.sh`）
+- 当版本 tag 成功 push 到 main 分支后， 会自动触发发布流程并发布到 Jitpack。
 
 ### Proguard Mapping 文件
 

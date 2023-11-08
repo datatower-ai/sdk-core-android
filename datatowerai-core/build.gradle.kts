@@ -1,7 +1,3 @@
-import java.util.Properties
-import java.net.URI
-import org.gradle.jvm.tasks.Jar
-
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -11,6 +7,7 @@ plugins {
     id("signing")
 }
 
+@Suppress("UnstableApiUsage")
 android {
     val compileSdkVersion: Int by rootProject.extra
     val minSdkVersion: Int by rootProject.extra
@@ -28,7 +25,6 @@ android {
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
-        buildConfigField("Boolean", "IS_LOGGING_ENABLED", "false")
     }
 
     buildFeatures {
@@ -50,26 +46,18 @@ android {
         }
     }
 
-    flavorDimensions += "slf4jLogging"
-    productFlavors {
-        create("public") {
-            dimension = "slf4jLogging"
-            buildConfigField("Boolean", "IS_LOGGING_ENABLED", "false")
-            missingDimensionStrategy("slf4jLogging", "public")
-        }
-        create("internal") {
-            dimension = "slf4jLogging"
-            buildConfigField("Boolean", "IS_LOGGING_ENABLED", "true")
-            missingDimensionStrategy("slf4jLogging", "internal")
-        }
-    }
-
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }
 
     kotlinOptions.jvmTarget = javaVersion.toString()
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
@@ -92,69 +80,61 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomDbVersion")
 }
 
-tasks.create("sourcesJarToPublish", Jar::class) {
-    from(android.sourceSets.getByName("main").java.getSourceFiles())
-    archiveClassifier.set("sources")
-}
+afterEvaluate {
+    publishing {
+        val groupId = "ai.datatower"
+        val artifactId = "datatowerai-core"
+        val dtsdkCoreVersionName: String by rootProject.extra
 
-publishing {
-    val groupId = "ai.datatower"
-    val artifactId = "datatowerai-core"
-    val dtsdkCoreVersionName: String by rootProject.extra
+        publications {
+            create<MavenPublication>("release") {
+                this.groupId = groupId
+                this.artifactId = artifactId
+                version = dtsdkCoreVersionName
 
-    publications {
-        create<MavenPublication>("Release") {
-            this.groupId = groupId
-            this.artifactId = artifactId
-            version = dtsdkCoreVersionName
+                from(components["release"])
 
-            from(components["release"])
-            artifact(tasks.getByName("sourcesJarToPublish"))
+                pom {
+                    name.set(artifactId)
+                    description.set("DataTower.ai Android SDK")
+                    url.set("https://github.com/lovinjoy/datatower.ai-core-android")
 
-            pom {
-                name.set(artifactId)
-                description.set("DataTower.ai Android SDK")
-                url.set("https://github.com/lovinjoy/datatower.ai-core-android")
-
-                licenses {
-                    license {
-                        name.set("The Apache License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    licenses {
+                        license {
+                            name.set("The Apache License, Version 2.0")
+                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("datatower")
+                            name.set("datatower.ai")
+                            email.set("develop@datatower.ai")
+                        }
+                    }
+                    scm {
+                        connection.set("scm:git:github.com/lovinjoy/datatower.ai-core-android.git")
+                        developerConnection.set("scm:git:ssh://github.com/lovinjoy/datatower.ai-core-android.git")
+                        url.set("https://github.com/lovinjoy/datatower.ai-core-android/tree/main")
                     }
                 }
-                developers {
-                    developer {
-                        id.set("datatower")
-                        name.set("datatower.ai")
-                        email.set("develop@datatower.ai")
-                    }
-                }
-                scm {
-                    connection.set("scm:git:github.com/lovinjoy/datatower.ai-core-android.git")
-                    developerConnection.set("scm:git:ssh://github.com/lovinjoy/datatower.ai-core-android.git")
-                    url.set("https://github.com/lovinjoy/datatower.ai-core-android/tree/main")
-                }
-            }
 
-            pom.withXml {
-                val dependenciesNode = asNode().appendNode("dependencies")
-
-                configurations.implementation.get().dependencies.forEach {
-                    val dependencyNode = dependenciesNode.appendNode("dependency")
-                    dependencyNode.appendNode("groupId", it.group)
-                    dependencyNode.appendNode("artifactId", it.name)
-                    dependencyNode.appendNode("version", it.version)
-                }
+//                pom.withXml {
+//                    val dependenciesNode = asNode().appendNode("dependencies")
+//
+//                    configurations.implementation.get().dependencies.forEach {
+//                        val dependencyNode = dependenciesNode.appendNode("dependency")
+//                        dependencyNode.appendNode("groupId", it.group)
+//                        dependencyNode.appendNode("artifactId", it.name)
+//                        dependencyNode.appendNode("version", it.version)
+//                    }
+//                }
             }
         }
     }
 }
 
-signing {
-    // TODO: sign(publishing.publications)
-}
-
 tasks.create("copyProguardMappingFiles", Copy::class) {
-    from("$buildDir/outputs/mapping/publicRelease/")
+    from("$buildDir/outputs/mapping/release/")
     into(File(projectDir, "proguard-mapping"))
 }

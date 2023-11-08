@@ -54,20 +54,6 @@ android {
         }
     }
 
-    flavorDimensions += "distribution"
-    productFlavors {
-        create("public") {
-            dimension = "distribution"
-            signingConfig = signingConfigs.getByName("release")
-            missingDimensionStrategy("slf4jLogging", "public")
-        }
-        create("internal") {
-            dimension = "distribution"
-            signingConfig = signingConfigs.getByName("debug")
-            missingDimensionStrategy("slf4jLogging", "internal")
-        }
-    }
-
     compileOptions {
         this.sourceCompatibility = javaVersion
         this.targetCompatibility = javaVersion
@@ -107,13 +93,13 @@ dependencies {
     implementation("org.greenrobot:eventbus:3.3.1")
     implementation(project(":datatowerai-core"))
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.activity:activity-compose:1.6.0")
-    implementation(platform("androidx.compose:compose-bom:2022.10.00"))
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.activity:activity-compose:1.8.0")
+    implementation(platform("androidx.compose:compose-bom:2023.10.01"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.material3:material3")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.10.01"))
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
 

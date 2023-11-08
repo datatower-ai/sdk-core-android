@@ -2,17 +2,12 @@ package ai.datatower.analytics.config
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.text.TextUtils
 import ai.datatower.analytics.BuildConfig
 import ai.datatower.analytics.Constant
 import ai.datatower.analytics.data.persistence.SharedPreferencesLoader
 import ai.datatower.analytics.data.persistence.StorageDisableFlag
 import ai.datatower.analytics.data.persistence.StorageReportUrl
-import ai.datatower.analytics.network.HttpMethod
-import ai.datatower.analytics.network.RequestHelper
 import ai.datatower.analytics.utils.LogUtils
-import ai.datatower.quality.PerfAction
-import ai.datatower.quality.PerfLogger
 import org.json.JSONObject
 import java.util.concurrent.Future
 

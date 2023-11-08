@@ -6,7 +6,7 @@ echo ${dtsdkCoreVersionName}
 
 cd datatower-core
 gradle clean
-gradle assemblePublicRelease
+gradle assembleRelease
 gradle copyProguardMappingFiles
 
 git add build.gradle.kts
@@ -16,4 +16,4 @@ git commit -m "Bump version to '$dtsdkCoreVersionName'." # 'dtsdkCoreVersionName
 git tag "core/$dtsdkCoreVersionName"
 git push --tags
 
-gradle publish
+#gradle publish

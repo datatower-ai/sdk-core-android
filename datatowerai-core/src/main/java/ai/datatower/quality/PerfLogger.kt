@@ -1,12 +1,10 @@
 package ai.datatower.quality
 
-import ai.datatower.analytics.Constant
 import ai.datatower.analytics.data.EventDataAdapter
 import ai.datatower.analytics.utils.LogUtils
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withTimeoutOrNull
 
-enum class PerfAction {
+internal enum class PerfAction {
     SDKINITBEGIN,
     SDKINITEND,
     GETDTIDBEGIN,
@@ -27,7 +25,7 @@ enum class PerfAction {
     TRACKEND,
 }
 
-object PerfLogger {
+internal object PerfLogger {
 
     const val tag = "PerfLog";
     private val timeRecord = HashMap<String, Long>();

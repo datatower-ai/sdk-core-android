@@ -2,7 +2,7 @@ buildscript {
     rootProject.extra.apply {
         set("applicationId", "ai.datatower.sdk.android")
         set("buildToolsVersion", "33.0.2")
-        set("compileSdkVersion", 33)
+        set("compileSdkVersion", 34)
         set("minSdkVersion", 19)
         set("targetSdkVersion", 33)
 
