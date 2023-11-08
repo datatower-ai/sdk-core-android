@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Spinner
+        android:id="@+id/user_api_list"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/user_api_label_description"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:text="Param format description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_api_list" />
+
+    <TextView
+        android:id="@+id/user_api_description"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_api_label_description" />
+
+    <TextView
+        android:id="@+id/user_api_label_param"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Input Param pls ..."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_api_description" />
+
+    <EditText
+        android:id="@+id/user_api_param"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:ems="10"
+        android:hint=""
+        android:inputType="text|textMultiLine"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_api_description" />
+
+    <Button
+        android:id="@+id/user_api_confirm"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:text="Run"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

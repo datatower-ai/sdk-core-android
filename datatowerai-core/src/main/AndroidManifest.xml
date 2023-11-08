@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ai.datatower.analytics"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 同步数据需要网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 获取网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" tools:node="remove" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:node="remove"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+
+    <application
+        android:usesCleartextTraffic="true"
+        android:fullBackupContent="@xml/dt_fbc"
+        android:dataExtractionRules="@xml/dt_der"
+        tools:targetApi="s">
+        <meta-data
+            android:name="ai.datatower.analytics.android.MainProcessName"
+            android:value="${applicationId}" />
+    </application>
+</manifest>

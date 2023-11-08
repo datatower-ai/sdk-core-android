@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="ai.datatower.analytics_demo">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <uses-sdk
+        android:minSdkVersion="19"
+        tools:overrideLibrary="com.example.widget, androidx.compose.ui.platform, androidx.compose.material.icons, androidx.activity.compose, androidx.compose.ui.tooling, androidx.compose.ui.tooling.data, androidx.compose.material.ripple, androidx.compose.foundation, androidx.compose.animation, androidx.compose.foundation.layout, androidx.compose.ui.text, androidx.compose.ui.graphics, androidx.compose.ui.unit, androidx.compose.ui.util, androidx.compose.ui.geometry, androidx.compose.runtime.saveable, androidx.compose.animation.core, androidx.compose.material3" />
+
+    <application
+        android:name=".MyApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="ai.datatower.analytics_demo.ui.MainActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.fn.core.TrackEventCustomizedActivity"
+            android:label="Track Event Customized" />
+        <activity android:name=".ui.fn.core.UserApiActivity"
+            android:label="User related API" />
+        <activity android:name=".DisplayAllApiActivity" />
+    </application>
+
+</manifest>
