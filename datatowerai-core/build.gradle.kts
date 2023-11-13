@@ -1,3 +1,6 @@
+import java.net.URI
+import java.util.Properties
+
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -66,9 +69,7 @@ dependencies {
     val roomDbVersion: String by rootProject.extra
     val androidxAnnotationVersion: String by rootProject.extra
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib") {
-        version { strictly(kotlinVersion) }
-    }
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     implementation("androidx.annotation:annotation:$androidxAnnotationVersion")
 
@@ -83,8 +84,9 @@ dependencies {
 afterEvaluate {
     publishing {
         val groupId = "ai.datatower"
-        val artifactId = "datatowerai-core"
+        val artifactId = "core"
         val dtsdkCoreVersionName: String by rootProject.extra
+
 
         publications {
             create<MavenPublication>("release") {
@@ -131,6 +133,19 @@ afterEvaluate {
 //                }
             }
         }
+
+//        val props = rootProject.file("local.properties").inputStream().use { inStream ->
+//            Properties().also { it.load(inStream) }
+//        }
+//
+//        repositories {
+//            maven {
+//                name = "Sonatype"
+//                url = URI.create("https://s01.oss.sonatype.org/content/repositories/releases/")
+//                credentials.username = props["ossrhUsername"].toString()
+//                credentials.password = props["ossrhPassword"].toString()
+//            }
+//        }
     }
 }
 

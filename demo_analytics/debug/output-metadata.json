@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.nodetower.android_analytics",
+  "applicationId": "ai.datatower.analytics_demo",
   "variantName": "processDebugResources",
   "elements": [
     {

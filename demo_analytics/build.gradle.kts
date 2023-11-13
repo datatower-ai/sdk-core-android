@@ -73,9 +73,7 @@ dependencies {
     val kotlinVersion: String by rootProject.extra
     val coroutinesVersion: String by rootProject.extra
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib") {
-        version { strictly(kotlinVersion) }
-    }
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
     /* NOTE: Do NOT update dependencies as it works with Kotlin 1.6, for more information see file
