@@ -1,4 +1,4 @@
-rootProject.name = "DataTowerSDK-Core-Android"
+rootProject.name = "datatower_ai-core-android"
 
 include(":datatowerai-core")
 include(":demo_analytics")
