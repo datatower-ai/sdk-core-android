@@ -1,18 +1,92 @@
-## 工程结构
+<p align="center">
+    <a href="https://datatower.ai/" target="_blank">
+        <picture>
+            <source srcset="https://dash.datatower.ai/logo_v2.png" media="(prefers-color-scheme: dark)">
+            <source srcset="https://dash.datatower.ai/logoWhite_v2.png" media="(prefers-color-scheme: light)" >
+            <img src="https://dash.datatower.ai/logoWhite_v2.png" alt="DataTower.ai">
+        </picture>
+    </a>
+</p>
 
-- datatowerai-core/: SDK 核心代码
-- demo_analytics/: SDK 接口使用范例，用于开发和测试 SDK
+<p align="center">
+    <a title="Android" href="https://central.sonatype.com/artifact/ai.datatower/core" target="_blank">
+        <img src="https://img.shields.io/maven-central/v/ai.datatower/core?logo=android&logoColor=70d68c&label=Android&labelColor=dbeffd" />
+    </a>
+    <a title="iOS" href="https://cocoapods.org/pods/datatower_ai_core" target="_blank">
+        <img src="https://img.shields.io/cocoapods/v/datatower_ai_core?logo=ios&logoColor=000000&label=iOS&labelColor=f3f3f5" />
+    </a>
+    <a title="Unity" href="https://github.com/datatower-ai/core-unity/releases/latest" target="_blank">
+        <img src="https://img.shields.io/github/v/release/datatower-ai/core-unity?logo=unity&logoColor=f7f7f7&label=Unity&labelColor=000000" />
+    </a>
+    <a title="Flutter" href="https://pub.dev/packages/datatower_ai_core" target="_blank">
+        <img src="https://img.shields.io/pub/v/datatower_ai_core?logo=flutter&logoColor=2375c5f2&label=Flutter" />
+    </a>
+</p>
 
-## 核心代码
+<p align="center">
+  <span>Available in</span>
+  <br />
+  <a href="https://github.com/datatower-ai/core-android">
+    Android
+  </a>
+  <span>-</span>
+  <a href="https://github.com/datatower-ai/core-ios">
+    iOS
+  </a>
+  <span>-</span>
+  <a href="https://github.com/datatower-ai/core-unity">
+    Unity
+  </a>
+  <span>-</span>
+  <a href="https://github.com/datatower-ai/core-flutter">
+    Flutter
+  </a>
+</p>
 
-核心代码位于 `ai.datatower.analytics` 包下:
+---
 
-- DT、DTAnalytics 、DTAnalyticsUtils: 对外接口类，开发者直接调用类中静态方法
-- api 包:对外接口的实现，提供给 DT、DTAnalytics 等对外接口类直接调用
-- PropertyManager: 收集、更新、过滤事件属性，管理属性的相关操作
-- PresetEventManager: 预置事件采集管理，包括首次安装、打开标记等
-- EventTrackManager: 事件采集管理，包括事件名称、属性检测，事件拼装
-- EventUploadManager: 事件入库、上报管理
-- data 包: 数据库、sp 封装，数据库用户存储事件，sp则保存配置 quality:质量监控，对 SDK 内部
-  可能产生bug的地方进行打点监控
-- ad、iap、ias 包: 对track接口的封装，预置一广告、内购、订阅相关的事件
+# DataTower.ai - Core - Android
+
+## Getting Started
+
+1. Register at [https://datatower.ai/][dt_url],
+2. Log in and Create your Project,
+3. Once created, you will get `appId` and `url` (*Reporting URL*) that will be used later.
+
+## Usage
+
+> **Please refer to our [API docs][api_doc_url]**
+
+**Functionalities:**
+- Event Tracking
+- Timing Event Tracking
+- User Property
+- Ad Flow Tracking
+- Attribution Integration/Linking
+
+⚠ Remember to call _**DT.initSDK()**_ before any usage of other APIs:
+
+```kotlin
+import ai.datatower.analytics.DT
+
+val appId = "xxx"
+val reportingUrl = "xxx"
+
+DT.initSDK(
+    this,
+    appId,
+    reportUrl,
+    "",
+    true,
+    Log.DEBUG
+)
+```
+
+## Other links
+
+- **[DataTower.ai][dt_url]**
+- **[DataTower.ai docs center][doc_url]**
+
+[dt_url]: https://datatower.ai/
+[api_doc_url]: https://docs.datatower.ai/docs/Android_SDK
+[doc_url]: https://docs.datatower.ai/
