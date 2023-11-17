@@ -3,6 +3,7 @@ package ai.datatower.analytics.utils;
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 import static android.Manifest.permission.INTERNET;
 
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import ai.datatower.analytics.taskqueue.MainQueue;
@@ -80,7 +82,7 @@ public final class NetworkUtil {
         return "unknown_network";
     }
 
-    public static String getNetworkTypeString(Context context) {
+    public static String getNetworkTypeString(Application context) {
         return convertNetworkTypeToString(getNetworkType(context));
     }
 
@@ -100,7 +102,7 @@ public final class NetworkUtil {
      * </ul>
      */
     @RequiresPermission(ACCESS_NETWORK_STATE)
-    public static NetworkType getNetworkType(Context context) {
+    public static NetworkType getNetworkType(Application context) {
         if (isEthernet(context)) {
             return NetworkType.NETWORK_ETHERNET;
         }
@@ -173,7 +175,7 @@ public final class NetworkUtil {
     }
 
     @RequiresPermission(ACCESS_NETWORK_STATE)
-    private static NetworkInfo getActiveNetworkInfo(Context context) {
+    private static NetworkInfo getActiveNetworkInfo(Application context) {
         ConnectivityManager cm =
                 (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm == null) return null;
@@ -213,8 +215,8 @@ public final class NetworkUtil {
                         if (!isIPv4) {
                             int index = hostAddress.indexOf('%');
                             return index < 0
-                                    ? hostAddress.toUpperCase()
-                                    : hostAddress.substring(0, index).toUpperCase();
+                                    ? hostAddress.toUpperCase(Locale.ENGLISH)
+                                    : hostAddress.substring(0, index).toUpperCase(Locale.ENGLISH);
                         }
                     }
                 }
@@ -278,7 +280,7 @@ public final class NetworkUtil {
      * @param listener The status of network changed listener
      */
     @RequiresPermission(ACCESS_NETWORK_STATE)
-    public static void registerNetworkStatusChangedListener(Context context,final OnNetworkStatusChangedListener listener) {
+    public static void registerNetworkStatusChangedListener(Application context,final OnNetworkStatusChangedListener listener) {
         NetworkChangedReceiver.getInstance(context).registerListener(listener);
     }
 
@@ -288,7 +290,7 @@ public final class NetworkUtil {
      * @param listener The listener
      * @return true to registered, false otherwise.
      */
-    public static boolean isRegisteredNetworkStatusChangedListener(Context context,final OnNetworkStatusChangedListener listener) {
+    public static boolean isRegisteredNetworkStatusChangedListener(Application context,final OnNetworkStatusChangedListener listener) {
         return NetworkChangedReceiver.getInstance(context).isRegistered(listener);
     }
 
@@ -297,7 +299,7 @@ public final class NetworkUtil {
      *
      * @param listener The status of network changed listener.
      */
-    public static void unregisterNetworkStatusChangedListener(Context context,final OnNetworkStatusChangedListener listener) {
+    public static void unregisterNetworkStatusChangedListener(Application context,final OnNetworkStatusChangedListener listener) {
         NetworkChangedReceiver.getInstance(context).unregisterListener(listener);
     }
 
@@ -305,18 +307,18 @@ public final class NetworkUtil {
 
     public static final class NetworkChangedReceiver extends BroadcastReceiver {
 
-        public NetworkChangedReceiver(Context context) {
+        public NetworkChangedReceiver(Application context) {
             mContext = context;
         }
 
-        private static NetworkChangedReceiver getInstance(Context context) {
+        private static NetworkChangedReceiver getInstance(Application context) {
             mContext = context;
             return LazyHolder.INSTANCE;
         }
 
         private NetworkType                         mType;
-        private Set<OnNetworkStatusChangedListener> mListeners = new HashSet<>();
-        private static Context mContext;
+        private final Set<OnNetworkStatusChangedListener> mListeners = new HashSet<>();
+        private static Application mContext;
 
         @RequiresPermission(ACCESS_NETWORK_STATE)
         void registerListener(final OnNetworkStatusChangedListener listener) {
@@ -358,14 +360,11 @@ public final class NetworkUtil {
 
         void unregisterListener(final OnNetworkStatusChangedListener listener) {
             if (listener == null) return;
-            MainQueue.get().postTask(new Runnable() {
-                @Override
-                public void run() {
-                    int preSize = mListeners.size();
-                    mListeners.remove(listener);
-                    if (preSize == 1 && mListeners.size() == 0) {
-                        mContext.unregisterReceiver(NetworkChangedReceiver.getInstance(mContext));
-                    }
+            MainQueue.get().postTask(() -> {
+                int preSize = mListeners.size();
+                mListeners.remove(listener);
+                if (preSize == 1 && mListeners.size() == 0) {
+                    mContext.unregisterReceiver(NetworkChangedReceiver.getInstance(mContext));
                 }
             });
         }
@@ -373,21 +372,17 @@ public final class NetworkUtil {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
-                MainQueue.get().postTask(new Runnable() {
-                    @Override
-                    @RequiresPermission(ACCESS_NETWORK_STATE)
-                    public void run() {
-                        NetworkType networkType = NetworkUtil.getNetworkType(mContext);
-                        if (mType == networkType) return;
-                        mType = networkType;
-                        if (networkType == NetworkType.NETWORK_NO) {
-                            for (OnNetworkStatusChangedListener listener : mListeners) {
-                                listener.onDisconnected();
-                            }
-                        } else {
-                            for (OnNetworkStatusChangedListener listener : mListeners) {
-                                listener.onConnected(networkType);
-                            }
+                MainQueue.get().postTask(() -> {
+                    NetworkType networkType = NetworkUtil.getNetworkType(mContext);
+                    if (mType == networkType) return;
+                    mType = networkType;
+                    if (networkType == NetworkType.NETWORK_NO) {
+                        for (OnNetworkStatusChangedListener listener : mListeners) {
+                            listener.onDisconnected();
+                        }
+                    } else {
+                        for (OnNetworkStatusChangedListener listener : mListeners) {
+                            listener.onConnected(networkType);
                         }
                     }
                 });

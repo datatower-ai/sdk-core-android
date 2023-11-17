@@ -83,18 +83,9 @@ object DeviceUtils {
             val display = windowManager.defaultDisplay
             val rotation = display.rotation
             val point = Point()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                display.getRealSize(point)
-                screenWidth = point.x
-                screenHeight = point.y
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-                display.getSize(point)
-                screenWidth = point.x
-                screenHeight = point.y
-            } else {
-                screenWidth = display.width
-                screenHeight = display.height
-            }
+            display.getRealSize(point)
+            screenWidth = point.x
+            screenHeight = point.y
             size[0] = getNaturalWidth(rotation, screenWidth, screenHeight)
             size[1] = getNaturalHeight(rotation, screenWidth, screenHeight)
         } catch (e: Exception) {
@@ -210,14 +201,8 @@ object DeviceUtils {
     fun getUserAgent(context: Context): String {
         var ua: String = ""
         try {
-            if (Build.VERSION.SDK_INT < 19) {
-                val web = WebView(context)
-                ua = web.settings.userAgentString
-                web.destroy()
-            } else {
-                ua = WebSettings.getDefaultUserAgent(context)
-            }
-        } catch (e: Exception) {
+            ua = WebSettings.getDefaultUserAgent(context)
+        } catch (_: Exception) {
         }
         return ua
     }

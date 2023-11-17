@@ -324,17 +324,15 @@ public class MemoryUtils {
     @NonNull
     public static String getRAM(Context context) {
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                ActivityManager activityManager = (ActivityManager) context
-                        .getSystemService(ACTIVITY_SERVICE);
-                ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
-                activityManager.getMemoryInfo(memoryInfo);
-                long totalSize = memoryInfo.totalMem;
-                long availableSize = memoryInfo.availMem;
-                double total = formatNumber(totalSize / 1024.0 / 1024.0 / 1024.0);
-                double available = formatNumber(availableSize / 1024.0 / 1024.0 / 1024.0);
-                return available + "/" + total;
-            }
+            ActivityManager activityManager = (ActivityManager) context
+                    .getSystemService(ACTIVITY_SERVICE);
+            ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+            activityManager.getMemoryInfo(memoryInfo);
+            long totalSize = memoryInfo.totalMem;
+            long availableSize = memoryInfo.availMem;
+            double total = formatNumber(totalSize / 1024.0 / 1024.0 / 1024.0);
+            double available = formatNumber(availableSize / 1024.0 / 1024.0 / 1024.0);
+            return available + "/" + total;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -409,16 +407,14 @@ public class MemoryUtils {
                 return "0";
             }
             StatFs statFs = new StatFs(file.getPath());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                long blockCount = statFs.getBlockCountLong();
-                long blockSize = statFs.getBlockSizeLong();
-                long totalSpace = blockSize * blockCount;
-                long availableBlocks = statFs.getAvailableBlocksLong();
-                long availableSpace = availableBlocks * blockSize;
-                double total = formatNumber(totalSpace / 1024.0 / 1024.0 / 1024.0);
-                double available = formatNumber(availableSpace / 1024.0 / 1024.0 / 1024.0);
-                return available + "/" + total;
-            }
+            long blockCount = statFs.getBlockCountLong();
+            long blockSize = statFs.getBlockSizeLong();
+            long totalSpace = blockSize * blockCount;
+            long availableBlocks = statFs.getAvailableBlocksLong();
+            long availableSpace = availableBlocks * blockSize;
+            double total = formatNumber(totalSpace / 1024.0 / 1024.0 / 1024.0);
+            double available = formatNumber(availableSpace / 1024.0 / 1024.0 / 1024.0);
+            return available + "/" + total;
         } catch (Exception e) {
             e.printStackTrace();
         }

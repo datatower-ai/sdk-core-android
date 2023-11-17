@@ -787,15 +787,13 @@ public final class LogUtils {
                 first = false;
                 sb.append("bnds=").append(mSourceBounds.toShortString());
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                ClipData mClipData = intent.getClipData();
-                if (mClipData != null) {
-                    if (!first) {
-                        sb.append(' ');
-                    }
-                    first = false;
-                    clipData2String(mClipData, sb);
+            ClipData mClipData = intent.getClipData();
+            if (mClipData != null) {
+                if (!first) {
+                    sb.append(' ');
                 }
+                first = false;
+                clipData2String(mClipData, sb);
             }
             Bundle mExtras = intent.getExtras();
             if (mExtras != null) {
@@ -807,23 +805,20 @@ public final class LogUtils {
                 sb.append(bundle2String(mExtras));
                 sb.append('}');
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                Intent mSelector = intent.getSelector();
-                if (mSelector != null) {
-                    if (!first) {
-                        sb.append(' ');
-                    }
-                    first = false;
-                    sb.append("sel={");
-                    sb.append(mSelector == intent ? "(this Intent)" : intent2String(mSelector));
-                    sb.append("}");
+            Intent mSelector = intent.getSelector();
+            if (mSelector != null) {
+                if (!first) {
+                    sb.append(' ');
                 }
+                first = false;
+                sb.append("sel={");
+                sb.append(mSelector == intent ? "(this Intent)" : intent2String(mSelector));
+                sb.append("}");
             }
             sb.append(" }");
             return sb.toString();
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
         private static void clipData2String(ClipData clipData, StringBuilder sb) {
             ClipData.Item item = clipData.getItemAt(0);
             if (item == null) {

@@ -2,6 +2,7 @@ package ai.datatower.analytics.core
 
 import ai.datatower.analytics.Constant
 import ai.datatower.analytics.OnDataTowerIdListener
+import ai.datatower.analytics.R
 import ai.datatower.analytics.config.AnalyticsConfig
 import ai.datatower.analytics.data.EventDataAdapter
 import ai.datatower.analytics.taskqueue.MainQueue
@@ -17,6 +18,8 @@ import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
 import ai.datatower.quality.ROIQueryErrorParams
 import ai.datatower.quality.ROIQueryQualityHelper
+import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
@@ -191,12 +194,14 @@ class PropertyManager private constructor() {
     /**
      * 初始预置属性过滤列表.
      */
+    @SuppressLint("DiscouragedApi")
     private fun initDisableList(context: Context) {
         synchronized(disableList) {
             if (disableList.isEmpty()) {
                 try {
                     val resources = context.resources
                     val array = resources.getStringArray(
+                        // Query from application's resources, so we cannot simply use R.array.xxx
                         resources.getIdentifier(
                             "DTDisPresetProperties",
                             "array",
@@ -269,7 +274,7 @@ class PropertyManager private constructor() {
      */
     private fun registerNetworkStatusChangedListener(context: Context) {
         NetworkUtil.registerNetworkStatusChangedListener(
-            context,
+            context.applicationContext as Application,
             object : NetworkUtil.OnNetworkStatusChangedListener {
                 override fun onDisconnected() {
                     updateNetworkType(NetworkUtil.NetworkType.NETWORK_NO)

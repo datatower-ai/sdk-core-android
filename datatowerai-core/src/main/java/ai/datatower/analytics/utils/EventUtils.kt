@@ -3,6 +3,7 @@ package ai.datatower.analytics.utils
 import ai.datatower.analytics.Constant
 import ai.datatower.analytics.config.AnalyticsConfig
 import ai.datatower.analytics.data.EventDataAdapter
+import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.text.TextUtils
@@ -239,7 +240,7 @@ object EventUtils {
         }
 
         //网络状态
-        NetworkUtil.getNetworkTypeString(context).let {
+        NetworkUtil.getNetworkTypeString(context.applicationContext as Application).let {
             if (!disableList.contains(Constant.COMMON_PROPERTY_NETWORK_TYPE)) {
                 commonProperties[Constant.COMMON_PROPERTY_NETWORK_TYPE] = it
             }
