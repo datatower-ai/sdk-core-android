@@ -9,38 +9,22 @@
 </p>
 
 <p align="center">
-    <a title="Android" href="https://central.sonatype.com/artifact/ai.datatower/core" target="_blank">
-        <img src="https://img.shields.io/maven-central/v/ai.datatower/core?logo=android&logoColor=70d68c&label=Android&labelColor=dbeffd" />
-    </a>
-    <a title="iOS" href="https://cocoapods.org/pods/datatower_ai_core" target="_blank">
-        <img src="https://img.shields.io/cocoapods/v/datatower_ai_core?logo=ios&logoColor=000000&label=iOS&labelColor=f3f3f5" />
-    </a>
-    <a title="Unity" href="https://github.com/datatower-ai/core-unity/releases/latest" target="_blank">
-        <img src="https://img.shields.io/github/v/release/datatower-ai/core-unity?logo=unity&logoColor=f7f7f7&label=Unity&labelColor=000000" />
-    </a>
-    <a title="Flutter" href="https://pub.dev/packages/datatower_ai_core" target="_blank">
-        <img src="https://img.shields.io/pub/v/datatower_ai_core?logo=flutter&logoColor=2375c5f2&label=Flutter" />
-    </a>
+    <a title="Android" href="https://jitpack.io/#datatower-ai/core" target="_blank"><img src="https://img.shields.io/maven-central/v/ai.datatower/core?logo=android&logoColor=70d68c&label=Android&labelColor=dbeffd" /></a>
+    <a title="iOS" href="https://cocoapods.org/pods/datatower_ai_core" target="_blank"><img src="https://img.shields.io/cocoapods/v/datatower_ai_core?logo=ios&logoColor=000000&label=iOS&labelColor=f3f3f5" /></a>
+    <a title="Unity" href="https://github.com/datatower-ai/core-unity/releases/latest" target="_blank"><img src="https://img.shields.io/github/v/release/datatower-ai/core-unity?logo=unity&logoColor=f7f7f7&label=Unity&labelColor=000000" /></a>
+    <a title="Flutter" href="https://pub.dev/packages/datatower_ai_core" target="_blank"><img src="https://img.shields.io/pub/v/datatower_ai_core?logo=flutter&logoColor=2375c5f2&label=Flutter" /></a>
 </p>
 
 <p align="center">
   <span>Available in</span>
   <br />
-  <a href="https://github.com/datatower-ai/core-android">
-    Android
-  </a>
+  <a href="https://github.com/datatower-ai/core">Android</a>
   <span>-</span>
-  <a href="https://github.com/datatower-ai/core-ios">
-    iOS
-  </a>
+  <a href="https://github.com/datatower-ai/core-ios">iOS</a>
   <span>-</span>
-  <a href="https://github.com/datatower-ai/core-unity">
-    Unity
-  </a>
+  <a href="https://github.com/datatower-ai/core-unity">Unity</a>
   <span>-</span>
-  <a href="https://github.com/datatower-ai/core-flutter">
-    Flutter
-  </a>
+  <a href="https://github.com/datatower-ai/core-flutter">Flutter</a>
 </p>
 
 ---
