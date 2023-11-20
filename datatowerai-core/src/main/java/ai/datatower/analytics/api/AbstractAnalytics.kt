@@ -7,6 +7,7 @@ import ai.datatower.analytics.core.EventTrackManager
 import ai.datatower.analytics.core.PresetEventManager
 import ai.datatower.analytics.core.PropertyManager
 import ai.datatower.analytics.data.EventDataAdapter
+import ai.datatower.analytics.utils.AppInfoUtils.isAppOnForeground
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.NotNullSingleVar
 import ai.datatower.quality.DTErrorParams
@@ -188,9 +189,12 @@ abstract class AbstractAnalytics : IAnalytics {
         }
     }
 
-    internal fun reportFirstSessionStart() {
-        // 调原方法做标识位校验，防止重复上报
-        activityLifecycleCallbacks?.trackSessionStart()
+    internal fun tryReportFirstSessionStart(context: Context) {
+        // Prevent initSDK() called by unexpected process starts (e.g. broadcast receiver)
+        if (isAppOnForeground(context)) {
+            // 调原方法做标识位校验，防止重复上报
+            activityLifecycleCallbacks?.trackSessionStart()
+        }
     }
 }
 

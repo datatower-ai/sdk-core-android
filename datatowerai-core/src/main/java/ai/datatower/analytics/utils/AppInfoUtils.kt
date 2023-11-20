@@ -1,5 +1,6 @@
 package ai.datatower.analytics.utils
 
+import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
@@ -65,5 +66,17 @@ object AppInfoUtils {
         return ""
     }
 
-
+    /**
+     * Check is App in the foreground
+     *
+     * @param context Context
+     * @return True if App in the foreground
+     */
+    fun isAppOnForeground(context: Context): Boolean {
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val runningTaskInfo = activityManager.getRunningTasks(1).let {
+            if (it.size >= 1) it[0] else null
+        }
+        return runningTaskInfo?.topActivity?.packageName == context.applicationContext.packageName
+    }
 }

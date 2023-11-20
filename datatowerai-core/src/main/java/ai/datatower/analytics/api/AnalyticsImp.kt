@@ -305,13 +305,13 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
 
                 if (isFirstTimeInit) {
                     // 只在第一次 init 时调用
-                    onFirstInitAsync()
+                    onFirstInitAsync(context)
                 }
             }
         }
 
-        private fun onFirstInitAsync() {
-            instance?.reportFirstSessionStart()
+        private fun onFirstInitAsync(context: Context) {
+            instance?.tryReportFirstSessionStart(context)
         }
     }
 }
