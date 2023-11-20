@@ -1,5 +1,6 @@
-package ai.datatower.analytics_demo
+package ai.datatower.analytics_demo.ui.fn.core
 
+import ai.datatower.analytics_demo.ui.theme.DataTowerSDKCoreTheme
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.activity.compose.setContent
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -26,8 +28,6 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
-import ai.datatower.analytics_demo.ui.theme.DataTowerSDKCoreTheme
-import androidx.activity.ComponentActivity
 
 class DisplayAllApiActivity : ComponentActivity() {
     companion object {

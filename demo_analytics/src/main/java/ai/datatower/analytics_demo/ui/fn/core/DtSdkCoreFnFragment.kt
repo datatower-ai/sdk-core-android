@@ -15,7 +15,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.get
 import ai.datatower.analytics.DTAnalytics
 import ai.datatower.analytics.OnDataTowerIdListener
-import ai.datatower.analytics_demo.DisplayAllApiActivity
 import ai.datatower.analytics_demo.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -57,6 +56,7 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             "dt_anal_track_custom" -> trackEventCustomDialogShow()
             "dt_anal_invoke_user_api" -> invokeUserApiDialogShow()
             "dt_anal_invoke_all_api" -> invokeAllApiDialogShow()
+            "dt_anal_invoke_dev_test" -> invokeDevTestPageShow()
         }
         return super.onPreferenceTreeClick(preference)
     }
@@ -122,6 +122,10 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
 
     private fun invokeAllApiDialogShow() {
         DisplayAllApiActivity.startActivity(requireActivity())
+    }
+
+    private fun invokeDevTestPageShow() {
+        DevTestActivity.startActivity(requireActivity())
     }
 
     private fun onBuiltinPropPrefChanged(preference: Preference, newValue: Any?): Boolean {

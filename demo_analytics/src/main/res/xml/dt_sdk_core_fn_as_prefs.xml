@@ -62,10 +62,17 @@
             android:key="dt_anal_invoke_user_api"
             android:summary="You'll have to fill in the name of the user api and its params"
             android:title="User related API" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="All APIs">
         <Preference
             android:key="dt_anal_invoke_all_api"
             android:summary="Show all api implemented in SDK"
             android:title="Show all APIs in SDK"
+            />
+        <Preference
+            android:key="dt_anal_invoke_dev_test"
+            android:title="Dev Test Page"
             />
     </PreferenceCategory>
 
