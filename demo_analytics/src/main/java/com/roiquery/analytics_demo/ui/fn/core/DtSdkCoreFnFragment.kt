@@ -15,7 +15,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.get
 import com.roiquery.analytics.DTAnalytics
 import com.roiquery.analytics.OnDataTowerIdListener
-import com.roiquery.analytics_demo.DisplayAllApiActivity
 import com.roiquery.analytics_demo.R
 import com.roiquery.quality.PerfLogger
 import kotlinx.coroutines.CoroutineScope
@@ -49,12 +48,6 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             }
         }
 
-        preferenceScreen.get<Preference>("dt_anal_get_db_count")?.let {
-            it.setOnPreferenceClickListener {
-                guiDBItemUpdate(it)
-            }
-        }
-
         assignBuiltinUserPropertiesToSdk()
     }
 
@@ -64,6 +57,7 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             "dt_anal_track_custom" -> trackEventCustomDialogShow()
             "dt_anal_invoke_user_api" -> invokeUserApiDialogShow()
             "dt_anal_invoke_all_api" -> invokeAllApiDialogShow()
+            "dt_anal_invoke_dev_test" -> invokeDevTestPageShow()
         }
         return super.onPreferenceTreeClick(preference)
     }
@@ -119,18 +113,6 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
         return true
     }
 
-    private fun guiDBItemUpdate(ignored: Preference): Boolean {
-        launch {
-            val pref = preferenceScreen.get<Preference>("dt_anal_get_db_count") ?: return@launch
-            pref.summary = "DB Item=<Loading..>"
-
-            val dbItmeCount = PerfLogger.getDBItemCount()
-
-            pref.summary = "DB Item=$dbItmeCount"
-        }
-        return true
-    }
-
     private fun trackEventCustomDialogShow() {
         TrackEventCustomizedActivity.startActivity(requireActivity())
     }
@@ -141,6 +123,10 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
 
     private fun invokeAllApiDialogShow() {
         DisplayAllApiActivity.startActivity(requireActivity())
+    }
+
+    private fun invokeDevTestPageShow() {
+        DevTestActivity.startActivity(requireActivity())
     }
 
     private fun onBuiltinPropPrefChanged(preference: Preference, newValue: Any?): Boolean {

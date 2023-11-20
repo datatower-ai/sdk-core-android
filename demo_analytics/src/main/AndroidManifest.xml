@@ -8,6 +8,11 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"
+        android:minSdkVersion="33"
+        tools:ignore="ExactAlarm" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <uses-sdk
         android:minSdkVersion="19"
@@ -41,7 +46,16 @@
             android:label="Track Event Customized" />
         <activity android:name=".ui.fn.core.UserApiActivity"
             android:label="User related API" />
-        <activity android:name=".DisplayAllApiActivity" />
+        <activity android:name=".ui.fn.core.DisplayAllApiActivity" />
+        <activity android:name=".ui.fn.core.DevTestActivity" />
+
+        <receiver
+            android:name=".DemoNotification"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.roiquery.analytics_demo.broadcast.noti_test"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

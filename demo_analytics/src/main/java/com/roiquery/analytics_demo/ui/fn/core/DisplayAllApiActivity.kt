@@ -1,4 +1,4 @@
-package com.roiquery.analytics_demo
+package com.roiquery.analytics_demo.ui.fn.core
 
 import android.content.Context
 import android.content.Intent
@@ -7,7 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -29,15 +29,15 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import com.roiquery.analytics_demo.ui.theme.DataTowerSDKCoreTheme
 
-class DisplayAllApiActivity : AppCompatActivity() {
+class DisplayAllApiActivity : ComponentActivity() {
     companion object {
         val apiClasses = listOf(
-            Pair("com.roiquery.analytics.DT", "DT"),
-            Pair("com.roiquery.analytics.DTAnalytics", "DT Analytics"),
-            Pair("com.roiquery.analytics.DTAnalyticsUtils", "DT Analytics Utils"),
-            Pair("com.roiquery.ad.DTAdReport", "Ad"),
-            Pair("com.roiquery.iap.DTIAPReport", "IAP"),
-            Pair("com.roiquery.ias.DTIASReport", "IAS")
+            Pair("ai.datatower.analytics.DT", "DT"),
+            Pair("ai.datatower.analytics.DTAnalytics", "DT Analytics"),
+            Pair("ai.datatower.analytics.DTAnalyticsUtils", "DT Analytics Utils"),
+            Pair("ai.datatower.ad.DTAdReport", "Ad"),
+            Pair("ai.datatower.iap.DTIAPReport", "IAP"),
+            Pair("ai.datatower.ias.DTIASReport", "IAS")
         )
 
         fun startActivity(context: Context) {
@@ -109,7 +109,7 @@ private fun ApiList() {
 
 @Composable
 private fun SubApiList(clazzName: String, title: String) {
-    val allApiNames = remember { mutableStateListOf<String>("<Loading...>") }
+    val allApiNames = remember { mutableStateListOf("<Loading...>") }
     LaunchedEffect(Unit) {
         allApiNames.clear()
         allApiNames.addAll(getFuncNamesFromClass(clazzName))
@@ -132,12 +132,12 @@ private fun SubApiList(clazzName: String, title: String) {
 }
 
 fun getFuncNamesFromClass(clazzName: String): Set<String> = mutableSetOf<String>().apply {
-        Class.forName(clazzName).declaredMethods.forEach {
-            val name = it.name
-            if (
-                name.contains("\$")     // Kotlin internal method
-                || it.modifiers and java.lang.reflect.Modifier.PRIVATE == java.lang.reflect.Modifier.PRIVATE
-            ) return@forEach
-            add(it.name)
-        }
+    Class.forName(clazzName).declaredMethods.forEach {
+        val name = it.name
+        if (
+            name.contains("\$")     // Kotlin internal method
+            || it.modifiers and java.lang.reflect.Modifier.PRIVATE == java.lang.reflect.Modifier.PRIVATE
+        ) return@forEach
+        add(it.name)
     }
+}

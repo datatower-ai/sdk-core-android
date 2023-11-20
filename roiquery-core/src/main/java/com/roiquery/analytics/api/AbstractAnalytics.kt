@@ -1,5 +1,6 @@
 package com.roiquery.analytics.api
 
+import android.app.ActivityManager
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
@@ -187,9 +188,21 @@ abstract class AbstractAnalytics : IAnalytics {
         }
     }
 
-    internal fun reportFirstSessionStart() {
-        // 调原方法做标识位校验，防止重复上报
-        activityLifecycleCallbacks?.trackSessionStart()
+    internal fun tryReportFirstSessionStart(context: Context) {
+        // Prevent initSDK() called by unexpected process starts (e.g. broadcast receiver)
+        if (isAppOnForeground(context)) {
+            // 调原方法做标识位校验，防止重复上报
+            activityLifecycleCallbacks?.trackSessionStart()
+        }
+    }
+
+    private fun isAppOnForeground(context: Context): Boolean {
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val runningTaskInfo = activityManager.getRunningTasks(1).let {
+            if (it.size >= 1) it[0] else null
+        }
+        LogUtils.w("TESTTT", "isAppOnForeground: ${runningTaskInfo?.topActivity?.packageName == context.applicationContext.packageName}, runningTaskInfo: $runningTaskInfo")
+        return runningTaskInfo?.topActivity?.packageName == context.applicationContext.packageName
     }
 }
 
