@@ -115,9 +115,9 @@ afterEvaluate {
                         }
                     }
                     scm {
-                        connection.set("scm:git:github.com/datatower-ai/core.git")
-                        developerConnection.set("scm:git:ssh://github.com/datatower-ai/core.git")
-                        url.set("https://github.com/datatower-ai/core/tree/main")
+                        connection.set("scm:git:github.com/datatower-ai/sdk-core-android.git")
+                        developerConnection.set("scm:git:ssh://github.com/datatower-ai/sdk-core-android.git")
+                        url.set("https://github.com/datatower-ai/sdk-core-android/tree/main")
                     }
                 }
 
@@ -134,18 +134,18 @@ afterEvaluate {
             }
         }
 
-//        val props = rootProject.file("local.properties").inputStream().use { inStream ->
-//            Properties().also { it.load(inStream) }
-//        }
-//
-//        repositories {
-//            maven {
-//                name = "Sonatype"
-//                url = URI.create("https://s01.oss.sonatype.org/content/repositories/releases/")
-//                credentials.username = props["ossrhUsername"].toString()
-//                credentials.password = props["ossrhPassword"].toString()
-//            }
-//        }
+        val props = rootProject.file("local.properties").inputStream().use { inStream ->
+            Properties().also { it.load(inStream) }
+        }
+
+        repositories {
+            maven {
+                name = "Sonatype"
+                url = URI.create("https://s01.oss.sonatype.org/content/repositories/releases/")
+                credentials.username = props["ossrhUsername"].toString()
+                credentials.password = props["ossrhPassword"].toString()
+            }
+        }
     }
 }
 
