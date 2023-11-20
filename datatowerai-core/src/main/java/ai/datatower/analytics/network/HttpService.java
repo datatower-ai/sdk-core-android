@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
 import java.util.Map;
 
@@ -69,10 +70,10 @@ public class HttpService implements RemoteService {
                     }
                 }
 
-                connection.setFixedLengthStreamingMode(query.getBytes("UTF-8").length);
+                connection.setFixedLengthStreamingMode(query.getBytes(StandardCharsets.UTF_8).length);
                 out = connection.getOutputStream();
                 bout = new BufferedOutputStream(out);
-                bout.write(query.getBytes("UTF-8"));
+                bout.write(query.getBytes(StandardCharsets.UTF_8));
 
                 bout.flush();
                 bout.close();

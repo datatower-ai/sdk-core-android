@@ -5,7 +5,7 @@ internal object Constant {
 
     const val LOG_TAG = "DataTower"
 
-    //ROIQuery base url
+    //DT base url
     const val SERVER_URL_TEST       = "https://test.roiquery.com"
     const val SERVER_URL_INNER      = "https://report-inner.roiquery.com"
     const val SERVER_URL_EXTERNAL   = "https://report.roiquery.com"

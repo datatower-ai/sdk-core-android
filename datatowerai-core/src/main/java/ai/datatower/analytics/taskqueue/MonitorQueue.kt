@@ -1,8 +1,8 @@
 package ai.datatower.analytics.taskqueue
 
 import ai.datatower.analytics.data.EventDataAdapter
-import ai.datatower.quality.ROIQueryErrorParams
-import ai.datatower.quality.ROIQueryQualityHelper
+import ai.datatower.quality.DTErrorParams
+import ai.datatower.quality.DTQualityHelper
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
@@ -39,8 +39,8 @@ class MonitorQueue private constructor() : AsyncTaskQueue("MonitorQueue") {
         val count = runBlocking { EventDataAdapter.getInstance()?.queryDataCount()?.await() }
         count?.let {
             if (it > 100) {
-                ROIQueryQualityHelper.instance.reportQualityMessage(
-                    ROIQueryErrorParams.CODE_DB_DATA_COUNT,
+                DTQualityHelper.instance.reportQualityMessage(
+                    DTErrorParams.CODE_DB_DATA_COUNT,
                     ""
                 )
             }
@@ -48,11 +48,11 @@ class MonitorQueue private constructor() : AsyncTaskQueue("MonitorQueue") {
     }
 
     fun reportUploadError(reason: Int, msg: String? = "") {
-        ROIQueryQualityHelper.instance.reportQualityMessage(
+        DTQualityHelper.instance.reportQualityMessage(
             reason,
             msg,
-            ROIQueryErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,
-            ROIQueryErrorParams.TYPE_WARNING
+            DTErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,
+            DTErrorParams.TYPE_WARNING
         )
     }
 
@@ -61,20 +61,20 @@ class MonitorQueue private constructor() : AsyncTaskQueue("MonitorQueue") {
             val info = AdvertisingIdClient.getAdvertisingIdInfo(context)
             val isLimit = info.isLimitAdTrackingEnabled
             if (isLimit) {
-                ROIQueryQualityHelper.instance.reportQualityMessage(
-                    ROIQueryErrorParams.CODE_GAID_LIMIT,
+                DTQualityHelper.instance.reportQualityMessage(
+                    DTErrorParams.CODE_GAID_LIMIT,
                     "",
                 )
             } else {
-                ROIQueryQualityHelper.instance.reportQualityMessage(
-                    ROIQueryErrorParams.CODE_GAID_UNKOWN,
+                DTQualityHelper.instance.reportQualityMessage(
+                    DTErrorParams.CODE_GAID_UNKOWN,
                     "",
                 )
             }
         } catch (e: Exception) {
             //googleService not available
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_GAID_UNKOWN,
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_GAID_UNKOWN,
                 "",
             )
         }
@@ -94,24 +94,24 @@ class MonitorQueue private constructor() : AsyncTaskQueue("MonitorQueue") {
             get()?.postTask {
                 if (mMainQueueFlag != 1) {
                     val stackTrack = MainQueue.get().currentThread.stackTrace.toString()
-                    ROIQueryQualityHelper.instance.reportQualityMessage(
-                        ROIQueryErrorParams.CODE_QUEUE_MAIN_DEAD,
+                    DTQualityHelper.instance.reportQualityMessage(
+                        DTErrorParams.CODE_QUEUE_MAIN_DEAD,
                         stackTrack
                     )
                 }
 
                 if (mUploadQueueFlag != 1) {
                     val stackTrack = DataUploadQueue.get().currentThread.stackTrace.toString()
-                    ROIQueryQualityHelper.instance.reportQualityMessage(
-                        ROIQueryErrorParams.CODE_QUEUE_UPLOAD_DEAD,
+                    DTQualityHelper.instance.reportQualityMessage(
+                        DTErrorParams.CODE_QUEUE_UPLOAD_DEAD,
                         stackTrack
                     )
                 }
 
                 if (mDBQueueFlag != 1) {
                     val stackTrack = DBQueue.get().currentThread.stackTrace.toString()
-                    ROIQueryQualityHelper.instance.reportQualityMessage(
-                        ROIQueryErrorParams.CODE_QUEUE_DB_DEAD,
+                    DTQualityHelper.instance.reportQualityMessage(
+                        DTErrorParams.CODE_QUEUE_DB_DEAD,
                         stackTrack
                     )
                 }

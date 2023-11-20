@@ -90,11 +90,9 @@ public class AsyncTaskQueue extends CoroutineDispatcher implements CoroutineScop
         public Thread newThread(Runnable r) {
 
             Thread thread = new Thread(r, name);
-            thread.setUncaughtExceptionHandler((t, e) -> {
-                LogUtils.e(e.getMessage());
-            });
+            thread.setUncaughtExceptionHandler((t, e) -> LogUtils.e(e.getMessage()));
             mHolder.get().activeThread = thread;
             return thread;
         }
-    };
+    }
 }

@@ -15,10 +15,7 @@ public class EmulatorDetector {
         if (mayOnEmulatorViaQEMU()) {
             return true;
         }
-        if (isEmulatorFromAbi()) {
-            return true;
-        }
-        return false;
+        return isEmulatorFromAbi();
     }
 
     private static boolean mayOnEmulatorViaQEMU() {

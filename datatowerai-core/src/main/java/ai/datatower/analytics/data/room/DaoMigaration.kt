@@ -72,9 +72,7 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
                     val data = cursor.getString(cursor.getColumnIndex(DataParams.KEY_DATA))
                     val id = cursor.getString(cursor.getColumnIndex("_id"))
                     val eventName =
-                        JSONObject(data).optJSONObject(Constant.EVENT_BODY)?.let { eventBody ->
-                            eventBody.optString(Constant.EVENT_INFO_NAME)
-                        }
+                        JSONObject(data).optJSONObject(Constant.EVENT_BODY)?.optString(Constant.EVENT_INFO_NAME)
 
                     database.execSQL("update `events` set event_name=$eventName where _id =$id")
                 }

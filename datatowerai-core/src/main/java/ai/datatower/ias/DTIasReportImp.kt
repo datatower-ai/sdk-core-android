@@ -9,7 +9,7 @@ import org.json.JSONObject
  * description:
  * version：1.0
  */
-internal class ROIQueryIasReportImp {
+internal class DTIasReportImp {
     companion object {
 
         fun trackIasSubSuccessEvent(
@@ -21,13 +21,13 @@ internal class ROIQueryIasReportImp {
             properties: MutableMap<String, Any>? = mutableMapOf()
         ) {
             DTAnalytics.trackInternal(
-                ROIQueryIasConstant.IAS_TO_SUBSCRIBE_SUCCESS_EVENT,
+                DTIasConstant.IAS_TO_SUBSCRIBE_SUCCESS_EVENT,
                 JSONObject(properties?.toMutableMap() ?: mutableMapOf<String, Any?>()).apply {
-                    put(ROIQueryIasConstant.IAS_ORIGINAL_ORDER_ID, originalOrderId)
-                    put(ROIQueryIasConstant.IAS_ORDER_ID, orderId)
-                    put(ROIQueryIasConstant.IAS_SKU, sku)
-                    put(ROIQueryIasConstant.IAS_PRICE, price)
-                    put(ROIQueryIasConstant.IAS_CURRENCY, currency)
+                    put(DTIasConstant.IAS_ORIGINAL_ORDER_ID, originalOrderId)
+                    put(DTIasConstant.IAS_ORDER_ID, orderId)
+                    put(DTIasConstant.IAS_SKU, sku)
+                    put(DTIasConstant.IAS_PRICE, price)
+                    put(DTIasConstant.IAS_CURRENCY, currency)
                 }
             )
         }

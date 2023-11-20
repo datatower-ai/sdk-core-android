@@ -74,9 +74,7 @@ class HttpTaskManager {
         @Override
         public Thread newThread(Runnable r) {
             Thread thread = new Thread(r, name);
-            thread.setUncaughtExceptionHandler((t, e) -> {
-                LogUtils.e(e.getMessage());
-            });
+            thread.setUncaughtExceptionHandler((t, e) -> LogUtils.e(e.getMessage()));
             return thread;
         }
     }

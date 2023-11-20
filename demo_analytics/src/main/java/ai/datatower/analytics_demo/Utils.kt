@@ -36,16 +36,22 @@ class SharedPreferencesUtils(mContext: Context, preferenceName: String?) {
             val sp: SharedPreferences =
                 context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
             val editor = sp.edit()
-            if ("String" == type) {
-                editor.putString(key, `object` as String)
-            } else if ("Integer" == type) {
-                editor.putInt(key, (`object` as Int))
-            } else if ("Boolean" == type) {
-                editor.putBoolean(key, (`object` as Boolean))
-            } else if ("Float" == type) {
-                editor.putFloat(key, (`object` as Float))
-            } else if ("Long" == type) {
-                editor.putLong(key, (`object` as Long))
+            when (type) {
+                "String" -> {
+                    editor.putString(key, `object` as String)
+                }
+                "Integer" -> {
+                    editor.putInt(key, (`object` as Int))
+                }
+                "Boolean" -> {
+                    editor.putBoolean(key, (`object` as Boolean))
+                }
+                "Float" -> {
+                    editor.putFloat(key, (`object` as Float))
+                }
+                "Long" -> {
+                    editor.putLong(key, (`object` as Long))
+                }
             }
             editor.commit()
         }
@@ -61,18 +67,24 @@ class SharedPreferencesUtils(mContext: Context, preferenceName: String?) {
             val type = defaultObject.javaClass.simpleName
             val sp: SharedPreferences =
                 context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
-            if ("String" == type) {
-                return sp.getString(key, defaultObject as String)
-            } else if ("Integer" == type) {
-                return sp.getInt(key, (defaultObject as Int))
-            } else if ("Boolean" == type) {
-                return sp.getBoolean(key, (defaultObject as Boolean))
-            } else if ("Float" == type) {
-                return sp.getFloat(key, (defaultObject as Float))
-            } else if ("Long" == type) {
-                return sp.getLong(key, (defaultObject as Long))
+            when (type) {
+                "String" -> {
+                    return sp.getString(key, defaultObject as String)
+                }
+                "Integer" -> {
+                    return sp.getInt(key, (defaultObject as Int))
+                }
+                "Boolean" -> {
+                    return sp.getBoolean(key, (defaultObject as Boolean))
+                }
+                "Float" -> {
+                    return sp.getFloat(key, (defaultObject as Float))
+                }
+                "Long" -> {
+                    return sp.getLong(key, (defaultObject as Long))
+                }
+                else -> return null
             }
-            return null
         }
 
         /**

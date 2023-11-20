@@ -15,8 +15,8 @@ import ai.datatower.analytics.utils.EventUtils
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
-import ai.datatower.quality.ROIQueryErrorParams
-import ai.datatower.quality.ROIQueryQualityHelper
+import ai.datatower.quality.DTErrorParams
+import ai.datatower.quality.DTQualityHelper
 import android.content.Context
 import android.os.SystemClock
 import kotlinx.coroutines.runBlocking
@@ -107,8 +107,8 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
                 JSONObject(properties?.toMutableMap() ?: mutableMapOf<String, Any?>())
             )
         } catch (e: Exception) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_TRACK_ERROR,
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_TRACK_ERROR,
                 "event name: $eventName, properties map to json error" + e.stackTraceToString()
             )
             return
@@ -290,14 +290,14 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
 
             PerfLogger.doPerfLog(PerfAction.SDKINITBEGIN, System.currentTimeMillis())
 
-            val isFirstTimeInit = instance == null;
+            val isFirstTimeInit = instance == null
 
             // 必须第一时间初始化
             instance ?: synchronized(this) {
                 instance ?: AnalyticsImp().also { instance = it }
             }
 
-            instance?.initSync(context);
+            instance?.initSync(context)
             MainQueue.get().launchSequential {
                 instance?.init(context)
                 MonitorQueue.get()?.startMonitor()

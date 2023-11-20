@@ -109,7 +109,7 @@ private fun ApiList() {
 
 @Composable
 private fun SubApiList(clazzName: String, title: String) {
-    val allApiNames = remember { mutableStateListOf<String>("<Loading...>") }
+    val allApiNames = remember { mutableStateListOf("<Loading...>") }
     LaunchedEffect(Unit) {
         allApiNames.clear()
         allApiNames.addAll(getFuncNamesFromClass(clazzName))

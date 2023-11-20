@@ -7,16 +7,12 @@ import android.util.Log
 import androidx.multidex.MultiDex
 import ai.datatower.ad.DTAdReport
 import ai.datatower.analytics.*
-import org.json.JSONObject
-import java.lang.Long
 
 
 class MyApp : Application() {
 
     //ROIQuery base url
     private val SERVER_URL_TEST = "https://test.roiquery.com"
-    private val SERVER_URL_INNER = "https://report-inner.roiquery.com"
-    private val SERVER_URL_EXTERNAL = "https://report.roiquery.com"
     override fun onCreate() {
         super.onCreate()
         val initBeginTime = SystemClock.elapsedRealtime()

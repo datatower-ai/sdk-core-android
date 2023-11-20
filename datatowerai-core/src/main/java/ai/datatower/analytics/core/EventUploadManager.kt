@@ -17,8 +17,8 @@ import ai.datatower.analytics.utils.NetworkUtils.isNetworkAvailable
 import ai.datatower.analytics.utils.TimeCalibration
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
-import ai.datatower.quality.ROIQueryErrorParams
-import ai.datatower.quality.ROIQueryQualityHelper
+import ai.datatower.quality.DTErrorParams
+import ai.datatower.quality.DTQualityHelper
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
@@ -47,7 +47,7 @@ class EventUploadManager private constructor(
             field = value
             if (value > 3) {
                 // 连续三次都没有成功
-                MonitorQueue.get()?.reportUploadError(ROIQueryErrorParams.CODE_UPLOAD_ERROR_MULTi_TIMES)
+                MonitorQueue.get()?.reportUploadError(DTErrorParams.CODE_UPLOAD_ERROR_MULTi_TIMES)
             }
         }
 
@@ -73,14 +73,14 @@ class EventUploadManager private constructor(
             }
         } catch (e: Exception) {
             LogUtils.i(TAG, "enqueueEventMessage error:$e")
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_INIT_DB_ERROR,
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_INIT_DB_ERROR,
                 "event name: $name ," + e.stackTraceToString(),
-                ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR
+                DTErrorParams.INSERT_DB_NORMAL_ERROR
             )
             insertHandler?.invoke(
-                ROIQueryErrorParams.CODE_INIT_DB_ERROR,
-                ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR
+                DTErrorParams.CODE_INIT_DB_ERROR,
+                DTErrorParams.INSERT_DB_NORMAL_ERROR
             )
         }
     }
@@ -123,9 +123,9 @@ class EventUploadManager private constructor(
 
 
     private fun qualityReport(msg: String) {
-        ROIQueryQualityHelper.instance.reportQualityMessage(
-            ROIQueryErrorParams.CODE_INSERT_DB_NORMAL_ERROR,
-            msg, ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR
+        DTQualityHelper.instance.reportQualityMessage(
+            DTErrorParams.CODE_INSERT_DB_NORMAL_ERROR,
+            msg, DTErrorParams.INSERT_DB_NORMAL_ERROR
         )
     }
 
@@ -164,11 +164,11 @@ class EventUploadManager private constructor(
             }
         } catch (e: Exception) {
             LogUtils.printStackTrace(e)
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_CHECK_ENABLE_UPLOAD_EXCEPTION,
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_CHECK_ENABLE_UPLOAD_EXCEPTION,
                 e.message,
-                ROIQueryErrorParams.CHECK_ENABLE_UPLOAD_EXCEPTION,
-                ROIQueryErrorParams.TYPE_WARNING
+                DTErrorParams.CHECK_ENABLE_UPLOAD_EXCEPTION,
+                DTErrorParams.TYPE_WARNING
             )
             return false
         }
@@ -220,11 +220,11 @@ class EventUploadManager private constructor(
                 uploadErrorCount++
                 checkFailTimes()
 
-                ROIQueryQualityHelper.instance.reportQualityMessage(
-                    ROIQueryErrorParams.CODE_UPLOAD_ERROR_READ_DATA,
+                DTQualityHelper.instance.reportQualityMessage(
+                    DTErrorParams.CODE_UPLOAD_ERROR_READ_DATA,
                     e.message,
-                    ROIQueryErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,
-                    ROIQueryErrorParams.TYPE_WARNING
+                    DTErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,
+                    DTErrorParams.TYPE_WARNING
                 )
             }
 
@@ -243,11 +243,11 @@ class EventUploadManager private constructor(
                         uploadErrorCount++
                         checkFailTimes()
 
-                        ROIQueryQualityHelper.instance.reportQualityMessage(
-                            ROIQueryErrorParams.CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
+                        DTQualityHelper.instance.reportQualityMessage(
+                            DTErrorParams.CODE_HANDLE_UPLOAD_MESSAGE_ERROR,
                             e.message,
-                            ROIQueryErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,
-                            ROIQueryErrorParams.TYPE_WARNING
+                            DTErrorParams.HANDLE_UPLOAD_MESSAGE_ERROR,
+                            DTErrorParams.TYPE_WARNING
                         )
                     }
                 }
@@ -311,14 +311,13 @@ class EventUploadManager private constructor(
 
             if (!TextUtils.isEmpty(errorMessage)) {
                 LogUtils.d(errorMessage)
-                ROIQueryQualityHelper.instance.reportQualityMessage(
-                    ROIQueryErrorParams.CODE_REPORT_ERROR_ON_RESPONSE,
-                    errorMessage, level = ROIQueryErrorParams.TYPE_WARNING
+                DTQualityHelper.instance.reportQualityMessage(
+                    DTErrorParams.CODE_REPORT_ERROR_ON_RESPONSE,
+                    errorMessage, level = DTErrorParams.TYPE_WARNING
                 )
             }
-            return deleteEvents
         }
-
+        return deleteEvents
     }
 
     private suspend fun deleteEventAfterReport(
@@ -350,9 +349,9 @@ class EventUploadManager private constructor(
             uploadErrorCount++
             checkFailTimes()
 
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_DELETE_UPLOADED_EXCEPTION,
-                e.message, ROIQueryErrorParams.DELETE_DB_EXCEPTION
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_DELETE_UPLOADED_EXCEPTION,
+                e.message, DTErrorParams.DELETE_DB_EXCEPTION
             )
         }
     }
@@ -360,8 +359,8 @@ class EventUploadManager private constructor(
     private fun checkFailTimes() {
         if (uploadErrorCount == 3) {
 //            连续三次出错，主动上报一次
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_UPLOAD_ERROR_OVER_MAX,
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_UPLOAD_ERROR_OVER_MAX,
                 null
             )
         }
@@ -403,7 +402,7 @@ class EventUploadManager private constructor(
             }
         }
 
-        private inner class AnalyticsMessageHandler constructor(looper: Looper) :
+        private inner class AnalyticsMessageHandler(looper: Looper) :
             Handler(looper) {
             override fun handleMessage(msg: Message) {
                 try {
@@ -430,9 +429,9 @@ class EventUploadManager private constructor(
                         }
                     }
                 } catch (e: RuntimeException) {
-                    ROIQueryQualityHelper.instance.reportQualityMessage(
-                        ROIQueryErrorParams.CODE_TRACK_ERROR,
-                        e.stackTraceToString(), ROIQueryErrorParams.TRACK_MANAGER_ERROR
+                    DTQualityHelper.instance.reportQualityMessage(
+                        DTErrorParams.CODE_TRACK_ERROR,
+                        e.stackTraceToString(), DTErrorParams.TRACK_MANAGER_ERROR
                     )
                     LogUtils.i(
                         TAG,

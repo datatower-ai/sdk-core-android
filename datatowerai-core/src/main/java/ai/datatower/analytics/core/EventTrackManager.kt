@@ -10,8 +10,8 @@ import ai.datatower.analytics.utils.EventUtils
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.MemoryUtils
 import ai.datatower.analytics.utils.TimeCalibration
-import ai.datatower.quality.ROIQueryErrorParams
-import ai.datatower.quality.ROIQueryQualityHelper
+import ai.datatower.quality.DTErrorParams
+import ai.datatower.quality.DTQualityHelper
 import org.json.JSONObject
 import java.util.concurrent.ThreadFactory
 
@@ -97,7 +97,7 @@ class EventTrackManager {
     ) {
         if (AnalyticsConfig.instance.isSdkDisable()) {
             insertHandler?.invoke(
-                ROIQueryErrorParams.CODE_TRACK_EVENT_ILLEGAL,
+                DTErrorParams.CODE_TRACK_EVENT_ILLEGAL,
                 "sdk is disable"
             )
             return
@@ -118,7 +118,7 @@ class EventTrackManager {
                 //事件名判空
                 if (eventName.isNullOrEmpty()) {
                     insertHandler?.invoke(
-                        ROIQueryErrorParams.CODE_TRACK_EVENT_NAME_EMPTY,
+                        DTErrorParams.CODE_TRACK_EVENT_NAME_EMPTY,
                         "event name isNullOrEmpty"
                     )
                     return
@@ -138,15 +138,15 @@ class EventTrackManager {
                 }
             } catch (e: Exception) {
                 LogUtils.printStackTrace(e)
-                ROIQueryQualityHelper.instance.reportQualityMessage(
-                    ROIQueryErrorParams.CODE_TRACK_ERROR,
+                DTQualityHelper.instance.reportQualityMessage(
+                    DTErrorParams.CODE_TRACK_ERROR,
                     "event name: $eventName "
                 )
-                insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_ERROR, "trackEvent Exception")
+                insertHandler?.invoke(DTErrorParams.CODE_TRACK_ERROR, "trackEvent Exception")
             }
 //        }
 //        else {
-//            insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_ERROR, "TrackTaskManager is null")
+//            insertHandler?.invoke(DTErrorParams.CODE_TRACK_ERROR, "TrackTaskManager is null")
 //        }
     }
 
@@ -162,7 +162,7 @@ class EventTrackManager {
             //事件名、属性名规则校验
             // TODO: Optimization: Validate event before its being `addEventTask`ed.
             if (!isPreset && !assertEvent(eventName, properties)) {
-                insertHandler?.invoke(ROIQueryErrorParams.CODE_TRACK_EVENT_ILLEGAL, "event illegal")
+                insertHandler?.invoke(DTErrorParams.CODE_TRACK_EVENT_ILLEGAL, "event illegal")
                 return
             }
             // 事件时间
@@ -222,8 +222,8 @@ class EventTrackManager {
             LogUtils.printStackTrace(e)
             trackQualityEvent("trackEvent&&$eventName&& ${e.message}")
             insertHandler?.invoke(
-                ROIQueryErrorParams.CODE_TRACK_ERROR,
-                ROIQueryErrorParams.TRACK_GENERATE_EVENT_ERROR
+                DTErrorParams.CODE_TRACK_ERROR,
+                DTErrorParams.TRACK_GENERATE_EVENT_ERROR
             )
         }
     }
@@ -297,9 +297,9 @@ class EventTrackManager {
 
 
     private fun trackQualityEvent(qualityInfo: String) {
-        ROIQueryQualityHelper.instance.reportQualityMessage(
-            ROIQueryErrorParams.CODE_TRACK_ERROR,
-            qualityInfo, ROIQueryErrorParams.TRACK_GENERATE_EVENT_ERROR
+        DTQualityHelper.instance.reportQualityMessage(
+            DTErrorParams.CODE_TRACK_ERROR,
+            qualityInfo, DTErrorParams.TRACK_GENERATE_EVENT_ERROR
         )
     }
 

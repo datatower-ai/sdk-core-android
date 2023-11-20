@@ -2,7 +2,6 @@ package ai.datatower.analytics.core
 
 import ai.datatower.analytics.Constant
 import ai.datatower.analytics.OnDataTowerIdListener
-import ai.datatower.analytics.R
 import ai.datatower.analytics.config.AnalyticsConfig
 import ai.datatower.analytics.data.EventDataAdapter
 import ai.datatower.analytics.taskqueue.MainQueue
@@ -16,8 +15,8 @@ import ai.datatower.analytics.utils.MemoryUtils
 import ai.datatower.analytics.utils.NetworkUtil
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
-import ai.datatower.quality.ROIQueryErrorParams
-import ai.datatower.quality.ROIQueryQualityHelper
+import ai.datatower.quality.DTErrorParams
+import ai.datatower.quality.DTQualityHelper
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
@@ -151,10 +150,10 @@ class PropertyManager private constructor() {
                 onDataTowerIdCallback(dtid)
             }
         } catch (e: Exception) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_GET_ORIGINAL_ID_EXCEPTION,
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_GET_ORIGINAL_ID_EXCEPTION,
                 e.message,
-                ROIQueryErrorParams.INIT_EXCEPTION
+                DTErrorParams.INIT_EXCEPTION
             )
         }
     }
@@ -173,10 +172,10 @@ class PropertyManager private constructor() {
             updateDTID(dtId)
             return dtId
         } catch (e: Exception) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_INIT_DTID_EXCEPTION,
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_INIT_DTID_EXCEPTION,
                 e.message,
-                ROIQueryErrorParams.INIT_EXCEPTION
+                DTErrorParams.INIT_EXCEPTION
             )
             return ""
         }
@@ -349,7 +348,7 @@ class PropertyManager private constructor() {
                                 }
                             },
                             insertHandler = { code: Int, _: String ->
-                                if (code == 0 && isFirstOpen == true) {
+                                if (code == 0 && isFirstOpen) {
                                     EventDataAdapter.getInstance()
                                         ?.setIsFirstSessionStartInserted(true)
                                 }

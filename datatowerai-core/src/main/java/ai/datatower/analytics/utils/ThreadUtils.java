@@ -1142,8 +1142,8 @@ public final class ThreadUtils {
             t.setDaemon(isDaemon);
             t.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
                 @Override
-                public void uncaughtException(Thread t, Throwable e) {
-                    System.out.println(e);
+                public void uncaughtException(@NonNull Thread t, @NonNull Throwable e) {
+                    e.printStackTrace();
                 }
             });
             t.setPriority(priority);

@@ -8,7 +8,7 @@ class DataParams private constructor(packageName: String) {
     companion object {
 
         /* 数据库名称 */
-        const val DATABASE_NAME = "roiquery_analytics_db"
+        const val DATABASE_NAME = "datatower_ai_core_db"
 
         /* Event 表字段 */
         const val KEY_DATA = "data"
@@ -18,7 +18,6 @@ class DataParams private constructor(packageName: String) {
         const val CONFIG_GAID = "gaid"
         const val CONFIG_OAID = "oaid"
         const val CONFIG_DT_ID = "dt_id"
-        const val CONFIG_ROIQUERY_ID = "roiquery_id"
         const val CONFIG_FIREBASE_IID = "firebase_iid"
         const val CONFIG_FCM_TOKEN = "fcm_token"
         const val CONFIG_APPSFLYER_ID = "appsflyer_id"

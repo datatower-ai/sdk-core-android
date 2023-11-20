@@ -6,7 +6,7 @@ package ai.datatower.ias
  * description:
  * version：1.0
  */
-internal object ROIQueryIasConstant {
+internal object DTIasConstant {
     //展示订阅
    const val IAS_TO_SHOW_EVENT              = "#ias_to_show"
     // 展示订阅内容成功

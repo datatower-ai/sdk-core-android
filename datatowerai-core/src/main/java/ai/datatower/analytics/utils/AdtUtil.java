@@ -39,7 +39,7 @@ public class AdtUtil {
         Application application = null;
         try {
             application = (Application) Class.forName("android.app.ActivityThread").getMethod("currentApplication").invoke(null, new Object[]{});
-        } catch (Throwable e) {
+        } catch (Throwable ignored) {
         }
         return application;
     }
@@ -48,7 +48,7 @@ public class AdtUtil {
         Application application = null;
         try {
             application = (Application) Class.forName("android.app.AppGlobals").getMethod("getInitialApplication").invoke(null, new Object[]{});
-        } catch (Throwable e) {
+        } catch (Throwable ignored) {
         }
         return application;
     }

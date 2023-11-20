@@ -17,6 +17,8 @@
 
 package ai.datatower.analytics.network;
 
+import androidx.annotation.NonNull;
+
 import java.util.Locale;
 
 public class RealResponse {
@@ -28,6 +30,7 @@ public class RealResponse {
     public long date;
     public Exception exception;
 
+    @NonNull
     @Override
     public String toString() {
         return String.format(Locale.getDefault(), "code:%d\nresult:%s\nlocation:%s\nerrorMsg:%s\nexception:%s",

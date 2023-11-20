@@ -40,11 +40,11 @@ public final class DataUtils {
 
 
     public static String getSession() {
-        String uuid = "";
+        StringBuilder uuid = new StringBuilder();
         for (int i = 0; i < 16; i++) {
-            uuid = uuid + Integer.toHexString(new Random().nextInt(16));
+            uuid.append(Integer.toHexString(new Random().nextInt(16)));
         }
-        return uuid;
+        return uuid.toString();
     }
 
     // 返回当前时区偏移，单位毫秒

@@ -130,8 +130,6 @@ public class MemoryUtils {
 
     /**
      * 读取内存信息
-     *
-     * @return
      */
     public static void getMemoryInfo(Context context, StorageBean bean) {
         try {
@@ -149,7 +147,7 @@ public class MemoryUtils {
             bean.setUsedMemory(usable);
             int ratio = (int) ((availMem / (double) totalMem) * 100);
             bean.setRatioMemory(ratio);
-            double v = totalMem / 1024 / 1024 / 1024.0;
+            double v = (double) totalMem / 1024 / 1024 / 1024.0;
             String ram;
             if (v <= 1) {
                 ram = "1 GB";
@@ -175,9 +173,6 @@ public class MemoryUtils {
 
     /**
      * 获取 sd 卡存储信息
-     *
-     * @param context
-     * @param bean
      */
     public static void getStoreInfo(Context context, StorageBean bean) {
         File card = Environment.getExternalStorageDirectory();

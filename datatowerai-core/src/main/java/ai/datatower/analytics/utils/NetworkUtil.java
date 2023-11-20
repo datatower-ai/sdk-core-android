@@ -9,9 +9,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.telephony.TelephonyManager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 
 import java.net.InetAddress;
@@ -167,11 +171,24 @@ public final class NetworkUtil {
         final ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm == null) return false;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M? isEthernetInternalM(cm) : isEthernetInternal(cm);
+    }
+
+    @RequiresPermission(ACCESS_NETWORK_STATE)
+    private static boolean isEthernetInternal (@NonNull  ConnectivityManager cm) {
         final NetworkInfo info = cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET);
         if (info == null) return false;
         NetworkInfo.State state = info.getState();
         if (null == state) return false;
         return state == NetworkInfo.State.CONNECTED || state == NetworkInfo.State.CONNECTING;
+    }
+
+    @RequiresPermission(ACCESS_NETWORK_STATE)
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private static boolean isEthernetInternalM(@NonNull  ConnectivityManager cm) {
+        NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
+        if (capabilities == null) return false;
+        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET);
     }
 
     @RequiresPermission(ACCESS_NETWORK_STATE)

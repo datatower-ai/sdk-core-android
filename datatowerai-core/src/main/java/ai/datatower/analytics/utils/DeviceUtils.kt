@@ -13,7 +13,6 @@ import android.text.TextUtils
 import android.view.Surface
 import android.view.WindowManager
 import android.webkit.WebSettings
-import android.webkit.WebView
 import androidx.core.os.ConfigurationCompat
 import androidx.core.os.LocaleListCompat
 import java.util.*

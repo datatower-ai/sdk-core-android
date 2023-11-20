@@ -33,7 +33,6 @@
         app:layout_constraintTop_toBottomOf="@id/user_api_label_description" />
 
     <TextView
-        android:id="@+id/user_api_label_param"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Input Param pls ..."
@@ -46,7 +45,6 @@
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:ems="10"
-        android:hint=""
         android:inputType="text|textMultiLine"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"

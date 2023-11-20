@@ -31,7 +31,7 @@ open class DTIASReport {
             currency: String,
             properties: MutableMap<String, Any>? = mutableMapOf()
         ) {
-            ROIQueryIasReportImp.trackIasSubSuccessEvent(originalOrderId, orderId, sku, price, currency, properties)
+            DTIasReportImp.trackIasSubSuccessEvent(originalOrderId, orderId, sku, price, currency, properties)
         }
 
 

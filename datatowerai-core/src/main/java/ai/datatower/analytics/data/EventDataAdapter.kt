@@ -271,7 +271,7 @@ class EventDataAdapter private constructor(
         }
 
         internal fun getInstance(): EventDataAdapter? {
-            checkNotNull(instance) { "Call ROIQuerySDK.init first" }
+            checkNotNull(instance) { "Call DT.init first" }
             return instance
         }
     }

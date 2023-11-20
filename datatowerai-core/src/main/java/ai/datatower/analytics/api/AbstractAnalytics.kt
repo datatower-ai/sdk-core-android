@@ -9,8 +9,8 @@ import ai.datatower.analytics.core.PropertyManager
 import ai.datatower.analytics.data.EventDataAdapter
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.NotNullSingleVar
-import ai.datatower.quality.ROIQueryErrorParams
-import ai.datatower.quality.ROIQueryQualityHelper
+import ai.datatower.quality.DTErrorParams
+import ai.datatower.quality.DTQualityHelper
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
@@ -80,11 +80,11 @@ abstract class AbstractAnalytics : IAnalytics {
     private fun onInitFailed(errorMessage: String?) {
         isInitRunning.set(false)
         mHasInit.set(false)
-        ROIQueryQualityHelper.instance.reportQualityMessage(
-            ROIQueryErrorParams.CODE_INIT_EXCEPTION,
+        DTQualityHelper.instance.reportQualityMessage(
+            DTErrorParams.CODE_INIT_EXCEPTION,
             errorMessage,
-            ROIQueryErrorParams.INIT_EXCEPTION,
-            ROIQueryErrorParams.TYPE_ERROR
+            DTErrorParams.INIT_EXCEPTION,
+            DTErrorParams.TYPE_ERROR
         )
         LogUtils.d(TAG, "init Failed: $errorMessage")
     }
@@ -154,11 +154,11 @@ abstract class AbstractAnalytics : IAnalytics {
             }
 
         } catch (e: PackageManager.NameNotFoundException) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_INIT_CONFIG_ERROR,
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_INIT_CONFIG_ERROR,
                 e.message,
-                ROIQueryErrorParams.INIT_CONFIG_ERROR,
-                ROIQueryErrorParams.TYPE_ERROR
+                DTErrorParams.INIT_CONFIG_ERROR,
+                DTErrorParams.TYPE_ERROR
             )
             LogUtils.printStackTrace(e)
         }

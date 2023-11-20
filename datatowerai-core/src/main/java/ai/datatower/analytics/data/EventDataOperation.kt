@@ -1,11 +1,11 @@
 package ai.datatower.analytics.data
 
-import ai.datatower.analytics.data.room.ROIQueryAnalyticsDB
+import ai.datatower.analytics.data.room.DTAnalyticsDB
 import ai.datatower.analytics.data.room.bean.Configs
 import ai.datatower.analytics.data.room.bean.Events
 import ai.datatower.analytics.utils.LogUtils
-import ai.datatower.quality.ROIQueryErrorParams
-import ai.datatower.quality.ROIQueryQualityHelper
+import ai.datatower.quality.DTErrorParams
+import ai.datatower.quality.DTQualityHelper
 import android.content.Context
 import android.text.TextUtils
 import org.json.JSONObject
@@ -16,9 +16,12 @@ import kotlin.coroutines.suspendCoroutine
 internal class EventDataOperation(
     mContext: Context
 )  {
-    var TAG = "EventDataOperation"
-    private var analyticsDB: ROIQueryAnalyticsDB? =
-        ROIQueryAnalyticsDB.getInstance(context = mContext)
+    companion object {
+        const val TAG = "EventDataOperation"
+    }
+
+    private var analyticsDB: DTAnalyticsDB? =
+        DTAnalyticsDB.getInstance(context = mContext)
     private var eventCount = -1
 
 
@@ -47,9 +50,9 @@ internal class EventDataOperation(
             }
             it.resume(returns)
         } catch (exception: Exception) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_INSERT_DB_EXCEPTION,
-                exception.message, ROIQueryErrorParams.INSERT_DB_EXCEPTION
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_INSERT_DB_EXCEPTION,
+                exception.message, DTErrorParams.INSERT_DB_EXCEPTION
             )
             it.resume(DataParams.DB_INSERT_EXCEPTION)
         }
@@ -72,9 +75,9 @@ internal class EventDataOperation(
                 }
             }
         } catch (exception: Exception) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_INSERT_DB_NORMAL_ERROR,
-                "insertConfig：$name " + exception.message, ROIQueryErrorParams.INSERT_DB_NORMAL_ERROR
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_INSERT_DB_NORMAL_ERROR,
+                "insertConfig：$name " + exception.message, DTErrorParams.INSERT_DB_NORMAL_ERROR
             )
         }
         it.resume(Unit)
@@ -88,8 +91,8 @@ internal class EventDataOperation(
         val value = try {
             analyticsDB?.getConfigDao()?.queryValueByName(name)
         } catch (exception: Exception) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_QUERY_DB_EXCEPTION,
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_QUERY_DB_EXCEPTION,
                 "queryConfig: $name " + exception.message
             )
             null
@@ -116,8 +119,8 @@ internal class EventDataOperation(
                 }
             }
         } catch (exception: Exception) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_QUERY_DB_EXCEPTION,
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_QUERY_DB_EXCEPTION,
                 "queryData:" + exception.message
             )
         } finally {
@@ -137,8 +140,8 @@ internal class EventDataOperation(
         try {
             count = analyticsDB?.getEventsDao()?.dataCount() ?: 0
         } catch (exception: Exception) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_QUERY_DB_EXCEPTION,
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_QUERY_DB_EXCEPTION,
                 exception.message
             )
         }
@@ -157,9 +160,9 @@ internal class EventDataOperation(
                 eventCount -= 1
             }
         } catch (exception: Exception) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_DELETE_DB_EXCEPTION,
-                exception.message, ROIQueryErrorParams.DELETE_DB_EXCEPTION
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_DELETE_DB_EXCEPTION,
+                exception.message, DTErrorParams.DELETE_DB_EXCEPTION
             )
         }
     }
@@ -172,9 +175,9 @@ internal class EventDataOperation(
                 eventCount -= 1
             }
         } catch (exception: Exception) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_DELETE_DB_EXCEPTION,
-                exception.message, ROIQueryErrorParams.DELETE_DB_EXCEPTION
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_DELETE_DB_EXCEPTION,
+                exception.message, DTErrorParams.DELETE_DB_EXCEPTION
             )
         }
         it.resume(Unit)
@@ -189,9 +192,9 @@ internal class EventDataOperation(
                 eventCount -= num
             }
         } catch (exception: Exception) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_DELETE_DB_EXCEPTION,
-                exception.message, ROIQueryErrorParams.DELETE_DB_EXCEPTION
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_DELETE_DB_EXCEPTION,
+                exception.message, DTErrorParams.DELETE_DB_EXCEPTION
             )
         }
     }
@@ -211,7 +214,7 @@ internal class EventDataOperation(
                     return ""
                 }
             }
-        } catch (ex: Exception) {
+        } catch (_: Exception) {
         }
         return data
     }
@@ -239,9 +242,9 @@ internal class EventDataOperation(
             }
             return true
         } catch (exception: Exception) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_INSERT_DB_OUT_OF_ROW_ERROR,
-                exception.message, ROIQueryErrorParams.INSERT_DB_OUT_OF_ROW_ERROR
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_INSERT_DB_OUT_OF_ROW_ERROR,
+                exception.message, DTErrorParams.INSERT_DB_OUT_OF_ROW_ERROR
             )
         }
         return false
@@ -252,9 +255,9 @@ internal class EventDataOperation(
             analyticsDB?.getEventsDao()?.clearTable()
             eventCount = 0
         } catch (e: Exception) {
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_DELETE_DB_EXCEPTION,
-                "deleteAllEventData:" + e.message, ROIQueryErrorParams.DELETE_DB_EXCEPTION
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_DELETE_DB_EXCEPTION,
+                "deleteAllEventData:" + e.message, DTErrorParams.DELETE_DB_EXCEPTION
             )
         }
         it.resume(Unit)

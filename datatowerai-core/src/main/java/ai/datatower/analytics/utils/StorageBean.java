@@ -1,5 +1,7 @@
 package ai.datatower.analytics.utils;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by chensongsong on 2020/6/1.
  */
@@ -139,6 +141,7 @@ public class StorageBean {
         this.romSize = romSize;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "StorageBean{" +

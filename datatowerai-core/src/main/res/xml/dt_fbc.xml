@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <full-backup-content>
-    <exclude domain="database" path="roiquery_analytics_db" />
-    <exclude domain="database" path="roiquery_analytics_db-shm" />
-    <exclude domain="database" path="roiquery_analytics_db-wal" />
+    <exclude domain="database" path="datatower_ai_core_db" />
+    <exclude domain="database" path="datatower_ai_core_db-shm" />
+    <exclude domain="database" path="datatower_ai_core_db-wal" />
 </full-backup-content>

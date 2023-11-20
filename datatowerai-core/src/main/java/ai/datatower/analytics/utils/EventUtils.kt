@@ -14,7 +14,7 @@ import java.util.Date
 import java.util.regex.Pattern
 
 object EventUtils {
-    private const val TAG = "ROIQuery.EventUtils"
+    private const val TAG = "DT.EventUtils"
     private val KEY_PATTERN =
         Pattern.compile("^[a-zA-Z][a-zA-Z\\d_#]{0,49}", Pattern.CASE_INSENSITIVE)
 

@@ -4,10 +4,10 @@ import java.util.Random;
 
 public class UUIDUtils {
     public static String generateUUID() {
-        String uuid = "";
+        StringBuilder uuid = new StringBuilder();
         for (int i = 0; i < 16; i++) {
-            uuid = uuid + Integer.toHexString(new Random().nextInt(16));
+            uuid.append(Integer.toHexString(new Random().nextInt(16)));
         }
-        return uuid;
+        return uuid.toString();
     }
 }

@@ -52,9 +52,7 @@ abstract class SharedPreferencesStorage<T> {
                 SharedPreferences sharedPreferences = null;
                 try {
                     sharedPreferences = loadStoredPreferences.get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
                 if (sharedPreferences != null) {
@@ -85,9 +83,7 @@ abstract class SharedPreferencesStorage<T> {
         SharedPreferences sharedPreferences = null;
         try {
             sharedPreferences = loadStoredPreferences.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         if (sharedPreferences != null) {

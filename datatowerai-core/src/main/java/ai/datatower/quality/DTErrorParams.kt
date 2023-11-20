@@ -9,7 +9,7 @@ import androidx.annotation.StringDef
  * description:
  * version：1.0
  */
-internal object ROIQueryErrorParams {
+internal object DTErrorParams {
 
     //init
     const val CODE_INIT_CONFIG_ERROR = 1001
@@ -86,7 +86,7 @@ internal object ROIQueryErrorParams {
         CODE_QUEUE_DB_DEAD
     )
     @Retention(AnnotationRetention.SOURCE)
-    annotation class ROIQueryErrorCode
+    annotation class DTErrorCode
 
 
     const val TYPE_ERROR = 1
@@ -99,7 +99,7 @@ internal object ROIQueryErrorParams {
         TYPE_WARNING
     )
     @Retention(AnnotationRetention.SOURCE)
-    annotation class ROIQueryErrorLevel
+    annotation class DTErrorLevel
 
 
     const val INIT_CONFIG_ERROR = "can not get config "
@@ -133,6 +133,6 @@ internal object ROIQueryErrorParams {
         CHECK_ENABLE_UPLOAD_EXCEPTION
     )
     @Retention(AnnotationRetention.SOURCE)
-    annotation class ROIQueryErrorMsg
+    annotation class DTErrorMsg
 
 }

@@ -43,7 +43,7 @@ class EventTimerManager {
                     LogUtils.d(TAG,"$eventName update Timer State, isPause :$isPause")
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
 
         }
     }
@@ -60,7 +60,7 @@ class EventTimerManager {
     fun clearTimers() {
         try {
             synchronized(mTrackTimer) { mTrackTimer.clear() }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
         }
     }
 }

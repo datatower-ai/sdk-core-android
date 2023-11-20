@@ -6,13 +6,12 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
-import androidx.annotation.RequiresApi;
+import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -624,6 +623,7 @@ public final class LogUtils {
 
 
 
+        @NonNull
         @Override
         public String toString() {
             return

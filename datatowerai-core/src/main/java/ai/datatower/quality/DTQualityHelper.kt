@@ -14,17 +14,17 @@ import org.json.JSONObject
  * description:SDK 质量监控上报类
  * version：1.0
  */
-internal class ROIQueryQualityHelper private constructor() {
+internal class DTQualityHelper private constructor() {
 
     private val TAG = Constant.LOG_TAG
 
     private var mJsonParams: MutableMap<String, Any?>? = null
 
     fun reportQualityMessage(
-        @ROIQueryErrorParams.ROIQueryErrorCode errorCode: Int,
+        @DTErrorParams.DTErrorCode errorCode: Int,
         errorMsg: String?,
-        @ROIQueryErrorParams.ROIQueryErrorMsg defaultErrorMsg: String? = null,
-        @ROIQueryErrorParams.ROIQueryErrorLevel level: Int = ROIQueryErrorParams.TYPE_ERROR
+        @DTErrorParams.DTErrorMsg defaultErrorMsg: String? = null,
+        @DTErrorParams.DTErrorLevel level: Int = DTErrorParams.TYPE_ERROR
     ) {
         try {
             val data = getJsonData(errorCode, errorMsg, defaultErrorMsg, level)
@@ -47,12 +47,12 @@ internal class ROIQueryQualityHelper private constructor() {
                     override fun onAfter() {
                     }
                 }).execute()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
         }
     }
 
     private fun getJsonData(
-        @ROIQueryErrorParams.ROIQueryErrorLevel errorType: Int,
+        @DTErrorParams.DTErrorLevel errorType: Int,
         errorMsg: String?,
         defaultErrorMsg: String?,
         level: Int
@@ -66,7 +66,7 @@ internal class ROIQueryQualityHelper private constructor() {
                 }
             }
             return info.toString()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
         }
         return JSONObject().toString()
     }
@@ -101,8 +101,8 @@ internal class ROIQueryQualityHelper private constructor() {
         private const val ERROR_CODE        = "error_code"
         private const val ERROR_LEVEL       = "error_level"
         private const val ERROR_MESSAGE     = "error_message"
-        val instance: ROIQueryQualityHelper by lazy {
-            ROIQueryQualityHelper()
+        val instance: DTQualityHelper by lazy {
+            DTQualityHelper()
         }
     }
 }

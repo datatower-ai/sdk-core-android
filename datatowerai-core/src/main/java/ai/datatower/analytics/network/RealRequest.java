@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import ai.datatower.analytics.utils.LogUtils;
@@ -85,7 +86,7 @@ class RealRequest {
             }
             conn.connect();
             if (!TextUtils.isEmpty(body)) {
-                writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream(), "UTF-8"));
+                writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8));
                 writer.write(body);
                 writer.flush();
             }

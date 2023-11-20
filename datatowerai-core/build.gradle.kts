@@ -115,9 +115,9 @@ afterEvaluate {
                         }
                     }
                     scm {
-                        connection.set("scm:git:github.com/lovinjoy/datatower.ai-core-android.git")
-                        developerConnection.set("scm:git:ssh://github.com/lovinjoy/datatower.ai-core-android.git")
-                        url.set("https://github.com/lovinjoy/datatower.ai-core-android/tree/main")
+                        connection.set("scm:git:github.com/datatower-ai/core.git")
+                        developerConnection.set("scm:git:ssh://github.com/datatower-ai/core.git")
+                        url.set("https://github.com/datatower-ai/core/tree/main")
                     }
                 }
 

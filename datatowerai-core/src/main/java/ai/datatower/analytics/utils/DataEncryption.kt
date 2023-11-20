@@ -1,7 +1,7 @@
 package ai.datatower.analytics.utils
 
-import ai.datatower.quality.ROIQueryErrorParams
-import ai.datatower.quality.ROIQueryQualityHelper
+import ai.datatower.quality.DTErrorParams
+import ai.datatower.quality.DTQualityHelper
 import java.security.MessageDigest
 
 /**
@@ -24,10 +24,10 @@ class DataEncryption private constructor() {
             val result = digest.digest(data.toByteArray())
             toHex(result)
         }catch (e:Exception){
-            ROIQueryQualityHelper.instance.reportQualityMessage(
-                ROIQueryErrorParams.CODE_SHA1_DTID_EXCEPTION,
+            DTQualityHelper.instance.reportQualityMessage(
+                DTErrorParams.CODE_SHA1_DTID_EXCEPTION,
                 e.message,
-                ROIQueryErrorParams.INIT_EXCEPTION
+                DTErrorParams.INIT_EXCEPTION
             )
             ""
         }

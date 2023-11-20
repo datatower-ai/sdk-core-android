@@ -32,7 +32,7 @@ class UserApiActivity : AppCompatActivity() {
             spinner?.let {
                 val api = it.selectedItem.toString()
                 val param = infoMap[api]
-                var passParam: String?
+                val passParam: String?
 
                 if (param != null) {
                     if (param.isNotEmpty()) {
@@ -97,19 +97,17 @@ class UserApiActivity : AppCompatActivity() {
             )
 
         spinner?.adapter = dataAdapter
-        spinner?.setOnItemSelectedListener(object: AdapterView.OnItemSelectedListener {
+        spinner?.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 val selectedItem = p0?.getItemAtPosition(p2).toString()
-                selectedItem?.let {
-                    val description = infoMap[it]
-                    editDescription?.setText(description)
-                }
+                val description = infoMap[selectedItem]
+                editDescription?.text = description
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
-        })
+        }
     }
 
 
