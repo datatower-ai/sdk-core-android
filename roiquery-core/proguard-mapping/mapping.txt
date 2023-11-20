@@ -2,8 +2,8 @@
 # compiler_version: 8.0.40
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.1"}
-# pg_map_id: b878cc3
-# pg_map_hash: SHA-256 b878cc3d3cb691e193c0f3cadff70345938debac2ae307ff135edf9342b50284
+# pg_map_id: c0dcd59
+# pg_map_hash: SHA-256 c0dcd59f0930f5ecde1a04872ded28babaa844605e6f13d03d6fbb4fcbf56f33
 com.roiquery.ad.AD_CONVERSION_SOURCE -> com.roiquery.ad.a:
 # {"id":"sourceFile","fileName":"constant.kt"}
     java.lang.String LEFT_APP -> c
@@ -1061,63 +1061,65 @@ com.roiquery.analytics.api.AbstractAnalytics -> com.roiquery.analytics.api.a:
     kotlin.reflect.KProperty[] $$delegatedProperties -> g
     com.roiquery.analytics.config.AnalyticsConfig configOptions -> e
     com.roiquery.analytics.data.EventDataAdapter dataAdapter -> a
-    1:1:void <clinit>():30:30 -> <clinit>
+    1:1:void <clinit>():31:31 -> <clinit>
     2:2:void com.roiquery.analytics.api.AbstractAnalytics$Companion.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <clinit>
-    2:2:void <clinit>():30 -> <clinit>
-    3:10:void <clinit>():30:37 -> <clinit>
-    1:10:void <init>():21:30 -> <init>
-    1:1:java.lang.Object access$initProperties(com.roiquery.analytics.api.AbstractAnalytics,android.content.Context,kotlin.coroutines.Continuation):21:21 -> a
-    2:2:void access$setMHasInit$cp(java.util.concurrent.atomic.AtomicBoolean):21:21 -> a
-    3:3:void setFirstOpenTime(java.lang.Long):30:30 -> a
-    4:4:void setConfigOptions(com.roiquery.analytics.config.AnalyticsConfig):32:32 -> a
-    5:9:java.lang.Object init(android.content.Context,kotlin.coroutines.Continuation):41:45 -> a
-    10:10:java.lang.Object init(android.content.Context,kotlin.coroutines.Continuation):42:42 -> a
-    11:25:void initConfig(android.content.Context):144:158 -> a
-    26:38:void initConfig(android.content.Context):156:168 -> a
+    2:2:void <clinit>():31 -> <clinit>
+    3:10:void <clinit>():31:38 -> <clinit>
+    1:10:void <init>():22:31 -> <init>
+    1:1:java.lang.Object access$initProperties(com.roiquery.analytics.api.AbstractAnalytics,android.content.Context,kotlin.coroutines.Continuation):22:22 -> a
+    2:2:void access$setMHasInit$cp(java.util.concurrent.atomic.AtomicBoolean):22:22 -> a
+    3:3:void setFirstOpenTime(java.lang.Long):31:31 -> a
+    4:4:void setConfigOptions(com.roiquery.analytics.config.AnalyticsConfig):33:33 -> a
+    5:9:java.lang.Object init(android.content.Context,kotlin.coroutines.Continuation):42:46 -> a
+    10:10:java.lang.Object init(android.content.Context,kotlin.coroutines.Continuation):43:43 -> a
+    11:25:void initConfig(android.content.Context):145:159 -> a
+    26:38:void initConfig(android.content.Context):157:169 -> a
     39:39:boolean com.roiquery.analytics.config.AbstractAnalyticsConfig.getMEnabledDebug():28:28 -> a
-    39:39:void initConfig(android.content.Context):169 -> a
+    39:39:void initConfig(android.content.Context):170 -> a
     40:40:int com.roiquery.analytics.config.AbstractAnalyticsConfig.getMLogLevel():33:33 -> a
-    40:40:void initConfig(android.content.Context):169 -> a
-    41:41:void initConfig(android.content.Context):169:169 -> a
-    42:42:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):179:179 -> a
+    40:40:void initConfig(android.content.Context):170 -> a
+    41:41:void initConfig(android.content.Context):170:170 -> a
+    42:42:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):180:180 -> a
     43:43:boolean com.roiquery.analytics.config.AbstractAnalyticsConfig.getMEnabledDebug():28:28 -> a
-    43:43:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):179 -> a
-    44:44:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):180:180 -> a
+    43:43:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):180 -> a
+    44:44:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):181:181 -> a
     45:45:int com.roiquery.analytics.config.AbstractAnalyticsConfig.getMLogLevel():33:33 -> a
-    45:45:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):180 -> a
-    46:46:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):178:178 -> a
-    47:47:void configLog(boolean,int):182:182 -> a
+    45:45:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):181 -> a
+    46:46:void configLog$default(com.roiquery.analytics.api.AbstractAnalytics,boolean,int,int,java.lang.Object):179:179 -> a
+    47:47:void configLog(boolean,int):183:183 -> a
     48:48:com.roiquery.analytics.utils.LogUtils$Config com.roiquery.analytics.utils.LogUtils$Config.setLogSwitch(boolean):505:505 -> a
-    48:48:void configLog(boolean,int):183 -> a
+    48:48:void configLog(boolean,int):184 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    49:49:void configLog(boolean,int):184:184 -> a
+    49:49:void configLog(boolean,int):185:185 -> a
     50:50:com.roiquery.analytics.utils.LogUtils$Config com.roiquery.analytics.utils.LogUtils$Config.setConsoleSwitch(boolean):510:510 -> a
-    50:50:void configLog(boolean,int):185 -> a
+    50:50:void configLog(boolean,int):186 -> a
     51:51:com.roiquery.analytics.utils.LogUtils$Config com.roiquery.analytics.utils.LogUtils$Config.setConsoleFilter(int):543:543 -> a
-    51:51:void configLog(boolean,int):186 -> a
-    1:1:java.lang.Object access$internalInit(com.roiquery.analytics.api.AbstractAnalytics,android.content.Context,kotlin.coroutines.Continuation):21:21 -> b
-    2:2:void initLocalData(android.content.Context):107:107 -> b
-    3:3:java.lang.Object initProperties(android.content.Context,kotlin.coroutines.Continuation):114:114 -> b
-    1:1:void initSync(android.content.Context):49:49 -> c
-    2:13:java.lang.Object internalInit(android.content.Context,kotlin.coroutines.Continuation):53:64 -> c
-    14:25:java.lang.Object internalInit(android.content.Context,kotlin.coroutines.Continuation):53:64 -> c
-    1:4:void onInitSuccess(android.content.Context):70:73 -> d
-    1:1:java.util.concurrent.atomic.AtomicBoolean access$getMHasInit$cp():21:21 -> e
-    2:4:void registerAppLifecycleListener(android.content.Context):121:123 -> e
-    1:1:void generateFirstOpenTime():100:100 -> f
-    2:2:void trackPresetEvent(android.content.Context):137:137 -> f
-    1:1:com.roiquery.analytics.config.AnalyticsConfig getConfigOptions():32:32 -> g
-    1:1:java.lang.Long getFirstOpenTime():30:30 -> h
-    1:1:void initTracker():130:130 -> i
-    1:9:void onInitFailed(java.lang.String):80:88 -> j
-    10:10:boolean isInitSuccess():93:93 -> j
-    1:1:void reportFirstSessionStart$roiquery_core_publicRelease():192:192 -> k
+    51:51:void configLog(boolean,int):187 -> a
+    1:1:java.lang.Object access$internalInit(com.roiquery.analytics.api.AbstractAnalytics,android.content.Context,kotlin.coroutines.Continuation):22:22 -> b
+    2:2:void initLocalData(android.content.Context):108:108 -> b
+    3:3:java.lang.Object initProperties(android.content.Context,kotlin.coroutines.Continuation):115:115 -> b
+    1:1:void initSync(android.content.Context):50:50 -> c
+    2:13:java.lang.Object internalInit(android.content.Context,kotlin.coroutines.Continuation):54:65 -> c
+    14:25:java.lang.Object internalInit(android.content.Context,kotlin.coroutines.Continuation):54:65 -> c
+    1:6:boolean isAppOnForeground(android.content.Context):200:205 -> d
+    7:7:boolean isAppOnForeground(android.content.Context):200:200 -> d
+    1:1:java.util.concurrent.atomic.AtomicBoolean access$getMHasInit$cp():22:22 -> e
+    2:5:void onInitSuccess(android.content.Context):71:74 -> e
+    1:1:void generateFirstOpenTime():101:101 -> f
+    2:4:void registerAppLifecycleListener(android.content.Context):122:124 -> f
+    1:1:com.roiquery.analytics.config.AnalyticsConfig getConfigOptions():33:33 -> g
+    2:2:void trackPresetEvent(android.content.Context):138:138 -> g
+    1:1:java.lang.Long getFirstOpenTime():31:31 -> h
+    2:4:void tryReportFirstSessionStart$roiquery_core_publicRelease(android.content.Context):193:195 -> h
+    1:1:void initTracker():131:131 -> i
+    1:9:void onInitFailed(java.lang.String):81:89 -> j
+    10:10:boolean isInitSuccess():94:94 -> j
 com.roiquery.analytics.api.AbstractAnalytics$Companion -> com.roiquery.analytics.api.a$a:
 # {"id":"sourceFile","fileName":"AbstractAnalytics.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():35:35 -> <init>
-    1:1:java.util.concurrent.atomic.AtomicBoolean getMHasInit$roiquery_core_publicRelease():37:37 -> a
-    2:2:void setMHasInit$roiquery_core_publicRelease(java.util.concurrent.atomic.AtomicBoolean):37:37 -> a
+    2:2:void <init>():36:36 -> <init>
+    1:1:java.util.concurrent.atomic.AtomicBoolean getMHasInit$roiquery_core_publicRelease():38:38 -> a
+    2:2:void setMHasInit$roiquery_core_publicRelease(java.util.concurrent.atomic.AtomicBoolean):38:38 -> a
 com.roiquery.analytics.api.AbstractAnalytics$internalInit$1 -> com.roiquery.analytics.api.a$b:
 # {"id":"sourceFile","fileName":"AbstractAnalytics.kt"}
     com.roiquery.analytics.api.AbstractAnalytics this$0 -> d
@@ -1162,133 +1164,133 @@ com.roiquery.analytics.api.AnalyticsImp -> com.roiquery.analytics.api.c:
     2:2:void <clinit>():0:0 -> <clinit>
     1:1:void <init>():26:26 -> <init>
     1:1:void access$setInstance$cp(com.roiquery.analytics.api.AnalyticsImp):26:26 -> a
-    2:2:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> a
+    2:2:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> a
     2:2:void getDTId(com.roiquery.analytics.OnDataTowerIdListener):37 -> a
     3:3:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> a
     3:3:void getDTId(com.roiquery.analytics.OnDataTowerIdListener):37 -> a
     4:4:void getDTId(com.roiquery.analytics.OnDataTowerIdListener):40:40 -> a
-    5:5:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> a
+    5:5:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> a
     5:5:void trackNormal(java.lang.String,boolean,java.util.Map):100 -> a
     6:6:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> a
     6:6:void trackNormal(java.lang.String,boolean,java.util.Map):100 -> a
     7:7:void trackNormal(java.lang.String,boolean,java.util.Map):107:107 -> a
     8:16:void trackNormal(java.lang.String,boolean,java.util.Map):104:112 -> a
     17:17:void trackNormal(java.lang.String,boolean,java.util.Map):110:110 -> a
-    18:18:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> a
+    18:18:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> a
     18:18:void trackNormal(java.lang.String,boolean,org.json.JSONObject):90 -> a
     19:19:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> a
     19:19:void trackNormal(java.lang.String,boolean,org.json.JSONObject):90 -> a
     20:23:void trackNormal(java.lang.String,boolean,org.json.JSONObject):93:96 -> a
-    24:24:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> a
+    24:24:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> a
     24:24:void trackTimerEnd(java.lang.String,org.json.JSONObject):223 -> a
     25:25:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> a
     25:25:void trackTimerEnd(java.lang.String,org.json.JSONObject):223 -> a
     26:27:void trackTimerEnd(java.lang.String,org.json.JSONObject):226:227 -> a
-    28:28:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> a
+    28:28:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> a
     28:28:void trackTimerStart(java.lang.String):178 -> a
     29:29:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> a
     29:29:void trackTimerStart(java.lang.String):178 -> a
     30:31:void trackTimerStart(java.lang.String):181:182 -> a
-    32:32:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions() -> a
+    32:32:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> a
     32:32:void userSetOnce(org.json.JSONObject):126 -> a
     33:33:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> a
     33:33:void userSetOnce(org.json.JSONObject):126 -> a
     34:34:void userSetOnce(org.json.JSONObject):129:129 -> a
-    35:35:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> a
+    35:35:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> a
     35:35:void userUnset(java.lang.String[]):140 -> a
     36:36:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> a
     36:36:void userUnset(java.lang.String[]):140 -> a
     37:46:void userUnset(java.lang.String[]):143:152 -> a
     47:47:java.lang.Boolean getEnableUpload():72:72 -> a
     48:49:void setEnableUpload(java.lang.Boolean):74:75 -> a
-    50:50:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> a
+    50:50:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> a
     50:50:void setEnableUpload(java.lang.Boolean):76 -> a
     51:51:void com.roiquery.analytics.config.AbstractAnalyticsConfig.setMEnableUpload(boolean):65:65 -> a
     51:51:void setEnableUpload(java.lang.Boolean):76 -> a
     52:55:void trackTimerPause$lambda-2(java.lang.String,long):199:202 -> a
     56:60:void trackTimerEnd$lambda-4(java.lang.String,long,com.roiquery.analytics.api.AnalyticsImp,org.json.JSONObject):229:233 -> a
     1:1:java.lang.String getAccountId():29:29 -> b
-    2:2:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> b
+    2:2:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> b
     2:2:void setKochavaId(java.lang.String):58 -> b
     3:3:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> b
     3:3:void setKochavaId(java.lang.String):58 -> b
     4:4:void setKochavaId(java.lang.String):61:61 -> b
-    5:5:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> b
+    5:5:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> b
     5:5:void trackUser(java.lang.String,org.json.JSONObject):82 -> b
     6:6:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> b
     6:6:void trackUser(java.lang.String,org.json.JSONObject):82 -> b
     7:8:void trackUser(java.lang.String,org.json.JSONObject):85:86 -> b
-    9:9:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> b
+    9:9:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> b
     9:9:void userAdd(org.json.JSONObject):133 -> b
     10:10:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> b
     10:10:void userAdd(org.json.JSONObject):133 -> b
     11:11:void userAdd(org.json.JSONObject):136:136 -> b
     12:15:void trackTimerResume$lambda-3(java.lang.String,long):214:217 -> b
-    1:1:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> c
+    1:1:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> c
     1:1:void clearTrackTimer():253 -> c
     2:2:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> c
     2:2:void clearTrackTimer():253 -> c
     3:3:void clearTrackTimer():256:256 -> c
-    4:4:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> c
+    4:4:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> c
     4:4:void setAdjustId(java.lang.String):65 -> c
     5:5:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> c
     5:5:void setAdjustId(java.lang.String):65 -> c
     6:6:void setAdjustId(java.lang.String):68:68 -> c
-    7:7:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> c
+    7:7:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> c
     7:7:void userUniqAppend(org.json.JSONObject):171 -> c
     8:8:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> c
     8:8:void userUniqAppend(org.json.JSONObject):171 -> c
     9:9:void userUniqAppend(org.json.JSONObject):174:174 -> c
     10:13:void trackTimerStart$lambda-1(java.lang.String,long):184:187 -> c
     1:1:void setAccountId(java.lang.String):32:32 -> d
-    2:2:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> d
+    2:2:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> d
     2:2:void userDelete():157 -> d
     3:3:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> d
     3:3:void userDelete():157 -> d
     4:4:void userDelete():160:160 -> d
-    5:5:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> d
+    5:5:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> d
     5:5:void userSet(org.json.JSONObject):119 -> d
     6:6:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> d
     6:6:void userSet(org.json.JSONObject):119 -> d
     7:7:void userSet(org.json.JSONObject):122:122 -> d
-    1:1:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> e
+    1:1:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> e
     1:1:void trackTimerPause(java.lang.String):193 -> e
     2:2:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> e
     2:2:void trackTimerPause(java.lang.String):193 -> e
     3:4:void trackTimerPause(java.lang.String):196:197 -> e
-    5:5:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> e
+    5:5:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> e
     5:5:void userAppend(org.json.JSONObject):164 -> e
     6:6:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> e
     6:6:void userAppend(org.json.JSONObject):164 -> e
     7:7:void userAppend(org.json.JSONObject):167:167 -> e
-    1:1:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> f
+    1:1:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> f
     1:1:void removeTimer(java.lang.String):239 -> f
     2:2:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> f
     2:2:void removeTimer(java.lang.String):239 -> f
     3:3:void removeTimer(java.lang.String):242:242 -> f
-    1:1:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> g
+    1:1:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> g
     1:1:void setAppsFlyersId(java.lang.String):51 -> g
     2:2:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> g
     2:2:void setAppsFlyersId(java.lang.String):51 -> g
     3:3:void setAppsFlyersId(java.lang.String):54:54 -> g
-    1:1:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> h
+    1:1:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> h
     1:1:void trackTimerResume(java.lang.String):208 -> h
     2:2:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> h
     2:2:void trackTimerResume(java.lang.String):208 -> h
     3:4:void trackTimerResume(java.lang.String):211:212 -> h
-    1:1:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():32:32 -> i
+    1:1:com.roiquery.analytics.config.AnalyticsConfig com.roiquery.analytics.api.AbstractAnalytics.getConfigOptions():33:33 -> i
     1:1:void setFirebaseInstanceId(java.lang.String):44 -> i
     2:2:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> i
     2:2:void setFirebaseInstanceId(java.lang.String):44 -> i
     3:3:void setFirebaseInstanceId(java.lang.String):47:47 -> i
-    1:4:void removeTimer$lambda-5(java.lang.String):244:247 -> k
-    1:1:com.roiquery.analytics.api.AnalyticsImp access$getInstance$cp():26:26 -> l
-    1:3:void clearTrackTimer$lambda-6():257:259 -> m
+    1:1:com.roiquery.analytics.api.AnalyticsImp access$getInstance$cp():26:26 -> k
+    2:5:void removeTimer$lambda-5(java.lang.String):244:247 -> k
+    1:3:void clearTrackTimer$lambda-6():257:259 -> l
 com.roiquery.analytics.api.AnalyticsImp$Companion -> com.roiquery.analytics.api.c$a:
 # {"id":"sourceFile","fileName":"AnalyticsImp.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
     2:2:void <init>():264:264 -> <init>
-    1:1:void access$onFirstInitAsync(com.roiquery.analytics.api.AnalyticsImp$Companion):264:264 -> a
+    1:1:void access$onFirstInitAsync(com.roiquery.analytics.api.AnalyticsImp$Companion,android.content.Context):264:264 -> a
     2:2:com.roiquery.analytics.api.AbstractAnalytics getInstance$roiquery_core_publicRelease():274:274 -> a
     3:3:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> a
     3:3:com.roiquery.analytics.api.AbstractAnalytics getInstance$roiquery_core_publicRelease():274 -> a
@@ -1317,7 +1319,7 @@ com.roiquery.analytics.api.AnalyticsImp$Companion -> com.roiquery.analytics.api.
     20:20:void init$roiquery_core_publicRelease(android.content.Context,com.roiquery.analytics.config.AnalyticsConfig):300 -> a
     21:22:void init$roiquery_core_publicRelease(android.content.Context,com.roiquery.analytics.config.AnalyticsConfig):300:301 -> a
     23:23:void init$roiquery_core_publicRelease(android.content.Context,com.roiquery.analytics.config.AnalyticsConfig):288:288 -> a
-    1:1:void onFirstInitAsync():314:314 -> b
+    24:24:void onFirstInitAsync(android.content.Context):314:314 -> a
 com.roiquery.analytics.api.AnalyticsImp$Companion$init$2 -> com.roiquery.analytics.api.c$a$a:
 # {"id":"sourceFile","fileName":"AnalyticsImp.kt"}
     android.content.Context $context -> b
@@ -1329,7 +1331,7 @@ com.roiquery.analytics.api.AnalyticsImp$Companion$init$2 -> com.roiquery.analyti
     15:15:void com.roiquery.quality.PerfLogger.doPerfLog(com.roiquery.quality.PerfAction,long):0:0 -> invokeSuspend
     15:15:java.lang.Object invokeSuspend(java.lang.Object):304 -> invokeSuspend
     16:18:java.lang.Object invokeSuspend(java.lang.Object):306:308 -> invokeSuspend
-    19:19:void com.roiquery.analytics.api.AnalyticsImp$Companion.access$onFirstInitAsync(com.roiquery.analytics.api.AnalyticsImp$Companion):264:264 -> invokeSuspend
+    19:19:void com.roiquery.analytics.api.AnalyticsImp$Companion.access$onFirstInitAsync(com.roiquery.analytics.api.AnalyticsImp$Companion,android.content.Context):264:264 -> invokeSuspend
     19:19:java.lang.Object invokeSuspend(java.lang.Object):308 -> invokeSuspend
     20:20:java.lang.Object invokeSuspend(java.lang.Object):310:310 -> invokeSuspend
 com.roiquery.analytics.api.AnalyticsImp$enableUpload$1 -> com.roiquery.analytics.api.c$b:
@@ -1509,46 +1511,46 @@ com.roiquery.analytics.core.DTActivityLifecycleCallbacks -> com.roiquery.analyti
     boolean shouldTrackEndEvent -> f
     boolean resumeFromBackground -> a
     java.lang.Boolean isLaunch -> c
-    1:9:void <init>():34:42 -> <init>
-    1:1:java.lang.Boolean access$000(com.roiquery.analytics.core.DTActivityLifecycleCallbacks):34:34 -> a
-    2:2:java.lang.Boolean access$002(com.roiquery.analytics.core.DTActivityLifecycleCallbacks,java.lang.Boolean):34:34 -> a
-    3:4:android.app.Activity currentActivity():46:47 -> a
-    5:17:boolean notStartedActivity(android.app.Activity,boolean):75:87 -> a
-    18:24:org.json.JSONArray toJSONArray(java.lang.Object):199:205 -> a
-    25:25:org.json.JSONArray toJSONArray(java.lang.Object):201:201 -> a
-    1:1:boolean access$100(com.roiquery.analytics.core.DTActivityLifecycleCallbacks):34:34 -> b
-    2:32:java.lang.Object wrap(java.lang.Object):158:188 -> b
-    33:62:java.lang.String getStartReason():211:240 -> b
-    1:15:void onAppStartEventEnabled():139:153 -> c
-    1:1:void trackSessionEnd():63:63 -> d
+    1:9:void <init>():35:43 -> <init>
+    1:1:java.lang.Boolean access$000(com.roiquery.analytics.core.DTActivityLifecycleCallbacks):35:35 -> a
+    2:2:java.lang.Boolean access$002(com.roiquery.analytics.core.DTActivityLifecycleCallbacks,java.lang.Boolean):35:35 -> a
+    3:4:android.app.Activity currentActivity():47:48 -> a
+    5:17:boolean notStartedActivity(android.app.Activity,boolean):77:89 -> a
+    18:24:org.json.JSONArray toJSONArray(java.lang.Object):204:210 -> a
+    25:25:org.json.JSONArray toJSONArray(java.lang.Object):206:206 -> a
+    1:1:boolean access$100(com.roiquery.analytics.core.DTActivityLifecycleCallbacks):35:35 -> b
+    2:32:java.lang.Object wrap(java.lang.Object):163:193 -> b
+    33:62:java.lang.String getStartReason():216:245 -> b
+    1:15:void onAppStartEventEnabled():144:158 -> c
+    1:1:void trackSessionEnd():64:64 -> d
     2:2:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> d
-    2:2:void trackSessionEnd():63 -> d
+    2:2:void trackSessionEnd():64 -> d
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    3:3:void trackSessionEnd():66:66 -> d
-    1:1:void trackSessionStart():53:53 -> e
+    3:3:void trackSessionEnd():67:67 -> d
+    1:1:void trackSessionStart():54:54 -> e
     2:2:boolean com.roiquery.analytics.config.AnalyticsConfig.isSdkDisable():120:120 -> e
-    2:2:void trackSessionStart():53 -> e
+    2:2:void trackSessionStart():54 -> e
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    3:5:void trackSessionStart():56:58 -> e
-    1:1:void onActivityCreated(android.app.Activity,android.os.Bundle):71:71 -> onActivityCreated
-    1:9:void onActivityPaused(android.app.Activity):125:133 -> onActivityPaused
-    1:9:void onActivityResumed(android.app.Activity):112:120 -> onActivityResumed
-    1:14:void onActivityStarted(android.app.Activity):92:105 -> onActivityStarted
-    1:19:void onActivityStopped(android.app.Activity):246:264 -> onActivityStopped
+    3:5:void trackSessionStart():57:59 -> e
+    1:2:void onActivityCreated(android.app.Activity,android.os.Bundle):72:73 -> onActivityCreated
+    1:10:void onActivityPaused(android.app.Activity):129:138 -> onActivityPaused
+    1:10:void onActivityResumed(android.app.Activity):115:124 -> onActivityResumed
+    1:15:void onActivityStarted(android.app.Activity):94:108 -> onActivityStarted
+    1:19:void onActivityStopped(android.app.Activity):251:269 -> onActivityStopped
 com.roiquery.analytics.core.DTActivityLifecycleCallbacks$1 -> com.roiquery.analytics.core.a$a:
 # {"id":"sourceFile","fileName":"DTActivityLifecycleCallbacks.java"}
     com.roiquery.analytics.core.DTActivityLifecycleCallbacks this$0 -> a
-    1:1:void <init>(com.roiquery.analytics.core.DTActivityLifecycleCallbacks):141:141 -> <init>
-    1:1:void run():144:144 -> run
-    2:2:java.lang.Boolean com.roiquery.analytics.core.DTActivityLifecycleCallbacks.access$000(com.roiquery.analytics.core.DTActivityLifecycleCallbacks):34:34 -> run
-    2:2:void run():144 -> run
-    3:4:void run():144:145 -> run
-    5:5:java.lang.Boolean com.roiquery.analytics.core.DTActivityLifecycleCallbacks.access$002(com.roiquery.analytics.core.DTActivityLifecycleCallbacks,java.lang.Boolean):34:34 -> run
-    5:5:void run():145 -> run
-    6:6:void run():146:146 -> run
-    7:7:boolean com.roiquery.analytics.core.DTActivityLifecycleCallbacks.access$100(com.roiquery.analytics.core.DTActivityLifecycleCallbacks):34:34 -> run
-    7:7:void run():146 -> run
-    8:8:void run():146:146 -> run
+    1:1:void <init>(com.roiquery.analytics.core.DTActivityLifecycleCallbacks):146:146 -> <init>
+    1:1:void run():149:149 -> run
+    2:2:java.lang.Boolean com.roiquery.analytics.core.DTActivityLifecycleCallbacks.access$000(com.roiquery.analytics.core.DTActivityLifecycleCallbacks):35:35 -> run
+    2:2:void run():149 -> run
+    3:4:void run():149:150 -> run
+    5:5:java.lang.Boolean com.roiquery.analytics.core.DTActivityLifecycleCallbacks.access$002(com.roiquery.analytics.core.DTActivityLifecycleCallbacks,java.lang.Boolean):35:35 -> run
+    5:5:void run():150 -> run
+    6:6:void run():151:151 -> run
+    7:7:boolean com.roiquery.analytics.core.DTActivityLifecycleCallbacks.access$100(com.roiquery.analytics.core.DTActivityLifecycleCallbacks):35:35 -> run
+    7:7:void run():151 -> run
+    8:8:void run():151:151 -> run
 com.roiquery.analytics.core.EventInfoCheckHelper -> com.roiquery.analytics.core.b:
 # {"id":"sourceFile","fileName":"EventInfoCheckHelper.kt"}
     com.roiquery.analytics.core.EventInfoCheckHelper$Companion Companion -> a
@@ -3334,6 +3336,53 @@ com.roiquery.analytics.taskqueue.MonitorQueue$checkDBCount$count$1 -> com.roique
     2:2:java.lang.Object com.roiquery.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):55:55 -> invokeSuspend
     2:2:java.lang.Object invokeSuspend(java.lang.Object):39 -> invokeSuspend
     3:3:java.lang.Object invokeSuspend(java.lang.Object):39:39 -> invokeSuspend
+com.roiquery.analytics.taskqueue.thread.AndroidExecutor -> com.roiquery.analytics.taskqueue.thread.a:
+# {"id":"sourceFile","fileName":"AndroidExecutor.kt"}
+    kotlin.Lazy handlerThread$delegate -> b
+    kotlin.Lazy handler$delegate -> c
+    kotlin.Lazy mainHandler$delegate -> d
+    com.roiquery.analytics.taskqueue.thread.AndroidExecutor INSTANCE -> a
+    1:11:void <clinit>():32:42 -> <clinit>
+    1:1:void <init>():31:31 -> <init>
+    1:1:android.os.HandlerThread access$getHandlerThread(com.roiquery.analytics.taskqueue.thread.AndroidExecutor):31:31 -> a
+    2:2:android.os.Handler getHandler():38:38 -> a
+    3:3:void execute$default(com.roiquery.analytics.taskqueue.thread.AndroidExecutor,java.lang.Runnable,long,int,java.lang.Object):51:51 -> a
+    4:4:void execute(java.lang.Runnable,long):52:52 -> a
+    1:1:android.os.HandlerThread getHandlerThread():32:32 -> b
+    2:2:void executeInMain$default(com.roiquery.analytics.taskqueue.thread.AndroidExecutor,java.lang.Runnable,long,int,java.lang.Object):55:55 -> b
+    3:3:void executeInMain(java.lang.Runnable,long):56:56 -> b
+    1:1:android.os.Handler getMainHandler():42:42 -> c
+    1:1:void warnUp():48:48 -> d
+com.roiquery.analytics.taskqueue.thread.AndroidExecutor$handler$2 -> com.roiquery.analytics.taskqueue.thread.a$a:
+# {"id":"sourceFile","fileName":"AndroidExecutor.kt"}
+    com.roiquery.analytics.taskqueue.thread.AndroidExecutor$handler$2 INSTANCE -> a
+    1:1:android.os.Handler invoke():39:39 -> a
+    2:2:android.os.HandlerThread com.roiquery.analytics.taskqueue.thread.AndroidExecutor.access$getHandlerThread(com.roiquery.analytics.taskqueue.thread.AndroidExecutor):31:31 -> a
+    2:2:android.os.Handler invoke():39 -> a
+    3:3:android.os.Handler invoke():39:39 -> a
+    1:1:java.lang.Object invoke():38:38 -> invoke
+com.roiquery.analytics.taskqueue.thread.AndroidExecutor$handlerThread$2 -> com.roiquery.analytics.taskqueue.thread.a$b:
+# {"id":"sourceFile","fileName":"AndroidExecutor.kt"}
+    com.roiquery.analytics.taskqueue.thread.AndroidExecutor$handlerThread$2 INSTANCE -> a
+    1:2:android.os.HandlerThread invoke():33:34 -> a
+    1:1:java.lang.Object invoke():32:32 -> invoke
+com.roiquery.analytics.taskqueue.thread.AndroidExecutor$mainHandler$2 -> com.roiquery.analytics.taskqueue.thread.a$c:
+# {"id":"sourceFile","fileName":"AndroidExecutor.kt"}
+    com.roiquery.analytics.taskqueue.thread.AndroidExecutor$mainHandler$2 INSTANCE -> a
+    1:1:android.os.Handler invoke():42:42 -> a
+    1:1:java.lang.Object invoke():42:42 -> invoke
+com.roiquery.analytics.taskqueue.thread.AndroidExecutorKt -> com.roiquery.analytics.taskqueue.thread.b:
+# {"id":"sourceFile","fileName":"AndroidExecutor.kt"}
+    1:1:void runInBackground$default(long,kotlin.jvm.functions.Function0,int,java.lang.Object):15:15 -> a
+    2:2:void runInBackground(long,kotlin.jvm.functions.Function0):16:16 -> a
+    3:3:void runInBackground$lambda-0(kotlin.jvm.functions.Function0):16:16 -> a
+    4:4:void runInBackground$default(java.lang.Runnable,long,int,java.lang.Object):19:19 -> a
+    5:5:void runInBackground(java.lang.Runnable,long):20:20 -> a
+    1:1:void runInMain$default(long,kotlin.jvm.functions.Function0,int,java.lang.Object):23:23 -> b
+    2:2:void runInMain(long,kotlin.jvm.functions.Function0):24:24 -> b
+    3:3:void runInMain$lambda-1(kotlin.jvm.functions.Function0):24:24 -> b
+    4:4:void runInMain$default(java.lang.Runnable,long,int,java.lang.Object):27:27 -> b
+    5:5:void runInMain(java.lang.Runnable,long):28:28 -> b
 com.roiquery.analytics.utils.AdtUtil -> com.roiquery.analytics.utils.a:
 # {"id":"sourceFile","fileName":"AdtUtil.java"}
     java.lang.ref.SoftReference mContext -> a
@@ -3903,55 +3952,66 @@ com.roiquery.analytics.utils.LogUtils$TagHead -> com.roiquery.analytics.utils.Lo
     1:4:void <init>(java.lang.String,java.lang.String[],java.lang.String):668:671 -> <init>
 com.roiquery.analytics.utils.MemoryUtils -> com.roiquery.analytics.utils.j:
 # {"id":"sourceFile","fileName":"MemoryUtils.java"}
-    long secondVsync -> b
-    long firstVsync -> a
-    java.lang.String[] units -> d
-    int fps -> c
-    java.lang.String mStoragePath -> e
-    1:1:void <clinit>():235:235 -> <clinit>
-    1:1:void <init>():32:32 -> <init>
-    1:4:int getFPS():42:45 -> a
-    5:7:java.lang.String getMemoryUsed(android.content.Context):91:93 -> a
-    8:8:java.lang.String com.roiquery.analytics.utils.StorageBean.getUsedMemory():105:105 -> a
-    8:8:java.lang.String getMemoryUsed(android.content.Context):93 -> a
-    9:9:java.lang.String getMemoryUsed(android.content.Context):93:93 -> a
-    10:10:java.lang.String com.roiquery.analytics.utils.StorageBean.getTotalMemory():113:113 -> a
-    10:10:java.lang.String getMemoryUsed(android.content.Context):93 -> a
-    11:11:java.lang.String getMemoryUsed(android.content.Context):93:93 -> a
-    12:45:void getMemoryInfo(android.content.Context,com.roiquery.analytics.utils.StorageBean):109:142 -> a
-    46:46:java.lang.String getUnit(float,float):246:246 -> a
-    47:54:long getTotalSize(android.content.Context,java.lang.String):258:265 -> a
-    55:63:java.lang.String readableStorageSize(long):279:287 -> a
-    64:88:java.lang.String getDisk(android.content.Context,boolean):372:396 -> a
-    89:89:double formatNumber(double):406:406 -> a
-    1:14:void getStoreInfo(android.content.Context,com.roiquery.analytics.utils.StorageBean):154:167 -> b
-    15:29:java.lang.String getRAM(android.content.Context):298:312 -> b
-    30:30:boolean isSDCardMount():320:320 -> b
-    31:59:java.lang.String getStoragePath(android.content.Context,boolean):335:363 -> b
-    1:34:void listenFPS():52:85 -> c
-    35:88:java.lang.String getRealStorage(android.content.Context):175:228 -> c
-    1:3:java.lang.String getStorageUsed(android.content.Context):97:99 -> d
+    java.lang.String[] units -> i
+    long fpsStartTime -> e
+    java.lang.Runnable fpsListenerStarter -> h
+    java.lang.String mStoragePath -> j
+    android.view.Choreographer$FrameCallback fpsListener -> g
+    int fpsInterval -> f
+    int frames -> c
+    java.lang.Boolean isFpsDoing -> d
+    int fps -> a
+    java.lang.Boolean shouldListenFps -> b
+    1:229:void <clinit>():37:265 -> <clinit>
+    1:1:void <init>():34:34 -> <init>
+    1:1:void access$000(long):34:34 -> a
+    2:2:java.lang.Boolean access$100():34:34 -> a
+    3:5:void toggleShouldListenFps(java.lang.Boolean):59:61 -> a
+    6:6:void listenFPS(long):116:116 -> a
+    6:6:void toggleShouldListenFps(java.lang.Boolean):61 -> a
+    7:9:java.lang.String getMemoryUsed(android.content.Context):121:123 -> a
+    10:10:java.lang.String com.roiquery.analytics.utils.StorageBean.getUsedMemory():105:105 -> a
+    10:10:java.lang.String getMemoryUsed(android.content.Context):123 -> a
+    11:11:java.lang.String getMemoryUsed(android.content.Context):123:123 -> a
+    12:12:java.lang.String com.roiquery.analytics.utils.StorageBean.getTotalMemory():113:113 -> a
+    12:12:java.lang.String getMemoryUsed(android.content.Context):123 -> a
+    13:13:java.lang.String getMemoryUsed(android.content.Context):123:123 -> a
+    14:47:void getMemoryInfo(android.content.Context,com.roiquery.analytics.utils.StorageBean):139:172 -> a
+    48:48:java.lang.String getUnit(float,float):276:276 -> a
+    49:56:long getTotalSize(android.content.Context,java.lang.String):288:295 -> a
+    57:81:java.lang.String getDisk(android.content.Context,boolean):402:426 -> a
+    82:82:double formatNumber(double):436:436 -> a
+    1:1:android.view.Choreographer$FrameCallback access$200():34:34 -> b
+    2:2:void listenFPS(long):116:116 -> b
+    3:16:void getStoreInfo(android.content.Context,com.roiquery.analytics.utils.StorageBean):184:197 -> b
+    17:31:java.lang.String getRAM(android.content.Context):328:342 -> b
+    32:60:java.lang.String getStoragePath(android.content.Context,boolean):365:393 -> b
+    1:7:int getFPS():49:55 -> c
+    8:17:void newFrameComes(long):65:74 -> c
+    18:71:java.lang.String getRealStorage(android.content.Context):205:258 -> c
+    1:3:java.lang.String getStorageUsed(android.content.Context):127:129 -> d
     4:4:java.lang.String com.roiquery.analytics.utils.StorageBean.getUsedStore():65:65 -> d
-    4:4:java.lang.String getStorageUsed(android.content.Context):99 -> d
-    5:5:java.lang.String getStorageUsed(android.content.Context):99:99 -> d
+    4:4:java.lang.String getStorageUsed(android.content.Context):129 -> d
+    5:5:java.lang.String getStorageUsed(android.content.Context):129:129 -> d
     6:6:java.lang.String com.roiquery.analytics.utils.StorageBean.getTotalStore():73:73 -> d
-    6:6:java.lang.String getStorageUsed(android.content.Context):99 -> d
-    7:7:java.lang.String getStorageUsed(android.content.Context):99:99 -> d
+    6:6:java.lang.String getStorageUsed(android.content.Context):129 -> d
+    7:7:java.lang.String getStorageUsed(android.content.Context):129:129 -> d
+    8:16:java.lang.String readableStorageSize(long):309:317 -> d
+    17:17:boolean isSDCardMount():350:350 -> d
 com.roiquery.analytics.utils.MemoryUtils$1 -> com.roiquery.analytics.utils.j$a:
 # {"id":"sourceFile","fileName":"MemoryUtils.java"}
-    1:1:void <init>():53:53 -> <init>
-    1:9:void doFrame(long):56:64 -> doFrame
+    1:1:void <init>():78:78 -> <init>
+    1:7:void doFrame(long):82:88 -> doFrame
+    8:8:void com.roiquery.analytics.utils.MemoryUtils.listenFPS(long):116:116 -> doFrame
+    8:8:void doFrame(long):91 -> doFrame
+    9:9:void doFrame(long):85:85 -> doFrame
 com.roiquery.analytics.utils.MemoryUtils$2 -> com.roiquery.analytics.utils.j$b:
 # {"id":"sourceFile","fileName":"MemoryUtils.java"}
-    android.view.Choreographer$FrameCallback val$secondCallBack -> a
-    1:1:void <init>(android.view.Choreographer$FrameCallback):70:70 -> <init>
-    1:2:void doFrame(long):73:74 -> doFrame
-com.roiquery.analytics.utils.MemoryUtils$3 -> com.roiquery.analytics.utils.j$c:
-# {"id":"sourceFile","fileName":"MemoryUtils.java"}
-    android.os.Handler val$handler -> a
-    android.view.Choreographer$FrameCallback val$firstCallBack -> b
-    1:1:void <init>(android.os.Handler,android.view.Choreographer$FrameCallback):78:78 -> <init>
-    1:2:void run():81:82 -> run
+    1:1:void <init>():96:96 -> <init>
+    1:8:void run():99:106 -> run
+    9:9:android.view.Choreographer$FrameCallback com.roiquery.analytics.utils.MemoryUtils.access$200():34:34 -> run
+    9:9:void run():106 -> run
+    10:12:void run():106:108 -> run
 com.roiquery.analytics.utils.NetworkUtil -> com.roiquery.analytics.utils.NetworkUtil:
 # {"id":"sourceFile","fileName":"NetworkUtil.java"}
     1:2:void <init>():42:43 -> <init>
