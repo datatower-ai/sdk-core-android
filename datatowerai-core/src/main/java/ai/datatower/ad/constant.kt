@@ -77,6 +77,7 @@ enum class AdMediation(val value: Int) {
     TOPON(4),
     TRADPLUS(5),
     TOBID(6),
+    ADMOB(7),
 }
 
 enum class AdPlatform(val value: Int) {
