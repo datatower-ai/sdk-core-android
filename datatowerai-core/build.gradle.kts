@@ -87,7 +87,6 @@ afterEvaluate {
         val artifactId = "core"
         val dtsdkCoreVersionName: String by rootProject.extra
 
-
         publications {
             create<MavenPublication>("release") {
                 this.groupId = groupId
@@ -141,11 +140,27 @@ afterEvaluate {
         repositories {
             maven {
                 name = "Sonatype"
-                url = URI.create("https://s01.oss.sonatype.org/content/repositories/releases/")
+                url = if (dtsdkCoreVersionName.endsWith("-SNAPSHOT")) {
+                    URI.create("https://oss.sonatype.org/content/repositories/snapshots/")
+                } else {
+                    URI.create("https://s01.oss.sonatype.org/content/repositories/releases/")
+                }
                 credentials.username = props["ossrhUsername"].toString()
                 credentials.password = props["ossrhPassword"].toString()
             }
         }
+    }
+}
+
+tasks.withType(PublishToMavenRepository::class.java) {
+    doLast {
+        println("Published ${publication.groupId}:${publication.artifactId}:${publication.version} to ${repository.url}")
+    }
+}
+
+tasks.withType(PublishToMavenLocal::class.java) {
+    doLast {
+        println("Published \u001B[1m${publication.groupId}:${publication.artifactId}:\u001B[1;38;2;79;175;83m${publication.version}\u001B[0m to MavenLocal")
     }
 }
 
