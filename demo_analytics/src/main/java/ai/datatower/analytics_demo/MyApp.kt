@@ -12,8 +12,8 @@ import ai.datatower.analytics.*
 class MyApp : Application() {
 
     //ROIQuery base url
-    const val SERVER_URL_TEST       = "https://test.roiquery.com"
-    const val SERVER_URL   = "https://report.roiquery.com"
+    private val SERVER_URL_TEST       = "https://test.roiquery.com"
+    private val SERVER_URL   = "https://report.roiquery.com"
 //    const val SERVER_URL_INNER      = "https://report-inner.roiquery.com"
 
     override fun onCreate() {
