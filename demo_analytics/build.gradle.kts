@@ -54,6 +54,20 @@ android {
         }
     }
 
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("public") {
+            dimension = "distribution"
+            signingConfig = signingConfigs.getByName("release")
+            missingDimensionStrategy("slf4jLogging", "public")
+        }
+        create("internal") {
+            dimension = "distribution"
+            signingConfig = signingConfigs.getByName("debug")
+            missingDimensionStrategy("slf4jLogging", "internal")
+        }
+    }
+
     compileOptions {
         this.sourceCompatibility = javaVersion
         this.targetCompatibility = javaVersion
@@ -73,7 +87,9 @@ dependencies {
     val kotlinVersion: String by rootProject.extra
     val coroutinesVersion: String by rootProject.extra
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib") {
+        version { strictly(kotlinVersion) }
+    }
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
     /* NOTE: Do NOT update dependencies as it works with Kotlin 1.6, for more information see file
