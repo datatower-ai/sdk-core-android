@@ -22,6 +22,7 @@ buildscript {
     repositories {
         mavenCentral()
         google()
+        maven("https://plugins.gradle.org/m2/")
     }
 
     dependencies {
@@ -47,6 +48,7 @@ allprojects {
         mavenCentral()
         google()
         maven("https://www.jitpack.io")
+        maven("https://repo-public.en2joy.com/repository/maven-releases/")
         maven("https://oss.sonatype.org/content/repositories/snapshots/")
     }
 }

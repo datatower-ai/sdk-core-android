@@ -1,5 +1,6 @@
-import java.net.URI
 import java.util.Properties
+import java.net.URI
+import org.gradle.jvm.tasks.Jar
 
 plugins {
     id("com.android.library")
@@ -10,7 +11,6 @@ plugins {
     id("signing")
 }
 
-@Suppress("UnstableApiUsage")
 android {
     val compileSdkVersion: Int by rootProject.extra
     val minSdkVersion: Int by rootProject.extra
@@ -28,6 +28,7 @@ android {
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
+        buildConfigField("Boolean", "IS_LOGGING_ENABLED", "false")
     }
 
     buildFeatures {
@@ -49,18 +50,26 @@ android {
         }
     }
 
+    flavorDimensions += "slf4jLogging"
+    productFlavors {
+        create("public") {
+            dimension = "slf4jLogging"
+            buildConfigField("Boolean", "IS_LOGGING_ENABLED", "false")
+            missingDimensionStrategy("slf4jLogging", "public")
+        }
+        create("internal") {
+            dimension = "slf4jLogging"
+            buildConfigField("Boolean", "IS_LOGGING_ENABLED", "true")
+            missingDimensionStrategy("slf4jLogging", "internal")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }
 
     kotlinOptions.jvmTarget = javaVersion.toString()
-
-    publishing {
-        singleVariant("release") {
-            //withSourcesJar()
-        }
-    }
 }
 
 dependencies {
@@ -69,7 +78,9 @@ dependencies {
     val roomDbVersion: String by rootProject.extra
     val androidxAnnotationVersion: String by rootProject.extra
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib") {
+        version { strictly(kotlinVersion) }
+    }
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     implementation("androidx.annotation:annotation:$androidxAnnotationVersion")
 
@@ -81,65 +92,69 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomDbVersion")
 }
 
-afterEvaluate {
-    publishing {
-        val groupId = "ai.datatower"
-        val artifactId = "core"
-        val dtsdkCoreVersionName: String by rootProject.extra
+tasks.create("sourcesJarToPublish", Jar::class) {
+    from(android.sourceSets.getByName("main").java.getSourceFiles())
+    archiveClassifier.set("sources")
+}
 
-        publications {
-            create<MavenPublication>("release") {
-                this.groupId = groupId
-                this.artifactId = artifactId
-                version = dtsdkCoreVersionName
+publishing {
+    val groupId = "ai.datatower"
+    val artifactId = "core"
+    val dtsdkCoreVersionName: String by rootProject.extra
 
-                from(components["release"])
+    val props = rootProject.file("local.properties").inputStream().use { inStream ->
+        Properties().also { it.load(inStream) }
+    }
 
-                pom {
-                    name.set(artifactId)
-                    description.set("DataTower.ai Android SDK")
-                    url.set("https://github.com/lovinjoy/datatower.ai-core-android")
+    publications {
+        create<MavenPublication>("Release") {
+            this.groupId = groupId
+            this.artifactId = artifactId
+            version = dtsdkCoreVersionName
 
-                    licenses {
-                        license {
-                            name.set("The Apache License, Version 2.0")
-                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                        }
-                    }
-                    developers {
-                        developer {
-                            id.set("datatower")
-                            name.set("datatower.ai")
-                            email.set("develop@datatower.ai")
-                        }
-                    }
-                    scm {
-                        connection.set("scm:git:github.com/datatower-ai/sdk-core-android.git")
-                        developerConnection.set("scm:git:ssh://github.com/datatower-ai/sdk-core-android.git")
-                        url.set("https://github.com/datatower-ai/sdk-core-android/tree/main")
+            artifact("$buildDir/outputs/aar/${project.name}-public-release.aar")
+            artifact(tasks.getByName("sourcesJarToPublish"))
+
+            pom {
+                name.set(artifactId)
+                description.set("DataTower.ai Android SDK")
+                url.set("https://github.com/lovinjoy/datatower.ai-core-android")
+
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
                     }
                 }
-
-//                pom.withXml {
-//                    val dependenciesNode = asNode().appendNode("dependencies")
-//
-//                    configurations.implementation.get().dependencies.forEach {
-//                        val dependencyNode = dependenciesNode.appendNode("dependency")
-//                        dependencyNode.appendNode("groupId", it.group)
-//                        dependencyNode.appendNode("artifactId", it.name)
-//                        dependencyNode.appendNode("version", it.version)
-//                    }
-//                }
+                developers {
+                    developer {
+                        id.set("datatower")
+                        name.set("datatower.ai")
+                        email.set("develop@datatower.ai")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:github.com/datatower-ai/sdk-core-android.git")
+                    developerConnection.set("scm:git:ssh://github.com/datatower-ai/sdk-core-android.git")
+                    url.set("https://github.com/datatower-ai/sdk-core-android/tree/main")
+                }
             }
-        }
 
-        val props = rootProject.file("local.properties").inputStream().use { inStream ->
-            Properties().also { it.load(inStream) }
+            pom.withXml {
+                val dependenciesNode = asNode().appendNode("dependencies")
+
+                configurations.implementation.get().dependencies.forEach {
+                    val dependencyNode = dependenciesNode.appendNode("dependency")
+                    dependencyNode.appendNode("groupId", it.group)
+                    dependencyNode.appendNode("artifactId", it.name)
+                    dependencyNode.appendNode("version", it.version)
+                }
+            }
         }
 
         repositories {
             maven {
-                name = "Sonatype"
+                name = "MavenCentral"
                 url = if (dtsdkCoreVersionName.endsWith("-SNAPSHOT")) {
                     URI.create("https://oss.sonatype.org/content/repositories/snapshots/")
                 } else {
@@ -150,6 +165,10 @@ afterEvaluate {
             }
         }
     }
+}
+
+signing {
+    // TODO: sign(publishing.publications)
 }
 
 tasks.withType(PublishToMavenRepository::class.java) {
@@ -165,6 +184,6 @@ tasks.withType(PublishToMavenLocal::class.java) {
 }
 
 tasks.create("copyProguardMappingFiles", Copy::class) {
-    from("$buildDir/outputs/mapping/release/")
+    from("$buildDir/outputs/mapping/publicRelease/")
     into(File(projectDir, "proguard-mapping"))
 }
