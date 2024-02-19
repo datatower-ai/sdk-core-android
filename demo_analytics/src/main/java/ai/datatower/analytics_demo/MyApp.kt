@@ -11,11 +11,6 @@ import ai.datatower.analytics.*
 
 class MyApp : Application() {
 
-    //ROIQuery base url
-    private val SERVER_URL_TEST       = "https://test.roiquery.com"
-    private val SERVER_URL   = "https://report.roiquery.com"
-//    const val SERVER_URL_INNER      = "https://report-inner.roiquery.com"
-
     override fun onCreate() {
         super.onCreate()
         val initBeginTime = SystemClock.elapsedRealtime()
@@ -25,7 +20,7 @@ class MyApp : Application() {
             this,
 //            "dt_53ecce7c85c3daab",
             "dt_beb231f90a5a20ba", // test app
-            SERVER_URL_TEST,
+            "https://test.roiquery.com",
             DTChannel.GP,
             true,
             Log.VERBOSE

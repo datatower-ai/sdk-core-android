@@ -25,7 +25,6 @@ private constructor() : AbstractAnalyticsConfig() {
     }
 
     private val configPreferenceName = "datatower.android.config"
-    private val configUrl = "https://test.roiquery.com/sdk/cfg"
     private val sPrefsLoader: SharedPreferencesLoader = SharedPreferencesLoader()
 
     private var sdkDisableStorage: StorageDisableFlag? = null

@@ -37,12 +37,7 @@ abstract class DTAnalyticsDB : RoomDatabase() {
 
         private fun buildDatabase(context: Context): DTAnalyticsDB? {
             return try {
-                // migrate from "roiquery_analytics_db" -> "datatower_ai_core_db"
-                val dbFile = context.applicationContext.getDatabasePath("roiquery_analytics_db")
-                if (dbFile.exists()) {
-                    val newDbFile = context.applicationContext.getDatabasePath(DATABASE_NAME)
-                    dbFile.renameTo(newDbFile)
-                }
+                ensureMigrated(context)
 
                 Room.databaseBuilder(
                     context,
@@ -54,6 +49,15 @@ abstract class DTAnalyticsDB : RoomDatabase() {
                     .build()
             } catch (e: Exception){
                 null
+            }
+        }
+
+        private fun ensureMigrated(context: Context) {
+            // migrate from "roiquery_analytics_db" -> "datatower_ai_core_db"
+            val dbFile = context.applicationContext.getDatabasePath("roiquery_analytics_db")
+            if (dbFile.exists()) {
+                val newDbFile = context.applicationContext.getDatabasePath(DATABASE_NAME)
+                dbFile.renameTo(newDbFile)
             }
         }
     }

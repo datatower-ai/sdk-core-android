@@ -27,6 +27,10 @@ internal class DTQualityHelper private constructor() {
         @DTErrorParams.DTErrorLevel level: Int = DTErrorParams.TYPE_ERROR
     ) {
         try {
+            if (Constant.ERROR_REPORT_URL.isEmpty()) {
+                return
+            }
+
             val data = getJsonData(errorCode, errorMsg, defaultErrorMsg, level)
             RequestHelper.Builder(
                 HttpMethod.POST_ASYNC,

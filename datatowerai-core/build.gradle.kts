@@ -1,3 +1,4 @@
+import org.gradle.api.plugins.ExtraPropertiesExtension.UnknownPropertyException
 import java.util.Properties
 import java.net.URI
 import org.gradle.jvm.tasks.Jar
@@ -29,6 +30,23 @@ android {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
         buildConfigField("Boolean", "IS_LOGGING_ENABLED", "false")
+
+        /*
+         * config_dt.gradle.kts
+         */
+        try {
+            apply(rootProject.file("config_dt.gradle.kts"))
+        } catch (_: Throwable) {}
+        fun buildStringConfigFunc(name: String, key: String = name, default: String = "") {
+            try {
+                buildConfigField("String", name, "\"${extra[key]}\"")
+            } catch (_: UnknownPropertyException) {
+                buildConfigField("String", name, "\"$default\"")
+            }
+        }
+        buildStringConfigFunc("DEFAULT_SERVER_URL")
+        buildStringConfigFunc("EVENT_REPORT_PATH")
+        buildStringConfigFunc("ERROR_REPORTING_URL")
     }
 
     buildFeatures {
@@ -36,6 +54,7 @@ android {
     }
 
     buildTypes {
+
         getByName("release") {
             isMinifyEnabled = true
             proguardFile(getDefaultProguardFile("proguard-android-optimize.txt"))
