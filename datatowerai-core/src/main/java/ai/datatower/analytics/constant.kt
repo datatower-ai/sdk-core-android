@@ -6,12 +6,12 @@ internal object Constant {
     const val LOG_TAG = "DataTower"
 
     //DT base url
-    const val SERVER_URL_EXTERNAL   = "https://report.roiquery.com"
+    const val SERVER_URL_EXTERNAL   = BuildConfig.DEFAULT_SERVER_URL
 
     //upload url
-    const val EVENT_REPORT_PATH = "/report"
+    const val EVENT_REPORT_PATH = BuildConfig.EVENT_REPORT_PATH
 
-    const val ERROR_REPORT_URL = "https://debug.roiquery.com/debug"
+    const val ERROR_REPORT_URL = BuildConfig.ERROR_REPORTING_URL
 
     //event upload size
     const val EVENT_REPORT_SIZE = 10

@@ -59,7 +59,7 @@ val reportingUrl = "xxx"
 DT.initSDK(
     this,
     appId,
-    reportUrl,
+    reportingUrl,
     "",
     true,
     Log.DEBUG
