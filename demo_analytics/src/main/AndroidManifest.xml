@@ -26,8 +26,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
+        <activity android:name=".ui.MainActivity"/>
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.fn.core.TrackEventCustomizedActivity"
+            android:label="Track Event Customized" />
+        <activity android:name=".ui.fn.core.UserApiActivity"
+            android:label="User related API" />
+        <activity android:name=".ui.fn.core.DisplayAllApiActivity" />
+        <activity android:name=".ui.fn.core.DevTestActivity" />
+        <activity
+            android:name=".ui.StartupActivity"
             android:exported="true"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <intent-filter>
@@ -41,13 +49,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.fn.core.TrackEventCustomizedActivity"
-            android:label="Track Event Customized" />
-        <activity android:name=".ui.fn.core.UserApiActivity"
-            android:label="User related API" />
-        <activity android:name=".ui.fn.core.DisplayAllApiActivity" />
-        <activity android:name=".ui.fn.core.DevTestActivity" />
 
         <receiver
             android:name=".DemoNotification"
