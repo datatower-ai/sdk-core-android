@@ -1,5 +1,6 @@
 package ai.datatower.analytics_demo.ui.fn.core
 
+import ai.datatower.analytics.DTAnalytics
 import ai.datatower.analytics_demo.ui.theme.DataTowerSDKCoreTheme
 import android.content.Context
 import android.content.Intent

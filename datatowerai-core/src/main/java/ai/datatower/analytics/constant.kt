@@ -31,6 +31,7 @@ internal object Constant {
     const val PRE_EVENT_INFO_SYN     = "event_syn"
     const val EVENT_INFO_SYN         = "#event_syn"
     const val EVENT_INFO_PROPERTIES  = "properties"
+    const val EVENT_INFO_DISTINCT_ID = "#disctId"
 
     const val EVENT_BODY  = "body"
     const val EVENT_TIME_CALIBRATED  = "time_calibrated"

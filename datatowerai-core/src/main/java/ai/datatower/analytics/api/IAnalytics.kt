@@ -42,6 +42,11 @@ interface IAnalytics {
      var accountId: String?
 
     /**
+     * 访客 id
+     */
+    var distinctId: String?
+
+    /**
      * DataTower id
      */
     fun  getDTId(onDataTowerIDListener: OnDataTowerIdListener)

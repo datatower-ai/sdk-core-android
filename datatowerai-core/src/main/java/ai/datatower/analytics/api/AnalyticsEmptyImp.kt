@@ -7,9 +7,11 @@ class AnalyticsEmptyImp internal constructor() : AbstractAnalytics() {
 
     override var accountId: String?
         get() = ""
-        set(value) {
+        set(value) {}
 
-        }
+    override var distinctId: String?
+        get() = ""
+        set(value) {}
 
     override fun getDTId(onDataTowerIDListener: OnDataTowerIdListener) {
     }

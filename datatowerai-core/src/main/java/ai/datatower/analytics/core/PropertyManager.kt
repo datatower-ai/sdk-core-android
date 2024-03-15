@@ -23,6 +23,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
+import android.util.Log
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
@@ -486,6 +487,22 @@ class PropertyManager private constructor() {
 
     fun getACID(): String {
         (getEventInfo()[Constant.EVENT_INFO_ACID] as String?)?.let {
+            if (it.isNotEmpty()) {
+                return it
+            }
+        }
+        return ""
+    }
+
+    fun updateDistinctId(id: String) {
+        MainQueue.get().postTask {
+            EventDataAdapter.getInstance()?.setDistinctId(id)
+            updateEventInfo(Constant.EVENT_INFO_DISTINCT_ID, id)
+        }
+    }
+
+    fun getDistinctId(): String {
+        (getEventInfo()[Constant.EVENT_INFO_DISTINCT_ID] as? String?)?.let {
             if (it.isNotEmpty()) {
                 return it
             }

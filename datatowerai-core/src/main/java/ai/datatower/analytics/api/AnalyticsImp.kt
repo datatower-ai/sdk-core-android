@@ -19,6 +19,7 @@ import ai.datatower.quality.DTErrorParams
 import ai.datatower.quality.DTQualityHelper
 import android.content.Context
 import android.os.SystemClock
+import android.util.Log
 import kotlinx.coroutines.runBlocking
 import org.json.JSONException
 import org.json.JSONObject
@@ -28,10 +29,15 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     override var accountId: String?
         get() = PropertyManager.instance.getACID()
         set(value) {
-            if (value != null) {
-                PropertyManager.instance.updateACID(value)
-            }
+            PropertyManager.instance.updateACID(value ?: "")
         }
+
+    override var distinctId: String?
+        get() = PropertyManager.instance.getDistinctId()
+        set(value) {
+            PropertyManager.instance.updateDistinctId(value ?: "")
+        }
+
 
     override fun getDTId(onDataTowerIDListener: OnDataTowerIdListener) {
         if (configOptions?.isSdkDisable() == true) {

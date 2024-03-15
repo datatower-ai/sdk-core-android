@@ -9,6 +9,7 @@ import ai.datatower.analytics.utils.TimeCalibration
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
 import android.content.Context
+import android.util.Log
 import org.json.JSONObject
 
 class EventDataAdapter private constructor(
@@ -92,12 +93,33 @@ class EventDataAdapter private constructor(
         if (accountIdCached.isEmpty()) {
             accountIdCached = getStringConfig(DataParams.CONFIG_ACCOUNT_ID)
         }
+        return@asyncSequentialChained accountIdCached
     }
 
     fun setAccountId(value: String) = DBQueue.get().launchSequential {
         if (accountIdCached == value) return@launchSequential
         accountIdCached = value
         setStringConfig(DataParams.CONFIG_ACCOUNT_ID, value)
+    }
+
+    /**
+     *  访客 id
+     *
+     * Thread safety: Guarded by serial execution of [DBQueue].
+     */
+    private var distinctIdCached = ""
+
+    fun getDistinctId() = DBQueue.get().asyncSequentialChained {
+        if (distinctIdCached.isEmpty()) {
+            distinctIdCached = getStringConfig(DataParams.CONFIG_DISTINCT_ID)
+        }
+        return@asyncSequentialChained distinctIdCached
+    }
+
+    fun setDistinctId(value: String) = DBQueue.get().launchSequential {
+        if (distinctIdCached == value) return@launchSequential
+        distinctIdCached = value
+        setStringConfig(DataParams.CONFIG_DISTINCT_ID, value)
     }
 
     // endregion

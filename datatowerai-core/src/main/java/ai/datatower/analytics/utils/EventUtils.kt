@@ -7,6 +7,7 @@ import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.text.TextUtils
+import android.util.Log
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -27,6 +28,11 @@ object EventUtils {
         //登录账号id
         dataAdapter?.getAccountId()?.await()?.let {
             eventInfo[Constant.EVENT_INFO_ACID] = it
+        }
+
+        // 访客id
+        dataAdapter?.getDistinctId()?.await()?.let {
+            eventInfo[Constant.EVENT_INFO_DISTINCT_ID] = it
         }
 
         if (!disableList.contains(Constant.EVENT_INFO_BUNDLE_ID)) {

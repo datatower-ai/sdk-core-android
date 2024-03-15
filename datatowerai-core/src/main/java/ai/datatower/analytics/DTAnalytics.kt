@@ -5,6 +5,7 @@ import ai.datatower.analytics.core.PropertyManager
 import ai.datatower.analytics.utils.DataCheck.findFirstNonJsonArray
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.thirdparty.ThirdPartShareDataFactory
+import android.util.Log
 import org.json.JSONObject
 
 open class DTAnalytics {
@@ -123,13 +124,23 @@ open class DTAnalytics {
         }
 
         /**
-         * 设置自有用户系统的id
+         * 设置自有用户系统的id，
+         * 传 null 或 空字符串 以退出登陆，清空用户 id
          * @param id 用户系统id
          */
         @JvmStatic
         fun setAccountId(id: String?) {
             AnalyticsImp.getInstance().accountId = id
         }
+
+        /**
+         * 访客 id
+         */
+        var distinctId: String?
+            @JvmStatic get() = AnalyticsImp.getInstance().distinctId
+            @JvmStatic set(value) {
+                AnalyticsImp.getInstance().distinctId = value
+            }
 
         /**
          * 设置 Firebase 的 app_instance_id
