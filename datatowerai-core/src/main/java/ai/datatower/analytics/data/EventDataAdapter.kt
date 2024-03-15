@@ -5,6 +5,7 @@ import ai.datatower.analytics.taskqueue.asyncSequential
 import ai.datatower.analytics.taskqueue.asyncSequentialCatching
 import ai.datatower.analytics.taskqueue.asyncSequentialChained
 import ai.datatower.analytics.taskqueue.launchSequential
+import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.TimeCalibration
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
@@ -120,6 +121,20 @@ class EventDataAdapter private constructor(
         if (distinctIdCached == value) return@launchSequential
         distinctIdCached = value
         setStringConfig(DataParams.CONFIG_DISTINCT_ID, value)
+    }
+
+    fun setStaticSuperProperties(properties: JSONObject) = DBQueue.get().launchSequential {
+        setStringConfig(DataParams.CONFIG_STATIC_SUPER_PROPERTY, properties.toString())
+    }
+
+    fun getStaticSuperProperties() = DBQueue.get().asyncSequentialChained {
+        val jsonStr = getStringConfig(DataParams.CONFIG_STATIC_SUPER_PROPERTY)
+        return@asyncSequentialChained try {
+            JSONObject(jsonStr)
+        } catch (t: Throwable) {
+            LogUtils.e("getStaticSuperProperties", t)
+            JSONObject()
+        }
     }
 
     // endregion

@@ -193,6 +193,65 @@ open class DTAnalytics {
             }
         }
 
+        /**
+         * 设置通用属性（动态）
+         *
+         * @param properties 通用属性，值需为 Json 支持的类型
+         */
+        @JvmStatic
+        fun setCommonProperties(properties: Map<String, Any?>) {
+            AnalyticsImp.getInstance().setCommonProperties(JSONObject(properties))
+        }
+
+        /**
+         * 设置通用属性（动态）
+         *
+         * @param properties 通用属性，值需为 Json 支持的类型
+         */
+        @JvmStatic
+        fun setCommonProperties(properties: JSONObject) {
+            AnalyticsImp.getInstance().setCommonProperties(properties)
+        }
+
+        /**
+         * 移除通用属性（动态）
+         */
+        @JvmStatic
+        fun clearCommonProperties() {
+            AnalyticsImp.getInstance().clearCommonProperties()
+        }
+
+        /**
+         * 设置通用属性（静态，持久化）
+         * 持久化数据的读取时机在 initSDK 之后
+         *
+         * @param properties 通用属性，值需为 Json 支持的类型
+         */
+        @JvmStatic
+        fun setStaticCommonProperties(properties: Map<String, Any?>) {
+            AnalyticsImp.getInstance().setStaticCommonProperties(JSONObject(properties))
+        }
+
+
+        /**
+         * 设置通用属性（静态，持久化）
+         * 持久化数据的读取时机在 initSDK 之后
+         *
+         * @param properties 通用属性，值需为 Json 支持的类型
+         */
+        @JvmStatic
+        fun setStaticCommonProperties(properties: JSONObject) {
+            AnalyticsImp.getInstance().setStaticCommonProperties(properties)
+        }
+
+        /**
+         * 移除通用属性（静态，持久化）
+         */
+        @JvmStatic
+        fun clearStaticCommonProperties() {
+            AnalyticsImp.getInstance().clearStaticCommonProperties()
+        }
+
         /******************** internal *******************/
 
         /**

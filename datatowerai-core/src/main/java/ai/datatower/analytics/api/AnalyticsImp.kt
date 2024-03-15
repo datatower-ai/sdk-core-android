@@ -13,13 +13,13 @@ import ai.datatower.analytics.taskqueue.MonitorQueue
 import ai.datatower.analytics.taskqueue.launchSequential
 import ai.datatower.analytics.utils.EventUtils
 import ai.datatower.analytics.utils.LogUtils
+import ai.datatower.analytics.utils.SuperPropsUtil
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
 import ai.datatower.quality.DTErrorParams
 import ai.datatower.quality.DTQualityHelper
 import android.content.Context
 import android.os.SystemClock
-import android.util.Log
 import kotlinx.coroutines.runBlocking
 import org.json.JSONException
 import org.json.JSONObject
@@ -178,6 +178,22 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             return
         }
         trackUser(Constant.PRESET_EVENT_USER_UNIQ_APPEND, properties)
+    }
+
+    override fun setCommonProperties(properties: JSONObject) {
+        SuperPropsUtil.updateDynamicProperties(properties)
+    }
+
+    override fun clearCommonProperties() {
+        SuperPropsUtil.clearDynamicProperties()
+    }
+
+    override fun setStaticCommonProperties(properties: JSONObject) {
+        SuperPropsUtil.updateStaticProperties(properties)
+    }
+
+    override fun clearStaticCommonProperties() {
+        SuperPropsUtil.clearStaticProperties()
     }
 
     override fun trackTimerStart(eventName: String) {

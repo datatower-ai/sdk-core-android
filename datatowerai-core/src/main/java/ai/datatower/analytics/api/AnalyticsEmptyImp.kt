@@ -72,6 +72,22 @@ class AnalyticsEmptyImp internal constructor() : AbstractAnalytics() {
 
     }
 
+    override fun setCommonProperties(properties: JSONObject) {
+
+    }
+
+    override fun clearCommonProperties() {
+
+    }
+
+    override fun setStaticCommonProperties(properties: JSONObject) {
+
+    }
+
+    override fun clearStaticCommonProperties() {
+
+    }
+
     override fun trackTimerStart(eventName: String) {
 
     }

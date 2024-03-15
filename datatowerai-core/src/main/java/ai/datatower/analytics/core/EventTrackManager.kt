@@ -9,6 +9,7 @@ import ai.datatower.analytics.utils.DataUtils
 import ai.datatower.analytics.utils.EventUtils
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.MemoryUtils
+import ai.datatower.analytics.utils.SuperPropsUtil
 import ai.datatower.analytics.utils.TimeCalibration
 import ai.datatower.quality.DTErrorParams
 import ai.datatower.quality.DTQualityHelper
@@ -187,8 +188,22 @@ class EventTrackManager {
                 properties
             }
 
+            val props = eventProperties ?: JSONObject()
+            // 接入方设置的动态/静态通用属性，event_type 为 track 时添加
+            // 最低优先级, 且 dynamic > static
+            if (eventType == Constant.EVENT_TYPE_TRACK) {
+                for (key in SuperPropsUtil.dynamicProperties.keys()) {
+                    if (props.has(key)) continue
+                    props.put(key, SuperPropsUtil.dynamicProperties[key])
+                }
+                for (key in SuperPropsUtil.staticProperties.keys()) {
+                    if (props.has(key)) continue
+                    props.put(key, SuperPropsUtil.staticProperties[key])
+                }
+            }
+
             //设置事件属性
-            eventInfo.put(Constant.EVENT_INFO_PROPERTIES, eventProperties)
+            eventInfo.put(Constant.EVENT_INFO_PROPERTIES, props)
 
             //将事件时间是否校准的结果保存至事件信息中，以供上报时校准时间使用
             val data = JSONObject().apply {
