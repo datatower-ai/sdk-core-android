@@ -129,7 +129,10 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
             Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
                 value = serverUrl,
-                onValueChange = { serverUrl = it },
+                onValueChange = {
+                    serverUrl = it
+                    isServerUrlError = false
+                },
                 label = { Text("Server Url") },
                 supportingText = { Text("Default: \"${BuildConfig.DEFAULT_SERVER_URL}\"") },
                 modifier = Modifier.fillMaxWidth(),
@@ -138,7 +141,10 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
             Spacer(modifier = Modifier.height(10.dp))
             OutlinedTextField(
                 value = appId,
-                onValueChange = { appId = it },
+                onValueChange = {
+                    appId = it
+                    isAppIdError = false
+                },
                 label = { Text("App id") },
                 supportingText = { Text("*Required") },
                 modifier = Modifier.fillMaxWidth(),
@@ -163,7 +169,9 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
                         onValueChange = {},
                         readOnly = true,
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                        modifier = Modifier.menuAnchor().fillMaxWidth(),
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth(),
                         label = { Text("Log Level") },
                     )
 
@@ -190,6 +198,15 @@ private fun initDT(context: Context, serverUrl: String, appId: String, isDebug: 
     val initBeginTime = SystemClock.elapsedRealtime()
     Log.d("initSDK begin", initBeginTime.toString())
     DTAdReport.generateUUID()
+    DTAnalytics.getDataTowerId(object : OnDataTowerIdListener {
+        override fun onDataTowerIdCompleted(dataTowerId: String) {
+            Log.d("BEFORE, DataTowerId", dataTowerId)
+        }
+    })
+    DTAnalytics.setCommonProperties(mapOf(
+        "cp" to "before_init",
+        "is_it_inserted" to "xxx"
+    ))
     DT.initSDK(context, appId, serverUrl, DTChannel.GP, isDebug, Log.VERBOSE)
     Log.d("initSDK end", (SystemClock.elapsedRealtime() - initBeginTime).toString())
     DTAnalytics.getDataTowerId(object : OnDataTowerIdListener {

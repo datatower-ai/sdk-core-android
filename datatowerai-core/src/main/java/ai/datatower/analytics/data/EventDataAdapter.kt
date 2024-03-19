@@ -137,6 +137,14 @@ class EventDataAdapter private constructor(
         }
     }
 
+    fun setUserSetOnceProps(propertyNames: String) = DBQueue.get().launchSequential {
+        setStringConfig(DataParams.CONFIG_USER_SET_ONCE_PROPS, propertyNames)
+    }
+
+    fun getUserSetOnceProps() = DBQueue.get().asyncSequentialChained {
+        getStringConfig(DataParams.CONFIG_USER_SET_ONCE_PROPS)
+    }
+
     // endregion
 
     /**
