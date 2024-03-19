@@ -12,36 +12,40 @@ object SuperPropsUtil {
         private set
 
     suspend fun init() {
-        Log.w("xxx", "SuperPropsUtil init")
         EventDataAdapter.getInstance()?.getStaticSuperProperties()?.await()?.let {
-            Log.w("xxx", "SuperPropsUtil init, JSONObject: $it")
             staticProperties = it
         }
     }
 
     fun updateDynamicProperties(properties: JSONObject) {
-        clearDynamicProperties()
-        for (key in properties.keys()) {
-            dynamicProperties.put(key, properties.get(key))
+        MainQueue.get().postTask {
+            dynamicProperties = JSONObject()
+            for (key in properties.keys()) {
+                dynamicProperties.put(key, properties.get(key))
+            }
         }
     }
 
     fun clearDynamicProperties() {
-        dynamicProperties = JSONObject()
+        MainQueue.get().postTask {
+            dynamicProperties = JSONObject()
+        }
     }
 
     fun updateStaticProperties(properties: JSONObject) {
-        clearStaticProperties()
-        for (key in properties.keys()) {
-            staticProperties.put(key, properties.get(key))
-        }
         MainQueue.get().postTask {
+            staticProperties = JSONObject()
+            for (key in properties.keys()) {
+                staticProperties.put(key, properties.get(key))
+            }
             EventDataAdapter.getInstance()?.setStaticSuperProperties(staticProperties)
         }
     }
 
     fun clearStaticProperties() {
-        staticProperties = JSONObject()
-        EventDataAdapter.getInstance()?.setStaticSuperProperties(staticProperties)
+        MainQueue.get().postTask {
+            staticProperties = JSONObject()
+            EventDataAdapter.getInstance()?.setStaticSuperProperties(staticProperties)
+        }
     }
 }
