@@ -2,22 +2,21 @@ package ai.datatower.analytics.utils
 
 import ai.datatower.analytics.data.EventDataAdapter
 import ai.datatower.analytics.taskqueue.MainQueue
-import android.util.Log
 import org.json.JSONObject
 
-object SuperPropsUtil {
-    var dynamicProperties: JSONObject = JSONObject()
+object CommonPropsUtil {
+    internal  var dynamicProperties: JSONObject = JSONObject()
         private set
-    var staticProperties: JSONObject = JSONObject()
+    internal var staticProperties: JSONObject = JSONObject()
         private set
 
-    suspend fun init() {
+    internal suspend fun init() {
         EventDataAdapter.getInstance()?.getStaticSuperProperties()?.await()?.let {
             staticProperties = it
         }
     }
 
-    fun updateDynamicProperties(properties: JSONObject) {
+    internal fun updateDynamicProperties(properties: JSONObject) {
         MainQueue.get().postTask {
             dynamicProperties = JSONObject()
             for (key in properties.keys()) {
@@ -26,13 +25,13 @@ object SuperPropsUtil {
         }
     }
 
-    fun clearDynamicProperties() {
+    internal fun clearDynamicProperties() {
         MainQueue.get().postTask {
             dynamicProperties = JSONObject()
         }
     }
 
-    fun updateStaticProperties(properties: JSONObject) {
+    internal fun updateStaticProperties(properties: JSONObject) {
         MainQueue.get().postTask {
             staticProperties = JSONObject()
             for (key in properties.keys()) {
@@ -42,10 +41,18 @@ object SuperPropsUtil {
         }
     }
 
-    fun clearStaticProperties() {
+    internal fun clearStaticProperties() {
         MainQueue.get().postTask {
             staticProperties = JSONObject()
             EventDataAdapter.getInstance()?.setStaticSuperProperties(staticProperties)
         }
+    }
+
+    fun dumpDynamicProperties(): String {
+        return dynamicProperties.toString(4)
+    }
+
+    fun dumpStaticProperties(): String {
+        return staticProperties.toString(4)
     }
 }

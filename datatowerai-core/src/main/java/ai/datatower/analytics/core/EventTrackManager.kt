@@ -9,7 +9,7 @@ import ai.datatower.analytics.utils.DataUtils
 import ai.datatower.analytics.utils.EventUtils
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.MemoryUtils
-import ai.datatower.analytics.utils.SuperPropsUtil
+import ai.datatower.analytics.utils.CommonPropsUtil
 import ai.datatower.analytics.utils.TimeCalibration
 import ai.datatower.quality.DTErrorParams
 import ai.datatower.quality.DTQualityHelper
@@ -192,13 +192,13 @@ class EventTrackManager {
             // 接入方设置的动态/静态通用属性，event_type 为 track 时添加
             // 最低优先级, 且 dynamic > static
             if (eventType == Constant.EVENT_TYPE_TRACK) {
-                for (key in SuperPropsUtil.dynamicProperties.keys()) {
+                for (key in CommonPropsUtil.dynamicProperties.keys()) {
                     if (props.has(key)) continue
-                    props.put(key, SuperPropsUtil.dynamicProperties[key])
+                    props.put(key, CommonPropsUtil.dynamicProperties[key])
                 }
-                for (key in SuperPropsUtil.staticProperties.keys()) {
+                for (key in CommonPropsUtil.staticProperties.keys()) {
                     if (props.has(key)) continue
-                    props.put(key, SuperPropsUtil.staticProperties[key])
+                    props.put(key, CommonPropsUtil.staticProperties[key])
                 }
             }
 

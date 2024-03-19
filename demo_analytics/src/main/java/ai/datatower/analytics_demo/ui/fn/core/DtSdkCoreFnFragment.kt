@@ -57,6 +57,7 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             "dt_anal_invoke_user_api" -> invokeUserApiDialogShow()
             "dt_anal_invoke_all_api" -> invokeAllApiDialogShow()
             "dt_anal_invoke_dev_test" -> invokeDevTestPageShow()
+            "dt_anal_set_common_properties" -> invokeSetCommonPropertiesDialogShow()
         }
         return super.onPreferenceTreeClick(preference)
     }
@@ -122,6 +123,10 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
 
     private fun invokeAllApiDialogShow() {
         DisplayAllApiActivity.startActivity(requireActivity())
+    }
+
+    private fun invokeSetCommonPropertiesDialogShow() {
+        SetCommonPropertiesActivity.startActivity(requireActivity())
     }
 
     private fun invokeDevTestPageShow() {

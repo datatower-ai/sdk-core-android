@@ -13,7 +13,7 @@ import ai.datatower.analytics.utils.EventUtils
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.MemoryUtils
 import ai.datatower.analytics.utils.NetworkUtil
-import ai.datatower.analytics.utils.SuperPropsUtil
+import ai.datatower.analytics.utils.CommonPropsUtil
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
 import ai.datatower.quality.DTErrorParams
@@ -24,7 +24,6 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
-import android.util.Log
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
@@ -70,7 +69,7 @@ class PropertyManager private constructor() {
         try {
             dataAdapter = EventDataAdapter.getInstance(context)
             initDisableList(context)
-            SuperPropsUtil.init()
+            CommonPropsUtil.init()
             initEventInfo(context)
             initCommonProperties(context, initConfig)
             getDataTowerId(context)

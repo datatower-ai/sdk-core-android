@@ -13,7 +13,7 @@ import ai.datatower.analytics.taskqueue.MonitorQueue
 import ai.datatower.analytics.taskqueue.launchSequential
 import ai.datatower.analytics.utils.EventUtils
 import ai.datatower.analytics.utils.LogUtils
-import ai.datatower.analytics.utils.SuperPropsUtil
+import ai.datatower.analytics.utils.CommonPropsUtil
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
 import ai.datatower.quality.DTErrorParams
@@ -181,19 +181,19 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     }
 
     override fun setCommonProperties(properties: JSONObject) {
-        SuperPropsUtil.updateDynamicProperties(properties)
+        CommonPropsUtil.updateDynamicProperties(properties)
     }
 
     override fun clearCommonProperties() {
-        SuperPropsUtil.clearDynamicProperties()
+        CommonPropsUtil.clearDynamicProperties()
     }
 
     override fun setStaticCommonProperties(properties: JSONObject) {
-        SuperPropsUtil.updateStaticProperties(properties)
+        CommonPropsUtil.updateStaticProperties(properties)
     }
 
     override fun clearStaticCommonProperties() {
-        SuperPropsUtil.clearStaticProperties()
+        CommonPropsUtil.clearStaticProperties()
     }
 
     override fun trackTimerStart(eventName: String) {
