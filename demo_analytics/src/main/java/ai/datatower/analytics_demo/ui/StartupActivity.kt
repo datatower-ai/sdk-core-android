@@ -12,6 +12,7 @@ import ai.datatower.analytics_demo.ui.theme.DataTowerSDKCoreTheme
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.os.SystemClock
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -26,17 +27,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -44,7 +39,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,7 +48,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 class StartupActivity: ComponentActivity() {
@@ -79,6 +72,7 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
     var serverUrl by remember { mutableStateOf("") }
     var appId by remember { mutableStateOf("") }
     var isDebug by remember { mutableStateOf(true) }
+    var manualEnableUpload by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
     var logLevel by remember { mutableStateOf(Log.DEBUG) }
     val logLevelTextMap = mapOf(
@@ -106,7 +100,7 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
                     }
 
                     if (!isServerUrlError && !isAppIdError) {
-                        initDT(context, serverUrl, appId, isDebug)
+                        initDT(context, serverUrl, appId, isDebug, manualEnableUpload)
                         context.startActivity(Intent(context, MainActivity::class.java))
                         finishFunc()
                     }
@@ -190,11 +184,18 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Manually enable upload", modifier = Modifier.weight(1f))
+                Switch(checked = manualEnableUpload, onCheckedChange = { manualEnableUpload = it })
+            }
         }
     }
 }
 
-private fun initDT(context: Context, serverUrl: String, appId: String, isDebug: Boolean) {
+private fun initDT(context: Context, serverUrl: String, appId: String, isDebug: Boolean, manualEnableUpload: Boolean) {
     val initBeginTime = SystemClock.elapsedRealtime()
     Log.d("initSDK begin", initBeginTime.toString())
     DTAdReport.generateUUID()
@@ -203,11 +204,7 @@ private fun initDT(context: Context, serverUrl: String, appId: String, isDebug: 
             Log.d("BEFORE, DataTowerId", dataTowerId)
         }
     })
-    DTAnalytics.setCommonProperties(mapOf(
-        "cp" to "before_init",
-        "is_it_inserted" to "xxx"
-    ))
-    DT.initSDK(context, appId, serverUrl, DTChannel.GP, isDebug, Log.VERBOSE)
+    DT.initSDK(context, appId, serverUrl, DTChannel.GP, isDebug, Log.VERBOSE, manualEnableUpload)
     Log.d("initSDK end", (SystemClock.elapsedRealtime() - initBeginTime).toString())
     DTAnalytics.getDataTowerId(object : OnDataTowerIdListener {
         override fun onDataTowerIdCompleted(dataTowerId: String) {

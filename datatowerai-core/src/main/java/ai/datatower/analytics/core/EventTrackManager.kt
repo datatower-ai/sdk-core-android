@@ -189,17 +189,16 @@ class EventTrackManager {
             }
 
             val props = eventProperties ?: JSONObject()
+            var delayedInsertCommon = false
             // 接入方设置的动态/静态通用属性，event_type 为 track 时添加
             // 最低优先级, 且 dynamic > static
-            if (eventType == Constant.EVENT_TYPE_TRACK) {
-                for (key in CommonPropsUtil.dynamicProperties.keys()) {
-                    if (props.has(key)) continue
-                    props.put(key, CommonPropsUtil.dynamicProperties[key])
+            if (AnalyticsConfig.instance.mManualUploadSwitch.get()) {
+                if (eventType == Constant.EVENT_TYPE_TRACK) {
+                    CommonPropsUtil.insertCommonProperties(props)
                 }
-                for (key in CommonPropsUtil.staticProperties.keys()) {
-                    if (props.has(key)) continue
-                    props.put(key, CommonPropsUtil.staticProperties[key])
-                }
+            } else {
+                // Switch of enableTrack is off yet.
+                delayedInsertCommon = true
             }
 
             //设置事件属性
@@ -219,6 +218,10 @@ class EventTrackManager {
                 put(
                     Constant.EVENT_TIME_SESSION_ID,
                     TimeCalibration.instance.sessionId
+                )
+                put(
+                    Constant.EVENT_TEMP_EXTRA_DELAY_INSERT_COMMON,
+                    delayedInsertCommon
                 )
             }
 

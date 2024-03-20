@@ -5,10 +5,8 @@ import ai.datatower.analytics.taskqueue.MainQueue
 import org.json.JSONObject
 
 object CommonPropsUtil {
-    internal  var dynamicProperties: JSONObject = JSONObject()
-        private set
-    internal var staticProperties: JSONObject = JSONObject()
-        private set
+    private var dynamicProperties: JSONObject = JSONObject()
+    private var staticProperties: JSONObject = JSONObject()
 
     internal suspend fun init() {
         EventDataAdapter.getInstance()?.getStaticSuperProperties()?.await()?.let {
@@ -54,5 +52,16 @@ object CommonPropsUtil {
 
     fun dumpStaticProperties(): String {
         return staticProperties.toString(4)
+    }
+
+    internal fun insertCommonProperties(json: JSONObject) {
+        for (key in dynamicProperties.keys()) {
+            if (json.has(key)) continue
+            json.put(key, dynamicProperties[key])
+        }
+        for (key in staticProperties.keys()) {
+            if (json.has(key)) continue
+            json.put(key, staticProperties[key])
+        }
     }
 }

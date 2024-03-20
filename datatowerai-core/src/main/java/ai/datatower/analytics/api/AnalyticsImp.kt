@@ -6,6 +6,7 @@ import ai.datatower.analytics.config.AnalyticsConfig
 import ai.datatower.analytics.core.EventTimer
 import ai.datatower.analytics.core.EventTimerManager
 import ai.datatower.analytics.core.EventTrackManager
+import ai.datatower.analytics.core.EventUploadManager
 import ai.datatower.analytics.core.PropertyManager
 import ai.datatower.analytics.data.EventDataAdapter
 import ai.datatower.analytics.taskqueue.MainQueue
@@ -281,6 +282,10 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
                 LogUtils.e(e)
             }
         }
+    }
+
+    override fun flush() {
+        EventUploadManager.getInstance()?.flush()
     }
 
     companion object {

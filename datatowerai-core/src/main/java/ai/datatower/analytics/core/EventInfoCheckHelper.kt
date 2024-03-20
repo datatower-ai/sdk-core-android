@@ -1,8 +1,10 @@
 package ai.datatower.analytics.core
 
 import ai.datatower.analytics.Constant
+import ai.datatower.analytics.utils.CommonPropsUtil
 import ai.datatower.analytics.utils.TimeCalibration
 import android.os.SystemClock
+import android.util.Log
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -32,10 +34,12 @@ class EventInfoCheckHelper private constructor() {
             val correctedEventInfo = JSONArray()
 
             for (index in 0 until length) {
-                jsonArray.getJSONObject(index)?.let { it ->
-                 correctEventIdInfo(it)?.let {
-                     correctEventTime(it)?.let { correctData->
-                         correctedEventInfo.put(correctData)
+                jsonArray.getJSONObject(index)?.let {
+                    correctCommonProperties(it).let { it2 ->
+                     correctEventIdInfo(it2)?.let { it3 ->
+                         correctEventTime(it3)?.let { correctData ->
+                             correctedEventInfo.put(correctData)
+                         }
                      }
                  }
                 }
@@ -195,4 +199,18 @@ class EventInfoCheckHelper private constructor() {
     private fun isFormatAfterVer100(eventInfo: JSONObject) =
         eventInfo.has(Constant.EVENT_TIME_CALIBRATED) && eventInfo.has(Constant.EVENT_BODY)
 
+
+    private fun correctCommonProperties(eventInfo: JSONObject): JSONObject {
+        if (eventInfo.optBoolean(Constant.EVENT_TEMP_EXTRA_DELAY_INSERT_COMMON, false)) {
+            eventInfo.remove(Constant.EVENT_TEMP_EXTRA_DELAY_INSERT_COMMON)
+            eventInfo.optJSONObject(Constant.EVENT_BODY)?.let { body ->
+                if (body.optString(Constant.EVENT_INFO_TYPE, "") == Constant.EVENT_TYPE_TRACK) {
+                    body.optJSONObject(Constant.EVENT_INFO_PROPERTIES)?.let {
+                        CommonPropsUtil.insertCommonProperties(it)
+                    }
+                }
+            }
+        }
+        return eventInfo
+    }
 }

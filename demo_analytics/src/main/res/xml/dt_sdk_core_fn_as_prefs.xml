@@ -82,6 +82,10 @@
             android:key="dt_anal_set_common_properties"
             android:summary="Set/Clear dynamic and static common properties"
             android:title="Common Properties" />
+        <Preference
+            android:key="dt_anal_manual_enable_upload"
+            android:summary="Manually enable upload, only take effect once"
+            android:title="Enable Upload" />
     </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

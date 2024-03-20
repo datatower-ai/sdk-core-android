@@ -1,5 +1,6 @@
 package ai.datatower.analytics_demo.ui.fn.core
 
+import ai.datatower.analytics.DT
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -58,6 +59,7 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             "dt_anal_invoke_all_api" -> invokeAllApiDialogShow()
             "dt_anal_invoke_dev_test" -> invokeDevTestPageShow()
             "dt_anal_set_common_properties" -> invokeSetCommonPropertiesDialogShow()
+            "dt_anal_manual_enable_upload" -> DT.enableUpload()
         }
         return super.onPreferenceTreeClick(preference)
     }

@@ -157,6 +157,12 @@ class EventUploadManager private constructor(
             if (AnalyticsConfig.instance.isSdkDisable()) {
                 return false
             }
+
+            // 接入方设置了手动触发上报，但尚未触发。
+            if (!AnalyticsConfig.instance.mManualUploadSwitch.get()) {
+                return false
+            }
+
             //无网络
             if (!isNetworkAvailable(AnalyticsConfig.instance.mContext)) {
                 LogUtils.d(TAG, "NetworkAvailable，disable upload")

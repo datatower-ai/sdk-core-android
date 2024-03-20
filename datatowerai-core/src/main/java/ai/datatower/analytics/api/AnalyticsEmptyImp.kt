@@ -112,5 +112,7 @@ class AnalyticsEmptyImp internal constructor() : AbstractAnalytics() {
 
     }
 
+    override fun flush() {
 
+    }
 }

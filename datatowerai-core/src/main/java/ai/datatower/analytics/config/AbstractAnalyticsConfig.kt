@@ -3,6 +3,7 @@ package ai.datatower.analytics.config
 import ai.datatower.analytics.utils.LogUtils
 import android.content.Context
 import org.json.JSONObject
+import java.util.concurrent.atomic.AtomicBoolean
 
 abstract class AbstractAnalyticsConfig {
 
@@ -68,6 +69,11 @@ abstract class AbstractAnalyticsConfig {
      * 推广渠道
      */
     var mChannel = ""
+
+    /**
+     * 是否上传事件
+     */
+    var mManualUploadSwitch = AtomicBoolean(true)
 
     /**
      * 设置公共属性

@@ -39,6 +39,11 @@ internal object Constant {
     const val EVENT_TIME_SESSION_ID  = "time_session_id"  // 进程启动一次生成一次唯一id
     const val EVENT_TIME_CAN_TRUSTED  = "time_trusted"
 
+    /**
+     * 临时属性，插入后需在上传前移除
+     */
+    const val EVENT_TEMP_EXTRA_DELAY_INSERT_COMMON = "temp_extra_delay_insert_common"
+
     const val COMMON_PROPERTY_EVENT_SESSION       = "#session_id"
     const val COMMON_PROPERTY_MCC                 = "#mcc"
     const val COMMON_PROPERTY_MNC                 = "#mnc"
