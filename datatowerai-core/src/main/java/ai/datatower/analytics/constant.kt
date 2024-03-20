@@ -120,6 +120,7 @@ internal object Constant {
     const val SESSION_START_PROPERTY_IS_FIRST_TIME           = "#is_first_time"
     const val SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND  = "#resume_from_background"
     const val SESSION_START_PROPERTY_START_REASON            = "#start_reason"
+    const val SESSION_START_PROPERTY_BACKGROUND_DURATION     = "#background_duration"
 
     //session_end
     const val SESSION_END_PROPERTY_SESSION_DURATION          = "#session_duration"

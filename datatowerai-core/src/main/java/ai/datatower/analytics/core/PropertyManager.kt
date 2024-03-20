@@ -57,6 +57,7 @@ class PropertyManager private constructor() {
     private var limitAdTrackingEnabled = false
 
     private var sessionStartTime = 0L
+    private var sessionEndTime = 0L
 
     private val dtidCallbacks: ConcurrentLinkedQueue<OnDataTowerIdListener?> =
         ConcurrentLinkedQueue()
@@ -348,6 +349,12 @@ class PropertyManager private constructor() {
                                 if (startReason != "" && startReason != "{}") {
                                     put(Constant.SESSION_START_PROPERTY_START_REASON, startReason)
                                 }
+                                if (resumeFromBackground && sessionEndTime != 0L) {
+                                    put(
+                                        Constant.SESSION_START_PROPERTY_BACKGROUND_DURATION,
+                                        sessionStartTime - sessionEndTime
+                                    )
+                                }
                             },
                             insertHandler = { code: Int, _: String ->
                                 if (code == 0 && isFirstOpen) {
@@ -364,7 +371,8 @@ class PropertyManager private constructor() {
                     happenTime,
                     JSONObject().apply {
                         if (sessionStartTime != 0L) {
-                            val sessionDuration = SystemClock.elapsedRealtime() - sessionStartTime
+                            sessionEndTime = SystemClock.elapsedRealtime()
+                            val sessionDuration = sessionEndTime - sessionStartTime
                             put(Constant.SESSION_END_PROPERTY_SESSION_DURATION, sessionDuration)
                             sessionStartTime = 0L
                         }
