@@ -130,7 +130,11 @@ class EventDataAdapter private constructor(
     fun getStaticSuperProperties() = DBQueue.get().asyncSequentialChained {
         val jsonStr = getStringConfig(DataParams.CONFIG_STATIC_SUPER_PROPERTY)
         return@asyncSequentialChained try {
-            JSONObject(jsonStr)
+            if (jsonStr.isBlank()) {
+                JSONObject()
+            } else {
+                JSONObject(jsonStr)
+            }
         } catch (t: Throwable) {
             LogUtils.e("getStaticSuperProperties", t)
             JSONObject()
