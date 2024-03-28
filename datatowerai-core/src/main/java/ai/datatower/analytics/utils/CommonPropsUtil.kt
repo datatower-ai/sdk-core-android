@@ -5,7 +5,7 @@ import ai.datatower.analytics.taskqueue.MainQueue
 import org.json.JSONObject
 
 object CommonPropsUtil {
-    private var dynamicProperties: JSONObject = JSONObject()
+    private var dynamicPropertiesGetter: (() -> JSONObject)? = null
     private var staticProperties: JSONObject = JSONObject()
 
     internal suspend fun init() {
@@ -14,18 +14,15 @@ object CommonPropsUtil {
         }
     }
 
-    internal fun updateDynamicProperties(properties: JSONObject) {
+    internal fun updateDynamicProperties(propertiesGetter: () -> JSONObject) {
         MainQueue.get().postTask {
-            dynamicProperties = JSONObject()
-            for (key in properties.keys()) {
-                dynamicProperties.put(key, properties.get(key))
-            }
+            dynamicPropertiesGetter = propertiesGetter
         }
     }
 
     internal fun clearDynamicProperties() {
         MainQueue.get().postTask {
-            dynamicProperties = JSONObject()
+            dynamicPropertiesGetter = null
         }
     }
 
@@ -47,7 +44,7 @@ object CommonPropsUtil {
     }
 
     fun dumpDynamicProperties(): String {
-        return dynamicProperties.toString(4)
+        return dynamicPropertiesGetter?.invoke()?.toString(4) ?: "null"
     }
 
     fun dumpStaticProperties(): String {
@@ -55,6 +52,12 @@ object CommonPropsUtil {
     }
 
     internal fun insertCommonProperties(json: JSONObject) {
+        val dynamicProperties = try {
+            dynamicPropertiesGetter?.invoke() ?: JSONObject()
+        } catch (t: Throwable) {
+            JSONObject()
+        }
+        // Priority: dynamic > static
         for (key in dynamicProperties.keys()) {
             if (json.has(key)) continue
             json.put(key, dynamicProperties[key])

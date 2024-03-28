@@ -1,16 +1,15 @@
 package ai.datatower.analytics_demo.ui.fn.core
 
 import ai.datatower.analytics.DTAnalytics
-import ai.datatower.analytics.data.EventDataAdapter
 import ai.datatower.analytics.utils.CommonPropsUtil
 import ai.datatower.analytics_demo.ui.theme.DataTowerSDKCoreTheme
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
@@ -29,20 +28,18 @@ import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,7 +48,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import org.json.JSONObject
-import kotlin.math.exp
 
 class SetCommonPropertiesActivity: ComponentActivity() {
     companion object {
@@ -100,6 +96,27 @@ fun SetCommonPropertiesPage() {
                 .padding(horizontal = 24.dp, vertical = 15.dp)
                 .scrollable(rememberScrollState(), Orientation.Vertical)
         ) {
+            ElevatedButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    DTAnalytics.setDynamicCommonProperties {
+                        Log.i("DT-DEMO","called dynamicCommonProperties getter")
+                        JSONObject(DynamicPropertiesHolder.DynamicProperties)
+                    }
+                }
+            ) {
+                Text("Set Dynamic Common Properties")
+            }
+            Spacer(Modifier.height(15.dp))
+            ElevatedButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    DTAnalytics.clearDynamicCommonProperties()
+                }
+            ) {
+                Text("Clear Dynamic Common Properties")
+            }
+            Spacer(Modifier.height(15.dp))
             SetDynamicCommonPropertiesSect()
             Spacer(Modifier.height(15.dp))
             SetStaticCommonPropertiesSect()
@@ -112,9 +129,10 @@ fun SetCommonPropertiesPage() {
 fun SetDynamicCommonPropertiesSect(modifier:Modifier = Modifier) {
     SetCommonPropertiesSectBase(
         "Dynamic",
-        CommonPropsUtil.dumpDynamicProperties(),
-        onSet = { DTAnalytics.setCommonProperties(JSONObject(it)) },
-        onClear = { DTAnalytics.clearCommonProperties() },
+        CommonPropsUtil.dumpDynamicProperties().let { if (it == "null") "{}" else it },
+        buttonText = "Update",
+        onSet = { DynamicPropertiesHolder.DynamicProperties = it },
+        onClear = { DynamicPropertiesHolder.DynamicProperties = it },
         modifier = modifier,
     )
 }
@@ -136,8 +154,9 @@ fun SetCommonPropertiesSectBase(
     title: String,
     initProps: String,
     onSet: (String) -> Unit,
-    onClear: () -> Unit,
-    modifier:Modifier = Modifier
+    onClear: (String) -> Unit,
+    modifier:Modifier = Modifier,
+    buttonText: String = "Set"
 ) {
     var props by remember { mutableStateOf(initProps) }
     var expanded by remember { mutableStateOf(false) }
@@ -193,7 +212,7 @@ fun SetCommonPropertiesSectBase(
                         onClick = {
                             try {
                                 props = "{}"
-                                onClear()
+                                onClear(props)
                             } catch (t: Throwable) {
                                 hasError = true
                             }
@@ -215,11 +234,15 @@ fun SetCommonPropertiesSectBase(
                             }
                         }
                     ) {
-                        Text("Set")
+                        Text(buttonText)
                     }
                 }
                 Spacer(modifier = Modifier.height(24.dp))
             }
         }
     }
+}
+
+object DynamicPropertiesHolder {
+    var DynamicProperties: String = ""
 }

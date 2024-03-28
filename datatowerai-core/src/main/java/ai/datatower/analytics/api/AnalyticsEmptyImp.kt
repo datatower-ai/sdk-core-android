@@ -72,7 +72,7 @@ class AnalyticsEmptyImp internal constructor() : AbstractAnalytics() {
 
     }
 
-    override fun setCommonProperties(properties: JSONObject) {
+    override fun setDynamicCommonProperties(propertiesGetter: () -> JSONObject) {
 
     }
 

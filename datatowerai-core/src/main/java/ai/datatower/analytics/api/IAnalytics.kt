@@ -194,7 +194,7 @@ interface IAnalytics {
 
     fun userUniqAppend(properties: JSONObject?)
 
-    fun setCommonProperties(properties: JSONObject)
+    fun setDynamicCommonProperties(propertiesGetter: () -> JSONObject)
 
     fun clearCommonProperties()
 

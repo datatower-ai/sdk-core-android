@@ -5,7 +5,6 @@ import ai.datatower.analytics.core.PropertyManager
 import ai.datatower.analytics.utils.DataCheck.findFirstNonJsonArray
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.thirdparty.ThirdPartShareDataFactory
-import android.util.Log
 import org.json.JSONObject
 
 open class DTAnalytics {
@@ -199,25 +198,15 @@ open class DTAnalytics {
          * @param properties 通用属性，值需为 Json 支持的类型
          */
         @JvmStatic
-        fun setCommonProperties(properties: Map<String, Any?>) {
-            AnalyticsImp.getInstance().setCommonProperties(JSONObject(properties))
-        }
-
-        /**
-         * 设置通用属性（动态）
-         *
-         * @param properties 通用属性，值需为 Json 支持的类型
-         */
-        @JvmStatic
-        fun setCommonProperties(properties: JSONObject) {
-            AnalyticsImp.getInstance().setCommonProperties(properties)
+        fun setDynamicCommonProperties(propertiesGetter: () -> JSONObject) {
+            AnalyticsImp.getInstance().setDynamicCommonProperties(propertiesGetter)
         }
 
         /**
          * 移除通用属性（动态）
          */
         @JvmStatic
-        fun clearCommonProperties() {
+        fun clearDynamicCommonProperties() {
             AnalyticsImp.getInstance().clearCommonProperties()
         }
 

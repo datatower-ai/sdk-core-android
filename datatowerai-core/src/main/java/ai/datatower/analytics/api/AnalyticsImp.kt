@@ -181,8 +181,8 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         trackUser(Constant.PRESET_EVENT_USER_UNIQ_APPEND, properties)
     }
 
-    override fun setCommonProperties(properties: JSONObject) {
-        CommonPropsUtil.updateDynamicProperties(properties)
+    override fun setDynamicCommonProperties(propertiesGetter: () -> JSONObject) {
+        CommonPropsUtil.updateDynamicProperties(propertiesGetter)
     }
 
     override fun clearCommonProperties() {
