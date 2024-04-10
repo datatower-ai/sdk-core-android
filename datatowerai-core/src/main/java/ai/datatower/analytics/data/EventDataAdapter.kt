@@ -103,26 +103,6 @@ class EventDataAdapter private constructor(
         setStringConfig(DataParams.CONFIG_ACCOUNT_ID, value)
     }
 
-    /**
-     *  访客 id
-     *
-     * Thread safety: Guarded by serial execution of [DBQueue].
-     */
-    private var distinctIdCached = ""
-
-    fun getDistinctId() = DBQueue.get().asyncSequentialChained {
-        if (distinctIdCached.isEmpty()) {
-            distinctIdCached = getStringConfig(DataParams.CONFIG_DISTINCT_ID)
-        }
-        return@asyncSequentialChained distinctIdCached
-    }
-
-    fun setDistinctId(value: String) = DBQueue.get().launchSequential {
-        if (distinctIdCached == value) return@launchSequential
-        distinctIdCached = value
-        setStringConfig(DataParams.CONFIG_DISTINCT_ID, value)
-    }
-
     fun setStaticSuperProperties(properties: JSONObject) = DBQueue.get().launchSequential {
         setStringConfig(DataParams.CONFIG_STATIC_SUPER_PROPERTY, properties.toString())
     }

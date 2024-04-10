@@ -30,11 +30,6 @@ object EventUtils {
             eventInfo[Constant.EVENT_INFO_ACID] = it
         }
 
-        // 访客id
-        dataAdapter?.getDistinctId()?.await()?.let {
-            eventInfo[Constant.EVENT_INFO_DISTINCT_ID] = it
-        }
-
         if (!disableList.contains(Constant.EVENT_INFO_BUNDLE_ID)) {
             //进程名
             eventInfo[Constant.EVENT_INFO_BUNDLE_ID] = ProcessUtil.getCurrentProcessName(context)

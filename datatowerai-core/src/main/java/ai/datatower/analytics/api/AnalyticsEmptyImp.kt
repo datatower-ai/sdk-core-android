@@ -9,10 +9,6 @@ class AnalyticsEmptyImp internal constructor() : AbstractAnalytics() {
         get() = ""
         set(value) {}
 
-    override var distinctId: String?
-        get() = ""
-        set(value) {}
-
     override fun getDTId(onDataTowerIDListener: OnDataTowerIdListener) {
     }
 

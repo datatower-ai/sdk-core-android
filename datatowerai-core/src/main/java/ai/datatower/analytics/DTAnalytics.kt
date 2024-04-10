@@ -133,15 +133,6 @@ open class DTAnalytics {
         }
 
         /**
-         * 访客 id
-         */
-        var distinctId: String?
-            @JvmStatic get() = AnalyticsImp.getInstance().distinctId
-            @JvmStatic set(value) {
-                AnalyticsImp.getInstance().distinctId = value
-            }
-
-        /**
          * 设置 Firebase 的 app_instance_id
          * @param id Firebase 的 app_instance_id
          */

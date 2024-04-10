@@ -33,13 +33,6 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
             PropertyManager.instance.updateACID(value ?: "")
         }
 
-    override var distinctId: String?
-        get() = PropertyManager.instance.getDistinctId()
-        set(value) {
-            PropertyManager.instance.updateDistinctId(value ?: "")
-        }
-
-
     override fun getDTId(onDataTowerIDListener: OnDataTowerIdListener) {
         if (configOptions?.isSdkDisable() == true) {
             return

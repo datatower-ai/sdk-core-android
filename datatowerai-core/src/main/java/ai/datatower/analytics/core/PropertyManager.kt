@@ -503,22 +503,6 @@ class PropertyManager private constructor() {
         return ""
     }
 
-    fun updateDistinctId(id: String) {
-        MainQueue.get().postTask {
-            EventDataAdapter.getInstance()?.setDistinctId(id)
-            updateEventInfo(Constant.EVENT_INFO_DISTINCT_ID, id)
-        }
-    }
-
-    fun getDistinctId(): String {
-        (getEventInfo()[Constant.EVENT_INFO_DISTINCT_ID] as? String?)?.let {
-            if (it.isNotEmpty()) {
-                return it
-            }
-        }
-        return ""
-    }
-
     fun updateFireBaseInstanceId(fiid: String?) {
         if (fiid?.isEmpty() == true) return
 

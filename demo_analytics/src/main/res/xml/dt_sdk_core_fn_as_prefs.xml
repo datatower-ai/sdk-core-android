@@ -18,11 +18,6 @@
             android:title="Set #acid" />
 
         <EditTextPreference
-            android:key="dt_anal_user_builtin_prop_distinct_id"
-            android:summary="dtAnal.distinctId"
-            android:title="Set #distinctId" />
-
-        <EditTextPreference
             android:key="dt_anal_user_builtin_prop_firebase_id"
             android:summary="dtAnal.firebaseId"
             android:title="Set #latest_firebase_iid" />
