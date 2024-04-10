@@ -18,6 +18,11 @@
             android:title="Set #acid" />
 
         <EditTextPreference
+            android:key="dt_anal_user_builtin_prop_clear_acid"
+            android:summary="Logout, just click 'ok' where input will take no effect!"
+            android:title="Clear #acid" />
+
+        <EditTextPreference
             android:key="dt_anal_user_builtin_prop_firebase_id"
             android:summary="dtAnal.firebaseId"
             android:title="Set #latest_firebase_iid" />

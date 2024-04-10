@@ -13,6 +13,7 @@ import ai.datatower.analytics.utils.CommonPropsUtil
 import ai.datatower.analytics.utils.TimeCalibration
 import ai.datatower.quality.DTErrorParams
 import ai.datatower.quality.DTQualityHelper
+import android.util.Log
 import org.json.JSONObject
 import java.util.concurrent.ThreadFactory
 

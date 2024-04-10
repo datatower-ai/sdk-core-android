@@ -24,6 +24,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
+import android.util.Log
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
@@ -487,20 +488,15 @@ class PropertyManager private constructor() {
     }
 
     fun updateACID(acid: String) {
-        if (acid.isEmpty()) return
+        val id = acid.ifBlank { "" }
         MainQueue.get().postTask {
-            EventDataAdapter.getInstance()?.setAccountId(acid)
-            updateEventInfo(Constant.EVENT_INFO_ACID, acid)
+            EventDataAdapter.getInstance()?.setAccountId(id)
+            updateEventInfo(Constant.EVENT_INFO_ACID, id)
         }
     }
 
     fun getACID(): String {
-        (getEventInfo()[Constant.EVENT_INFO_ACID] as String?)?.let {
-            if (it.isNotEmpty()) {
-                return it
-            }
-        }
-        return ""
+        return (getEventInfo()[Constant.EVENT_INFO_ACID] as String?) ?: ""
     }
 
     fun updateFireBaseInstanceId(fiid: String?) {

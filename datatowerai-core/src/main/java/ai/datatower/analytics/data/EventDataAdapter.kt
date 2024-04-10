@@ -88,13 +88,13 @@ class EventDataAdapter private constructor(
      *
      * Thread safety: Guarded by serial execution of [DBQueue].
      */
-    private var accountIdCached = ""
+    private var accountIdCached: String? = null
 
     fun getAccountId() = DBQueue.get().asyncSequentialChained {
-        if (accountIdCached.isEmpty()) {
+        if (accountIdCached == null) {
             accountIdCached = getStringConfig(DataParams.CONFIG_ACCOUNT_ID)
         }
-        return@asyncSequentialChained accountIdCached
+        return@asyncSequentialChained accountIdCached ?: ""
     }
 
     fun setAccountId(value: String) = DBQueue.get().launchSequential {

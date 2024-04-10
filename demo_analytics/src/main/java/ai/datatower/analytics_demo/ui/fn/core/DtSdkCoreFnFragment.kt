@@ -146,6 +146,7 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             "appsflyer_id" -> DTAnalytics.setAppsFlyerId(value.toString())
             "kochava_id" -> DTAnalytics.setKochavaId(value.toString())
             "adjust_id" -> DTAnalytics.setAdjustId(value.toString())
+            "clear_acid" -> DTAnalytics.setAccountId(null)
         }
         return true
     }
