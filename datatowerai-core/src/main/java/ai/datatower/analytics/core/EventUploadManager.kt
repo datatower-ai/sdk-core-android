@@ -297,18 +297,29 @@ class EventUploadManager private constructor(
                 false, null, null
             )
             val responseJson = JSONObject(response)
-            if (responseJson.getInt(HttpCallback.ResponseDataKey.KEY_CODE) == 0) {
+            val code = responseJson.getInt(HttpCallback.ResponseDataKey.KEY_CODE)
+            if (code == 0) {
                 deleteSeletor = { true }
+            } else {
+                // status == 200 && code != 0
+                handleDifferentResponseCode(
+                    code,
+                    responseJson.optString(HttpCallback.ResponseDataKey.KEY_MSG, "")
+                ).also { result ->
+                    result.errorMessage?.let { errorMessage = it }
+                    result.deleteSelector?.let { deleteSeletor = it }
+                }
             }
             LogUtils.json("$TAG upload event data ", event)
             LogUtils.json("$TAG upload event result ", responseJson)
         } catch (e: RemoteVerificationException) {
-            // status code != 200 && has response body
-            val handled = handleRemoteVerificationException(e)
-            handled.errorMessage?.let { errorMessage = it }
-            handled.deleteSelector?.let { deleteSeletor = it }
+            // status != 200 && has response body
+            handleRemoteVerificationException(e).also { result ->
+                result.errorMessage?.let { errorMessage = it }
+                result.deleteSelector?.let { deleteSeletor = it }
+            }
         } catch (e: ServiceUnavailableException) {
-            // status code != 200 && no response body
+            // status != 200 && no response body
             errorMessage =
                 ("(SUE) Cannot post message to [" + getEventUploadUrl()) + "] due to " + e.message
         } catch (e: MalformedInputException) {
@@ -376,28 +387,36 @@ class EventUploadManager private constructor(
         }
     }
 
-    private fun handleRemoteVerificationException(e: RemoteVerificationException): HandledRemoteVerificationError {
-        var errorMessage: String? = null
-        var deleteSelector: ((JSONObject) -> Boolean)? = null
+    private fun handleRemoteVerificationException(e: RemoteVerificationException): HandleCodeResult {
+        var result = HandleCodeResult(null, null)
 
         try {
             val responseJson = JSONObject(e.response)
             val code = responseJson.getInt(HttpCallback.ResponseDataKey.KEY_CODE)
             val message = responseJson.getString(HttpCallback.ResponseDataKey.KEY_MSG)
-            when (code) {
-                2 -> {
-                    val appId = message.split(" ").last()
-                    LogUtils.e("DT Http", "Verification failed, due to #app_id ($appId) is invalid! Associated events will be removed!")
-                    errorMessage = responseJson.optString(HttpCallback.ResponseDataKey.KEY_MSG, e.response)
-                    deleteSelector = { it.optString(EVENT_INFO_APP_ID, appId) == appId }
-                }
-                else -> throw Exception()
-            }
+            result = handleDifferentResponseCode(code, message)
         } catch (_: Throwable) {
-            errorMessage =  ("(RVE) Cannot post message to [" + getEventUploadUrl()) + "] due to " + e.message
+            result = result.copy(
+                errorMessage = ("(RVE) Cannot post message to [" + getEventUploadUrl()) + "] due to " + e.message
+            )
         }
 
-        return HandledRemoteVerificationError(errorMessage, deleteSelector)
+        return result
+    }
+
+    private fun handleDifferentResponseCode(code: Int, message: String): HandleCodeResult {
+        var errorMessage: String? = null
+        var deleteSelector: ((JSONObject) -> Boolean)? = null
+        when (code) {
+            2 -> {
+                val appId = message.split(" ").last()
+                LogUtils.e("DT Http", "Verification failed, due to #app_id ($appId) is invalid! Associated events will be removed!")
+                errorMessage = message
+                deleteSelector = { it.optString(EVENT_INFO_APP_ID, appId) == appId }
+            }
+            else -> throw Exception()
+        }
+        return HandleCodeResult(errorMessage, deleteSelector)
     }
 
     private fun checkFailTimes() {
@@ -515,7 +534,7 @@ class EventUploadManager private constructor(
 
 }
 
-data class HandledRemoteVerificationError(
+data class HandleCodeResult(
     val errorMessage: String? = null,
     val deleteSelector: ((JSONObject) -> Boolean)? = null
 )
