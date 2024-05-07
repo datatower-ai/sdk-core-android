@@ -1,6 +1,7 @@
 package ai.datatower.analytics.core
 
 import ai.datatower.analytics.Constant
+import ai.datatower.analytics.Constant.EVENT_INFO_APP_ID
 import ai.datatower.analytics.Constant.EVENT_INFO_SYN
 import ai.datatower.analytics.Constant.PRE_EVENT_INFO_SYN
 import ai.datatower.analytics.config.AnalyticsConfig
@@ -8,6 +9,8 @@ import ai.datatower.analytics.data.EventDataAdapter
 import ai.datatower.analytics.network.HttpCallback
 import ai.datatower.analytics.network.HttpService
 import ai.datatower.analytics.network.RemoteService
+import ai.datatower.analytics.network.RemoteVerificationException
+import ai.datatower.analytics.network.ServiceUnavailableException
 import ai.datatower.analytics.taskqueue.DataUploadQueue
 import ai.datatower.analytics.taskqueue.MainQueue
 import ai.datatower.analytics.taskqueue.MonitorQueue
@@ -15,10 +18,10 @@ import ai.datatower.analytics.taskqueue.launchSequential
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.NetworkUtils.isNetworkAvailable
 import ai.datatower.analytics.utils.TimeCalibration
-import ai.datatower.quality.PerfAction
-import ai.datatower.quality.PerfLogger
 import ai.datatower.quality.DTErrorParams
 import ai.datatower.quality.DTQualityHelper
+import ai.datatower.quality.PerfAction
+import ai.datatower.quality.PerfLogger
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
@@ -157,6 +160,12 @@ class EventUploadManager private constructor(
             if (AnalyticsConfig.instance.isSdkDisable()) {
                 return false
             }
+
+            // 接入方设置了手动触发上报，但尚未触发。
+            if (!AnalyticsConfig.instance.mManualUploadSwitch.get()) {
+                return false
+            }
+
             //无网络
             if (!isNetworkAvailable(AnalyticsConfig.instance.mContext)) {
                 LogUtils.d(TAG, "NetworkAvailable，disable upload")
@@ -229,7 +238,7 @@ class EventUploadManager private constructor(
             }
 
             //事件主体，json格式
-            var uploadSucceed = false
+            var deleteMethod: ((JSONObject) -> Boolean)? = null
             var uploadInfo: String? = null
             eventsData.let {
                 EventInfoCheckHelper.instance.correctEventInfo(it) { info ->
@@ -237,7 +246,7 @@ class EventUploadManager private constructor(
                         uploadInfo = info
                         if (info.isNotEmpty() && info != "[]") {
                             //http 请求
-                            uploadSucceed = uploadDataToNet(info, mDateAdapter)
+                            deleteMethod = uploadDataToNet(info)
                         }
                     } catch (e: Exception) {
                         uploadErrorCount++
@@ -253,13 +262,12 @@ class EventUploadManager private constructor(
                 }
             }
 
-            if (uploadSucceed) {
+            deleteMethod?.let { deleteSelector ->
                 PerfLogger.doPerfLog(PerfAction.DELETEDBBEGIN, System.currentTimeMillis())
 
                 uploadInfo?.let {
-
                     //上报成功后，删除数据库数据
-                    deleteEventAfterReport(uploadInfo!!, mDateAdapter)
+                    deleteEventAfterReport(uploadInfo!!, mDateAdapter, deleteSelector)
                     //避免事件积压，成功后再次上报
                     flush(FLUSH_DELAY)
                     //如果远程控制之前获取失败，这里再次获取
@@ -276,10 +284,9 @@ class EventUploadManager private constructor(
     }
 
     private fun uploadDataToNet(
-        event: String,
-        mDateAdapter: EventDataAdapter
-    ): Boolean {
-        var deleteEvents = false
+        event: String
+    ): ((JSONObject) -> Boolean)? {
+        var deleteSeletor: ((JSONObject) -> Boolean)? = null
         var errorMessage: String? = null
         try {
 
@@ -290,21 +297,40 @@ class EventUploadManager private constructor(
                 false, null, null
             )
             val responseJson = JSONObject(response)
-            if (responseJson.getInt(HttpCallback.ResponseDataKey.KEY_CODE) == 0) {
-                deleteEvents = true
+            val code = responseJson.getInt(HttpCallback.ResponseDataKey.KEY_CODE)
+            if (code == 0) {
+                deleteSeletor = { true }
+            } else {
+                // status == 200 && code != 0
+                handleDifferentResponseCode(
+                    code,
+                    responseJson.optString(HttpCallback.ResponseDataKey.KEY_MSG, "")
+                ).also { result ->
+                    result.errorMessage?.let { errorMessage = it }
+                    result.deleteSelector?.let { deleteSeletor = it }
+                }
             }
             LogUtils.json("$TAG upload event data ", event)
             LogUtils.json("$TAG upload event result ", responseJson)
-        } catch (e: RemoteService.ServiceUnavailableException) {
+        } catch (e: RemoteVerificationException) {
+            // status != 200 && has response body
+            handleRemoteVerificationException(e).also { result ->
+                result.errorMessage?.let { errorMessage = it }
+                result.deleteSelector?.let { deleteSeletor = it }
+            }
+        } catch (e: ServiceUnavailableException) {
+            // status != 200 && no response body
             errorMessage =
-                ("Cannot post message to [" + getEventUploadUrl()) + "] due to " + e.message
+                ("(SUE) Cannot post message to [" + getEventUploadUrl()) + "] due to " + e.message
         } catch (e: MalformedInputException) {
             errorMessage = ("Cannot interpret " + getEventUploadUrl()) + " as a URL."
         } catch (e: IOException) {
             errorMessage =
-                ("Cannot post message to [" + getEventUploadUrl()) + "] due to " + e.message
+                ("(IO) Cannot post message to [" + getEventUploadUrl()) + "] due to " + e.message
         } catch (e: JSONException) {
             errorMessage = "Cannot post message due to JSONException"
+        } catch (t: Throwable) {
+            errorMessage = "Cannot post message due to unexpected exception: ${t.message}"
         } finally {
 
             PerfLogger.doPerfLog(PerfAction.UPLOADDATAEND, System.currentTimeMillis())
@@ -317,12 +343,13 @@ class EventUploadManager private constructor(
                 )
             }
         }
-        return deleteEvents
+        return deleteSeletor
     }
 
     private suspend fun deleteEventAfterReport(
         event: String,
-        mDateAdapter: EventDataAdapter
+        mDateAdapter: EventDataAdapter,
+        shouldDelete: (JSONObject) -> Boolean = { true }
     ) {
         //上报成功后删除本地数据
         try {
@@ -332,13 +359,17 @@ class EventUploadManager private constructor(
 
             for (i in 0 until length) {
                 jsonArray.optJSONObject(i)?.let {
-                    if (it.optString(EVENT_INFO_SYN).isNotEmpty()) {
-                        allEvents.add(it.optString(EVENT_INFO_SYN))
-                    } else {
-                        allEvents.add(it.optString(PRE_EVENT_INFO_SYN))
+                    if (shouldDelete(it)) {
+                        if (it.optString(EVENT_INFO_SYN).isNotEmpty()) {
+                            allEvents.add(it.optString(EVENT_INFO_SYN))
+                        } else {
+                            allEvents.add(it.optString(PRE_EVENT_INFO_SYN))
+                        }
                     }
                 }
             }
+
+            LogUtils.d("DT HTTP", "${allEvents.size} events to delete...")
 
             if (allEvents.isNotEmpty()) {
                 withTimeoutOrNull(5000) {
@@ -354,6 +385,38 @@ class EventUploadManager private constructor(
                 e.message, DTErrorParams.DELETE_DB_EXCEPTION
             )
         }
+    }
+
+    private fun handleRemoteVerificationException(e: RemoteVerificationException): HandleCodeResult {
+        var result = HandleCodeResult(null, null)
+
+        try {
+            val responseJson = JSONObject(e.response)
+            val code = responseJson.getInt(HttpCallback.ResponseDataKey.KEY_CODE)
+            val message = responseJson.getString(HttpCallback.ResponseDataKey.KEY_MSG)
+            result = handleDifferentResponseCode(code, message)
+        } catch (_: Throwable) {
+            result = result.copy(
+                errorMessage = ("(RVE) Cannot post message to [" + getEventUploadUrl()) + "] due to " + e.message
+            )
+        }
+
+        return result
+    }
+
+    private fun handleDifferentResponseCode(code: Int, message: String): HandleCodeResult {
+        var errorMessage: String? = null
+        var deleteSelector: ((JSONObject) -> Boolean)? = null
+        when (code) {
+            2 -> {
+                val appId = message.split(" ").last()
+                LogUtils.e("DT Http", "Verification failed, due to #app_id ($appId) is invalid! Associated events will be removed!")
+                errorMessage = message
+                deleteSelector = { it.optString(EVENT_INFO_APP_ID, appId) == appId }
+            }
+            else -> throw Exception()
+        }
+        return HandleCodeResult(errorMessage, deleteSelector)
     }
 
     private fun checkFailTimes() {
@@ -470,3 +533,8 @@ class EventUploadManager private constructor(
     }
 
 }
+
+data class HandleCodeResult(
+    val errorMessage: String? = null,
+    val deleteSelector: ((JSONObject) -> Boolean)? = null
+)

@@ -1,5 +1,6 @@
 package ai.datatower.analytics_demo.ui.fn.core
 
+import ai.datatower.analytics.DT
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -57,6 +58,8 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             "dt_anal_invoke_user_api" -> invokeUserApiDialogShow()
             "dt_anal_invoke_all_api" -> invokeAllApiDialogShow()
             "dt_anal_invoke_dev_test" -> invokeDevTestPageShow()
+            "dt_anal_set_common_properties" -> invokeSetCommonPropertiesDialogShow()
+            "dt_anal_manual_enable_upload" -> DT.enableUpload()
         }
         return super.onPreferenceTreeClick(preference)
     }
@@ -124,6 +127,10 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
         DisplayAllApiActivity.startActivity(requireActivity())
     }
 
+    private fun invokeSetCommonPropertiesDialogShow() {
+        SetCommonPropertiesActivity.startActivity(requireActivity())
+    }
+
     private fun invokeDevTestPageShow() {
         DevTestActivity.startActivity(requireActivity())
     }
@@ -139,6 +146,7 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             "appsflyer_id" -> DTAnalytics.setAppsFlyerId(value.toString())
             "kochava_id" -> DTAnalytics.setKochavaId(value.toString())
             "adjust_id" -> DTAnalytics.setAdjustId(value.toString())
+            "clear_acid" -> DTAnalytics.setAccountId(null)
         }
         return true
     }

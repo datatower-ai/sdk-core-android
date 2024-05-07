@@ -5,10 +5,12 @@ import ai.datatower.analytics.taskqueue.asyncSequential
 import ai.datatower.analytics.taskqueue.asyncSequentialCatching
 import ai.datatower.analytics.taskqueue.asyncSequentialChained
 import ai.datatower.analytics.taskqueue.launchSequential
+import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.TimeCalibration
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
 import android.content.Context
+import android.util.Log
 import org.json.JSONObject
 
 class EventDataAdapter private constructor(
@@ -86,18 +88,45 @@ class EventDataAdapter private constructor(
      *
      * Thread safety: Guarded by serial execution of [DBQueue].
      */
-    private var accountIdCached = ""
+    private var accountIdCached: String? = null
 
     fun getAccountId() = DBQueue.get().asyncSequentialChained {
-        if (accountIdCached.isEmpty()) {
+        if (accountIdCached == null) {
             accountIdCached = getStringConfig(DataParams.CONFIG_ACCOUNT_ID)
         }
+        return@asyncSequentialChained accountIdCached ?: ""
     }
 
     fun setAccountId(value: String) = DBQueue.get().launchSequential {
         if (accountIdCached == value) return@launchSequential
         accountIdCached = value
         setStringConfig(DataParams.CONFIG_ACCOUNT_ID, value)
+    }
+
+    fun setStaticSuperProperties(properties: JSONObject) = DBQueue.get().launchSequential {
+        setStringConfig(DataParams.CONFIG_STATIC_SUPER_PROPERTY, properties.toString())
+    }
+
+    fun getStaticSuperProperties() = DBQueue.get().asyncSequentialChained {
+        val jsonStr = getStringConfig(DataParams.CONFIG_STATIC_SUPER_PROPERTY)
+        return@asyncSequentialChained try {
+            if (jsonStr.isBlank()) {
+                JSONObject()
+            } else {
+                JSONObject(jsonStr)
+            }
+        } catch (t: Throwable) {
+            LogUtils.e("getStaticSuperProperties", t)
+            JSONObject()
+        }
+    }
+
+    fun setUserSetOnceProps(propertyNames: String) = DBQueue.get().launchSequential {
+        setStringConfig(DataParams.CONFIG_USER_SET_ONCE_PROPS, propertyNames)
+    }
+
+    fun getUserSetOnceProps() = DBQueue.get().asyncSequentialChained {
+        getStringConfig(DataParams.CONFIG_USER_SET_ONCE_PROPS)
     }
 
     // endregion

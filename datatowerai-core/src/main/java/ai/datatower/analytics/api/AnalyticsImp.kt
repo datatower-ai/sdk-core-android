@@ -6,6 +6,7 @@ import ai.datatower.analytics.config.AnalyticsConfig
 import ai.datatower.analytics.core.EventTimer
 import ai.datatower.analytics.core.EventTimerManager
 import ai.datatower.analytics.core.EventTrackManager
+import ai.datatower.analytics.core.EventUploadManager
 import ai.datatower.analytics.core.PropertyManager
 import ai.datatower.analytics.data.EventDataAdapter
 import ai.datatower.analytics.taskqueue.MainQueue
@@ -13,6 +14,7 @@ import ai.datatower.analytics.taskqueue.MonitorQueue
 import ai.datatower.analytics.taskqueue.launchSequential
 import ai.datatower.analytics.utils.EventUtils
 import ai.datatower.analytics.utils.LogUtils
+import ai.datatower.analytics.utils.CommonPropsUtil
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
 import ai.datatower.quality.DTErrorParams
@@ -28,9 +30,7 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
     override var accountId: String?
         get() = PropertyManager.instance.getACID()
         set(value) {
-            if (value != null) {
-                PropertyManager.instance.updateACID(value)
-            }
+            PropertyManager.instance.updateACID(value ?: "")
         }
 
     override fun getDTId(onDataTowerIDListener: OnDataTowerIdListener) {
@@ -174,6 +174,22 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         trackUser(Constant.PRESET_EVENT_USER_UNIQ_APPEND, properties)
     }
 
+    override fun setDynamicCommonProperties(propertiesGetter: () -> JSONObject) {
+        CommonPropsUtil.updateDynamicProperties(propertiesGetter)
+    }
+
+    override fun clearCommonProperties() {
+        CommonPropsUtil.clearDynamicProperties()
+    }
+
+    override fun setStaticCommonProperties(properties: JSONObject) {
+        CommonPropsUtil.updateStaticProperties(properties)
+    }
+
+    override fun clearStaticCommonProperties() {
+        CommonPropsUtil.clearStaticProperties()
+    }
+
     override fun trackTimerStart(eventName: String) {
         if (configOptions?.isSdkDisable() == true) {
             return
@@ -259,6 +275,10 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
                 LogUtils.e(e)
             }
         }
+    }
+
+    override fun flush() {
+        EventUploadManager.getInstance()?.flush()
     }
 
     companion object {

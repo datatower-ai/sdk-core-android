@@ -196,5 +196,7 @@ abstract class AbstractAnalytics : IAnalytics {
             activityLifecycleCallbacks?.trackSessionStart()
         }
     }
+
+    abstract fun flush()
 }
 

@@ -2,6 +2,7 @@ package ai.datatower.analytics.config
 
 import ai.datatower.analytics.BuildConfig
 import ai.datatower.analytics.Constant
+import ai.datatower.analytics.api.AnalyticsImp
 import ai.datatower.analytics.data.persistence.SharedPreferencesLoader
 import ai.datatower.analytics.data.persistence.StorageDisableFlag
 import ai.datatower.analytics.data.persistence.StorageReportUrl
@@ -223,6 +224,24 @@ private constructor() : AbstractAnalyticsConfig() {
     fun setChannel(channel: String): AnalyticsConfig {
         mChannel = channel
         return this
+    }
+
+    /**
+     * 是否上报数据
+     */
+    fun setManualEnableUpload(manualEnableUpload: Boolean): AnalyticsConfig {
+        mManualUploadSwitch.set(!manualEnableUpload)
+        return this
+    }
+
+    fun enableUpload() {
+        if (mManualUploadSwitch.get()) {
+            LogUtils.w("Track is already enabled, duplicated enableTrack() will take no effects!")
+            return
+        }
+        LogUtils.d("Manually enabled upload!")
+        mManualUploadSwitch.set(true)
+        AnalyticsImp.getInstance().flush()
     }
 
     /**

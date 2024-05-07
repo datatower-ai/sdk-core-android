@@ -13,6 +13,7 @@ import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import org.json.JSONObject
+import java.lang.StringBuilder
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PresetEventManager {
@@ -82,12 +83,37 @@ class PresetEventManager {
                     Constant.USER_PROPERTY_ACTIVE_SDK_VERSION
                 )
             }
-        EventTrackManager.instance.trackUser(
-            Constant.PRESET_EVENT_USER_SET_ONCE,
-            happenTime,
-            activeUserProperties
-        )
 
+        val eda = EventDataAdapter.getInstance()
+        eda?.getUserSetOnceProps()?.onSameQueueThen { userSetOnceProps ->
+            userSetOnceProps.split(",").forEach {
+                activeUserProperties.remove(it)
+            }
+
+            if (activeUserProperties.length() > 0) {
+                val sb = StringBuilder(userSetOnceProps)
+                activeUserProperties.keys().forEach {
+                    if (sb.isNotEmpty()) {
+                        sb.append(",")
+                    }
+                    sb.append(it)
+                }
+                eda.setUserSetOnceProps(sb.toString())
+
+                EventTrackManager.instance.trackUser(
+                    Constant.PRESET_EVENT_USER_SET_ONCE,
+                    happenTime,
+                    activeUserProperties
+                )
+            }
+        } ?: run {
+            // Failed to get previous set once of 'active_xxx', work as normal.
+            EventTrackManager.instance.trackUser(
+                Constant.PRESET_EVENT_USER_SET_ONCE,
+                happenTime,
+                activeUserProperties
+            )
+        }
     }
 
 

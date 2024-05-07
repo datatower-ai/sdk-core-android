@@ -9,9 +9,11 @@ import ai.datatower.analytics.utils.DataUtils
 import ai.datatower.analytics.utils.EventUtils
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.MemoryUtils
+import ai.datatower.analytics.utils.CommonPropsUtil
 import ai.datatower.analytics.utils.TimeCalibration
 import ai.datatower.quality.DTErrorParams
 import ai.datatower.quality.DTQualityHelper
+import android.util.Log
 import org.json.JSONObject
 import java.util.concurrent.ThreadFactory
 
@@ -187,8 +189,21 @@ class EventTrackManager {
                 properties
             }
 
+            val props = eventProperties ?: JSONObject()
+            var delayedInsertCommon = false
+            // 接入方设置的动态/静态通用属性，event_type 为 track 时添加
+            // 最低优先级, 且 dynamic > static
+            if (AnalyticsConfig.instance.mManualUploadSwitch.get()) {
+                if (eventType == Constant.EVENT_TYPE_TRACK) {
+                    CommonPropsUtil.insertCommonProperties(props)
+                }
+            } else {
+                // Switch of enableTrack is off yet.
+                delayedInsertCommon = true
+            }
+
             //设置事件属性
-            eventInfo.put(Constant.EVENT_INFO_PROPERTIES, eventProperties)
+            eventInfo.put(Constant.EVENT_INFO_PROPERTIES, props)
 
             //将事件时间是否校准的结果保存至事件信息中，以供上报时校准时间使用
             val data = JSONObject().apply {
@@ -204,6 +219,10 @@ class EventTrackManager {
                 put(
                     Constant.EVENT_TIME_SESSION_ID,
                     TimeCalibration.instance.sessionId
+                )
+                put(
+                    Constant.EVENT_TEMP_EXTRA_DELAY_INSERT_COMMON,
+                    delayedInsertCommon
                 )
             }
 
