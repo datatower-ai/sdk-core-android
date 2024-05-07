@@ -34,6 +34,7 @@
             android:label="User related API" />
         <activity android:name=".ui.fn.core.DisplayAllApiActivity" />
         <activity android:name=".ui.fn.core.DevTestActivity" />
+        <activity android:name=".ui.fn.core.SetCommonPropertiesActivity" />
         <activity
             android:name=".ui.StartupActivity"
             android:exported="true"

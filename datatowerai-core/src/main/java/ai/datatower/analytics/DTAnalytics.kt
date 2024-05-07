@@ -123,7 +123,8 @@ open class DTAnalytics {
         }
 
         /**
-         * 设置自有用户系统的id
+         * 设置自有用户系统的id，
+         * 传 null 或 空字符串 以退出登陆，清空用户 id
          * @param id 用户系统id
          */
         @JvmStatic
@@ -172,6 +173,7 @@ open class DTAnalytics {
          * 透传 dt_id 至三方归因平台
          * @param type 归因平台 DTThirdPartyShareType.ADJUST
          */
+        @Deprecated("Please refer to our API Docs for substitutions.")
         @JvmStatic
         fun enableThirdPartySharing(type: Int) {
             try {
@@ -180,6 +182,55 @@ open class DTAnalytics {
             } catch (error: Exception) {
                 LogUtils.d(Constant.LOG_TAG,"Third Share error: ${error.message}")
             }
+        }
+
+        /**
+         * 设置通用属性（动态）
+         *
+         * @param properties 通用属性，值需为 Json 支持的类型
+         */
+        @JvmStatic
+        fun setDynamicCommonProperties(propertiesGetter: () -> JSONObject) {
+            AnalyticsImp.getInstance().setDynamicCommonProperties(propertiesGetter)
+        }
+
+        /**
+         * 移除通用属性（动态）
+         */
+        @JvmStatic
+        fun clearDynamicCommonProperties() {
+            AnalyticsImp.getInstance().clearCommonProperties()
+        }
+
+        /**
+         * 设置通用属性（静态，持久化）
+         * 持久化数据的读取时机在 initSDK 之后
+         *
+         * @param properties 通用属性，值需为 Json 支持的类型
+         */
+        @JvmStatic
+        fun setStaticCommonProperties(properties: Map<String, Any?>) {
+            AnalyticsImp.getInstance().setStaticCommonProperties(JSONObject(properties))
+        }
+
+
+        /**
+         * 设置通用属性（静态，持久化）
+         * 持久化数据的读取时机在 initSDK 之后
+         *
+         * @param properties 通用属性，值需为 Json 支持的类型
+         */
+        @JvmStatic
+        fun setStaticCommonProperties(properties: JSONObject) {
+            AnalyticsImp.getInstance().setStaticCommonProperties(properties)
+        }
+
+        /**
+         * 移除通用属性（静态，持久化）
+         */
+        @JvmStatic
+        fun clearStaticCommonProperties() {
+            AnalyticsImp.getInstance().clearStaticCommonProperties()
         }
 
         /******************** internal *******************/

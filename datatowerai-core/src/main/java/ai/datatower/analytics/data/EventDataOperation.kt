@@ -8,6 +8,7 @@ import ai.datatower.quality.DTErrorParams
 import ai.datatower.quality.DTQualityHelper
 import android.content.Context
 import android.text.TextUtils
+import android.util.Log
 import org.json.JSONObject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine

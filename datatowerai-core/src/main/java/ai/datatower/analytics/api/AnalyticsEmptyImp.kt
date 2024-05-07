@@ -7,9 +7,7 @@ class AnalyticsEmptyImp internal constructor() : AbstractAnalytics() {
 
     override var accountId: String?
         get() = ""
-        set(value) {
-
-        }
+        set(value) {}
 
     override fun getDTId(onDataTowerIDListener: OnDataTowerIdListener) {
     }
@@ -70,6 +68,22 @@ class AnalyticsEmptyImp internal constructor() : AbstractAnalytics() {
 
     }
 
+    override fun setDynamicCommonProperties(propertiesGetter: () -> JSONObject) {
+
+    }
+
+    override fun clearCommonProperties() {
+
+    }
+
+    override fun setStaticCommonProperties(properties: JSONObject) {
+
+    }
+
+    override fun clearStaticCommonProperties() {
+
+    }
+
     override fun trackTimerStart(eventName: String) {
 
     }
@@ -94,5 +108,7 @@ class AnalyticsEmptyImp internal constructor() : AbstractAnalytics() {
 
     }
 
+    override fun flush() {
 
+    }
 }

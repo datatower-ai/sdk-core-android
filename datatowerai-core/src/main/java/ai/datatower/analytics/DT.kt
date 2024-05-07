@@ -18,6 +18,8 @@ class DT {
          * @param channel 渠道，默认为空字符串，可用 DTChannel.GP，具体联系商务
          * @param isDebug 是否打开调试，调试模式下将打印log,默认关闭
          * @param logLevel log 的级别，默认为 Log.VERBOSE，仅在 isDebug = true 有效
+         * @param manualEnableUpload 是否手动开启事件上报，默认 false；如需在预置事件中加入公共属性，需设为 true 后，
+         * 再设置公共属性，再**手动调用 `DT.enableTrack()` 来开启上传**。
          */
         @JvmStatic
         @JvmOverloads
@@ -28,6 +30,7 @@ class DT {
             channel: String = "",
             isDebug: Boolean = false,
             logLevel: Int = Log.VERBOSE,
+            manualEnableUpload: Boolean = false,
             commonProperties: JSONObject = JSONObject(),
         ) {
             AnalyticsImp.init(
@@ -38,8 +41,14 @@ class DT {
                     .setServerUrl(serverUrl)
                     .setDebug(isDebug, logLevel)
                     .setChannel(channel)
+                    .setManualEnableUpload(manualEnableUpload)
                     .addCommonProperties(commonProperties)
             )
+        }
+
+        @JvmStatic
+        fun enableUpload() {
+            AnalyticsConfig.instance.enableUpload()
         }
 
     }

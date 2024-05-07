@@ -34,6 +34,8 @@ class DataParams private constructor(packageName: String) {
         const val USER_AGENT_WEBVIEW = "user_agent_webview"
         const val LATEST_NET_TIME = "latest_net_time"
         const val LATEST_GAP_TIME = "latest_gap_time"
+        const val CONFIG_STATIC_SUPER_PROPERTY = "static_super_property"
+        const val CONFIG_USER_SET_ONCE_PROPS = "user_set_once_props"
 
 
 

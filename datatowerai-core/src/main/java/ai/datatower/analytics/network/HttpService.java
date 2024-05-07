@@ -4,6 +4,8 @@
 
 package ai.datatower.analytics.network;
 
+import android.util.Log;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,6 +21,8 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
 
+import ai.datatower.analytics.utils.LogUtils;
+
 /**
  * HttpService发送数据.
  */
@@ -28,7 +32,7 @@ public class HttpService implements RemoteService {
     public String performRequest(String endpointUrl, String params,
                                  boolean debug, SSLSocketFactory socketFactory,
                                  Map<String, String> extraHeaders)
-            throws ServiceUnavailableException, IOException {
+            throws DTHttpException, IOException {
         InputStream in = null;
         OutputStream out = null;
         BufferedOutputStream bout = null;
@@ -94,8 +98,23 @@ public class HttpService implements RemoteService {
                     br.close();
                     return buffer.toString();
                 } else {
-                    throw new ServiceUnavailableException(
-                            "Service unavailable with response code: " + responseCode);
+                    try {
+                        in = connection.getErrorStream();
+                        br = new BufferedReader(new InputStreamReader(in));
+                        StringBuilder buffer = new StringBuilder();
+                        String str;
+                        while ((str = br.readLine()) != null) {
+                            buffer.append(str);
+                        }
+                        in.close();
+                        br.close();
+                        throw new RemoteVerificationException(responseCode, buffer.toString());
+                    } catch (Throwable t) {
+                        if (t instanceof RemoteVerificationException) throw t;
+                        LogUtils.e("DT Http", "Failed to get input stream: " + t.getMessage());
+                        throw new ServiceUnavailableException(
+                                "Service unavailable with response code: " + responseCode);
+                    }
                 }
             } else {
                 throw new InvalidParameterException("Content is null");

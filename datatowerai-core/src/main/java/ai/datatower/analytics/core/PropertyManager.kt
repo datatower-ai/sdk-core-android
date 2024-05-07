@@ -13,6 +13,7 @@ import ai.datatower.analytics.utils.EventUtils
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.MemoryUtils
 import ai.datatower.analytics.utils.NetworkUtil
+import ai.datatower.analytics.utils.CommonPropsUtil
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
 import ai.datatower.quality.DTErrorParams
@@ -23,6 +24,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
+import android.util.Log
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
@@ -56,6 +58,7 @@ class PropertyManager private constructor() {
     private var limitAdTrackingEnabled = false
 
     private var sessionStartTime = 0L
+    private var sessionEndTime = 0L
 
     private val dtidCallbacks: ConcurrentLinkedQueue<OnDataTowerIdListener?> =
         ConcurrentLinkedQueue()
@@ -68,6 +71,7 @@ class PropertyManager private constructor() {
         try {
             dataAdapter = EventDataAdapter.getInstance(context)
             initDisableList(context)
+            CommonPropsUtil.init()
             initEventInfo(context)
             initCommonProperties(context, initConfig)
             getDataTowerId(context)
@@ -346,6 +350,12 @@ class PropertyManager private constructor() {
                                 if (startReason != "" && startReason != "{}") {
                                     put(Constant.SESSION_START_PROPERTY_START_REASON, startReason)
                                 }
+                                if (resumeFromBackground && sessionEndTime != 0L) {
+                                    put(
+                                        Constant.SESSION_START_PROPERTY_BACKGROUND_DURATION,
+                                        sessionStartTime - sessionEndTime
+                                    )
+                                }
                             },
                             insertHandler = { code: Int, _: String ->
                                 if (code == 0 && isFirstOpen) {
@@ -362,7 +372,8 @@ class PropertyManager private constructor() {
                     happenTime,
                     JSONObject().apply {
                         if (sessionStartTime != 0L) {
-                            val sessionDuration = SystemClock.elapsedRealtime() - sessionStartTime
+                            sessionEndTime = SystemClock.elapsedRealtime()
+                            val sessionDuration = sessionEndTime - sessionStartTime
                             put(Constant.SESSION_END_PROPERTY_SESSION_DURATION, sessionDuration)
                             sessionStartTime = 0L
                         }
@@ -477,20 +488,15 @@ class PropertyManager private constructor() {
     }
 
     fun updateACID(acid: String) {
-        if (acid.isEmpty()) return
+        val id = acid.ifBlank { "" }
         MainQueue.get().postTask {
-            EventDataAdapter.getInstance()?.setAccountId(acid)
-            updateEventInfo(Constant.EVENT_INFO_ACID, acid)
+            EventDataAdapter.getInstance()?.setAccountId(id)
+            updateEventInfo(Constant.EVENT_INFO_ACID, id)
         }
     }
 
     fun getACID(): String {
-        (getEventInfo()[Constant.EVENT_INFO_ACID] as String?)?.let {
-            if (it.isNotEmpty()) {
-                return it
-            }
-        }
-        return ""
+        return (getEventInfo()[Constant.EVENT_INFO_ACID] as String?) ?: ""
     }
 
     fun updateFireBaseInstanceId(fiid: String?) {

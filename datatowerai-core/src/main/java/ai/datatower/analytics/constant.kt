@@ -38,6 +38,11 @@ internal object Constant {
     const val EVENT_TIME_SESSION_ID  = "time_session_id"  // 进程启动一次生成一次唯一id
     const val EVENT_TIME_CAN_TRUSTED  = "time_trusted"
 
+    /**
+     * 临时属性，插入后需在上传前移除
+     */
+    const val EVENT_TEMP_EXTRA_DELAY_INSERT_COMMON = "temp_extra_delay_insert_common"
+
     const val COMMON_PROPERTY_EVENT_SESSION       = "#session_id"
     const val COMMON_PROPERTY_MCC                 = "#mcc"
     const val COMMON_PROPERTY_MNC                 = "#mnc"
@@ -114,6 +119,7 @@ internal object Constant {
     const val SESSION_START_PROPERTY_IS_FIRST_TIME           = "#is_first_time"
     const val SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND  = "#resume_from_background"
     const val SESSION_START_PROPERTY_START_REASON            = "#start_reason"
+    const val SESSION_START_PROPERTY_BACKGROUND_DURATION     = "#background_duration"
 
     //session_end
     const val SESSION_END_PROPERTY_SESSION_DURATION          = "#session_duration"
