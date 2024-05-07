@@ -173,6 +173,7 @@ open class DTAnalytics {
          * 透传 dt_id 至三方归因平台
          * @param type 归因平台 DTThirdPartyShareType.ADJUST
          */
+        @Deprecated("Please refer to our API Docs for substitutions.")
         @JvmStatic
         fun enableThirdPartySharing(type: Int) {
             try {
