@@ -117,8 +117,8 @@ tasks.create("sourcesJarToPublish", Jar::class) {
 }
 
 publishing {
-    val groupId = "ai.datatower"
-    val artifactId = "core"
+    val groupId = "com.lovinjoy"
+    val artifactId = "datatowerai-core"
     val dtsdkCoreVersionName: String by rootProject.extra
 
     val props = rootProject.file("local.properties").inputStream().use { inStream ->
@@ -137,7 +137,7 @@ publishing {
             pom {
                 name.set(artifactId)
                 description.set("DataTower.ai Android SDK")
-                url.set("https://github.com/lovinjoy/datatower.ai-core-android")
+                url.set("https://github.com/datatower-ai/sdk-core-android")
 
                 licenses {
                     license {
@@ -175,7 +175,7 @@ publishing {
             maven {
                 name = "MavenCentral"
                 url = if (dtsdkCoreVersionName.endsWith("-SNAPSHOT")) {
-                    URI.create("https://oss.sonatype.org/content/repositories/snapshots/")
+                    URI.create("https://s01.oss.sonatype.org/content/repositories/snapshots/")
                 } else {
                     URI.create("https://s01.oss.sonatype.org/content/repositories/releases/")
                 }
