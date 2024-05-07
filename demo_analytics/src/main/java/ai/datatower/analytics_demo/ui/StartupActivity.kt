@@ -1,7 +1,6 @@
 package ai.datatower.analytics_demo.ui
 
 import ai.datatower.ad.DTAdReport
-import ai.datatower.analytics.BuildConfig
 import ai.datatower.analytics.DT
 import ai.datatower.analytics.DTAnalytics
 import ai.datatower.analytics.DTAnalyticsUtils
@@ -98,7 +97,7 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
                 text = { Text("Initialize") },
                 icon = { Icon(Icons.Rounded.Check, "") },
                 onClick = {
-                    if (serverUrl.isEmpty() && BuildConfig.DEFAULT_SERVER_URL.isEmpty()) {
+                    if (serverUrl.isEmpty()) {
                         isServerUrlError = true
                     }
                     if (appId.isEmpty()) {
@@ -131,7 +130,6 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
                 value = serverUrl,
                 onValueChange = { serverUrl = it },
                 label = { Text("Server Url") },
-                supportingText = { Text("Default: \"${BuildConfig.DEFAULT_SERVER_URL}\"") },
                 modifier = Modifier.fillMaxWidth(),
                 isError = isServerUrlError,
             )

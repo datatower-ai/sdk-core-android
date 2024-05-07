@@ -48,8 +48,7 @@ allprojects {
         mavenCentral()
         google()
         maven("https://www.jitpack.io")
-        maven("https://repo-public.en2joy.com/repository/maven-releases/")
-        maven("https://oss.sonatype.org/content/repositories/snapshots/")
+        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
     }
 }
 
