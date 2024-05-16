@@ -6,7 +6,7 @@ buildscript {
         set("minSdkVersion", 19)
         set("targetSdkVersion", 33)
 
-        set("dtsdkCoreVersionName", "3.0.1")
+        set("dtsdkCoreVersionName", "3.0.2")
 
         set("javaVersion", JavaVersion.VERSION_1_8)
         set("kotlinVersion", "1.8.21")
@@ -37,7 +37,7 @@ buildscript {
         // The version of Dokka could be different from the version of Kotlin.
         classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.8.10")
         // maven publish
-        classpath("com.vanniktech:gradle-maven-publish-plugin:0.25.2")
+        classpath("com.vanniktech:gradle-maven-publish-plugin:0.28.0")
         classpath("org.yaml:snakeyaml:2.0")
         classpath("com.google.devtools.ksp:symbol-processing-gradle-plugin:$gradleKspVersion")
     }
