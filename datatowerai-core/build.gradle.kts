@@ -1,6 +1,6 @@
+import com.vanniktech.maven.publish.AndroidMultiVariantLibrary
+import com.vanniktech.maven.publish.SonatypeHost
 import org.gradle.api.plugins.ExtraPropertiesExtension.UnknownPropertyException
-import java.util.Properties
-import java.net.URI
 import org.gradle.jvm.tasks.Jar
 
 plugins {
@@ -8,8 +8,7 @@ plugins {
     kotlin("android")
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
-    id("maven-publish")
-    id("signing")
+    id("com.vanniktech.maven.publish")
 }
 
 android {
@@ -116,83 +115,52 @@ tasks.create("sourcesJarToPublish", Jar::class) {
     archiveClassifier.set("sources")
 }
 
-publishing {
-    val groupId = "com.lovinjoy"
-    val artifactId = "datatowerai-core"
+mavenPublishing {
+    configure(AndroidMultiVariantLibrary(
+        sourcesJar = false,
+        publishJavadocJar = false,
+        includedBuildTypeValues = setOf("release"),
+        includedFlavorDimensionsAndValues = mapOf("slf4jLogging" to setOf("public"))
+    ))
+
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    signAllPublications()
+
+    val groupId = "ai.datatower"
+    val artifactId = "core"
     val dtsdkCoreVersionName: String by rootProject.extra
+    coordinates(groupId, artifactId, dtsdkCoreVersionName)
 
-    val props = rootProject.file("local.properties").inputStream().use { inStream ->
-        Properties().also { it.load(inStream) }
-    }
+    pom {
+        name.set(artifactId)
+        description.set("DataTower.ai Android SDK")
+        url.set("https://github.com/datatower-ai/sdk-core-android")
 
-    publications {
-        create<MavenPublication>("Release") {
-            this.groupId = groupId
-            this.artifactId = artifactId
-            version = dtsdkCoreVersionName
-
-            artifact("$buildDir/outputs/aar/${project.name}-public-release.aar")
-            artifact(tasks.getByName("sourcesJarToPublish"))
-
-            pom {
-                name.set(artifactId)
-                description.set("DataTower.ai Android SDK")
-                url.set("https://github.com/datatower-ai/sdk-core-android")
-
-                licenses {
-                    license {
-                        name.set("The Apache License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("datatower")
-                        name.set("datatower.ai")
-                        email.set("develop@datatower.ai")
-                    }
-                }
-                scm {
-                    connection.set("scm:git:github.com/datatower-ai/sdk-core-android.git")
-                    developerConnection.set("scm:git:ssh://github.com/datatower-ai/sdk-core-android.git")
-                    url.set("https://github.com/datatower-ai/sdk-core-android/tree/main")
-                }
-            }
-
-            pom.withXml {
-                val dependenciesNode = asNode().appendNode("dependencies")
-
-                configurations.implementation.get().dependencies.forEach {
-                    val dependencyNode = dependenciesNode.appendNode("dependency")
-                    dependencyNode.appendNode("groupId", it.group)
-                    dependencyNode.appendNode("artifactId", it.name)
-                    dependencyNode.appendNode("version", it.version)
-                }
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
             }
         }
-
-        repositories {
-            maven {
-                name = "MavenCentral"
-                url = if (dtsdkCoreVersionName.endsWith("-SNAPSHOT")) {
-                    URI.create("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-                } else {
-                    URI.create("https://s01.oss.sonatype.org/content/repositories/releases/")
-                }
-                credentials.username = props["ossrhUsername"].toString()
-                credentials.password = props["ossrhPassword"].toString()
+        developers {
+            developer {
+                id.set("datatowerai")
+                name.set("datatower.ai")
+                email.set("develop@datatower.ai")
             }
         }
+        scm {
+            connection.set("scm:git:github.com/datatower-ai/sdk-core-android.git")
+            developerConnection.set("scm:git:ssh://github.com/datatower-ai/sdk-core-android.git")
+            url.set("https://github.com/datatower-ai/sdk-core-android/tree/main")
+        }
     }
-}
-
-signing {
-    // TODO: sign(publishing.publications)
 }
 
 tasks.withType(PublishToMavenRepository::class.java) {
     doLast {
-        println("Published ${publication.groupId}:${publication.artifactId}:${publication.version} to ${repository.url}")
+        println("Published \u001B[1m${publication.groupId}:${publication.artifactId}:\u001B[1;38;2;79;175;83m${publication.version}\u001B[0m to Maven Central")
     }
 }
 
