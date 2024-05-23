@@ -505,6 +505,10 @@ class PropertyManager private constructor() {
         val happenTime = SystemClock.elapsedRealtime()
 
         MainQueue.get().postTask {
+            CommonPropsUtil.updateInternalCommonProperties(Constant.COMMON_PROPERTY_FIREBASE_INSTANCE_ID, fiid)
+        }
+
+        MainQueue.get().postTask {
             EventTrackManager.instance.trackUser(
                 Constant.PRESET_EVENT_USER_SET,
                 happenTime,
@@ -519,6 +523,11 @@ class PropertyManager private constructor() {
         if (afid?.isEmpty() == true) return
 
         val happenTime = SystemClock.elapsedRealtime()
+
+        MainQueue.get().postTask {
+            CommonPropsUtil.updateInternalCommonProperties(Constant.COMMON_PROPERTY_APPSFLYER_ID, afid)
+        }
+
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET,
             happenTime,
@@ -532,6 +541,11 @@ class PropertyManager private constructor() {
         if (koid?.isEmpty() == true) return
 
         val happenTime = SystemClock.elapsedRealtime()
+
+        MainQueue.get().postTask {
+            CommonPropsUtil.updateInternalCommonProperties(Constant.COMMON_PROPERTY_KOCHAVA_ID, koid)
+        }
+
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET,
             happenTime,
@@ -545,6 +559,11 @@ class PropertyManager private constructor() {
         if (adjustId?.isEmpty() == true) return
 
         val happenTime = SystemClock.elapsedRealtime()
+
+        MainQueue.get().postTask {
+            CommonPropsUtil.updateInternalCommonProperties(Constant.COMMON_PROPERTY_ADJUST_ID, adjustId)
+        }
+
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET,
             happenTime,
