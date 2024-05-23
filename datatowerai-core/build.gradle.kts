@@ -117,7 +117,7 @@ tasks.create("sourcesJarToPublish", Jar::class) {
 
 mavenPublishing {
     configure(AndroidMultiVariantLibrary(
-        sourcesJar = false,
+        sourcesJar = true,
         publishJavadocJar = false,
         includedBuildTypeValues = setOf("release"),
         includedFlavorDimensionsAndValues = mapOf("slf4jLogging" to setOf("public"))
@@ -149,6 +149,10 @@ mavenPublishing {
                 name.set("datatower.ai")
                 email.set("develop@datatower.ai")
             }
+        }
+        organization {
+            name.set("DataTower.ai")
+            url.set("https://datatower.ai/")
         }
         scm {
             connection.set("scm:git:github.com/datatower-ai/sdk-core-android.git")
