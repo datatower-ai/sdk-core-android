@@ -513,7 +513,7 @@ class PropertyManager private constructor() {
                 Constant.PRESET_EVENT_USER_SET,
                 happenTime,
                 JSONObject().apply {
-                    put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, fiid)
+                    put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, fiid ?: "")
                 }
             )
         }
@@ -532,7 +532,7 @@ class PropertyManager private constructor() {
             Constant.PRESET_EVENT_USER_SET,
             happenTime,
             JSONObject().apply {
-                put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, afid)
+                put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, afid ?: "")
             }
         )
     }
@@ -550,7 +550,7 @@ class PropertyManager private constructor() {
             Constant.PRESET_EVENT_USER_SET,
             happenTime,
             JSONObject().apply {
-                put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, koid)
+                put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, koid ?: "")
             }
         )
     }
@@ -568,7 +568,7 @@ class PropertyManager private constructor() {
             Constant.PRESET_EVENT_USER_SET,
             happenTime,
             JSONObject().apply {
-                put(Constant.USER_PROPERTY_LATEST_ADJUST_ID, adjustId)
+                put(Constant.USER_PROPERTY_LATEST_ADJUST_ID, adjustId ?: "")
             }
         )
     }
