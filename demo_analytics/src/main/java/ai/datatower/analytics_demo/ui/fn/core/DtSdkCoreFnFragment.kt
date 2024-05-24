@@ -139,13 +139,18 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
         if (preference !is EditTextPreference) return false
         val key = preference.key?.substringAfter("dt_anal_user_builtin_prop_") ?: return false
         val value = newValue as? CharSequence ?: return false
+        val id = value.toString().let {
+            it.ifEmpty {
+                null
+            }
+        }
 
         when (key) {
-            "acid" -> DTAnalytics.setAccountId(value.toString())
-            "firebase_id" -> DTAnalytics.setFirebaseAppInstanceId(value.toString())
-            "appsflyer_id" -> DTAnalytics.setAppsFlyerId(value.toString())
-            "kochava_id" -> DTAnalytics.setKochavaId(value.toString())
-            "adjust_id" -> DTAnalytics.setAdjustId(value.toString())
+            "acid" -> DTAnalytics.setAccountId(id)
+            "firebase_id" -> DTAnalytics.setFirebaseAppInstanceId(id)
+            "appsflyer_id" -> DTAnalytics.setAppsFlyerId(id)
+            "kochava_id" -> DTAnalytics.setKochavaId(id)
+            "adjust_id" -> DTAnalytics.setAdjustId(id)
             "clear_acid" -> DTAnalytics.setAccountId(null)
         }
         return true

@@ -3,8 +3,8 @@ package ai.datatower.analytics.utils
 import ai.datatower.analytics.data.DataParams
 import ai.datatower.analytics.data.EventDataAdapter
 import ai.datatower.analytics.taskqueue.MainQueue
-import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
+import org.json.JSONException
 import org.json.JSONObject
 
 object CommonPropsUtil {
@@ -81,11 +81,16 @@ object CommonPropsUtil {
 
     @WorkerThread
     internal fun updateInternalCommonProperties(key: String, value: Any?) {
-        val old = internalProperties.get(key)
-        internalProperties.put(key, value)
+        val old = try {
+            internalProperties.get(key)
+        } catch (e: JSONException) {
+            null
+        }
 
         if (old != value) {
             // only if the value changes
+            internalProperties.put(key, value)
+
             EventDataAdapter.getInstance()?.saveCommonProperties(
                 DataParams.CONFIG_INTERNAL_SUPER_PROPERTY,
                 internalProperties
