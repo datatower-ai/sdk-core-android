@@ -97,9 +97,7 @@ dependencies {
     val roomDbVersion: String by rootProject.extra
     val androidxAnnotationVersion: String by rootProject.extra
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib") {
-        version { strictly(kotlinVersion) }
-    }
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     implementation("androidx.annotation:annotation:$androidxAnnotationVersion")
 
@@ -192,7 +190,7 @@ signing {
 
 tasks.withType(PublishToMavenRepository::class.java) {
     doLast {
-        println("Published ${publication.groupId}:${publication.artifactId}:${publication.version} to ${repository.url}")
+        println("Published \u001B[1m${publication.groupId}:${publication.artifactId}:\u001B[1;38;2;79;175;83m${publication.version}\u001B[0m to Maven Central")
     }
 }
 
