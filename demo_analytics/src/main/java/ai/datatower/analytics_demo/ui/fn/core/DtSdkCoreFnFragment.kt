@@ -47,8 +47,6 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
                 }
             }
         }
-
-        assignBuiltinUserPropertiesToSdk()
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -62,22 +60,6 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             "dt_anal_manual_enable_upload" -> DT.enableUpload()
         }
         return super.onPreferenceTreeClick(preference)
-    }
-
-    private fun assignBuiltinUserPropertiesToSdk() {
-        val sharedPrefs = this.preferenceManager?.sharedPreferences ?: return
-        val keys = sharedPrefs.all.keys.filter { it.startsWith("dt_anal_user_builtin_prop_") }
-        for (key in keys) {
-            val endsWith = key.substringAfter("dt_anal_user_builtin_prop_")
-            val value = sharedPrefs.getString(key, null) ?: continue
-            when (endsWith) {
-                "acid" -> DTAnalytics.setAccountId(value)
-                "firebase_id" -> DTAnalytics.setFirebaseAppInstanceId(value)
-                "appsflyer_id" -> DTAnalytics.setAppsFlyerId(value)
-                "kochava_id" -> DTAnalytics.setKochavaId(value)
-                "adjust_id" -> DTAnalytics.setAdjustId(value)
-            }
-        }
     }
 
     private fun trackEventPredefined() {
