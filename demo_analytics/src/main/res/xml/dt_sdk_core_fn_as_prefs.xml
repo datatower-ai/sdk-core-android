@@ -28,9 +28,19 @@
             android:title="Set #latest_firebase_iid" />
 
         <EditTextPreference
+            android:key="dt_anal_user_builtin_prop_clear_firebase_id"
+            android:summary="just click 'ok' where input will take no effect!"
+            android:title="Clear firebase_id" />
+
+        <EditTextPreference
             android:key="dt_anal_user_builtin_prop_appsflyer_id"
             android:summary="dtAnal.appsFlyerId"
             android:title="Set #latest_appsflyer_id" />
+
+        <EditTextPreference
+            android:key="dt_anal_user_builtin_prop_clear_appsflyer_id"
+            android:summary="just click 'ok' where input will take no effect!"
+            android:title="Clear appsflyer_id" />
 
         <EditTextPreference
             android:key="dt_anal_user_builtin_prop_kochava_id"
@@ -38,10 +48,20 @@
             android:title="Set #latest_kochava_id" />
 
         <EditTextPreference
+            android:key="dt_anal_user_builtin_prop_clear_kochava_id"
+            android:summary="just click 'ok' where input will take no effect!"
+            android:title="Clear kochava_id" />
+
+        <EditTextPreference
             android:layout_height="wrap_content"
             android:key="dt_anal_user_builtin_prop_adjust_id"
             android:summary="dtAnal.adjustId"
             android:title="Set #latest_adjust_id" />
+
+        <EditTextPreference
+            android:key="dt_anal_user_builtin_prop_clear_adjust_id"
+            android:summary="just click 'ok' where input will take no effect!"
+            android:title="Clear adjust_id" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Event Tracking">

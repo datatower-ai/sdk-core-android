@@ -69,6 +69,11 @@ internal object Constant {
     const val COMMON_PROPERTY_IS_FOREGROUND       = "#is_foreground"
     const val COMMON_PROPERTY_EVENT_DURATION      = "#event_duration"
     const val COMMON_PROPERTY_EVENT_ZONE_OFFSET   = "#zone_offset"
+    // Common prop, but need to be set by host
+    const val COMMON_PROPERTY_FIREBASE_INSTANCE_ID = "#firebase_iid"
+    const val COMMON_PROPERTY_APPSFLYER_ID = "#appsflyer_id"
+    const val COMMON_PROPERTY_ADJUST_ID = "#adjust_id"
+    const val COMMON_PROPERTY_KOCHAVA_ID = "#kochava_id"
 
     //latest
     const val USER_PROPERTY_LATEST_DEBUG                = "#latest_debug"

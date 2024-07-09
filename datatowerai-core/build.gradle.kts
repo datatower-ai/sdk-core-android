@@ -96,9 +96,7 @@ dependencies {
     val roomDbVersion: String by rootProject.extra
     val androidxAnnotationVersion: String by rootProject.extra
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib") {
-        version { strictly(kotlinVersion) }
-    }
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     implementation("androidx.annotation:annotation:$androidxAnnotationVersion")
 
@@ -117,7 +115,7 @@ tasks.create("sourcesJarToPublish", Jar::class) {
 
 mavenPublishing {
     configure(AndroidMultiVariantLibrary(
-        sourcesJar = false,
+        sourcesJar = true,
         publishJavadocJar = false,
         includedBuildTypeValues = setOf("release"),
         includedFlavorDimensionsAndValues = mapOf("slf4jLogging" to setOf("public"))
@@ -149,6 +147,10 @@ mavenPublishing {
                 name.set("datatower.ai")
                 email.set("develop@datatower.ai")
             }
+        }
+        organization {
+            name.set("DataTower.ai")
+            url.set("https://datatower.ai/")
         }
         scm {
             connection.set("scm:git:github.com/datatower-ai/sdk-core-android.git")

@@ -4,7 +4,6 @@ import ai.datatower.analytics.Constant
 import ai.datatower.analytics.utils.CommonPropsUtil
 import ai.datatower.analytics.utils.TimeCalibration
 import android.os.SystemClock
-import android.util.Log
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -206,7 +205,7 @@ class EventInfoCheckHelper private constructor() {
             eventInfo.optJSONObject(Constant.EVENT_BODY)?.let { body ->
                 if (body.optString(Constant.EVENT_INFO_TYPE, "") == Constant.EVENT_TYPE_TRACK) {
                     body.optJSONObject(Constant.EVENT_INFO_PROPERTIES)?.let {
-                        CommonPropsUtil.insertCommonProperties(it)
+                        CommonPropsUtil.applyCommonPropertiesToEvent(it)
                     }
                 }
             }
