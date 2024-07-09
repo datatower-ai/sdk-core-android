@@ -47,8 +47,6 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
                 }
             }
         }
-
-        assignBuiltinUserPropertiesToSdk()
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -62,22 +60,6 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             "dt_anal_manual_enable_upload" -> DT.enableUpload()
         }
         return super.onPreferenceTreeClick(preference)
-    }
-
-    private fun assignBuiltinUserPropertiesToSdk() {
-        val sharedPrefs = this.preferenceManager?.sharedPreferences ?: return
-        val keys = sharedPrefs.all.keys.filter { it.startsWith("dt_anal_user_builtin_prop_") }
-        for (key in keys) {
-            val endsWith = key.substringAfter("dt_anal_user_builtin_prop_")
-            val value = sharedPrefs.getString(key, null) ?: continue
-            when (endsWith) {
-                "acid" -> DTAnalytics.setAccountId(value)
-                "firebase_id" -> DTAnalytics.setFirebaseAppInstanceId(value)
-                "appsflyer_id" -> DTAnalytics.setAppsFlyerId(value)
-                "kochava_id" -> DTAnalytics.setKochavaId(value)
-                "adjust_id" -> DTAnalytics.setAdjustId(value)
-            }
-        }
     }
 
     private fun trackEventPredefined() {
@@ -139,14 +121,23 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
         if (preference !is EditTextPreference) return false
         val key = preference.key?.substringAfter("dt_anal_user_builtin_prop_") ?: return false
         val value = newValue as? CharSequence ?: return false
+        val id = value.toString().let {
+            it.ifEmpty {
+                null
+            }
+        }
 
         when (key) {
-            "acid" -> DTAnalytics.setAccountId(value.toString())
-            "firebase_id" -> DTAnalytics.setFirebaseAppInstanceId(value.toString())
-            "appsflyer_id" -> DTAnalytics.setAppsFlyerId(value.toString())
-            "kochava_id" -> DTAnalytics.setKochavaId(value.toString())
-            "adjust_id" -> DTAnalytics.setAdjustId(value.toString())
+            "acid" -> DTAnalytics.setAccountId(id)
+            "firebase_id" -> DTAnalytics.setFirebaseAppInstanceId(id)
+            "appsflyer_id" -> DTAnalytics.setAppsFlyerId(id)
+            "kochava_id" -> DTAnalytics.setKochavaId(id)
+            "adjust_id" -> DTAnalytics.setAdjustId(id)
             "clear_acid" -> DTAnalytics.setAccountId(null)
+            "clear_firebase_id" -> DTAnalytics.setFirebaseAppInstanceId(null)
+            "clear_appsflyer_id" -> DTAnalytics.setAppsFlyerId(null)
+            "clear_kochava_id" -> DTAnalytics.setKochavaId(null)
+            "clear_adjust_id" -> DTAnalytics.setAdjustId(null)
         }
         return true
     }

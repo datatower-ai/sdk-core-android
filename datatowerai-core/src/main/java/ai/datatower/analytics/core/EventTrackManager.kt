@@ -13,7 +13,6 @@ import ai.datatower.analytics.utils.CommonPropsUtil
 import ai.datatower.analytics.utils.TimeCalibration
 import ai.datatower.quality.DTErrorParams
 import ai.datatower.quality.DTQualityHelper
-import android.util.Log
 import org.json.JSONObject
 import java.util.concurrent.ThreadFactory
 
@@ -195,7 +194,7 @@ class EventTrackManager {
             // 最低优先级, 且 dynamic > static
             if (AnalyticsConfig.instance.mManualUploadSwitch.get()) {
                 if (eventType == Constant.EVENT_TYPE_TRACK) {
-                    CommonPropsUtil.insertCommonProperties(props)
+                    CommonPropsUtil.applyCommonPropertiesToEvent(props)
                 }
             } else {
                 // Switch of enableTrack is off yet.

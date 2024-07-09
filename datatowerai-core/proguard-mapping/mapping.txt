@@ -2,8 +2,8 @@
 # compiler_version: 8.0.40
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.1"}
-# pg_map_id: 2ead81b
-# pg_map_hash: SHA-256 2ead81bb6fc82db707a8e9c82949cf5947485ba17e6cdb4beeb38b194d25a569
+# pg_map_id: 7efd02e
+# pg_map_hash: SHA-256 7efd02ea6cdbb42cb4f8bb76dad982b1b369278ff5b1fb19efe63d704081e07c
 ai.datatower.ad.AD_CONVERSION_SOURCE -> ai.datatower.ad.a:
 # {"id":"sourceFile","fileName":"constant.kt"}
     ai.datatower.ad.AD_CONVERSION_SOURCE$Companion Companion -> a
@@ -845,117 +845,121 @@ ai.datatower.analytics.BuildConfig -> ai.datatower.analytics.a:
     1:1:void <init>():6:6 -> <init>
 ai.datatower.analytics.Constant -> ai.datatower.analytics.b:
 # {"id":"sourceFile","fileName":"constant.kt"}
-    java.lang.String ATTRIBUTE_PROPERTY_INSTANT_EXPERIENCE_LAUNCHED -> I0
+    java.lang.String USER_PROPERTY_ACTIVE_BUILD_DEVICE -> I0
+    java.lang.String SDK_TYPE_ANDROID -> j1
     java.lang.String COMMON_PROPERTY_SDK_VERSION -> I
     java.lang.String EVENT_INFO_ACID -> j
-    java.lang.String USER_PROPERTY_ACTIVE_BUILD_DEVICE -> E0
-    java.lang.String SDK_TYPE_ANDROID -> f1
-    java.lang.String USER_PROPERTY_ACTIVE_STORAGE_USED -> A0
-    java.lang.String PRESET_EVENT_USER_UNSET -> b1
+    java.lang.String USER_PROPERTY_ACTIVE_STORAGE_USED -> E0
+    java.lang.String PRESET_EVENT_USER_UNSET -> f1
+    java.lang.String USER_PROPERTY_ACTIVE_DEVICE_MODEL -> A0
+    java.lang.String PRESET_EVENT_SESSION_END -> b1
     java.lang.String COMMON_PROPERTY_SIMULATOR -> Q
     java.lang.String PRE_EVENT_INFO_SYN -> r
     java.lang.String COMMON_PROPERTY_EVENT_DURATION -> Y
-    java.lang.String USER_PROPERTY_ACTIVE_DEVICE_BRAND -> v0
+    java.lang.String USER_PROPERTY_ACTIVE_OS -> v0
     java.lang.String EVENT_TEMP_EXTRA_DELAY_INSERT_COMMON -> z
-    java.lang.String USER_PROPERTY_ACTIVE_OS -> r0
-    java.lang.String USER_PROPERTY_ACTIVE_APP_VERSION_CODE -> n0
-    java.lang.String USER_PROPERTY_ACTIVE_MCC -> j0
+    java.lang.String USER_PROPERTY_ACTIVE_APP_VERSION_CODE -> r0
+    java.lang.String USER_PROPERTY_ACTIVE_MCC -> n0
+    java.lang.String USER_PROPERTY_LATEST_APP_VERSION_NAME -> j0
     java.lang.String EVENT_INFO_GAID -> i
     java.lang.String COMMON_PROPERTY_SDK_TYPE -> H
-    java.lang.String USER_PROPERTY_LATEST_APP_VERSION_NAME -> f0
-    java.lang.String USER_PROPERTY_LATEST_FIREBASE_IID -> b0
+    java.lang.String USER_PROPERTY_LATEST_FIREBASE_IID -> f0
+    java.lang.String COMMON_PROPERTY_APPSFLYER_ID -> b0
     java.lang.String EVENT_INFO_TYPE -> q
     java.lang.String COMMON_PROPERTY_NETWORK_TYPE -> P
-    java.lang.String USER_PROPERTY_ACTIVE_SCREEN_WIDTH -> y0
-    java.lang.String PRESET_EVENT_USER_SET -> Z0
+    java.lang.String USER_PROPERTY_ACTIVE_DEVICE_MANUFACTURER -> y0
+    java.lang.String PRESET_EVENT_APP_INSTALL -> Z0
     java.lang.String EVENT_TIME_CAN_TRUSTED -> y
     java.lang.String COMMON_PROPERTY_IS_FOREGROUND -> X
-    java.lang.String PRESET_EVENT_APP_INSTALL -> V0
-    java.lang.String SESSION_END_PROPERTY_SESSION_DURATION -> R0
-    java.lang.String SESSION_START_PROPERTY_IS_FIRST_TIME -> N0
-    java.lang.String ATTRIBUTE_PROPERTY_APP_INSTALL_TIME -> H0
+    java.lang.String SESSION_END_PROPERTY_SESSION_DURATION -> V0
+    java.lang.String SESSION_START_PROPERTY_IS_FIRST_TIME -> R0
+    java.lang.String ATTRIBUTE_PROPERTY_FAILED_REASON -> N0
+    java.lang.String USER_PROPERTY_ACTIVE_USER_AGENT -> H0
+    java.lang.String PRESET_EVENT_USER_DEL -> i1
     java.lang.String COMMON_PROPERTY_OS_VERSION_NAME -> K
-    java.lang.String USER_PROPERTY_ACTIVE_USER_AGENT -> D0
-    java.lang.String PRESET_EVENT_USER_DEL -> e1
+    java.lang.String USER_PROPERTY_ACTIVE_MEMORY_USED -> D0
+    java.lang.String PRESET_EVENT_USER_SET_ONCE -> e1
     java.lang.String EVENT_INFO_BUNDLE_ID -> l
     int EVENT_REPORT_SIZE -> f
-    java.lang.String PRESET_EVENT_USER_SET_ONCE -> a1
+    java.lang.String PRESET_EVENT_SESSION_START -> a1
     java.lang.String COMMON_PROPERTY_FPS -> S
     java.lang.String EVENT_INFO_PROPERTIES -> t
-    java.lang.String USER_PROPERTY_ACTIVE_DEVICE_MANUFACTURER -> u0
-    java.lang.String USER_PROPERTY_ACTIVE_SDK_VERSION -> q0
+    java.lang.String USER_PROPERTY_ACTIVE_SDK_VERSION -> u0
+    java.lang.String USER_PROPERTY_ACTIVE_OS_LANG -> q0
     java.lang.String SERVER_URL_EXTERNAL -> c
     java.lang.String COMMON_PROPERTY_MCC -> B
-    java.lang.String USER_PROPERTY_ACTIVE_OS_LANG -> m0
-    java.lang.String USER_PROPERTY_ACTIVE_ANDROID_ID -> i0
+    java.lang.String USER_PROPERTY_ACTIVE_ANDROID_ID -> m0
+    java.lang.String USER_PROPERTY_LATEST_APP_VERSION_CODE -> i0
     java.lang.String EVENT_INFO_DT_ID -> k
     java.lang.String COMMON_PROPERTY_OS -> J
-    java.lang.String USER_PROPERTY_LATEST_APP_VERSION_CODE -> e0
+    java.lang.String USER_PROPERTY_LATEST_DEBUG -> e0
     int EVENT_REPORT_TRY_COUNT -> g
-    java.lang.String USER_PROPERTY_LATEST_DEBUG -> a0
+    java.lang.String COMMON_PROPERTY_FIREBASE_INSTANCE_ID -> a0
     java.lang.String EVENT_INFO_SYN -> s
     java.lang.String COMMON_PROPERTY_MEMORY_USED -> R
-    java.lang.String USER_PROPERTY_ACTIVE_MEMORY_USED -> z0
-    java.lang.String PRESET_EVENT_USER_ADD -> Y0
+    java.lang.String USER_PROPERTY_ACTIVE_DEVICE_BRAND -> z0
+    java.lang.String PRESET_EVENT_APP_INITIALIZE -> Y0
     java.lang.String COMMON_PROPERTY_EVENT_ZONE_OFFSET -> Z
-    java.lang.String PRESET_EVENT_APP_INITIALIZE -> U0
-    java.lang.String SESSION_START_PROPERTY_BACKGROUND_DURATION -> Q0
+    java.lang.String SESSION_START_PROPERTY_BACKGROUND_DURATION -> U0
+    java.lang.String ATTRIBUTE_PROPERTY_APP_INSTALL_TIME_SERVER -> Q0
     java.lang.String COMMON_PROPERTY_EVENT_SESSION -> A
     java.lang.String LOG_TAG -> b
-    java.lang.String ATTRIBUTE_PROPERTY_APP_INSTALL_TIME_SERVER -> M0
-    java.lang.String ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME -> G0
+    java.lang.String ATTRIBUTE_PROPERTY_INSTANT_EXPERIENCE_LAUNCHED -> M0
+    java.lang.String USER_PROPERTY_ACTIVE_SIMULATOR -> G0
+    java.lang.String PRESET_EVENT_USER_UNIQ_APPEND -> h1
     java.lang.String COMMON_PROPERTY_DEVICE_MANUFACTURER -> M
-    java.lang.String USER_PROPERTY_ACTIVE_SIMULATOR -> C0
-    java.lang.String PRESET_EVENT_USER_UNIQ_APPEND -> d1
+    java.lang.String USER_PROPERTY_ACTIVE_SCREEN_WIDTH -> C0
+    java.lang.String PRESET_EVENT_USER_SET -> d1
     java.lang.String EVENT_INFO_DEBUG -> n
     java.lang.String COMMON_PROPERTY_DEVICE_MODEL -> U
     java.lang.String EVENT_TIME_CALIBRATED -> v
-    java.lang.String USER_PROPERTY_ACTIVE_SCREEN_HEIGHT -> x0
-    java.lang.String USER_PROPERTY_ACTIVE_OS_VERSION_CODE -> t0
-    java.lang.String USER_PROPERTY_ACTIVE_SDK_TYPE -> p0
+    java.lang.String USER_PROPERTY_ACTIVE_OS_VERSION_CODE -> x0
+    java.lang.String USER_PROPERTY_ACTIVE_SDK_TYPE -> t0
+    java.lang.String USER_PROPERTY_ACTIVE_OS_COUNTRY -> p0
     java.lang.String ERROR_REPORT_URL -> e
-    java.lang.String USER_PROPERTY_ACTIVE_OS_COUNTRY -> l0
+    java.lang.String USER_PROPERTY_ACTIVE_GAID -> l0
     java.lang.String COMMON_PROPERTY_OS_COUNTRY -> D
-    java.lang.String USER_PROPERTY_ACTIVE_GAID -> h0
+    java.lang.String USER_PROPERTY_LATEST_KOCHAVA_ID -> h0
     java.lang.String EVENT_INFO_APP_ID -> m
-    java.lang.String USER_PROPERTY_LATEST_KOCHAVA_ID -> d0
+    java.lang.String COMMON_PROPERTY_KOCHAVA_ID -> d0
     java.lang.String COMMON_PROPERTY_OS_VERSION_CODE -> L
     java.lang.String EVENT_BODY -> u
     java.lang.String COMMON_PROPERTY_STORAGE_USED -> T
-    java.lang.String PRESET_EVENT_SESSION_END -> X0
-    java.lang.String EVENT_TYPE_USER -> T0
-    java.lang.String SESSION_START_PROPERTY_START_REASON -> P0
+    java.lang.String EVENT_TYPE_USER -> X0
+    java.lang.String SESSION_START_PROPERTY_START_REASON -> T0
+    java.lang.String ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME_SERVER -> P0
     java.lang.String COMMON_PROPERTY_MNC -> C
-    java.lang.String ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME_SERVER -> L0
+    java.lang.String ATTRIBUTE_PROPERTY_APP_INSTALL_TIME -> L0
     java.lang.String EVENT_REPORT_PATH -> d
     java.lang.String COMMON_PROPERTY_APP_VERSION_NAME -> G
-    java.lang.String ATTRIBUTE_PROPERTY_FAILED_REASON -> J0
+    java.lang.String ATTRIBUTE_PROPERTY_REFERRER_URL -> J0
+    java.lang.String TIME_FROM_ROI_NET_BODY -> k1
     java.lang.String EVENT_INFO_ANDROID_ID -> h
-    java.lang.String ATTRIBUTE_PROPERTY_REFERRER_URL -> F0
-    java.lang.String TIME_FROM_ROI_NET_BODY -> g1
+    java.lang.String USER_PROPERTY_ACTIVE_NETWORK_TYPE -> F0
+    java.lang.String PRESET_EVENT_USER_APPEND -> g1
     java.lang.String COMMON_PROPERTY_BUILD_DEVICE -> O
-    java.lang.String USER_PROPERTY_ACTIVE_NETWORK_TYPE -> B0
-    java.lang.String PRESET_EVENT_USER_APPEND -> c1
+    java.lang.String USER_PROPERTY_ACTIVE_SCREEN_HEIGHT -> B0
+    java.lang.String PRESET_EVENT_USER_ADD -> c1
     java.lang.String EVENT_INFO_NAME -> p
     java.lang.String COMMON_PROPERTY_SCREEN_WIDTH -> W
     java.lang.String EVENT_TIME_SESSION_ID -> x
-    java.lang.String USER_PROPERTY_ACTIVE_DEVICE_MODEL -> w0
-    java.lang.String USER_PROPERTY_ACTIVE_OS_VERSION_NAME -> s0
-    java.lang.String USER_PROPERTY_ACTIVE_APP_VERSION_NAME -> o0
-    java.lang.String USER_PROPERTY_ACTIVE_MNC -> k0
+    java.lang.String USER_PROPERTY_ACTIVE_OS_VERSION_NAME -> w0
+    java.lang.String USER_PROPERTY_ACTIVE_APP_VERSION_NAME -> s0
+    java.lang.String USER_PROPERTY_ACTIVE_MNC -> o0
+    java.lang.String USER_PROPERTY_LATEST_ADJUST_ID -> k0
     java.lang.String COMMON_PROPERTY_APP_VERSION_CODE -> F
-    java.lang.String USER_PROPERTY_LATEST_ADJUST_ID -> g0
-    java.lang.String USER_PROPERTY_LATEST_APPSFLYER_ID -> c0
+    java.lang.String USER_PROPERTY_LATEST_APPSFLYER_ID -> g0
+    java.lang.String COMMON_PROPERTY_ADJUST_ID -> c0
     java.lang.String EVENT_INFO_TIME -> o
     java.lang.String COMMON_PROPERTY_DEVICE_BRAND -> N
     java.lang.String EVENT_TIME_DEVICE -> w
     java.lang.String COMMON_PROPERTY_SCREEN_HEIGHT -> V
-    java.lang.String PRESET_EVENT_SESSION_START -> W0
-    java.lang.String EVENT_TYPE_TRACK -> S0
+    java.lang.String EVENT_TYPE_TRACK -> W0
+    java.lang.String SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND -> S0
     ai.datatower.analytics.Constant INSTANCE -> a
-    java.lang.String SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND -> O0
+    java.lang.String ATTRIBUTE_PROPERTY_CNL -> O0
     java.lang.String COMMON_PROPERTY_OS_LANG -> E
-    java.lang.String ATTRIBUTE_PROPERTY_CNL -> K0
+    java.lang.String ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME -> K0
     1:1:void <init>():4:4 -> <init>
 ai.datatower.analytics.DT -> ai.datatower.analytics.DT:
 # {"id":"sourceFile","fileName":"DT.kt"}
@@ -1057,10 +1061,10 @@ ai.datatower.analytics.DTAnalyticsUtils$Companion -> ai.datatower.analytics.DTAn
     1:1:void trackTimerStart(java.lang.String):17:17 -> trackTimerStart
 ai.datatower.analytics.DTChannel -> ai.datatower.analytics.DTChannel:
 # {"id":"sourceFile","fileName":"constant.kt"}
-    1:1:void <init>():154:154 -> <init>
+    1:1:void <init>():159:159 -> <init>
 ai.datatower.analytics.DTThirdPartyShareType -> ai.datatower.analytics.DTThirdPartyShareType:
 # {"id":"sourceFile","fileName":"constant.kt"}
-    1:1:void <init>():157:157 -> <init>
+    1:1:void <init>():162:162 -> <init>
 ai.datatower.analytics.OnDataTowerIdListener -> ai.datatower.analytics.OnDataTowerIdListener:
 # {"id":"sourceFile","fileName":"constant.kt"}
 ai.datatower.analytics.api.AbstractAnalytics -> ai.datatower.analytics.api.a:
@@ -1594,38 +1598,38 @@ ai.datatower.analytics.core.EventInfoCheckHelper -> ai.datatower.analytics.core.
     ai.datatower.analytics.core.EventInfoCheckHelper$Companion Companion -> a
     1:1:void ai.datatower.analytics.core.EventInfoCheckHelper$Companion.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <clinit>
     1:1:void <clinit>():0 -> <clinit>
-    2:23:void <clinit>():0:21 -> <clinit>
+    2:22:void <clinit>():0:20 -> <clinit>
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():19:19 -> <init>
-    1:1:kotlin.Lazy access$getInstance$delegate$cp():19:19 -> a
-    2:24:void correctEventInfo(java.lang.String,kotlin.jvm.functions.Function1):28:50 -> a
-    25:30:org.json.JSONObject correctCommonProperties(org.json.JSONObject):204:209 -> a
-    1:24:org.json.JSONObject correctDataVerAfter200(org.json.JSONObject):119:142 -> b
+    2:2:void <init>():18:18 -> <init>
+    1:1:kotlin.Lazy access$getInstance$delegate$cp():18:18 -> a
+    2:24:void correctEventInfo(java.lang.String,kotlin.jvm.functions.Function1):27:49 -> a
+    25:30:org.json.JSONObject correctCommonProperties(org.json.JSONObject):203:208 -> a
+    1:24:org.json.JSONObject correctDataVerAfter200(org.json.JSONObject):118:141 -> b
     25:25:java.lang.String ai.datatower.analytics.utils.TimeCalibration.getSessionId():46:46 -> b
-    25:25:org.json.JSONObject correctDataVerAfter200(org.json.JSONObject):142 -> b
+    25:25:org.json.JSONObject correctDataVerAfter200(org.json.JSONObject):141 -> b
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    26:72:org.json.JSONObject correctDataVerAfter200(org.json.JSONObject):142:188 -> b
-    1:20:org.json.JSONObject correctDataVerUnder200AndAfter100(org.json.JSONObject):90:109 -> c
-    1:7:org.json.JSONObject correctEventIdInfo(org.json.JSONObject):70:76 -> d
-    1:4:org.json.JSONObject correctEventTime(org.json.JSONObject):56:59 -> e
-    1:1:boolean isFormatAfterVer100(org.json.JSONObject):200:200 -> f
-    1:2:boolean isFormatAfterVer200(org.json.JSONObject):196:197 -> g
+    26:72:org.json.JSONObject correctDataVerAfter200(org.json.JSONObject):141:187 -> b
+    1:20:org.json.JSONObject correctDataVerUnder200AndAfter100(org.json.JSONObject):89:108 -> c
+    1:7:org.json.JSONObject correctEventIdInfo(org.json.JSONObject):69:75 -> d
+    1:4:org.json.JSONObject correctEventTime(org.json.JSONObject):55:58 -> e
+    1:1:boolean isFormatAfterVer100(org.json.JSONObject):199:199 -> f
+    1:2:boolean isFormatAfterVer200(org.json.JSONObject):195:196 -> g
 ai.datatower.analytics.core.EventInfoCheckHelper$Companion -> ai.datatower.analytics.core.b$b:
 # {"id":"sourceFile","fileName":"EventInfoCheckHelper.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():20:20 -> <init>
-    1:1:ai.datatower.analytics.core.EventInfoCheckHelper getInstance():21:21 -> a
+    2:2:void <init>():19:19 -> <init>
+    1:1:ai.datatower.analytics.core.EventInfoCheckHelper getInstance():20:20 -> a
 ai.datatower.analytics.core.EventInfoCheckHelper$Companion$instance$2 -> ai.datatower.analytics.core.b$a:
 # {"id":"sourceFile","fileName":"EventInfoCheckHelper.kt"}
     ai.datatower.analytics.core.EventInfoCheckHelper$Companion$instance$2 INSTANCE -> a
-    1:1:ai.datatower.analytics.core.EventInfoCheckHelper invoke():22:22 -> a
+    1:1:ai.datatower.analytics.core.EventInfoCheckHelper invoke():21:21 -> a
     2:2:void ai.datatower.analytics.core.EventInfoCheckHelper.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> a
-    2:2:ai.datatower.analytics.core.EventInfoCheckHelper invoke():22 -> a
-    1:1:ai.datatower.analytics.core.EventInfoCheckHelper invoke():22:22 -> invoke
-    1:1:java.lang.Object invoke():21 -> invoke
+    2:2:ai.datatower.analytics.core.EventInfoCheckHelper invoke():21 -> a
+    1:1:ai.datatower.analytics.core.EventInfoCheckHelper invoke():21:21 -> invoke
+    1:1:java.lang.Object invoke():20 -> invoke
     2:2:void ai.datatower.analytics.core.EventInfoCheckHelper.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> invoke
-    2:2:ai.datatower.analytics.core.EventInfoCheckHelper invoke():22 -> invoke
-    2:2:java.lang.Object invoke():21 -> invoke
+    2:2:ai.datatower.analytics.core.EventInfoCheckHelper invoke():21 -> invoke
+    2:2:java.lang.Object invoke():20 -> invoke
 ai.datatower.analytics.core.EventTimer -> ai.datatower.analytics.core.c:
 # {"id":"sourceFile","fileName":"EventTimer.kt"}
     long endTime -> b
@@ -1689,102 +1693,102 @@ ai.datatower.analytics.core.EventTrackManager -> ai.datatower.analytics.core.e:
     ai.datatower.analytics.core.EventTrackManager$Companion Companion -> b
     1:1:void ai.datatower.analytics.core.EventTrackManager$Companion.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <clinit>
     1:1:void <clinit>():0 -> <clinit>
-    2:25:void <clinit>():0:23 -> <clinit>
-    1:1:void <init>():21:21 -> <init>
-    1:1:kotlin.Lazy access$getInstance$delegate$cp():21:21 -> a
-    2:2:boolean assertEvent$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,org.json.JSONObject,int,java.lang.Object):56:56 -> a
-    3:3:void trackNormal$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,org.json.JSONObject,int,java.lang.Object):66:66 -> a
-    4:4:void trackNormal(java.lang.String,long,org.json.JSONObject):67:67 -> a
-    5:5:void trackNormalPreset$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,org.json.JSONObject,kotlin.jvm.functions.Function2,int,java.lang.Object):77:77 -> a
-    6:6:void trackNormalPreset$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,org.json.JSONObject,kotlin.jvm.functions.Function2,int,java.lang.Object):74:74 -> a
-    7:7:void trackNormalPreset(java.lang.String,long,org.json.JSONObject,kotlin.jvm.functions.Function2):80:80 -> a
-    8:8:void trackEvent$lambda-0(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):133:133 -> a
-    9:9:void addEventTask$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2,int,java.lang.Object):155:155 -> a
-    10:17:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):166:173 -> a
+    2:24:void <clinit>():0:22 -> <clinit>
+    1:1:void <init>():20:20 -> <init>
+    1:1:kotlin.Lazy access$getInstance$delegate$cp():20:20 -> a
+    2:2:boolean assertEvent$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,org.json.JSONObject,int,java.lang.Object):55:55 -> a
+    3:3:void trackNormal$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,org.json.JSONObject,int,java.lang.Object):65:65 -> a
+    4:4:void trackNormal(java.lang.String,long,org.json.JSONObject):66:66 -> a
+    5:5:void trackNormalPreset$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,org.json.JSONObject,kotlin.jvm.functions.Function2,int,java.lang.Object):76:76 -> a
+    6:6:void trackNormalPreset$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,org.json.JSONObject,kotlin.jvm.functions.Function2,int,java.lang.Object):73:73 -> a
+    7:7:void trackNormalPreset(java.lang.String,long,org.json.JSONObject,kotlin.jvm.functions.Function2):79:79 -> a
+    8:8:void trackEvent$lambda-0(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):132:132 -> a
+    9:9:void addEventTask$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2,int,java.lang.Object):154:154 -> a
+    10:17:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):165:172 -> a
     18:18:java.util.Map ai.datatower.analytics.core.PropertyManager.getEventInfo():237:237 -> a
-    18:18:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):173 -> a
+    18:18:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):172 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
     19:19:java.util.Map ai.datatower.analytics.core.PropertyManager.getEventInfo():237:237 -> a
-    19:19:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):173 -> a
-    20:29:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):173:182 -> a
+    19:19:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):172 -> a
+    20:29:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):172:181 -> a
     30:30:java.util.Map ai.datatower.analytics.core.PropertyManager.getCommonProperties():259:259 -> a
-    30:30:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):182 -> a
+    30:30:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):181 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
     31:31:java.util.Map ai.datatower.analytics.core.PropertyManager.getCommonProperties():259:259 -> a
-    31:31:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):182 -> a
-    32:46:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):182:196 -> a
+    31:31:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):181 -> a
+    32:46:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):181:195 -> a
     47:47:java.util.concurrent.atomic.AtomicBoolean ai.datatower.analytics.config.AbstractAnalyticsConfig.getMManualUploadSwitch():76:76 -> a
-    47:47:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):196 -> a
+    47:47:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):195 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    48:64:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):196:212 -> a
-    65:71:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):211:217 -> a
-    72:78:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):215:221 -> a
+    48:64:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):195:211 -> a
+    65:71:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):210:216 -> a
+    72:78:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):214:220 -> a
     79:79:java.lang.String ai.datatower.analytics.utils.TimeCalibration.getSessionId():46:46 -> a
-    79:79:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):221 -> a
+    79:79:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):220 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    80:85:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):219:224 -> a
-    86:96:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):223:233 -> a
-    97:97:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):232:232 -> a
-    98:113:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):229:244 -> a
-    114:114:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):243:243 -> a
-    115:129:kotlin.Pair getEventTime(java.lang.String,long):252:266 -> a
-    130:130:void appendDynamicProperties(java.lang.String,org.json.JSONObject):272:272 -> a
+    80:85:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):218:223 -> a
+    86:96:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):222:232 -> a
+    97:97:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):231:231 -> a
+    98:113:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):228:243 -> a
+    114:114:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):242:242 -> a
+    115:129:kotlin.Pair getEventTime(java.lang.String,long):251:265 -> a
+    130:130:void appendDynamicProperties(java.lang.String,org.json.JSONObject):271:271 -> a
     131:131:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():263:263 -> a
-    131:131:void appendDynamicProperties(java.lang.String,org.json.JSONObject):272 -> a
+    131:131:void appendDynamicProperties(java.lang.String,org.json.JSONObject):271 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
     132:132:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():263:263 -> a
-    132:132:void appendDynamicProperties(java.lang.String,org.json.JSONObject):272 -> a
-    133:136:void appendDynamicProperties(java.lang.String,org.json.JSONObject):272:275 -> a
-    137:144:void appendDynamicProperties(java.lang.String,org.json.JSONObject):273:280 -> a
+    132:132:void appendDynamicProperties(java.lang.String,org.json.JSONObject):271 -> a
+    133:136:void appendDynamicProperties(java.lang.String,org.json.JSONObject):271:274 -> a
+    137:144:void appendDynamicProperties(java.lang.String,org.json.JSONObject):272:279 -> a
     145:145:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():263:263 -> a
-    145:145:void appendDynamicProperties(java.lang.String,org.json.JSONObject):280 -> a
+    145:145:void appendDynamicProperties(java.lang.String,org.json.JSONObject):279 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
     146:146:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():263:263 -> a
-    146:146:void appendDynamicProperties(java.lang.String,org.json.JSONObject):280 -> a
-    147:150:void appendDynamicProperties(java.lang.String,org.json.JSONObject):280:283 -> a
-    151:158:void appendDynamicProperties(java.lang.String,org.json.JSONObject):281:288 -> a
+    146:146:void appendDynamicProperties(java.lang.String,org.json.JSONObject):279 -> a
+    147:150:void appendDynamicProperties(java.lang.String,org.json.JSONObject):279:282 -> a
+    151:158:void appendDynamicProperties(java.lang.String,org.json.JSONObject):280:287 -> a
     159:159:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():263:263 -> a
-    159:159:void appendDynamicProperties(java.lang.String,org.json.JSONObject):288 -> a
+    159:159:void appendDynamicProperties(java.lang.String,org.json.JSONObject):287 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
     160:160:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():263:263 -> a
-    160:160:void appendDynamicProperties(java.lang.String,org.json.JSONObject):288 -> a
-    161:164:void appendDynamicProperties(java.lang.String,org.json.JSONObject):288:291 -> a
-    165:173:void appendDynamicProperties(java.lang.String,org.json.JSONObject):289:297 -> a
-    174:174:void trackQualityEvent(java.lang.String):319:319 -> a
-    1:2:void init():39:40 -> b
-    3:3:boolean assertEvent(java.lang.String,org.json.JSONObject):59:59 -> b
-    4:4:void trackUser$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,org.json.JSONObject,int,java.lang.Object):83:83 -> b
-    5:5:void trackUser(java.lang.String,long,org.json.JSONObject):84:84 -> b
-    6:6:void trackEvent$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2,int,java.lang.Object):110:110 -> b
-    7:10:void trackEvent(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):121:124 -> b
-    11:34:void trackEvent(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):122:145 -> b
-    35:39:void trackEvent(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):143:147 -> b
-    1:2:void initTime():48:49 -> c
-    3:3:void trackUserWithPropertyCheck$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,org.json.JSONObject,int,java.lang.Object):87:87 -> c
-    4:5:void trackUserWithPropertyCheck(java.lang.String,long,org.json.JSONObject):88:89 -> c
-    6:6:void trackInternal$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2,int,java.lang.Object):92:92 -> c
-    7:7:void trackInternal(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):100:100 -> c
+    160:160:void appendDynamicProperties(java.lang.String,org.json.JSONObject):287 -> a
+    161:164:void appendDynamicProperties(java.lang.String,org.json.JSONObject):287:290 -> a
+    165:173:void appendDynamicProperties(java.lang.String,org.json.JSONObject):288:296 -> a
+    174:174:void trackQualityEvent(java.lang.String):318:318 -> a
+    1:2:void init():38:39 -> b
+    3:3:boolean assertEvent(java.lang.String,org.json.JSONObject):58:58 -> b
+    4:4:void trackUser$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,org.json.JSONObject,int,java.lang.Object):82:82 -> b
+    5:5:void trackUser(java.lang.String,long,org.json.JSONObject):83:83 -> b
+    6:6:void trackEvent$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2,int,java.lang.Object):109:109 -> b
+    7:10:void trackEvent(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):120:123 -> b
+    11:34:void trackEvent(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):121:144 -> b
+    35:39:void trackEvent(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):142:146 -> b
+    1:2:void initTime():47:48 -> c
+    3:3:void trackUserWithPropertyCheck$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,org.json.JSONObject,int,java.lang.Object):86:86 -> c
+    4:5:void trackUserWithPropertyCheck(java.lang.String,long,org.json.JSONObject):87:88 -> c
+    6:6:void trackInternal$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2,int,java.lang.Object):91:91 -> c
+    7:7:void trackInternal(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):99:99 -> c
     8:8:boolean ai.datatower.analytics.config.AnalyticsConfig.isSdkDisable():115:115 -> c
-    8:8:void trackInternal(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):100 -> c
+    8:8:void trackInternal(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):99 -> c
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    9:9:void trackInternal(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):102:102 -> c
-    10:16:void trackInternal(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):101:107 -> c
+    9:9:void trackInternal(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):101:101 -> c
+    10:16:void trackInternal(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):100:106 -> c
 ai.datatower.analytics.core.EventTrackManager$Companion -> ai.datatower.analytics.core.e$b:
 # {"id":"sourceFile","fileName":"EventTrackManager.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():22:22 -> <init>
-    1:1:ai.datatower.analytics.core.EventTrackManager getInstance():23:23 -> a
+    2:2:void <init>():21:21 -> <init>
+    1:1:ai.datatower.analytics.core.EventTrackManager getInstance():22:22 -> a
 ai.datatower.analytics.core.EventTrackManager$Companion$instance$2 -> ai.datatower.analytics.core.e$a:
 # {"id":"sourceFile","fileName":"EventTrackManager.kt"}
     ai.datatower.analytics.core.EventTrackManager$Companion$instance$2 INSTANCE -> a
-    1:1:ai.datatower.analytics.core.EventTrackManager invoke():24:24 -> a
-    1:1:ai.datatower.analytics.core.EventTrackManager invoke():24:24 -> invoke
-    1:1:java.lang.Object invoke():23 -> invoke
+    1:1:ai.datatower.analytics.core.EventTrackManager invoke():23:23 -> a
+    1:1:ai.datatower.analytics.core.EventTrackManager invoke():23:23 -> invoke
+    1:1:java.lang.Object invoke():22 -> invoke
 ai.datatower.analytics.core.EventTrackManager$TrackThreadFactory -> ai.datatower.analytics.core.e$c:
 # {"id":"sourceFile","fileName":"EventTrackManager.kt"}
-    1:1:void <init>():325:325 -> <init>
-    1:1:void newThread$lambda-1$lambda-0(java.lang.Thread,java.lang.Throwable):329:329 -> a
-    1:2:java.lang.Thread newThread(java.lang.Runnable):327:328 -> newThread
+    1:1:void <init>():324:324 -> <init>
+    1:1:void newThread$lambda-1$lambda-0(java.lang.Thread,java.lang.Throwable):328:328 -> a
+    1:2:java.lang.Thread newThread(java.lang.Runnable):326:327 -> newThread
 ai.datatower.analytics.core.EventUploadManager -> ai.datatower.analytics.core.f:
 # {"id":"sourceFile","fileName":"EventUploadManager.kt"}
     java.lang.String TAG -> g
@@ -2248,24 +2252,24 @@ ai.datatower.analytics.core.PropertyManager -> ai.datatower.analytics.core.i:
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
     197:197:void updateEventInfo(java.lang.String,java.lang.String):234:234 -> a
     197:197:void updateACID$lambda-20(java.lang.String,ai.datatower.analytics.core.PropertyManager):494 -> a
-    198:203:void updateFireBaseInstanceId$lambda-22(long,java.lang.String):508:513 -> a
-    204:204:void updateFireBaseInstanceId$lambda-22(long,java.lang.String):508:508 -> a
+    198:203:void updateFireBaseInstanceId$lambda-23(long,java.lang.String):512:517 -> a
+    204:204:void updateFireBaseInstanceId$lambda-23(long,java.lang.String):512:512 -> a
     1:1:long access$getSessionEndTime$p(ai.datatower.analytics.core.PropertyManager):34:34 -> b
     2:2:void onDataTowerIdCallback(java.lang.String):120:120 -> b
     3:3:void ai.datatower.quality.PerfLogger.doPerfLog(ai.datatower.quality.PerfAction,long):0:0 -> b
     3:3:void onDataTowerIdCallback(java.lang.String):120 -> b
     4:4:void onDataTowerIdCallback(java.lang.String):122:122 -> b
-    5:443:void onDataTowerIdCallback$lambda-5(ai.datatower.analytics.core.PropertyManager,java.lang.String):123:561 -> b
-    444:446:void onDataTowerIdCallback$lambda-5(ai.datatower.analytics.core.PropertyManager,java.lang.String):124:126 -> b
-    447:451:void initDTIdWithAndroidId(android.content.Context,boolean):189:193 -> b
-    452:461:void initDisableList(android.content.Context):202:211 -> b
-    462:462:void initDisableList(android.content.Context):208:208 -> b
-    463:475:void initDisableList(android.content.Context):206:218 -> b
-    476:481:void initDisableList(android.content.Context):216:221 -> b
-    482:482:void initDisableList(android.content.Context):202:202 -> b
-    483:483:java.util.Map getEventInfo():237:237 -> b
-    483:483:java.lang.String getACID():499 -> b
-    484:484:java.lang.String getACID():499:499 -> b
+    5:462:void onDataTowerIdCallback$lambda-5(ai.datatower.analytics.core.PropertyManager,java.lang.String):123:580 -> b
+    463:465:void onDataTowerIdCallback$lambda-5(ai.datatower.analytics.core.PropertyManager,java.lang.String):124:126 -> b
+    466:470:void initDTIdWithAndroidId(android.content.Context,boolean):189:193 -> b
+    471:480:void initDisableList(android.content.Context):202:211 -> b
+    481:481:void initDisableList(android.content.Context):208:208 -> b
+    482:494:void initDisableList(android.content.Context):206:218 -> b
+    495:500:void initDisableList(android.content.Context):216:221 -> b
+    501:501:void initDisableList(android.content.Context):202:202 -> b
+    502:502:java.util.Map getEventInfo():237:237 -> b
+    502:502:java.lang.String getACID():499 -> b
+    503:503:java.lang.String getACID():499:499 -> b
     1:1:long access$getSessionStartTime$p(ai.datatower.analytics.core.PropertyManager):34:34 -> c
     2:3:void removeCommonProperty(java.lang.String):254:255 -> c
     4:4:java.util.Map getActiveProperties():261:261 -> c
@@ -2281,39 +2285,43 @@ ai.datatower.analytics.core.PropertyManager -> ai.datatower.analytics.core.i:
     2:7:java.lang.String getAndroidId():459:464 -> d
     8:9:void updateACID(java.lang.String):491:492 -> d
     1:1:java.util.Map getCommonProperties():259:259 -> e
-    2:10:void updateAFID(java.lang.String):519:527 -> e
-    11:11:void updateAFID(java.lang.String):522:522 -> e
+    2:15:void updateAFID(java.lang.String):523:536 -> e
+    16:16:void updateAFID(java.lang.String):531:531 -> e
     1:1:java.util.Map getEventInfo():237:237 -> f
     1:1:java.lang.String getDTID():392 -> f
     2:7:java.lang.String getDTID():392:397 -> f
-    8:16:void updateAdjustId(java.lang.String):545:553 -> f
-    17:17:void updateAdjustId(java.lang.String):548:548 -> f
+    8:8:void updateAFID$lambda-24(java.lang.String):528:528 -> f
     1:1:java.util.List getDisableList():263:263 -> g
-    2:7:void updateAndroidId(java.lang.String):468:473 -> g
-    8:8:void updateEventInfo(java.lang.String,java.lang.String):234:234 -> g
-    8:8:void updateAndroidId(java.lang.String):473 -> g
-    9:13:void updateAndroidId(java.lang.String):475:479 -> g
-    14:14:void updateAndroidId(java.lang.String):476:476 -> g
+    2:15:void updateAdjustId(java.lang.String):559:572 -> g
+    16:16:void updateAdjustId(java.lang.String):567:567 -> g
     1:1:java.util.Map getEventInfo():237:237 -> h
-    2:5:void updateDTID(java.lang.String):401:404 -> h
+    2:2:void updateAdjustId$lambda-28(java.lang.String):564:564 -> h
     1:1:java.util.Map getEventInfo():237:237 -> i
     1:1:java.lang.String getGAID():413 -> i
     2:7:java.lang.String getGAID():413:418 -> i
-    8:12:void updateFireBaseInstanceId(java.lang.String):503:507 -> i
+    8:13:void updateAndroidId(java.lang.String):468:473 -> i
+    14:14:void updateEventInfo(java.lang.String,java.lang.String):234:234 -> i
+    14:14:void updateAndroidId(java.lang.String):473 -> i
+    15:19:void updateAndroidId(java.lang.String):475:479 -> i
+    20:20:void updateAndroidId(java.lang.String):476:476 -> i
     1:1:java.util.Map getCommonProperties():259:259 -> j
     1:1:java.lang.String getSDKType():431 -> j
     2:7:java.lang.String getSDKType():431:436 -> j
-    8:15:void updateGAID(java.lang.String):440:447 -> j
-    16:16:void updateEventInfo(java.lang.String,java.lang.String):234:234 -> j
-    16:16:void updateGAID(java.lang.String):447 -> j
-    17:21:void updateGAID(java.lang.String):450:454 -> j
-    22:22:void updateGAID(java.lang.String):451:451 -> j
+    8:11:void updateDTID(java.lang.String):401:404 -> j
     1:1:java.util.Map getCommonProperties():259:259 -> k
     1:1:java.lang.String getSDKVersion():422 -> k
     2:7:java.lang.String getSDKVersion():422:427 -> k
-    8:16:void updateKOID(java.lang.String):532:540 -> k
-    17:17:void updateKOID(java.lang.String):535:535 -> k
+    8:16:void updateFireBaseInstanceId(java.lang.String):503:511 -> k
     1:4:void registerFPSListener():269:272 -> l
+    5:5:void updateFireBaseInstanceId$lambda-21(java.lang.String):508:508 -> l
+    1:8:void updateGAID(java.lang.String):440:447 -> m
+    9:9:void updateEventInfo(java.lang.String,java.lang.String):234:234 -> m
+    9:9:void updateGAID(java.lang.String):447 -> m
+    10:14:void updateGAID(java.lang.String):450:454 -> m
+    15:15:void updateGAID(java.lang.String):451:451 -> m
+    1:14:void updateKOID(java.lang.String):541:554 -> n
+    15:15:void updateKOID(java.lang.String):549:549 -> n
+    1:1:void updateKOID$lambda-26(java.lang.String):546:546 -> o
 ai.datatower.analytics.core.PropertyManager$Companion -> ai.datatower.analytics.core.i$b:
 # {"id":"sourceFile","fileName":"PropertyManager.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
@@ -2382,40 +2390,41 @@ ai.datatower.analytics.core.PropertyManager$updateIsForeground$1$3 -> ai.datatow
     1:1:java.lang.Object invoke(java.lang.Object,java.lang.Object):370:370 -> invoke
 ai.datatower.analytics.data.DataParams -> ai.datatower.analytics.data.a:
 # {"id":"sourceFile","fileName":"DataParams.kt"}
-    java.lang.String VALUE -> G
     java.lang.String CONFIG_GAID -> f
-    java.lang.String DB_DELETE_ALL -> I
     java.lang.String CONFIG_DT_ID -> h
     java.lang.String CONFIG_FCM_TOKEN -> j
     java.lang.String CONFIG_KOCHAVA_ID -> l
+    int CONFIG_MAX_ROWS -> I
     java.lang.String CONFIG_ACCOUNT_ID -> n
+    int DB_INSERT_DATA_REPEAT -> G
     java.lang.String CONFIG_ENABLE_TRACK -> p
-    int DB_ADD_JSON_ERROR -> E
+    int DB_INSERT_EXCEPTION -> E
     java.lang.String CONFIG_APP_INSTALL_INSERT_STATE -> r
-    int DB_OUT_OF_ROW_ERROR -> C
+    int DB_INSERT_ERROR -> C
     java.lang.String CONFIG_IS_FOREGROUND -> t
-    int DB_INSERT_SUCCEED -> A
     java.lang.String USER_AGENT_WEBVIEW -> v
-    ai.datatower.analytics.data.DataParams instance -> J
     ai.datatower.analytics.data.DataParams$Companion Companion -> a
     java.lang.String LATEST_GAP_TIME -> x
-    java.lang.String CONFIG_USER_SET_ONCE_PROPS -> z
+    java.lang.String CONFIG_INTERNAL_SUPER_PROPERTY -> z
     java.lang.String KEY_DATA -> c
     java.lang.String CONFIG_IS_FIRST_OPEN_TIME_VERIFIED -> e
     java.lang.String CONFIG_OAID -> g
     java.lang.String CONFIG_FIREBASE_IID -> i
+    java.lang.String VALUE -> H
     java.lang.String CONFIG_APPSFLYER_ID -> k
+    java.lang.String DB_DELETE_ALL -> J
     java.lang.String CONFIG_APP_SET_ID -> m
-    int CONFIG_MAX_ROWS -> H
     java.lang.String CONFIG_ENABLE_UPLOADS -> o
-    int DB_INSERT_DATA_REPEAT -> F
+    int DB_ADD_JSON_ERROR -> F
     java.lang.String CONFIG_FIRST_OPEN -> q
-    int DB_INSERT_EXCEPTION -> D
+    int DB_OUT_OF_ROW_ERROR -> D
     java.lang.String CONFIG_FIRST_SESSION_START_INSERT_STATE -> s
-    int DB_INSERT_ERROR -> B
+    int DB_INSERT_SUCCEED -> B
     java.lang.String CLOUD_CONFIG_AES_KEY -> u
+    ai.datatower.analytics.data.DataParams instance -> K
     java.lang.String LATEST_NET_TIME -> w
     java.lang.String CONFIG_STATIC_SUPER_PROPERTY -> y
+    java.lang.String CONFIG_USER_SET_ONCE_PROPS -> A
     java.lang.String DATABASE_NAME -> b
     java.lang.String CONFIG_FIRST_OPEN_TIME -> d
     1:1:void ai.datatower.analytics.data.DataParams$Companion.<init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <clinit>
@@ -2429,17 +2438,17 @@ ai.datatower.analytics.data.DataParams$Companion -> ai.datatower.analytics.data.
 # {"id":"sourceFile","fileName":"DataParams.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
     2:2:void <init>():8:8 -> <init>
-    1:2:ai.datatower.analytics.data.DataParams getInstance(java.lang.String):59:60 -> a
+    1:2:ai.datatower.analytics.data.DataParams getInstance(java.lang.String):60:61 -> a
     3:3:void ai.datatower.analytics.data.DataParams.<init>(java.lang.String,kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> a
-    3:3:ai.datatower.analytics.data.DataParams getInstance(java.lang.String):60 -> a
+    3:3:ai.datatower.analytics.data.DataParams getInstance(java.lang.String):61 -> a
     4:4:void ai.datatower.analytics.data.DataParams.access$setInstance$cp(ai.datatower.analytics.data.DataParams):5:5 -> a
-    4:4:ai.datatower.analytics.data.DataParams getInstance(java.lang.String):60 -> a
+    4:4:ai.datatower.analytics.data.DataParams getInstance(java.lang.String):61 -> a
     5:5:ai.datatower.analytics.data.DataParams ai.datatower.analytics.data.DataParams.access$getInstance$cp() -> a
-    5:5:ai.datatower.analytics.data.DataParams getInstance(java.lang.String):62 -> a
-    6:6:ai.datatower.analytics.data.DataParams getInstance():66:66 -> a
+    5:5:ai.datatower.analytics.data.DataParams getInstance(java.lang.String):63 -> a
+    6:6:ai.datatower.analytics.data.DataParams getInstance():67:67 -> a
     7:7:ai.datatower.analytics.data.DataParams ai.datatower.analytics.data.DataParams.access$getInstance$cp():5:5 -> a
-    7:7:ai.datatower.analytics.data.DataParams getInstance():67 -> a
-    8:8:ai.datatower.analytics.data.DataParams getInstance():66:66 -> a
+    7:7:ai.datatower.analytics.data.DataParams getInstance():68 -> a
+    8:8:ai.datatower.analytics.data.DataParams getInstance():67:67 -> a
 ai.datatower.analytics.data.EventDataAdapter -> ai.datatower.analytics.data.b:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter$Companion Companion -> c
@@ -2450,67 +2459,67 @@ ai.datatower.analytics.data.EventDataAdapter -> ai.datatower.analytics.data.b:
     1:1:void <clinit>():0 -> <clinit>
     2:2:void <clinit>():0:0 -> <clinit>
     1:1:void <init>(android.content.Context,kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:5:void <init>(android.content.Context):16:19 -> <init>
-    1:1:java.lang.String access$getAccountIdCached$p(ai.datatower.analytics.data.EventDataAdapter):16:16 -> a
-    2:2:java.lang.Object access$getBooleanConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,boolean,kotlin.coroutines.Continuation):16:16 -> a
-    3:3:ai.datatower.analytics.data.EventDataAdapter access$getInstance$cp():16:16 -> a
-    4:4:java.lang.Object access$getLongConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,long,kotlin.coroutines.Continuation):16:16 -> a
-    5:5:java.lang.Object access$getStringConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,kotlin.coroutines.Continuation):16:16 -> a
-    6:6:void access$setAccountIdCached$p(ai.datatower.analytics.data.EventDataAdapter,java.lang.String):16:16 -> a
-    7:7:java.lang.Object access$setStringConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,java.lang.String,kotlin.coroutines.Continuation):16:16 -> a
-    8:8:kotlinx.coroutines.Deferred setIsAppInstallInserted(boolean):41:41 -> a
-    9:9:kotlinx.coroutines.Job setLatestGapTime(long):80:80 -> a
-    10:10:kotlinx.coroutines.Job setAccountId(java.lang.String):100:100 -> a
-    11:11:kotlinx.coroutines.Job setStaticSuperProperties(org.json.JSONObject):106:106 -> a
-    12:12:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled addJSON(org.json.JSONObject,java.lang.String):152:152 -> a
-    13:13:kotlinx.coroutines.Deferred cleanupBatchEvents(java.util.List):208:208 -> a
-    14:14:kotlinx.coroutines.Deferred readEventsDataFromDb(int):223:223 -> a
-    15:17:java.lang.Object getBooleanConfig(java.lang.String,boolean,kotlin.coroutines.Continuation):235:237 -> a
-    18:22:java.lang.Object getBooleanConfig(java.lang.String,boolean,kotlin.coroutines.Continuation):235:239 -> a
-    23:23:java.lang.Object getBooleanConfig$default(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,boolean,kotlin.coroutines.Continuation,int,java.lang.Object):235:235 -> a
-    24:26:java.lang.Object getStringConfig(java.lang.String,kotlin.coroutines.Continuation):265:267 -> a
-    27:29:java.lang.Object getStringConfig(java.lang.String,kotlin.coroutines.Continuation):265:267 -> a
-    30:31:java.lang.Object setStringConfig(java.lang.String,java.lang.String,kotlin.coroutines.Continuation):271:272 -> a
-    32:38:java.lang.Object getLongConfig(java.lang.String,long,kotlin.coroutines.Continuation):274:280 -> a
-    39:47:java.lang.Object getLongConfig(java.lang.String,long,kotlin.coroutines.Continuation):274:282 -> a
-    48:48:java.lang.Object getLongConfig$default(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,long,kotlin.coroutines.Continuation,int,java.lang.Object):274:274 -> a
-    1:1:ai.datatower.analytics.data.EventDataOperation access$getMOperation$p(ai.datatower.analytics.data.EventDataAdapter):16:16 -> b
-    2:2:java.lang.Object access$setBooleanConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,boolean,kotlin.coroutines.Continuation):16:16 -> b
-    3:3:java.lang.Object access$setLongConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,long,kotlin.coroutines.Continuation):16:16 -> b
-    4:4:kotlinx.coroutines.Deferred setIsFirstSessionStartInserted(boolean):52:52 -> b
-    5:5:kotlinx.coroutines.Deferred setDtIdIfNeeded(java.lang.String):61:61 -> b
-    6:6:kotlinx.coroutines.Job setLatestNetTime(long):72:72 -> b
-    7:7:kotlinx.coroutines.Job deleteAllEvents():167:167 -> b
-    8:9:java.lang.Object setBooleanConfig(java.lang.String,boolean,kotlin.coroutines.Continuation):243:244 -> b
-    10:10:java.lang.Object setLongConfig(java.lang.String,long,kotlin.coroutines.Continuation):286:286 -> b
-    1:1:void access$setInstance$cp(ai.datatower.analytics.data.EventDataAdapter):16:16 -> c
-    2:2:kotlinx.coroutines.Deferred setIsUploadEnabled(boolean):30:30 -> c
-    3:3:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled getAccountId():93:93 -> c
-    4:4:kotlinx.coroutines.Job setUserSetOnceProps(java.lang.String):124:124 -> c
-    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled getDtId():57:57 -> d
-    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled getLatestGapTime():76:76 -> e
-    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled getLatestNetTime():68:68 -> f
-    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled getStaticSuperProperties():110:110 -> g
-    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled getUserSetOnceProps():128:128 -> h
-    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled isAppInstallInserted():37:37 -> i
-    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled isFirstSessionStartInserted():48:48 -> j
-    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled isUploadEnabled():26:26 -> k
-    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled queryDataCount():228:228 -> l
+    2:5:void <init>(android.content.Context):17:20 -> <init>
+    1:1:java.lang.String access$getAccountIdCached$p(ai.datatower.analytics.data.EventDataAdapter):17:17 -> a
+    2:2:java.lang.Object access$getBooleanConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,boolean,kotlin.coroutines.Continuation):17:17 -> a
+    3:3:ai.datatower.analytics.data.EventDataAdapter access$getInstance$cp():17:17 -> a
+    4:4:java.lang.Object access$getLongConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,long,kotlin.coroutines.Continuation):17:17 -> a
+    5:5:java.lang.Object access$getStringConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,kotlin.coroutines.Continuation):17:17 -> a
+    6:6:void access$setAccountIdCached$p(ai.datatower.analytics.data.EventDataAdapter,java.lang.String):17:17 -> a
+    7:7:java.lang.Object access$setStringConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,java.lang.String,kotlin.coroutines.Continuation):17:17 -> a
+    8:8:kotlinx.coroutines.Deferred setIsAppInstallInserted(boolean):42:42 -> a
+    9:9:kotlinx.coroutines.Job setLatestGapTime(long):81:81 -> a
+    10:10:kotlinx.coroutines.Job saveCommonProperties(java.lang.String,org.json.JSONObject):107:107 -> a
+    11:11:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled restoreCommonProperties(java.lang.String):111:111 -> a
+    12:12:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled addJSON(org.json.JSONObject,java.lang.String):153:153 -> a
+    13:13:kotlinx.coroutines.Deferred cleanupBatchEvents(java.util.List):209:209 -> a
+    14:14:kotlinx.coroutines.Deferred readEventsDataFromDb(int):224:224 -> a
+    15:17:java.lang.Object getBooleanConfig(java.lang.String,boolean,kotlin.coroutines.Continuation):236:238 -> a
+    18:22:java.lang.Object getBooleanConfig(java.lang.String,boolean,kotlin.coroutines.Continuation):236:240 -> a
+    23:23:java.lang.Object getBooleanConfig$default(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,boolean,kotlin.coroutines.Continuation,int,java.lang.Object):236:236 -> a
+    24:26:java.lang.Object getStringConfig(java.lang.String,kotlin.coroutines.Continuation):266:268 -> a
+    27:29:java.lang.Object getStringConfig(java.lang.String,kotlin.coroutines.Continuation):266:268 -> a
+    30:31:java.lang.Object setStringConfig(java.lang.String,java.lang.String,kotlin.coroutines.Continuation):272:273 -> a
+    32:38:java.lang.Object getLongConfig(java.lang.String,long,kotlin.coroutines.Continuation):275:281 -> a
+    39:47:java.lang.Object getLongConfig(java.lang.String,long,kotlin.coroutines.Continuation):275:283 -> a
+    48:48:java.lang.Object getLongConfig$default(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,long,kotlin.coroutines.Continuation,int,java.lang.Object):275:275 -> a
+    1:1:ai.datatower.analytics.data.EventDataOperation access$getMOperation$p(ai.datatower.analytics.data.EventDataAdapter):17:17 -> b
+    2:2:java.lang.Object access$setBooleanConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,boolean,kotlin.coroutines.Continuation):17:17 -> b
+    3:3:java.lang.Object access$setLongConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,long,kotlin.coroutines.Continuation):17:17 -> b
+    4:4:kotlinx.coroutines.Deferred setIsFirstSessionStartInserted(boolean):53:53 -> b
+    5:5:kotlinx.coroutines.Job setLatestNetTime(long):73:73 -> b
+    6:6:kotlinx.coroutines.Job setAccountId(java.lang.String):101:101 -> b
+    7:7:kotlinx.coroutines.Job deleteAllEvents():168:168 -> b
+    8:9:java.lang.Object setBooleanConfig(java.lang.String,boolean,kotlin.coroutines.Continuation):244:245 -> b
+    10:10:java.lang.Object setLongConfig(java.lang.String,long,kotlin.coroutines.Continuation):287:287 -> b
+    1:1:void access$setInstance$cp(ai.datatower.analytics.data.EventDataAdapter):17:17 -> c
+    2:2:kotlinx.coroutines.Deferred setIsUploadEnabled(boolean):31:31 -> c
+    3:3:kotlinx.coroutines.Deferred setDtIdIfNeeded(java.lang.String):62:62 -> c
+    4:4:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled getAccountId():94:94 -> c
+    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled getDtId():58:58 -> d
+    2:2:kotlinx.coroutines.Job setUserSetOnceProps(java.lang.String):125:125 -> d
+    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled getLatestGapTime():77:77 -> e
+    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled getLatestNetTime():69:69 -> f
+    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled getUserSetOnceProps():129:129 -> g
+    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled isAppInstallInserted():38:38 -> h
+    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled isFirstSessionStartInserted():49:49 -> i
+    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled isUploadEnabled():27:27 -> j
+    1:1:ai.datatower.analytics.taskqueue.AsyncTaskRescheduled queryDataCount():229:229 -> k
 ai.datatower.analytics.data.EventDataAdapter$Companion -> ai.datatower.analytics.data.b$a:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
-    2:2:void <init>():290:290 -> <init>
-    1:2:ai.datatower.analytics.data.EventDataAdapter getInstance$datatowerai_core_publicRelease(android.content.Context):296:297 -> a
+    2:2:void <init>():291:291 -> <init>
+    1:2:ai.datatower.analytics.data.EventDataAdapter getInstance$datatowerai_core_publicRelease(android.content.Context):297:298 -> a
     3:3:void ai.datatower.analytics.data.EventDataAdapter.<init>(android.content.Context,kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> a
-    3:3:ai.datatower.analytics.data.EventDataAdapter getInstance$datatowerai_core_publicRelease(android.content.Context):297 -> a
-    4:4:void ai.datatower.analytics.data.EventDataAdapter.access$setInstance$cp(ai.datatower.analytics.data.EventDataAdapter):16:16 -> a
-    4:4:ai.datatower.analytics.data.EventDataAdapter getInstance$datatowerai_core_publicRelease(android.content.Context):297 -> a
-    5:5:ai.datatower.analytics.data.EventDataAdapter ai.datatower.analytics.data.EventDataAdapter.access$getInstance$cp():16:16 -> a
-    5:5:ai.datatower.analytics.data.EventDataAdapter getInstance$datatowerai_core_publicRelease(android.content.Context):299 -> a
-    6:6:ai.datatower.analytics.data.EventDataAdapter getInstance$datatowerai_core_publicRelease():303:303 -> a
-    7:7:ai.datatower.analytics.data.EventDataAdapter ai.datatower.analytics.data.EventDataAdapter.access$getInstance$cp():16:16 -> a
-    7:7:ai.datatower.analytics.data.EventDataAdapter getInstance$datatowerai_core_publicRelease():304 -> a
-    8:8:ai.datatower.analytics.data.EventDataAdapter getInstance$datatowerai_core_publicRelease():303:303 -> a
+    3:3:ai.datatower.analytics.data.EventDataAdapter getInstance$datatowerai_core_publicRelease(android.content.Context):298 -> a
+    4:4:void ai.datatower.analytics.data.EventDataAdapter.access$setInstance$cp(ai.datatower.analytics.data.EventDataAdapter):17:17 -> a
+    4:4:ai.datatower.analytics.data.EventDataAdapter getInstance$datatowerai_core_publicRelease(android.content.Context):298 -> a
+    5:5:ai.datatower.analytics.data.EventDataAdapter ai.datatower.analytics.data.EventDataAdapter.access$getInstance$cp():17:17 -> a
+    5:5:ai.datatower.analytics.data.EventDataAdapter getInstance$datatowerai_core_publicRelease(android.content.Context):300 -> a
+    6:6:ai.datatower.analytics.data.EventDataAdapter getInstance$datatowerai_core_publicRelease():304:304 -> a
+    7:7:ai.datatower.analytics.data.EventDataAdapter ai.datatower.analytics.data.EventDataAdapter.access$getInstance$cp():17:17 -> a
+    7:7:ai.datatower.analytics.data.EventDataAdapter getInstance$datatowerai_core_publicRelease():305 -> a
+    8:8:ai.datatower.analytics.data.EventDataAdapter getInstance$datatowerai_core_publicRelease():304:304 -> a
 ai.datatower.analytics.data.EventDataAdapter$addJSON$1 -> ai.datatower.analytics.data.b$b:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     org.json.JSONObject $data -> c
@@ -2518,42 +2527,42 @@ ai.datatower.analytics.data.EventDataAdapter$addJSON$1 -> ai.datatower.analytics
     int label -> a
     java.lang.String $eventSyn -> d
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:7:java.lang.Object invokeSuspend(java.lang.Object):152:158 -> invokeSuspend
-    8:9:java.lang.Object invokeSuspend(java.lang.Object):152:153 -> invokeSuspend
+    1:7:java.lang.Object invokeSuspend(java.lang.Object):153:159 -> invokeSuspend
+    8:9:java.lang.Object invokeSuspend(java.lang.Object):153:154 -> invokeSuspend
     10:10:void ai.datatower.quality.PerfLogger.doPerfLog(ai.datatower.quality.PerfAction,long):0:0 -> invokeSuspend
-    10:10:java.lang.Object invokeSuspend(java.lang.Object):153 -> invokeSuspend
-    11:12:java.lang.Object invokeSuspend(java.lang.Object):154:155 -> invokeSuspend
-    13:15:java.lang.Object invokeSuspend(java.lang.Object):154:156 -> invokeSuspend
-    16:19:java.lang.Object invokeSuspend(java.lang.Object):154:157 -> invokeSuspend
+    10:10:java.lang.Object invokeSuspend(java.lang.Object):154 -> invokeSuspend
+    11:12:java.lang.Object invokeSuspend(java.lang.Object):155:156 -> invokeSuspend
+    13:15:java.lang.Object invokeSuspend(java.lang.Object):155:157 -> invokeSuspend
+    16:19:java.lang.Object invokeSuspend(java.lang.Object):155:158 -> invokeSuspend
     20:20:void ai.datatower.quality.PerfLogger.doPerfLog(ai.datatower.quality.PerfAction,long):0:0 -> invokeSuspend
-    20:20:java.lang.Object invokeSuspend(java.lang.Object):157 -> invokeSuspend
-    21:21:java.lang.Object invokeSuspend(java.lang.Object):158:158 -> invokeSuspend
+    20:20:java.lang.Object invokeSuspend(java.lang.Object):158 -> invokeSuspend
+    21:21:java.lang.Object invokeSuspend(java.lang.Object):159:159 -> invokeSuspend
 ai.datatower.analytics.data.EventDataAdapter$cleanupBatchEvents$1 -> ai.datatower.analytics.data.b$c:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     java.util.List $eventSyns -> c
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:2:java.lang.Object invokeSuspend(java.lang.Object):208:209 -> invokeSuspend
-    3:4:java.lang.Object invokeSuspend(java.lang.Object):208:209 -> invokeSuspend
+    1:2:java.lang.Object invokeSuspend(java.lang.Object):209:210 -> invokeSuspend
+    3:4:java.lang.Object invokeSuspend(java.lang.Object):209:210 -> invokeSuspend
 ai.datatower.analytics.data.EventDataAdapter$deleteAllEvents$1 -> ai.datatower.analytics.data.b$d:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:2:java.lang.Object invokeSuspend(java.lang.Object):167:168 -> invokeSuspend
-    3:4:java.lang.Object invokeSuspend(java.lang.Object):167:168 -> invokeSuspend
+    1:2:java.lang.Object invokeSuspend(java.lang.Object):168:169 -> invokeSuspend
+    3:4:java.lang.Object invokeSuspend(java.lang.Object):168:169 -> invokeSuspend
 ai.datatower.analytics.data.EventDataAdapter$getAccountId$1 -> ai.datatower.analytics.data.b$e:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> c
     java.lang.Object L$0 -> a
     int label -> b
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:5:java.lang.Object invokeSuspend(java.lang.Object):93:97 -> invokeSuspend
-    6:8:java.lang.Object invokeSuspend(java.lang.Object):93:95 -> invokeSuspend
-    9:9:java.lang.Object ai.datatower.analytics.data.EventDataAdapter.access$getStringConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,kotlin.coroutines.Continuation):16:16 -> invokeSuspend
-    9:9:java.lang.Object invokeSuspend(java.lang.Object):95 -> invokeSuspend
-    10:12:java.lang.Object invokeSuspend(java.lang.Object):95:97 -> invokeSuspend
+    1:5:java.lang.Object invokeSuspend(java.lang.Object):94:98 -> invokeSuspend
+    6:8:java.lang.Object invokeSuspend(java.lang.Object):94:96 -> invokeSuspend
+    9:9:java.lang.Object ai.datatower.analytics.data.EventDataAdapter.access$getStringConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,kotlin.coroutines.Continuation):17:17 -> invokeSuspend
+    9:9:java.lang.Object invokeSuspend(java.lang.Object):96 -> invokeSuspend
+    10:12:java.lang.Object invokeSuspend(java.lang.Object):96:98 -> invokeSuspend
 ai.datatower.analytics.data.EventDataAdapter$getBooleanConfig$1 -> ai.datatower.analytics.data.b$f:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     java.lang.Object result -> b
@@ -2565,162 +2574,164 @@ ai.datatower.analytics.data.EventDataAdapter$getDtId$1 -> ai.datatower.analytics
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:2:java.lang.Object invokeSuspend(java.lang.Object):57:58 -> invokeSuspend
-    3:4:java.lang.Object invokeSuspend(java.lang.Object):57:58 -> invokeSuspend
+    1:2:java.lang.Object invokeSuspend(java.lang.Object):58:59 -> invokeSuspend
+    3:4:java.lang.Object invokeSuspend(java.lang.Object):58:59 -> invokeSuspend
 ai.datatower.analytics.data.EventDataAdapter$getLatestGapTime$1 -> ai.datatower.analytics.data.b$h:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:2:java.lang.Object invokeSuspend(java.lang.Object):76:77 -> invokeSuspend
-    3:4:java.lang.Object invokeSuspend(java.lang.Object):76:77 -> invokeSuspend
+    1:2:java.lang.Object invokeSuspend(java.lang.Object):77:78 -> invokeSuspend
+    3:4:java.lang.Object invokeSuspend(java.lang.Object):77:78 -> invokeSuspend
 ai.datatower.analytics.data.EventDataAdapter$getLatestNetTime$1 -> ai.datatower.analytics.data.b$i:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:2:java.lang.Object invokeSuspend(java.lang.Object):68:69 -> invokeSuspend
-    3:4:java.lang.Object invokeSuspend(java.lang.Object):68:69 -> invokeSuspend
+    1:2:java.lang.Object invokeSuspend(java.lang.Object):69:70 -> invokeSuspend
+    3:4:java.lang.Object invokeSuspend(java.lang.Object):69:70 -> invokeSuspend
 ai.datatower.analytics.data.EventDataAdapter$getLongConfig$1 -> ai.datatower.analytics.data.b$j:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     java.lang.Object result -> b
     long J$0 -> a
     ai.datatower.analytics.data.EventDataAdapter this$0 -> c
     int label -> d
-ai.datatower.analytics.data.EventDataAdapter$getStaticSuperProperties$1 -> ai.datatower.analytics.data.b$k:
-# {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
-    ai.datatower.analytics.data.EventDataAdapter this$0 -> b
-    int label -> a
-    java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:3:java.lang.Object invokeSuspend(java.lang.Object):110:112 -> invokeSuspend
-    4:5:java.lang.Object invokeSuspend(java.lang.Object):110:111 -> invokeSuspend
-    6:16:java.lang.Object invokeSuspend(java.lang.Object):110:120 -> invokeSuspend
-ai.datatower.analytics.data.EventDataAdapter$getStringConfig$1 -> ai.datatower.analytics.data.b$l:
+ai.datatower.analytics.data.EventDataAdapter$getStringConfig$1 -> ai.datatower.analytics.data.b$k:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     java.lang.Object result -> a
     int label -> c
-ai.datatower.analytics.data.EventDataAdapter$getUserSetOnceProps$1 -> ai.datatower.analytics.data.b$m:
+ai.datatower.analytics.data.EventDataAdapter$getUserSetOnceProps$1 -> ai.datatower.analytics.data.b$l:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:2:java.lang.Object invokeSuspend(java.lang.Object):128:129 -> invokeSuspend
-    3:4:java.lang.Object invokeSuspend(java.lang.Object):128:129 -> invokeSuspend
-ai.datatower.analytics.data.EventDataAdapter$isAppInstallInserted$1 -> ai.datatower.analytics.data.b$n:
+    1:2:java.lang.Object invokeSuspend(java.lang.Object):129:130 -> invokeSuspend
+    3:4:java.lang.Object invokeSuspend(java.lang.Object):129:130 -> invokeSuspend
+ai.datatower.analytics.data.EventDataAdapter$isAppInstallInserted$1 -> ai.datatower.analytics.data.b$m:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:2:java.lang.Object invokeSuspend(java.lang.Object):37:38 -> invokeSuspend
-    3:4:java.lang.Object invokeSuspend(java.lang.Object):37:38 -> invokeSuspend
-ai.datatower.analytics.data.EventDataAdapter$isFirstSessionStartInserted$1 -> ai.datatower.analytics.data.b$o:
+    1:2:java.lang.Object invokeSuspend(java.lang.Object):38:39 -> invokeSuspend
+    3:4:java.lang.Object invokeSuspend(java.lang.Object):38:39 -> invokeSuspend
+ai.datatower.analytics.data.EventDataAdapter$isFirstSessionStartInserted$1 -> ai.datatower.analytics.data.b$n:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:2:java.lang.Object invokeSuspend(java.lang.Object):48:49 -> invokeSuspend
-    3:4:java.lang.Object invokeSuspend(java.lang.Object):48:49 -> invokeSuspend
-ai.datatower.analytics.data.EventDataAdapter$isUploadEnabled$1 -> ai.datatower.analytics.data.b$p:
+    1:2:java.lang.Object invokeSuspend(java.lang.Object):49:50 -> invokeSuspend
+    3:4:java.lang.Object invokeSuspend(java.lang.Object):49:50 -> invokeSuspend
+ai.datatower.analytics.data.EventDataAdapter$isUploadEnabled$1 -> ai.datatower.analytics.data.b$o:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:2:java.lang.Object invokeSuspend(java.lang.Object):26:27 -> invokeSuspend
-    3:4:java.lang.Object invokeSuspend(java.lang.Object):26:27 -> invokeSuspend
-ai.datatower.analytics.data.EventDataAdapter$queryDataCount$1 -> ai.datatower.analytics.data.b$q:
+    1:2:java.lang.Object invokeSuspend(java.lang.Object):27:28 -> invokeSuspend
+    3:4:java.lang.Object invokeSuspend(java.lang.Object):27:28 -> invokeSuspend
+ai.datatower.analytics.data.EventDataAdapter$queryDataCount$1 -> ai.datatower.analytics.data.b$p:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:2:java.lang.Object invokeSuspend(java.lang.Object):228:229 -> invokeSuspend
-ai.datatower.analytics.data.EventDataAdapter$readEventsDataFromDb$1 -> ai.datatower.analytics.data.b$r:
+    1:2:java.lang.Object invokeSuspend(java.lang.Object):229:230 -> invokeSuspend
+ai.datatower.analytics.data.EventDataAdapter$readEventsDataFromDb$1 -> ai.datatower.analytics.data.b$q:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     int $limit -> c
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:2:java.lang.Object invokeSuspend(java.lang.Object):223:224 -> invokeSuspend
-    3:4:java.lang.Object invokeSuspend(java.lang.Object):223:224 -> invokeSuspend
-ai.datatower.analytics.data.EventDataAdapter$setAccountId$1 -> ai.datatower.analytics.data.b$s:
+    1:2:java.lang.Object invokeSuspend(java.lang.Object):224:225 -> invokeSuspend
+    3:4:java.lang.Object invokeSuspend(java.lang.Object):224:225 -> invokeSuspend
+ai.datatower.analytics.data.EventDataAdapter$restoreCommonProperties$1 -> ai.datatower.analytics.data.b$r:
+# {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
+    ai.datatower.analytics.data.EventDataAdapter this$0 -> b
+    java.lang.String $key -> c
+    int label -> a
+    java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
+    1:3:java.lang.Object invokeSuspend(java.lang.Object):111:113 -> invokeSuspend
+    4:5:java.lang.Object invokeSuspend(java.lang.Object):111:112 -> invokeSuspend
+    6:16:java.lang.Object invokeSuspend(java.lang.Object):111:121 -> invokeSuspend
+ai.datatower.analytics.data.EventDataAdapter$saveCommonProperties$1 -> ai.datatower.analytics.data.b$s:
+# {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
+    ai.datatower.analytics.data.EventDataAdapter this$0 -> b
+    java.lang.String $key -> c
+    org.json.JSONObject $properties -> d
+    int label -> a
+    java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
+    1:3:java.lang.Object invokeSuspend(java.lang.Object):107:109 -> invokeSuspend
+    4:6:java.lang.Object invokeSuspend(java.lang.Object):107:109 -> invokeSuspend
+ai.datatower.analytics.data.EventDataAdapter$setAccountId$1 -> ai.datatower.analytics.data.b$t:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     java.lang.String $value -> c
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:5:java.lang.Object invokeSuspend(java.lang.Object):100:104 -> invokeSuspend
-    6:8:java.lang.Object invokeSuspend(java.lang.Object):100:102 -> invokeSuspend
-    9:9:void ai.datatower.analytics.data.EventDataAdapter.access$setAccountIdCached$p(ai.datatower.analytics.data.EventDataAdapter,java.lang.String):16:16 -> invokeSuspend
-    9:9:java.lang.Object invokeSuspend(java.lang.Object):102 -> invokeSuspend
-    10:10:java.lang.Object invokeSuspend(java.lang.Object):103:103 -> invokeSuspend
-    11:11:java.lang.Object ai.datatower.analytics.data.EventDataAdapter.access$setStringConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,java.lang.String,kotlin.coroutines.Continuation):16:16 -> invokeSuspend
-    11:11:java.lang.Object invokeSuspend(java.lang.Object):103 -> invokeSuspend
-    12:12:java.lang.Object invokeSuspend(java.lang.Object):104:104 -> invokeSuspend
-ai.datatower.analytics.data.EventDataAdapter$setDtIdIfNeeded$1 -> ai.datatower.analytics.data.b$t:
+    1:5:java.lang.Object invokeSuspend(java.lang.Object):101:105 -> invokeSuspend
+    6:8:java.lang.Object invokeSuspend(java.lang.Object):101:103 -> invokeSuspend
+    9:9:void ai.datatower.analytics.data.EventDataAdapter.access$setAccountIdCached$p(ai.datatower.analytics.data.EventDataAdapter,java.lang.String):17:17 -> invokeSuspend
+    9:9:java.lang.Object invokeSuspend(java.lang.Object):103 -> invokeSuspend
+    10:10:java.lang.Object invokeSuspend(java.lang.Object):104:104 -> invokeSuspend
+    11:11:java.lang.Object ai.datatower.analytics.data.EventDataAdapter.access$setStringConfig(ai.datatower.analytics.data.EventDataAdapter,java.lang.String,java.lang.String,kotlin.coroutines.Continuation):17:17 -> invokeSuspend
+    11:11:java.lang.Object invokeSuspend(java.lang.Object):104 -> invokeSuspend
+    12:12:java.lang.Object invokeSuspend(java.lang.Object):105:105 -> invokeSuspend
+ai.datatower.analytics.data.EventDataAdapter$setDtIdIfNeeded$1 -> ai.datatower.analytics.data.b$u:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     java.lang.String $value -> c
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:6:java.lang.Object invokeSuspend(java.lang.Object):61:66 -> invokeSuspend
-    7:8:java.lang.Object invokeSuspend(java.lang.Object):61:62 -> invokeSuspend
-    9:14:java.lang.Object invokeSuspend(java.lang.Object):61:66 -> invokeSuspend
-ai.datatower.analytics.data.EventDataAdapter$setIsAppInstallInserted$1 -> ai.datatower.analytics.data.b$u:
+    1:6:java.lang.Object invokeSuspend(java.lang.Object):62:67 -> invokeSuspend
+    7:8:java.lang.Object invokeSuspend(java.lang.Object):62:63 -> invokeSuspend
+    9:14:java.lang.Object invokeSuspend(java.lang.Object):62:67 -> invokeSuspend
+ai.datatower.analytics.data.EventDataAdapter$setIsAppInstallInserted$1 -> ai.datatower.analytics.data.b$v:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     boolean $value -> c
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:3:java.lang.Object invokeSuspend(java.lang.Object):41:43 -> invokeSuspend
-    4:6:java.lang.Object invokeSuspend(java.lang.Object):41:43 -> invokeSuspend
-ai.datatower.analytics.data.EventDataAdapter$setIsFirstSessionStartInserted$1 -> ai.datatower.analytics.data.b$v:
+    1:3:java.lang.Object invokeSuspend(java.lang.Object):42:44 -> invokeSuspend
+    4:6:java.lang.Object invokeSuspend(java.lang.Object):42:44 -> invokeSuspend
+ai.datatower.analytics.data.EventDataAdapter$setIsFirstSessionStartInserted$1 -> ai.datatower.analytics.data.b$w:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     boolean $value -> c
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:3:java.lang.Object invokeSuspend(java.lang.Object):52:54 -> invokeSuspend
-    4:6:java.lang.Object invokeSuspend(java.lang.Object):52:54 -> invokeSuspend
-ai.datatower.analytics.data.EventDataAdapter$setIsUploadEnabled$1 -> ai.datatower.analytics.data.b$w:
+    1:3:java.lang.Object invokeSuspend(java.lang.Object):53:55 -> invokeSuspend
+    4:6:java.lang.Object invokeSuspend(java.lang.Object):53:55 -> invokeSuspend
+ai.datatower.analytics.data.EventDataAdapter$setIsUploadEnabled$1 -> ai.datatower.analytics.data.b$x:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     boolean $value -> c
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:3:java.lang.Object invokeSuspend(java.lang.Object):30:32 -> invokeSuspend
-    4:6:java.lang.Object invokeSuspend(java.lang.Object):30:32 -> invokeSuspend
-ai.datatower.analytics.data.EventDataAdapter$setLatestGapTime$1 -> ai.datatower.analytics.data.b$x:
+    1:3:java.lang.Object invokeSuspend(java.lang.Object):31:33 -> invokeSuspend
+    4:6:java.lang.Object invokeSuspend(java.lang.Object):31:33 -> invokeSuspend
+ai.datatower.analytics.data.EventDataAdapter$setLatestGapTime$1 -> ai.datatower.analytics.data.b$y:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     long $value -> c
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:2:java.lang.Object invokeSuspend(java.lang.Object):80:81 -> invokeSuspend
-    3:4:java.lang.Object invokeSuspend(java.lang.Object):80:81 -> invokeSuspend
-ai.datatower.analytics.data.EventDataAdapter$setLatestNetTime$1 -> ai.datatower.analytics.data.b$y:
+    1:2:java.lang.Object invokeSuspend(java.lang.Object):81:82 -> invokeSuspend
+    3:4:java.lang.Object invokeSuspend(java.lang.Object):81:82 -> invokeSuspend
+ai.datatower.analytics.data.EventDataAdapter$setLatestNetTime$1 -> ai.datatower.analytics.data.b$z:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     long $value -> c
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:2:java.lang.Object invokeSuspend(java.lang.Object):72:73 -> invokeSuspend
-    3:4:java.lang.Object invokeSuspend(java.lang.Object):72:73 -> invokeSuspend
-ai.datatower.analytics.data.EventDataAdapter$setStaticSuperProperties$1 -> ai.datatower.analytics.data.b$z:
-# {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
-    org.json.JSONObject $properties -> c
-    ai.datatower.analytics.data.EventDataAdapter this$0 -> b
-    int label -> a
-    java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:3:java.lang.Object invokeSuspend(java.lang.Object):106:108 -> invokeSuspend
-    4:6:java.lang.Object invokeSuspend(java.lang.Object):106:108 -> invokeSuspend
+    1:2:java.lang.Object invokeSuspend(java.lang.Object):73:74 -> invokeSuspend
+    3:4:java.lang.Object invokeSuspend(java.lang.Object):73:74 -> invokeSuspend
 ai.datatower.analytics.data.EventDataAdapter$setUserSetOnceProps$1 -> ai.datatower.analytics.data.b$a0:
 # {"id":"sourceFile","fileName":"EventDataAdapter.kt"}
     ai.datatower.analytics.data.EventDataAdapter this$0 -> b
     java.lang.String $propertyNames -> c
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:3:java.lang.Object invokeSuspend(java.lang.Object):124:126 -> invokeSuspend
-    4:6:java.lang.Object invokeSuspend(java.lang.Object):124:126 -> invokeSuspend
+    1:3:java.lang.Object invokeSuspend(java.lang.Object):125:127 -> invokeSuspend
+    4:6:java.lang.Object invokeSuspend(java.lang.Object):125:127 -> invokeSuspend
 ai.datatower.analytics.data.EventDataOperation -> ai.datatower.analytics.data.c:
 # {"id":"sourceFile","fileName":"EventDataOperation.kt"}
     ai.datatower.analytics.data.EventDataOperation$Companion Companion -> c
@@ -3614,34 +3625,52 @@ ai.datatower.analytics.utils.AppLifecycleHelper$1 -> ai.datatower.analytics.util
     7:7:void onActivityStopped(android.app.Activity):72:72 -> onActivityStopped
 ai.datatower.analytics.utils.AppLifecycleHelper$OnAppStatusListener -> ai.datatower.analytics.utils.AppLifecycleHelper$OnAppStatusListener:
 # {"id":"sourceFile","fileName":"AppLifecycleHelper.java"}
+ai.datatower.analytics.utils.CommonPropertiesKey -> ai.datatower.analytics.utils.CommonPropertiesKey:
+# {"id":"sourceFile","fileName":"RestrictUtil.kt"}
 ai.datatower.analytics.utils.CommonPropsUtil -> ai.datatower.analytics.utils.c:
 # {"id":"sourceFile","fileName":"CommonPropsUtil.kt"}
     org.json.JSONObject staticProperties -> c
     ai.datatower.analytics.utils.CommonPropsUtil INSTANCE -> a
+    org.json.JSONObject internalProperties -> d
     kotlin.jvm.functions.Function0 dynamicPropertiesGetter -> b
-    1:1:void <clinit>():9:9 -> <clinit>
-    1:1:void <init>():7:7 -> <init>
-    1:5:java.lang.Object init$datatowerai_core_publicRelease(kotlin.coroutines.Continuation):11:15 -> a
-    6:7:java.lang.Object init$datatowerai_core_publicRelease(kotlin.coroutines.Continuation):11:12 -> a
-    8:8:java.lang.Object ai.datatower.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):55:55 -> a
-    8:8:java.lang.Object init$datatowerai_core_publicRelease(kotlin.coroutines.Continuation):12 -> a
-    9:12:java.lang.Object init$datatowerai_core_publicRelease(kotlin.coroutines.Continuation):12:15 -> a
-    13:13:void updateDynamicProperties$datatowerai_core_publicRelease(kotlin.jvm.functions.Function0):18:18 -> a
-    14:14:void clearDynamicProperties$datatowerai_core_publicRelease():24:24 -> a
-    15:26:void insertCommonProperties$datatowerai_core_publicRelease(org.json.JSONObject):56:67 -> a
-    1:1:void updateDynamicProperties$lambda-1(kotlin.jvm.functions.Function0):19:19 -> b
-    2:2:void clearDynamicProperties$lambda-2():25:25 -> b
-    3:3:void updateStaticProperties$datatowerai_core_publicRelease(org.json.JSONObject):30:30 -> b
-    1:5:void updateStaticProperties$lambda-3(org.json.JSONObject):31:35 -> c
-    6:6:void clearStaticProperties$datatowerai_core_publicRelease():40:40 -> c
-    1:2:void clearStaticProperties$lambda-4():41:42 -> d
-    1:1:java.lang.String dumpDynamicProperties():47:47 -> e
-    1:1:java.lang.String dumpStaticProperties():51:51 -> f
+    1:2:void <clinit>():12:13 -> <clinit>
+    1:1:void <init>():10:10 -> <init>
+    1:1:java.lang.Object access$restoreCommonProperties(ai.datatower.analytics.utils.CommonPropsUtil,java.lang.String,org.json.JSONObject,kotlin.coroutines.Continuation):10:10 -> a
+    2:5:java.lang.Object init$datatowerai_core_publicRelease(kotlin.coroutines.Continuation):15:18 -> a
+    6:7:java.lang.Object init$datatowerai_core_publicRelease(kotlin.coroutines.Continuation):15:16 -> a
+    8:10:java.lang.Object init$datatowerai_core_publicRelease(kotlin.coroutines.Continuation):15:17 -> a
+    11:14:java.lang.Object init$datatowerai_core_publicRelease(kotlin.coroutines.Continuation):15:18 -> a
+    15:16:java.lang.Object restoreCommonProperties(java.lang.String,org.json.JSONObject,kotlin.coroutines.Continuation):20:21 -> a
+    17:18:java.lang.Object restoreCommonProperties(java.lang.String,org.json.JSONObject,kotlin.coroutines.Continuation):20:21 -> a
+    19:19:java.lang.Object ai.datatower.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):55:55 -> a
+    19:19:java.lang.Object restoreCommonProperties(java.lang.String,org.json.JSONObject,kotlin.coroutines.Continuation):21 -> a
+    20:100:java.lang.Object restoreCommonProperties(java.lang.String,org.json.JSONObject,kotlin.coroutines.Continuation):21:101 -> a
+    101:101:java.lang.Object restoreCommonProperties(java.lang.String,org.json.JSONObject,kotlin.coroutines.Continuation):23:23 -> a
+    102:102:void updateDynamicProperties$datatowerai_core_publicRelease(kotlin.jvm.functions.Function0):29:29 -> a
+    103:103:void clearDynamicProperties$datatowerai_core_publicRelease():35:35 -> a
+    104:114:void applyCommonPropertiesToEvent$datatowerai_core_publicRelease(org.json.JSONObject):67:77 -> a
+    115:126:void updateInternalCommonProperties$datatowerai_core_publicRelease(java.lang.String,java.lang.Object):85:96 -> a
+    127:127:void updateInternalCommonProperties$datatowerai_core_publicRelease(java.lang.String,java.lang.Object):94:94 -> a
+    1:1:void updateDynamicProperties$lambda-2(kotlin.jvm.functions.Function0):30:30 -> b
+    2:2:void clearDynamicProperties$lambda-3():36:36 -> b
+    3:3:void updateStaticProperties$datatowerai_core_publicRelease(org.json.JSONObject):41:41 -> b
+    1:5:void updateStaticProperties$lambda-4(org.json.JSONObject):42:46 -> c
+    6:6:void clearStaticProperties$datatowerai_core_publicRelease():51:51 -> c
+    1:2:void clearStaticProperties$lambda-5():52:53 -> d
+    1:1:java.lang.String dumpDynamicProperties():58:58 -> e
+    1:1:java.lang.String dumpStaticProperties():62:62 -> f
 ai.datatower.analytics.utils.CommonPropsUtil$init$1 -> ai.datatower.analytics.utils.c$a:
 # {"id":"sourceFile","fileName":"CommonPropsUtil.kt"}
-    ai.datatower.analytics.utils.CommonPropsUtil this$0 -> b
-    java.lang.Object result -> a
-    int label -> c
+    ai.datatower.analytics.utils.CommonPropsUtil this$0 -> c
+    java.lang.Object result -> b
+    int label -> d
+    java.lang.Object L$0 -> a
+ai.datatower.analytics.utils.CommonPropsUtil$restoreCommonProperties$1 -> ai.datatower.analytics.utils.c$b:
+# {"id":"sourceFile","fileName":"CommonPropsUtil.kt"}
+    ai.datatower.analytics.utils.CommonPropsUtil this$0 -> c
+    java.lang.Object result -> b
+    int label -> d
+    java.lang.Object L$0 -> a
 ai.datatower.analytics.utils.DataCheck -> ai.datatower.analytics.utils.d:
 # {"id":"sourceFile","fileName":"DataCheck.kt"}
     ai.datatower.analytics.utils.DataCheck INSTANCE -> a

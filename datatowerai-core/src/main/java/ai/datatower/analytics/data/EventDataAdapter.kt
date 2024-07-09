@@ -5,12 +5,13 @@ import ai.datatower.analytics.taskqueue.asyncSequential
 import ai.datatower.analytics.taskqueue.asyncSequentialCatching
 import ai.datatower.analytics.taskqueue.asyncSequentialChained
 import ai.datatower.analytics.taskqueue.launchSequential
+import ai.datatower.analytics.utils.CommonPropertiesKey
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.TimeCalibration
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
 import android.content.Context
-import android.util.Log
+import androidx.annotation.StringDef
 import org.json.JSONObject
 
 class EventDataAdapter private constructor(
@@ -103,12 +104,12 @@ class EventDataAdapter private constructor(
         setStringConfig(DataParams.CONFIG_ACCOUNT_ID, value)
     }
 
-    fun setStaticSuperProperties(properties: JSONObject) = DBQueue.get().launchSequential {
-        setStringConfig(DataParams.CONFIG_STATIC_SUPER_PROPERTY, properties.toString())
+    fun saveCommonProperties(@CommonPropertiesKey key: String, properties: JSONObject) = DBQueue.get().launchSequential {
+        setStringConfig(key, properties.toString())
     }
 
-    fun getStaticSuperProperties() = DBQueue.get().asyncSequentialChained {
-        val jsonStr = getStringConfig(DataParams.CONFIG_STATIC_SUPER_PROPERTY)
+    fun restoreCommonProperties(@CommonPropertiesKey key: String) = DBQueue.get().asyncSequentialChained {
+        val jsonStr = getStringConfig(key)
         return@asyncSequentialChained try {
             if (jsonStr.isBlank()) {
                 JSONObject()

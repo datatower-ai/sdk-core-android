@@ -220,7 +220,7 @@ class EventUploadManager private constructor(
 
                 //如果未进行时间同步，发空参数进行时间同步
                 if (TimeCalibration.TIME_NOT_VERIFY_VALUE == TimeCalibration.instance.getVerifyTimeAsync()) {
-                    LogUtils.d(TAG, "time do not calibrate yet")
+                    LogUtils.d(TAG, "Failed to upload! reason: time do not calibrate yet")
                     TimeCalibration.instance.getReferenceTime()
                     PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
                     break

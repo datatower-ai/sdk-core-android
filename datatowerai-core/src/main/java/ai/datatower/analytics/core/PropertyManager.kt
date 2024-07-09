@@ -505,11 +505,15 @@ class PropertyManager private constructor() {
         val happenTime = SystemClock.elapsedRealtime()
 
         MainQueue.get().postTask {
+            CommonPropsUtil.updateInternalCommonProperties(Constant.COMMON_PROPERTY_FIREBASE_INSTANCE_ID, fiid)
+        }
+
+        MainQueue.get().postTask {
             EventTrackManager.instance.trackUser(
                 Constant.PRESET_EVENT_USER_SET,
                 happenTime,
                 JSONObject().apply {
-                    put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, fiid)
+                    put(Constant.USER_PROPERTY_LATEST_FIREBASE_IID, fiid ?: "")
                 }
             )
         }
@@ -519,11 +523,16 @@ class PropertyManager private constructor() {
         if (afid?.isEmpty() == true) return
 
         val happenTime = SystemClock.elapsedRealtime()
+
+        MainQueue.get().postTask {
+            CommonPropsUtil.updateInternalCommonProperties(Constant.COMMON_PROPERTY_APPSFLYER_ID, afid)
+        }
+
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET,
             happenTime,
             JSONObject().apply {
-                put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, afid)
+                put(Constant.USER_PROPERTY_LATEST_APPSFLYER_ID, afid ?: "")
             }
         )
     }
@@ -532,11 +541,16 @@ class PropertyManager private constructor() {
         if (koid?.isEmpty() == true) return
 
         val happenTime = SystemClock.elapsedRealtime()
+
+        MainQueue.get().postTask {
+            CommonPropsUtil.updateInternalCommonProperties(Constant.COMMON_PROPERTY_KOCHAVA_ID, koid)
+        }
+
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET,
             happenTime,
             JSONObject().apply {
-                put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, koid)
+                put(Constant.USER_PROPERTY_LATEST_KOCHAVA_ID, koid ?: "")
             }
         )
     }
@@ -545,11 +559,16 @@ class PropertyManager private constructor() {
         if (adjustId?.isEmpty() == true) return
 
         val happenTime = SystemClock.elapsedRealtime()
+
+        MainQueue.get().postTask {
+            CommonPropsUtil.updateInternalCommonProperties(Constant.COMMON_PROPERTY_ADJUST_ID, adjustId)
+        }
+
         EventTrackManager.instance.trackUser(
             Constant.PRESET_EVENT_USER_SET,
             happenTime,
             JSONObject().apply {
-                put(Constant.USER_PROPERTY_LATEST_ADJUST_ID, adjustId)
+                put(Constant.USER_PROPERTY_LATEST_ADJUST_ID, adjustId ?: "")
             }
         )
     }
