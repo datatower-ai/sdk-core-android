@@ -76,6 +76,11 @@ object EventUtils {
         activeProperties: MutableMap<String, Any?>,
         disableList: List<String>
     ) {
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_BUNDLE_ID)) {
+            //进程名
+            activeProperties[Constant.USER_PROPERTY_ACTIVE_BUNDLE_ID] = ProcessUtil.getCurrentProcessName(context)
+        }
+
         //移动信号国家码
         DeviceUtils.getMcc(context).let {
             if (it.isNotEmpty()) {
@@ -116,6 +121,16 @@ object EventUtils {
             }
             if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_OS_LANG)) {
                 activeProperties[Constant.USER_PROPERTY_ACTIVE_OS_LANG] = it
+            }
+        }
+
+        //系统语言
+        DeviceUtils.getUserAgent(context).let {
+            if (!disableList.contains(Constant.COMMON_PROPERTY_EVENT_USER_AGENT)) {
+                commonProperties[Constant.COMMON_PROPERTY_EVENT_USER_AGENT] = it
+            }
+            if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_USER_AGENT)) {
+                activeProperties[Constant.USER_PROPERTY_ACTIVE_USER_AGENT] = it
             }
         }
 
