@@ -19,6 +19,12 @@ object EventUtils {
     private val KEY_PATTERN =
         Pattern.compile("^[a-zA-Z][a-zA-Z\\d_#]{0,49}", Pattern.CASE_INSENSITIVE)
 
+    var ua: String = ""
+        private set
+    fun initUa(context: Context) {
+        ua = DeviceUtils.getUserAgent(context)
+    }
+
     suspend fun getEventInfo(context: Context,
                      dataAdapter: EventDataAdapter?,
                      eventInfo: MutableMap<String, Any?>,
@@ -124,14 +130,9 @@ object EventUtils {
             }
         }
 
-        //系统语言
-        DeviceUtils.getUserAgent(context).let {
-            if (!disableList.contains(Constant.COMMON_PROPERTY_EVENT_USER_AGENT)) {
-                commonProperties[Constant.COMMON_PROPERTY_EVENT_USER_AGENT] = it
-            }
-            if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_USER_AGENT)) {
-                activeProperties[Constant.USER_PROPERTY_ACTIVE_USER_AGENT] = it
-            }
+        // User-Agent
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_USER_AGENT)) {
+            activeProperties[Constant.USER_PROPERTY_ACTIVE_USER_AGENT] = ua
         }
 
         //应用版本号

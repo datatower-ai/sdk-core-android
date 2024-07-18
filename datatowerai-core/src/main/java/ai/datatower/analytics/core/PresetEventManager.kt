@@ -234,6 +234,7 @@ class PresetEventManager {
                         failedReason
                     )
                 }
+                put(Constant.ATTRIBUTE_PROPERTY_USER_AGENT, EventUtils.ua)
             },
             insertHandler = { code: Int, _: String ->
                 if (code == 0) {

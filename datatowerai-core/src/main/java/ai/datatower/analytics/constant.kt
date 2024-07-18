@@ -69,7 +69,6 @@ internal object Constant {
     const val COMMON_PROPERTY_IS_FOREGROUND       = "#is_foreground"
     const val COMMON_PROPERTY_EVENT_DURATION      = "#event_duration"
     const val COMMON_PROPERTY_EVENT_ZONE_OFFSET   = "#zone_offset"
-    const val COMMON_PROPERTY_EVENT_USER_AGENT    =  "#user_agent"
     // Common prop, but need to be set by host
     const val COMMON_PROPERTY_FIREBASE_INSTANCE_ID = "#firebase_iid"
     const val COMMON_PROPERTY_APPSFLYER_ID = "#appsflyer_id"
@@ -121,6 +120,7 @@ internal object Constant {
     const val ATTRIBUTE_PROPERTY_CNL                         = "#cnl"
     const val ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME_SERVER  = "#referrer_click_time_server"
     const val ATTRIBUTE_PROPERTY_APP_INSTALL_TIME_SERVER     = "#app_install_time_server"
+    const val ATTRIBUTE_PROPERTY_USER_AGENT                  =  "#user_agent"
 
     //session_start
     const val SESSION_START_PROPERTY_IS_FIRST_TIME           = "#is_first_time"
