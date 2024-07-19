@@ -2,8 +2,8 @@
 # compiler_version: 8.0.40
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.1"}
-# pg_map_id: 7efd02e
-# pg_map_hash: SHA-256 7efd02ea6cdbb42cb4f8bb76dad982b1b369278ff5b1fb19efe63d704081e07c
+# pg_map_id: 63a33b4
+# pg_map_hash: SHA-256 63a33b4276c1e5a5ab0bd7f91b3143ea9ba13e499ad102e0499db7a4d3938120
 ai.datatower.ad.AD_CONVERSION_SOURCE -> ai.datatower.ad.a:
 # {"id":"sourceFile","fileName":"constant.kt"}
     ai.datatower.ad.AD_CONVERSION_SOURCE$Companion Companion -> a
@@ -846,13 +846,13 @@ ai.datatower.analytics.BuildConfig -> ai.datatower.analytics.a:
 ai.datatower.analytics.Constant -> ai.datatower.analytics.b:
 # {"id":"sourceFile","fileName":"constant.kt"}
     java.lang.String USER_PROPERTY_ACTIVE_BUILD_DEVICE -> I0
-    java.lang.String SDK_TYPE_ANDROID -> j1
+    java.lang.String PRESET_EVENT_USER_UNIQ_APPEND -> j1
     java.lang.String COMMON_PROPERTY_SDK_VERSION -> I
     java.lang.String EVENT_INFO_ACID -> j
     java.lang.String USER_PROPERTY_ACTIVE_STORAGE_USED -> E0
-    java.lang.String PRESET_EVENT_USER_UNSET -> f1
+    java.lang.String PRESET_EVENT_USER_SET -> f1
     java.lang.String USER_PROPERTY_ACTIVE_DEVICE_MODEL -> A0
-    java.lang.String PRESET_EVENT_SESSION_END -> b1
+    java.lang.String PRESET_EVENT_APP_INSTALL -> b1
     java.lang.String COMMON_PROPERTY_SIMULATOR -> Q
     java.lang.String PRE_EVENT_INFO_SYN -> r
     java.lang.String COMMON_PROPERTY_EVENT_DURATION -> Y
@@ -868,20 +868,20 @@ ai.datatower.analytics.Constant -> ai.datatower.analytics.b:
     java.lang.String EVENT_INFO_TYPE -> q
     java.lang.String COMMON_PROPERTY_NETWORK_TYPE -> P
     java.lang.String USER_PROPERTY_ACTIVE_DEVICE_MANUFACTURER -> y0
-    java.lang.String PRESET_EVENT_APP_INSTALL -> Z0
+    java.lang.String EVENT_TYPE_USER -> Z0
     java.lang.String EVENT_TIME_CAN_TRUSTED -> y
     java.lang.String COMMON_PROPERTY_IS_FOREGROUND -> X
-    java.lang.String SESSION_END_PROPERTY_SESSION_DURATION -> V0
-    java.lang.String SESSION_START_PROPERTY_IS_FIRST_TIME -> R0
-    java.lang.String ATTRIBUTE_PROPERTY_FAILED_REASON -> N0
+    java.lang.String SESSION_START_PROPERTY_START_REASON -> V0
+    java.lang.String ATTRIBUTE_PROPERTY_APP_INSTALL_TIME_SERVER -> R0
+    java.lang.String ATTRIBUTE_PROPERTY_INSTANT_EXPERIENCE_LAUNCHED -> N0
     java.lang.String USER_PROPERTY_ACTIVE_USER_AGENT -> H0
-    java.lang.String PRESET_EVENT_USER_DEL -> i1
+    java.lang.String PRESET_EVENT_USER_APPEND -> i1
     java.lang.String COMMON_PROPERTY_OS_VERSION_NAME -> K
     java.lang.String USER_PROPERTY_ACTIVE_MEMORY_USED -> D0
-    java.lang.String PRESET_EVENT_USER_SET_ONCE -> e1
+    java.lang.String PRESET_EVENT_USER_ADD -> e1
     java.lang.String EVENT_INFO_BUNDLE_ID -> l
     int EVENT_REPORT_SIZE -> f
-    java.lang.String PRESET_EVENT_SESSION_START -> a1
+    java.lang.String PRESET_EVENT_APP_INITIALIZE -> a1
     java.lang.String COMMON_PROPERTY_FPS -> S
     java.lang.String EVENT_INFO_PROPERTIES -> t
     java.lang.String USER_PROPERTY_ACTIVE_SDK_VERSION -> u0
@@ -898,18 +898,18 @@ ai.datatower.analytics.Constant -> ai.datatower.analytics.b:
     java.lang.String EVENT_INFO_SYN -> s
     java.lang.String COMMON_PROPERTY_MEMORY_USED -> R
     java.lang.String USER_PROPERTY_ACTIVE_DEVICE_BRAND -> z0
-    java.lang.String PRESET_EVENT_APP_INITIALIZE -> Y0
+    java.lang.String EVENT_TYPE_TRACK -> Y0
     java.lang.String COMMON_PROPERTY_EVENT_ZONE_OFFSET -> Z
-    java.lang.String SESSION_START_PROPERTY_BACKGROUND_DURATION -> U0
-    java.lang.String ATTRIBUTE_PROPERTY_APP_INSTALL_TIME_SERVER -> Q0
+    java.lang.String SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND -> U0
+    java.lang.String ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME_SERVER -> Q0
     java.lang.String COMMON_PROPERTY_EVENT_SESSION -> A
     java.lang.String LOG_TAG -> b
-    java.lang.String ATTRIBUTE_PROPERTY_INSTANT_EXPERIENCE_LAUNCHED -> M0
+    java.lang.String ATTRIBUTE_PROPERTY_APP_INSTALL_TIME -> M0
     java.lang.String USER_PROPERTY_ACTIVE_SIMULATOR -> G0
-    java.lang.String PRESET_EVENT_USER_UNIQ_APPEND -> h1
+    java.lang.String PRESET_EVENT_USER_UNSET -> h1
     java.lang.String COMMON_PROPERTY_DEVICE_MANUFACTURER -> M
     java.lang.String USER_PROPERTY_ACTIVE_SCREEN_WIDTH -> C0
-    java.lang.String PRESET_EVENT_USER_SET -> d1
+    java.lang.String PRESET_EVENT_SESSION_END -> d1
     java.lang.String EVENT_INFO_DEBUG -> n
     java.lang.String COMMON_PROPERTY_DEVICE_MODEL -> U
     java.lang.String EVENT_TIME_CALIBRATED -> v
@@ -925,21 +925,22 @@ ai.datatower.analytics.Constant -> ai.datatower.analytics.b:
     java.lang.String COMMON_PROPERTY_OS_VERSION_CODE -> L
     java.lang.String EVENT_BODY -> u
     java.lang.String COMMON_PROPERTY_STORAGE_USED -> T
-    java.lang.String EVENT_TYPE_USER -> X0
-    java.lang.String SESSION_START_PROPERTY_START_REASON -> T0
-    java.lang.String ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME_SERVER -> P0
+    java.lang.String SESSION_END_PROPERTY_SESSION_DURATION -> X0
+    java.lang.String SESSION_START_PROPERTY_IS_FIRST_TIME -> T0
+    java.lang.String ATTRIBUTE_PROPERTY_CNL -> P0
     java.lang.String COMMON_PROPERTY_MNC -> C
-    java.lang.String ATTRIBUTE_PROPERTY_APP_INSTALL_TIME -> L0
+    java.lang.String ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME -> L0
+    java.lang.String TIME_FROM_ROI_NET_BODY -> m1
     java.lang.String EVENT_REPORT_PATH -> d
     java.lang.String COMMON_PROPERTY_APP_VERSION_NAME -> G
-    java.lang.String ATTRIBUTE_PROPERTY_REFERRER_URL -> J0
-    java.lang.String TIME_FROM_ROI_NET_BODY -> k1
+    java.lang.String USER_PROPERTY_ACTIVE_BUNDLE_ID -> J0
+    java.lang.String PRESET_EVENT_USER_DEL -> k1
     java.lang.String EVENT_INFO_ANDROID_ID -> h
     java.lang.String USER_PROPERTY_ACTIVE_NETWORK_TYPE -> F0
-    java.lang.String PRESET_EVENT_USER_APPEND -> g1
+    java.lang.String PRESET_EVENT_USER_SET_ONCE -> g1
     java.lang.String COMMON_PROPERTY_BUILD_DEVICE -> O
     java.lang.String USER_PROPERTY_ACTIVE_SCREEN_HEIGHT -> B0
-    java.lang.String PRESET_EVENT_USER_ADD -> c1
+    java.lang.String PRESET_EVENT_SESSION_START -> c1
     java.lang.String EVENT_INFO_NAME -> p
     java.lang.String COMMON_PROPERTY_SCREEN_WIDTH -> W
     java.lang.String EVENT_TIME_SESSION_ID -> x
@@ -954,12 +955,13 @@ ai.datatower.analytics.Constant -> ai.datatower.analytics.b:
     java.lang.String COMMON_PROPERTY_DEVICE_BRAND -> N
     java.lang.String EVENT_TIME_DEVICE -> w
     java.lang.String COMMON_PROPERTY_SCREEN_HEIGHT -> V
-    java.lang.String EVENT_TYPE_TRACK -> W0
-    java.lang.String SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND -> S0
+    java.lang.String SESSION_START_PROPERTY_BACKGROUND_DURATION -> W0
+    java.lang.String ATTRIBUTE_PROPERTY_USER_AGENT -> S0
     ai.datatower.analytics.Constant INSTANCE -> a
-    java.lang.String ATTRIBUTE_PROPERTY_CNL -> O0
+    java.lang.String ATTRIBUTE_PROPERTY_FAILED_REASON -> O0
     java.lang.String COMMON_PROPERTY_OS_LANG -> E
-    java.lang.String ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME -> K0
+    java.lang.String ATTRIBUTE_PROPERTY_REFERRER_URL -> K0
+    java.lang.String SDK_TYPE_ANDROID -> l1
     1:1:void <init>():4:4 -> <init>
 ai.datatower.analytics.DT -> ai.datatower.analytics.DT:
 # {"id":"sourceFile","fileName":"DT.kt"}
@@ -1061,10 +1063,10 @@ ai.datatower.analytics.DTAnalyticsUtils$Companion -> ai.datatower.analytics.DTAn
     1:1:void trackTimerStart(java.lang.String):17:17 -> trackTimerStart
 ai.datatower.analytics.DTChannel -> ai.datatower.analytics.DTChannel:
 # {"id":"sourceFile","fileName":"constant.kt"}
-    1:1:void <init>():159:159 -> <init>
+    1:1:void <init>():161:161 -> <init>
 ai.datatower.analytics.DTThirdPartyShareType -> ai.datatower.analytics.DTThirdPartyShareType:
 # {"id":"sourceFile","fileName":"constant.kt"}
-    1:1:void <init>():162:162 -> <init>
+    1:1:void <init>():164:164 -> <init>
 ai.datatower.analytics.OnDataTowerIdListener -> ai.datatower.analytics.OnDataTowerIdListener:
 # {"id":"sourceFile","fileName":"constant.kt"}
 ai.datatower.analytics.api.AbstractAnalytics -> ai.datatower.analytics.api.a:
@@ -1705,16 +1707,16 @@ ai.datatower.analytics.core.EventTrackManager -> ai.datatower.analytics.core.e:
     8:8:void trackEvent$lambda-0(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):132:132 -> a
     9:9:void addEventTask$default(ai.datatower.analytics.core.EventTrackManager,java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2,int,java.lang.Object):154:154 -> a
     10:17:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):165:172 -> a
-    18:18:java.util.Map ai.datatower.analytics.core.PropertyManager.getEventInfo():237:237 -> a
+    18:18:java.util.Map ai.datatower.analytics.core.PropertyManager.getEventInfo():238:238 -> a
     18:18:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):172 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    19:19:java.util.Map ai.datatower.analytics.core.PropertyManager.getEventInfo():237:237 -> a
+    19:19:java.util.Map ai.datatower.analytics.core.PropertyManager.getEventInfo():238:238 -> a
     19:19:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):172 -> a
     20:29:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):172:181 -> a
-    30:30:java.util.Map ai.datatower.analytics.core.PropertyManager.getCommonProperties():259:259 -> a
+    30:30:java.util.Map ai.datatower.analytics.core.PropertyManager.getCommonProperties():260:260 -> a
     30:30:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):181 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    31:31:java.util.Map ai.datatower.analytics.core.PropertyManager.getCommonProperties():259:259 -> a
+    31:31:java.util.Map ai.datatower.analytics.core.PropertyManager.getCommonProperties():260:260 -> a
     31:31:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):181 -> a
     32:46:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):181:195 -> a
     47:47:java.util.concurrent.atomic.AtomicBoolean ai.datatower.analytics.config.AbstractAnalyticsConfig.getMManualUploadSwitch():76:76 -> a
@@ -1733,24 +1735,24 @@ ai.datatower.analytics.core.EventTrackManager -> ai.datatower.analytics.core.e:
     114:114:void addEventTask(java.lang.String,long,java.lang.String,boolean,org.json.JSONObject,kotlin.jvm.functions.Function2):242:242 -> a
     115:129:kotlin.Pair getEventTime(java.lang.String,long):251:265 -> a
     130:130:void appendDynamicProperties(java.lang.String,org.json.JSONObject):271:271 -> a
-    131:131:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():263:263 -> a
+    131:131:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():264:264 -> a
     131:131:void appendDynamicProperties(java.lang.String,org.json.JSONObject):271 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    132:132:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():263:263 -> a
+    132:132:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():264:264 -> a
     132:132:void appendDynamicProperties(java.lang.String,org.json.JSONObject):271 -> a
     133:136:void appendDynamicProperties(java.lang.String,org.json.JSONObject):271:274 -> a
     137:144:void appendDynamicProperties(java.lang.String,org.json.JSONObject):272:279 -> a
-    145:145:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():263:263 -> a
+    145:145:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():264:264 -> a
     145:145:void appendDynamicProperties(java.lang.String,org.json.JSONObject):279 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    146:146:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():263:263 -> a
+    146:146:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():264:264 -> a
     146:146:void appendDynamicProperties(java.lang.String,org.json.JSONObject):279 -> a
     147:150:void appendDynamicProperties(java.lang.String,org.json.JSONObject):279:282 -> a
     151:158:void appendDynamicProperties(java.lang.String,org.json.JSONObject):280:287 -> a
-    159:159:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():263:263 -> a
+    159:159:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():264:264 -> a
     159:159:void appendDynamicProperties(java.lang.String,org.json.JSONObject):287 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    160:160:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():263:263 -> a
+    160:160:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():264:264 -> a
     160:160:void appendDynamicProperties(java.lang.String,org.json.JSONObject):287 -> a
     161:164:void appendDynamicProperties(java.lang.String,org.json.JSONObject):287:290 -> a
     165:173:void appendDynamicProperties(java.lang.String,org.json.JSONObject):288:296 -> a
@@ -2095,8 +2097,8 @@ ai.datatower.analytics.core.PresetEventManager -> ai.datatower.analytics.core.h:
     38:44:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):211:217 -> a
     45:51:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):215:221 -> a
     52:58:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):219:225 -> a
-    59:73:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):223:237 -> a
-    74:74:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):198:198 -> a
+    59:74:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):223:238 -> a
+    75:75:void trackAppInstallEvent(com.android.installreferrer.api.ReferrerDetails,java.lang.String):198:198 -> a
     1:3:void trackPresetEvent$lambda-0(ai.datatower.analytics.core.PresetEventManager,android.content.Context):41:43 -> b
     4:5:void getAppAttribute(android.content.Context):137:138 -> b
     1:1:void setActiveUserProperties(android.content.Context):73:73 -> c
@@ -2104,10 +2106,10 @@ ai.datatower.analytics.core.PresetEventManager -> ai.datatower.analytics.core.h:
     2:2:void setActiveUserProperties(android.content.Context):73 -> c
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
     3:6:void setActiveUserProperties(android.content.Context):76:79 -> c
-    7:7:java.util.Map ai.datatower.analytics.core.PropertyManager.getActiveProperties():261:261 -> c
+    7:7:java.util.Map ai.datatower.analytics.core.PropertyManager.getActiveProperties():262:262 -> c
     7:7:void setActiveUserProperties(android.content.Context):79 -> c
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    8:8:java.util.Map ai.datatower.analytics.core.PropertyManager.getActiveProperties():261:261 -> c
+    8:8:java.util.Map ai.datatower.analytics.core.PropertyManager.getActiveProperties():262:262 -> c
     8:8:void setActiveUserProperties(android.content.Context):79 -> c
     9:41:void setActiveUserProperties(android.content.Context):79:111 -> c
     42:42:void setActiveUserProperties(android.content.Context):109:109 -> c
@@ -2116,10 +2118,10 @@ ai.datatower.analytics.core.PresetEventManager -> ai.datatower.analytics.core.h:
     2:2:void setLatestUserProperties(android.content.Context):60 -> d
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
     3:8:void setLatestUserProperties(android.content.Context):63:68 -> d
-    9:9:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():263:263 -> d
+    9:9:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():264:264 -> d
     9:9:void setLatestUserProperties(android.content.Context):68 -> d
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    10:10:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():263:263 -> d
+    10:10:java.util.List ai.datatower.analytics.core.PropertyManager.getDisableList():264:264 -> d
     10:10:void setLatestUserProperties(android.content.Context):68 -> d
     11:11:void setLatestUserProperties(android.content.Context):68:68 -> d
     12:12:void setLatestUserProperties(android.content.Context):65:65 -> d
@@ -2167,14 +2169,14 @@ ai.datatower.analytics.core.PresetEventManager$setActiveUserProperties$1 -> ai.d
     java.lang.Object L$0 -> b
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,java.lang.String,kotlin.coroutines.Continuation) -> a
-    1:162:java.lang.Object invokeSuspend(java.lang.Object):88:249 -> invokeSuspend
-    163:324:java.lang.Object invokeSuspend(java.lang.Object):90:251 -> invokeSuspend
-    325:335:java.lang.Object invokeSuspend(java.lang.Object):96:106 -> invokeSuspend
-    336:342:java.lang.Object invokeSuspend(java.lang.Object):103:109 -> invokeSuspend
+    1:163:java.lang.Object invokeSuspend(java.lang.Object):88:250 -> invokeSuspend
+    164:326:java.lang.Object invokeSuspend(java.lang.Object):90:252 -> invokeSuspend
+    327:337:java.lang.Object invokeSuspend(java.lang.Object):96:106 -> invokeSuspend
+    338:344:java.lang.Object invokeSuspend(java.lang.Object):103:109 -> invokeSuspend
 ai.datatower.analytics.core.PresetEventManager$trackAppInstallEvent$2 -> ai.datatower.analytics.core.h$f:
 # {"id":"sourceFile","fileName":"PresetEventManager.kt"}
     ai.datatower.analytics.core.PresetEventManager this$0 -> a
-    1:3:void invoke(int,java.lang.String):240:242 -> a
+    1:3:void invoke(int,java.lang.String):241:243 -> a
     1:1:java.lang.Object invoke(java.lang.Object,java.lang.Object):198:198 -> invoke
 ai.datatower.analytics.core.PropertyManager -> ai.datatower.analytics.core.i:
 # {"id":"sourceFile","fileName":"PropertyManager.kt"}
@@ -2198,130 +2200,130 @@ ai.datatower.analytics.core.PropertyManager -> ai.datatower.analytics.core.i:
     2:2:kotlin.Lazy access$getInstance$delegate$cp():34:34 -> a
     3:3:java.lang.Object access$initEventInfo(ai.datatower.analytics.core.PropertyManager,android.content.Context,kotlin.coroutines.Continuation):34:34 -> a
     4:4:void access$removeCommonProperty(ai.datatower.analytics.core.PropertyManager,java.lang.String):34:34 -> a
-    5:21:java.lang.Object init(android.content.Context,ai.datatower.analytics.config.AnalyticsConfig,kotlin.coroutines.Continuation):67:83 -> a
-    22:38:java.lang.Object init(android.content.Context,ai.datatower.analytics.config.AnalyticsConfig,kotlin.coroutines.Continuation):67:83 -> a
-    39:39:void getDataTowerId(android.content.Context):86:86 -> a
-    40:40:void ai.datatower.quality.PerfLogger.doPerfLog(ai.datatower.quality.PerfAction,long):0:0 -> a
-    40:40:void getDataTowerId(android.content.Context):86 -> a
-    41:41:void getDataTowerId(android.content.Context):89:89 -> a
-    42:50:void getDataTowerId$lambda-1(ai.datatower.analytics.core.PropertyManager,android.content.Context):91:99 -> a
-    51:51:void getDataTowerId(ai.datatower.analytics.OnDataTowerIdListener):104:104 -> a
-    52:52:void ai.datatower.quality.PerfLogger.doPerfLog(ai.datatower.quality.PerfAction,long):0:0 -> a
-    52:52:void getDataTowerId(ai.datatower.analytics.OnDataTowerIdListener):104 -> a
-    53:53:void getDataTowerId(ai.datatower.analytics.OnDataTowerIdListener):106:106 -> a
-    54:61:void getDataTowerId$lambda-3(ai.datatower.analytics.core.PropertyManager,ai.datatower.analytics.OnDataTowerIdListener):107:114 -> a
-    62:62:void getDataTowerId$lambda-3$lambda-2(ai.datatower.analytics.OnDataTowerIdListener,ai.datatower.analytics.core.PropertyManager):109:109 -> a
-    63:63:void ai.datatower.quality.PerfLogger.doPerfLog(ai.datatower.quality.PerfAction,long):0:0 -> a
-    63:63:void getDataTowerId$lambda-3$lambda-2(ai.datatower.analytics.OnDataTowerIdListener,ai.datatower.analytics.core.PropertyManager):109 -> a
-    64:64:void getDataTowerId$lambda-3$lambda-2(ai.datatower.analytics.OnDataTowerIdListener,ai.datatower.analytics.core.PropertyManager):111:111 -> a
-    65:81:void initDTIdOrUpdateOriginalId(android.content.Context,boolean):133:149 -> a
-    82:97:void initDTIdOrUpdateOriginalId(android.content.Context,boolean):144:159 -> a
-    98:98:void initDTIdOrUpdateOriginalId(android.content.Context,boolean):157:157 -> a
-    99:102:java.lang.String initDTId(java.lang.String):170:173 -> a
-    103:103:java.lang.String ai.datatower.analytics.config.AbstractAnalyticsConfig.getMAppId():49:49 -> a
-    103:103:java.lang.String initDTId(java.lang.String):173 -> a
+    5:22:java.lang.Object init(android.content.Context,ai.datatower.analytics.config.AnalyticsConfig,kotlin.coroutines.Continuation):67:84 -> a
+    23:40:java.lang.Object init(android.content.Context,ai.datatower.analytics.config.AnalyticsConfig,kotlin.coroutines.Continuation):67:84 -> a
+    41:41:void getDataTowerId(android.content.Context):87:87 -> a
+    42:42:void ai.datatower.quality.PerfLogger.doPerfLog(ai.datatower.quality.PerfAction,long):0:0 -> a
+    42:42:void getDataTowerId(android.content.Context):87 -> a
+    43:43:void getDataTowerId(android.content.Context):90:90 -> a
+    44:52:void getDataTowerId$lambda-1(ai.datatower.analytics.core.PropertyManager,android.content.Context):92:100 -> a
+    53:53:void getDataTowerId(ai.datatower.analytics.OnDataTowerIdListener):105:105 -> a
+    54:54:void ai.datatower.quality.PerfLogger.doPerfLog(ai.datatower.quality.PerfAction,long):0:0 -> a
+    54:54:void getDataTowerId(ai.datatower.analytics.OnDataTowerIdListener):105 -> a
+    55:55:void getDataTowerId(ai.datatower.analytics.OnDataTowerIdListener):107:107 -> a
+    56:63:void getDataTowerId$lambda-3(ai.datatower.analytics.core.PropertyManager,ai.datatower.analytics.OnDataTowerIdListener):108:115 -> a
+    64:64:void getDataTowerId$lambda-3$lambda-2(ai.datatower.analytics.OnDataTowerIdListener,ai.datatower.analytics.core.PropertyManager):110:110 -> a
+    65:65:void ai.datatower.quality.PerfLogger.doPerfLog(ai.datatower.quality.PerfAction,long):0:0 -> a
+    65:65:void getDataTowerId$lambda-3$lambda-2(ai.datatower.analytics.OnDataTowerIdListener,ai.datatower.analytics.core.PropertyManager):110 -> a
+    66:66:void getDataTowerId$lambda-3$lambda-2(ai.datatower.analytics.OnDataTowerIdListener,ai.datatower.analytics.core.PropertyManager):112:112 -> a
+    67:83:void initDTIdOrUpdateOriginalId(android.content.Context,boolean):134:150 -> a
+    84:99:void initDTIdOrUpdateOriginalId(android.content.Context,boolean):145:160 -> a
+    100:100:void initDTIdOrUpdateOriginalId(android.content.Context,boolean):158:158 -> a
+    101:104:java.lang.String initDTId(java.lang.String):171:174 -> a
+    105:105:java.lang.String ai.datatower.analytics.config.AbstractAnalyticsConfig.getMAppId():49:49 -> a
+    105:105:java.lang.String initDTId(java.lang.String):174 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    104:111:java.lang.String initDTId(java.lang.String):174:181 -> a
-    112:117:java.lang.String initDTId(java.lang.String):179:184 -> a
-    118:118:java.lang.Object initEventInfo(android.content.Context,kotlin.coroutines.Continuation):230:230 -> a
-    119:119:void updateEventInfo(java.lang.String,java.lang.String):234:234 -> a
-    120:120:void initCommonProperties(android.content.Context,ai.datatower.analytics.config.AnalyticsConfig):245:245 -> a
-    121:121:void updateCommonProperties(java.lang.String,java.lang.Object):250:250 -> a
-    122:122:java.util.Map getCommonProperties():259:259 -> a
-    122:122:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):297 -> a
-    123:125:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):297:299 -> a
-    126:126:java.util.Map getCommonProperties():259:259 -> a
-    126:126:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):306 -> a
-    127:129:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):306:308 -> a
-    130:130:void updateIsForeground$default(ai.datatower.analytics.core.PropertyManager,boolean,boolean,java.lang.String,int,java.lang.Object):317:317 -> a
-    131:132:void updateIsForeground(boolean,boolean,java.lang.String):318:319 -> a
-    133:136:void updateIsForeground$lambda-10(ai.datatower.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):320:323 -> a
-    137:137:void updateCommonProperties(java.lang.String,java.lang.Object):250:250 -> a
-    137:137:void updateIsForeground$lambda-10(ai.datatower.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):321 -> a
-    138:142:void updateIsForeground$lambda-10(ai.datatower.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):328:332 -> a
-    143:143:void updateCommonProperties(java.lang.String,java.lang.Object):250:250 -> a
-    143:143:void updateIsForeground$lambda-10(ai.datatower.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):330 -> a
-    144:189:void updateIsForeground$lambda-10(ai.datatower.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):335:380 -> a
-    190:190:void updateIsForeground$lambda-10(ai.datatower.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):370:370 -> a
-    191:192:void updateNetworkType(ai.datatower.analytics.utils.NetworkUtil$NetworkType):485:486 -> a
-    193:193:void updateCommonProperties(java.lang.String,java.lang.Object):250:250 -> a
-    193:193:void updateNetworkType(ai.datatower.analytics.utils.NetworkUtil$NetworkType):484 -> a
-    194:195:void updateACID$lambda-20(java.lang.String,ai.datatower.analytics.core.PropertyManager):493:494 -> a
-    196:196:void updateEventInfo(java.lang.String,java.lang.String):234:234 -> a
-    196:196:void updateACID$lambda-20(java.lang.String,ai.datatower.analytics.core.PropertyManager):494 -> a
+    106:113:java.lang.String initDTId(java.lang.String):175:182 -> a
+    114:119:java.lang.String initDTId(java.lang.String):180:185 -> a
+    120:120:java.lang.Object initEventInfo(android.content.Context,kotlin.coroutines.Continuation):231:231 -> a
+    121:121:void updateEventInfo(java.lang.String,java.lang.String):235:235 -> a
+    122:122:void initCommonProperties(android.content.Context,ai.datatower.analytics.config.AnalyticsConfig):246:246 -> a
+    123:123:void updateCommonProperties(java.lang.String,java.lang.Object):251:251 -> a
+    124:124:java.util.Map getCommonProperties():260:260 -> a
+    124:124:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):298 -> a
+    125:127:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):298:300 -> a
+    128:128:java.util.Map getCommonProperties():260:260 -> a
+    128:128:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):307 -> a
+    129:131:void updateSdkVersionProperty(org.json.JSONObject,java.lang.String,java.lang.String):307:309 -> a
+    132:132:void updateIsForeground$default(ai.datatower.analytics.core.PropertyManager,boolean,boolean,java.lang.String,int,java.lang.Object):318:318 -> a
+    133:134:void updateIsForeground(boolean,boolean,java.lang.String):319:320 -> a
+    135:138:void updateIsForeground$lambda-10(ai.datatower.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):321:324 -> a
+    139:139:void updateCommonProperties(java.lang.String,java.lang.Object):251:251 -> a
+    139:139:void updateIsForeground$lambda-10(ai.datatower.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):322 -> a
+    140:144:void updateIsForeground$lambda-10(ai.datatower.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):329:333 -> a
+    145:145:void updateCommonProperties(java.lang.String,java.lang.Object):251:251 -> a
+    145:145:void updateIsForeground$lambda-10(ai.datatower.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):331 -> a
+    146:191:void updateIsForeground$lambda-10(ai.datatower.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):336:381 -> a
+    192:192:void updateIsForeground$lambda-10(ai.datatower.analytics.core.PropertyManager,boolean,long,boolean,java.lang.String):371:371 -> a
+    193:194:void updateNetworkType(ai.datatower.analytics.utils.NetworkUtil$NetworkType):486:487 -> a
+    195:195:void updateCommonProperties(java.lang.String,java.lang.Object):251:251 -> a
+    195:195:void updateNetworkType(ai.datatower.analytics.utils.NetworkUtil$NetworkType):485 -> a
+    196:197:void updateACID$lambda-20(java.lang.String,ai.datatower.analytics.core.PropertyManager):494:495 -> a
+    198:198:void updateEventInfo(java.lang.String,java.lang.String):235:235 -> a
+    198:198:void updateACID$lambda-20(java.lang.String,ai.datatower.analytics.core.PropertyManager):495 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    197:197:void updateEventInfo(java.lang.String,java.lang.String):234:234 -> a
-    197:197:void updateACID$lambda-20(java.lang.String,ai.datatower.analytics.core.PropertyManager):494 -> a
-    198:203:void updateFireBaseInstanceId$lambda-23(long,java.lang.String):512:517 -> a
-    204:204:void updateFireBaseInstanceId$lambda-23(long,java.lang.String):512:512 -> a
+    199:199:void updateEventInfo(java.lang.String,java.lang.String):235:235 -> a
+    199:199:void updateACID$lambda-20(java.lang.String,ai.datatower.analytics.core.PropertyManager):495 -> a
+    200:205:void updateFireBaseInstanceId$lambda-23(long,java.lang.String):513:518 -> a
+    206:206:void updateFireBaseInstanceId$lambda-23(long,java.lang.String):513:513 -> a
     1:1:long access$getSessionEndTime$p(ai.datatower.analytics.core.PropertyManager):34:34 -> b
-    2:2:void onDataTowerIdCallback(java.lang.String):120:120 -> b
+    2:2:void onDataTowerIdCallback(java.lang.String):121:121 -> b
     3:3:void ai.datatower.quality.PerfLogger.doPerfLog(ai.datatower.quality.PerfAction,long):0:0 -> b
-    3:3:void onDataTowerIdCallback(java.lang.String):120 -> b
-    4:4:void onDataTowerIdCallback(java.lang.String):122:122 -> b
-    5:462:void onDataTowerIdCallback$lambda-5(ai.datatower.analytics.core.PropertyManager,java.lang.String):123:580 -> b
-    463:465:void onDataTowerIdCallback$lambda-5(ai.datatower.analytics.core.PropertyManager,java.lang.String):124:126 -> b
-    466:470:void initDTIdWithAndroidId(android.content.Context,boolean):189:193 -> b
-    471:480:void initDisableList(android.content.Context):202:211 -> b
-    481:481:void initDisableList(android.content.Context):208:208 -> b
-    482:494:void initDisableList(android.content.Context):206:218 -> b
-    495:500:void initDisableList(android.content.Context):216:221 -> b
-    501:501:void initDisableList(android.content.Context):202:202 -> b
-    502:502:java.util.Map getEventInfo():237:237 -> b
-    502:502:java.lang.String getACID():499 -> b
-    503:503:java.lang.String getACID():499:499 -> b
+    3:3:void onDataTowerIdCallback(java.lang.String):121 -> b
+    4:4:void onDataTowerIdCallback(java.lang.String):123:123 -> b
+    5:462:void onDataTowerIdCallback$lambda-5(ai.datatower.analytics.core.PropertyManager,java.lang.String):124:581 -> b
+    463:465:void onDataTowerIdCallback$lambda-5(ai.datatower.analytics.core.PropertyManager,java.lang.String):125:127 -> b
+    466:470:void initDTIdWithAndroidId(android.content.Context,boolean):190:194 -> b
+    471:480:void initDisableList(android.content.Context):203:212 -> b
+    481:481:void initDisableList(android.content.Context):209:209 -> b
+    482:494:void initDisableList(android.content.Context):207:219 -> b
+    495:500:void initDisableList(android.content.Context):217:222 -> b
+    501:501:void initDisableList(android.content.Context):203:203 -> b
+    502:502:java.util.Map getEventInfo():238:238 -> b
+    502:502:java.lang.String getACID():500 -> b
+    503:503:java.lang.String getACID():500:500 -> b
     1:1:long access$getSessionStartTime$p(ai.datatower.analytics.core.PropertyManager):34:34 -> c
-    2:3:void removeCommonProperty(java.lang.String):254:255 -> c
-    4:4:java.util.Map getActiveProperties():261:261 -> c
-    5:6:void registerNetworkStatusChangedListener(android.content.Context):280:281 -> c
+    2:3:void removeCommonProperty(java.lang.String):255:256 -> c
+    4:4:java.util.Map getActiveProperties():262:262 -> c
+    5:6:void registerNetworkStatusChangedListener(android.content.Context):281:282 -> c
     7:7:void ai.datatower.analytics.utils.NetworkUtil.registerNetworkStatusChangedListener(android.app.Application,ai.datatower.analytics.utils.NetworkUtil$OnNetworkStatusChangedListener):301:301 -> c
-    7:7:void registerNetworkStatusChangedListener(android.content.Context):279 -> c
-    8:8:void registerNetworkStatusChangedListener(android.content.Context):280:280 -> c
-    9:11:void updateDTID$lambda-12(ai.datatower.analytics.core.PropertyManager,java.lang.String):405:407 -> c
-    12:12:void updateEventInfo(java.lang.String,java.lang.String):234:234 -> c
-    12:12:void updateDTID$lambda-12(ai.datatower.analytics.core.PropertyManager,java.lang.String):406 -> c
-    1:1:java.util.Map getEventInfo():237:237 -> d
-    1:1:java.lang.String getAndroidId():459 -> d
-    2:7:java.lang.String getAndroidId():459:464 -> d
-    8:9:void updateACID(java.lang.String):491:492 -> d
-    1:1:java.util.Map getCommonProperties():259:259 -> e
-    2:15:void updateAFID(java.lang.String):523:536 -> e
-    16:16:void updateAFID(java.lang.String):531:531 -> e
-    1:1:java.util.Map getEventInfo():237:237 -> f
-    1:1:java.lang.String getDTID():392 -> f
-    2:7:java.lang.String getDTID():392:397 -> f
-    8:8:void updateAFID$lambda-24(java.lang.String):528:528 -> f
-    1:1:java.util.List getDisableList():263:263 -> g
-    2:15:void updateAdjustId(java.lang.String):559:572 -> g
-    16:16:void updateAdjustId(java.lang.String):567:567 -> g
-    1:1:java.util.Map getEventInfo():237:237 -> h
-    2:2:void updateAdjustId$lambda-28(java.lang.String):564:564 -> h
-    1:1:java.util.Map getEventInfo():237:237 -> i
-    1:1:java.lang.String getGAID():413 -> i
-    2:7:java.lang.String getGAID():413:418 -> i
-    8:13:void updateAndroidId(java.lang.String):468:473 -> i
-    14:14:void updateEventInfo(java.lang.String,java.lang.String):234:234 -> i
-    14:14:void updateAndroidId(java.lang.String):473 -> i
-    15:19:void updateAndroidId(java.lang.String):475:479 -> i
-    20:20:void updateAndroidId(java.lang.String):476:476 -> i
-    1:1:java.util.Map getCommonProperties():259:259 -> j
-    1:1:java.lang.String getSDKType():431 -> j
-    2:7:java.lang.String getSDKType():431:436 -> j
-    8:11:void updateDTID(java.lang.String):401:404 -> j
-    1:1:java.util.Map getCommonProperties():259:259 -> k
-    1:1:java.lang.String getSDKVersion():422 -> k
-    2:7:java.lang.String getSDKVersion():422:427 -> k
-    8:16:void updateFireBaseInstanceId(java.lang.String):503:511 -> k
-    1:4:void registerFPSListener():269:272 -> l
-    5:5:void updateFireBaseInstanceId$lambda-21(java.lang.String):508:508 -> l
-    1:8:void updateGAID(java.lang.String):440:447 -> m
-    9:9:void updateEventInfo(java.lang.String,java.lang.String):234:234 -> m
-    9:9:void updateGAID(java.lang.String):447 -> m
-    10:14:void updateGAID(java.lang.String):450:454 -> m
-    15:15:void updateGAID(java.lang.String):451:451 -> m
-    1:14:void updateKOID(java.lang.String):541:554 -> n
-    15:15:void updateKOID(java.lang.String):549:549 -> n
-    1:1:void updateKOID$lambda-26(java.lang.String):546:546 -> o
+    7:7:void registerNetworkStatusChangedListener(android.content.Context):280 -> c
+    8:8:void registerNetworkStatusChangedListener(android.content.Context):281:281 -> c
+    9:11:void updateDTID$lambda-12(ai.datatower.analytics.core.PropertyManager,java.lang.String):406:408 -> c
+    12:12:void updateEventInfo(java.lang.String,java.lang.String):235:235 -> c
+    12:12:void updateDTID$lambda-12(ai.datatower.analytics.core.PropertyManager,java.lang.String):407 -> c
+    1:1:java.util.Map getEventInfo():238:238 -> d
+    1:1:java.lang.String getAndroidId():460 -> d
+    2:7:java.lang.String getAndroidId():460:465 -> d
+    8:9:void updateACID(java.lang.String):492:493 -> d
+    1:1:java.util.Map getCommonProperties():260:260 -> e
+    2:15:void updateAFID(java.lang.String):524:537 -> e
+    16:16:void updateAFID(java.lang.String):532:532 -> e
+    1:1:java.util.Map getEventInfo():238:238 -> f
+    1:1:java.lang.String getDTID():393 -> f
+    2:7:java.lang.String getDTID():393:398 -> f
+    8:8:void updateAFID$lambda-24(java.lang.String):529:529 -> f
+    1:1:java.util.List getDisableList():264:264 -> g
+    2:15:void updateAdjustId(java.lang.String):560:573 -> g
+    16:16:void updateAdjustId(java.lang.String):568:568 -> g
+    1:1:java.util.Map getEventInfo():238:238 -> h
+    2:2:void updateAdjustId$lambda-28(java.lang.String):565:565 -> h
+    1:1:java.util.Map getEventInfo():238:238 -> i
+    1:1:java.lang.String getGAID():414 -> i
+    2:7:java.lang.String getGAID():414:419 -> i
+    8:13:void updateAndroidId(java.lang.String):469:474 -> i
+    14:14:void updateEventInfo(java.lang.String,java.lang.String):235:235 -> i
+    14:14:void updateAndroidId(java.lang.String):474 -> i
+    15:19:void updateAndroidId(java.lang.String):476:480 -> i
+    20:20:void updateAndroidId(java.lang.String):477:477 -> i
+    1:1:java.util.Map getCommonProperties():260:260 -> j
+    1:1:java.lang.String getSDKType():432 -> j
+    2:7:java.lang.String getSDKType():432:437 -> j
+    8:11:void updateDTID(java.lang.String):402:405 -> j
+    1:1:java.util.Map getCommonProperties():260:260 -> k
+    1:1:java.lang.String getSDKVersion():423 -> k
+    2:7:java.lang.String getSDKVersion():423:428 -> k
+    8:16:void updateFireBaseInstanceId(java.lang.String):504:512 -> k
+    1:4:void registerFPSListener():270:273 -> l
+    5:5:void updateFireBaseInstanceId$lambda-21(java.lang.String):509:509 -> l
+    1:8:void updateGAID(java.lang.String):441:448 -> m
+    9:9:void updateEventInfo(java.lang.String,java.lang.String):235:235 -> m
+    9:9:void updateGAID(java.lang.String):448 -> m
+    10:14:void updateGAID(java.lang.String):451:455 -> m
+    15:15:void updateGAID(java.lang.String):452:452 -> m
+    1:14:void updateKOID(java.lang.String):542:555 -> n
+    15:15:void updateKOID(java.lang.String):550:550 -> n
+    1:1:void updateKOID$lambda-26(java.lang.String):547:547 -> o
 ai.datatower.analytics.core.PropertyManager$Companion -> ai.datatower.analytics.core.i$b:
 # {"id":"sourceFile","fileName":"PropertyManager.kt"}
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
@@ -2343,10 +2345,10 @@ ai.datatower.analytics.core.PropertyManager$getDataTowerId$1$1 -> ai.datatower.a
     ai.datatower.analytics.core.PropertyManager this$0 -> b
     int label -> a
     java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,kotlin.coroutines.Continuation) -> a
-    1:1:java.lang.Object invokeSuspend(java.lang.Object):91:91 -> invokeSuspend
+    1:1:java.lang.Object invokeSuspend(java.lang.Object):92:92 -> invokeSuspend
     2:2:java.lang.Object ai.datatower.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):55:55 -> invokeSuspend
-    2:2:java.lang.Object invokeSuspend(java.lang.Object):91 -> invokeSuspend
-    3:3:java.lang.Object invokeSuspend(java.lang.Object):91:91 -> invokeSuspend
+    2:2:java.lang.Object invokeSuspend(java.lang.Object):92 -> invokeSuspend
+    3:3:java.lang.Object invokeSuspend(java.lang.Object):92:92 -> invokeSuspend
 ai.datatower.analytics.core.PropertyManager$init$1 -> ai.datatower.analytics.core.i$d:
 # {"id":"sourceFile","fileName":"PropertyManager.kt"}
     ai.datatower.analytics.core.PropertyManager this$0 -> e
@@ -2358,9 +2360,9 @@ ai.datatower.analytics.core.PropertyManager$init$1 -> ai.datatower.analytics.cor
 ai.datatower.analytics.core.PropertyManager$registerNetworkStatusChangedListener$1 -> ai.datatower.analytics.core.i$e:
 # {"id":"sourceFile","fileName":"PropertyManager.kt"}
     ai.datatower.analytics.core.PropertyManager this$0 -> a
-    1:1:void <init>(ai.datatower.analytics.core.PropertyManager):281:281 -> <init>
-    1:3:void onConnected(ai.datatower.analytics.utils.NetworkUtil$NetworkType):287:289 -> onConnected
-    1:1:void onDisconnected():283:283 -> onDisconnected
+    1:1:void <init>(ai.datatower.analytics.core.PropertyManager):282:282 -> <init>
+    1:3:void onConnected(ai.datatower.analytics.utils.NetworkUtil$NetworkType):288:290 -> onConnected
+    1:1:void onDisconnected():284:284 -> onDisconnected
 ai.datatower.analytics.core.PropertyManager$updateIsForeground$1$1 -> ai.datatower.analytics.core.i$f:
 # {"id":"sourceFile","fileName":"PropertyManager.kt"}
     ai.datatower.analytics.core.PropertyManager this$0 -> f
@@ -2370,24 +2372,24 @@ ai.datatower.analytics.core.PropertyManager$updateIsForeground$1$1 -> ai.datatow
     int label -> a
     boolean $resumeFromBackground -> d
     1:1:java.lang.Object invoke(kotlinx.coroutines.CoroutineScope,boolean,kotlin.coroutines.Continuation):0:0 -> a
-    2:16:void invokeSuspend$lambda-1(boolean,long,boolean,java.lang.String,ai.datatower.analytics.core.PropertyManager):341:355 -> a
+    2:16:void invokeSuspend$lambda-1(boolean,long,boolean,java.lang.String,ai.datatower.analytics.core.PropertyManager):342:356 -> a
     17:17:long ai.datatower.analytics.core.PropertyManager.access$getSessionStartTime$p(ai.datatower.analytics.core.PropertyManager):34:34 -> a
-    17:17:void invokeSuspend$lambda-1(boolean,long,boolean,java.lang.String,ai.datatower.analytics.core.PropertyManager):356 -> a
+    17:17:void invokeSuspend$lambda-1(boolean,long,boolean,java.lang.String,ai.datatower.analytics.core.PropertyManager):357 -> a
     18:18:long ai.datatower.analytics.core.PropertyManager.access$getSessionEndTime$p(ai.datatower.analytics.core.PropertyManager):34:34 -> a
-    18:18:void invokeSuspend$lambda-1(boolean,long,boolean,java.lang.String,ai.datatower.analytics.core.PropertyManager):356 -> a
-    19:24:void invokeSuspend$lambda-1(boolean,long,boolean,java.lang.String,ai.datatower.analytics.core.PropertyManager):354:359 -> a
-    25:25:void invokeSuspend$lambda-1(boolean,long,boolean,java.lang.String,ai.datatower.analytics.core.PropertyManager):341:341 -> a
-    1:34:java.lang.Object invokeSuspend(java.lang.Object):335:368 -> invokeSuspend
+    18:18:void invokeSuspend$lambda-1(boolean,long,boolean,java.lang.String,ai.datatower.analytics.core.PropertyManager):357 -> a
+    19:24:void invokeSuspend$lambda-1(boolean,long,boolean,java.lang.String,ai.datatower.analytics.core.PropertyManager):355:360 -> a
+    25:25:void invokeSuspend$lambda-1(boolean,long,boolean,java.lang.String,ai.datatower.analytics.core.PropertyManager):342:342 -> a
+    1:34:java.lang.Object invokeSuspend(java.lang.Object):336:369 -> invokeSuspend
 ai.datatower.analytics.core.PropertyManager$updateIsForeground$1$1$1$2 -> ai.datatower.analytics.core.i$f$a:
 # {"id":"sourceFile","fileName":"PropertyManager.kt"}
     boolean $isFirstOpen -> a
-    1:3:void invoke(int,java.lang.String):361:363 -> a
-    1:1:java.lang.Object invoke(java.lang.Object,java.lang.Object):341:341 -> invoke
+    1:3:void invoke(int,java.lang.String):362:364 -> a
+    1:1:java.lang.Object invoke(java.lang.Object,java.lang.Object):342:342 -> invoke
 ai.datatower.analytics.core.PropertyManager$updateIsForeground$1$3 -> ai.datatower.analytics.core.i$g:
 # {"id":"sourceFile","fileName":"PropertyManager.kt"}
     ai.datatower.analytics.core.PropertyManager this$0 -> a
-    1:1:void invoke(int,java.lang.String):383:383 -> a
-    1:1:java.lang.Object invoke(java.lang.Object,java.lang.Object):370:370 -> invoke
+    1:1:void invoke(int,java.lang.String):384:384 -> a
+    1:1:java.lang.Object invoke(java.lang.Object,java.lang.Object):371:371 -> invoke
 ai.datatower.analytics.data.DataParams -> ai.datatower.analytics.data.a:
 # {"id":"sourceFile","fileName":"DataParams.kt"}
     java.lang.String CONFIG_GAID -> f
@@ -3794,48 +3796,51 @@ ai.datatower.analytics.utils.EventUtils -> ai.datatower.analytics.utils.i:
     java.util.regex.Pattern KEY_PATTERN -> c
     ai.datatower.analytics.utils.EventUtils INSTANCE -> a
     java.lang.String TAG -> b
-    1:1:void <clinit>():20:20 -> <clinit>
+    java.lang.String ua -> d
+    1:3:void <clinit>():20:22 -> <clinit>
     1:1:void <init>():17:17 -> <init>
-    1:27:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):22:48 -> a
-    28:35:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):22:29 -> a
-    36:36:java.lang.Object ai.datatower.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):55:55 -> a
-    36:36:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):29 -> a
-    37:46:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):29:38 -> a
-    47:47:java.lang.String ai.datatower.analytics.config.AbstractAnalyticsConfig.getMAppId():49:49 -> a
-    47:47:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):38 -> a
+    1:1:java.lang.String getUa():22:22 -> a
+    2:2:void initUa(android.content.Context):25:25 -> a
+    3:29:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):28:54 -> a
+    30:37:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):28:35 -> a
+    38:38:java.lang.Object ai.datatower.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):55:55 -> a
+    38:38:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):35 -> a
+    39:48:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):35:44 -> a
+    49:49:java.lang.String ai.datatower.analytics.config.AbstractAnalyticsConfig.getMAppId() -> a
+    49:49:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):44 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    48:51:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):38:41 -> a
-    52:52:boolean ai.datatower.analytics.config.AbstractAnalyticsConfig.getMEnabledDebug():29:29 -> a
-    52:52:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):41 -> a
+    50:53:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):44:47 -> a
+    54:54:boolean ai.datatower.analytics.config.AbstractAnalyticsConfig.getMEnabledDebug():29:29 -> a
+    54:54:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):47 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    53:56:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):42:45 -> a
-    57:57:java.lang.Object ai.datatower.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):55:55 -> a
-    57:57:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):45 -> a
-    58:61:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):45:48 -> a
-    62:66:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):52:56 -> a
-    67:67:boolean ai.datatower.analytics.config.AbstractAnalyticsConfig.getMEnabledDebug():29:29 -> a
-    67:67:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):56 -> a
+    55:58:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):48:51 -> a
+    59:59:java.lang.Object ai.datatower.analytics.taskqueue.AsyncTaskRescheduled.await(kotlin.coroutines.Continuation):55:55 -> a
+    59:59:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):51 -> a
+    60:63:java.lang.Object getEventInfo(android.content.Context,ai.datatower.analytics.data.EventDataAdapter,java.util.Map,java.util.ArrayList,kotlin.coroutines.Continuation):51:54 -> a
+    64:68:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):58:62 -> a
+    69:69:boolean ai.datatower.analytics.config.AbstractAnalyticsConfig.getMEnabledDebug():29:29 -> a
+    69:69:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):62 -> a
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    68:68:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):56:56 -> a
-    69:76:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):54:61 -> a
-    77:86:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):59:68 -> a
-    87:87:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):66:66 -> a
-    88:252:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):80:244 -> a
-    253:253:java.lang.String ai.datatower.analytics.utils.NetworkUtil.getNetworkTypeString(android.app.Application):90:90 -> a
-    253:253:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):244 -> a
-    254:284:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):245:275 -> a
-    285:285:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):244:244 -> a
-    286:300:boolean isValidProperty(org.json.JSONObject):301:315 -> a
-    301:314:boolean isValidProperty(org.json.JSONObject):313:326 -> a
-    315:316:boolean isValidProperty(org.json.JSONObject):325:326 -> a
-    317:318:boolean isValidProperty(org.json.JSONObject):325:326 -> a
-    319:319:boolean isValidProperty(org.json.JSONObject):325:325 -> a
-    320:335:boolean isValidProperty(org.json.JSONObject):323:338 -> a
-    336:336:boolean isValidProperty(org.json.JSONObject):303:303 -> a
-    337:337:boolean hasPresetTag(java.lang.String):346:346 -> a
-    1:11:boolean isValidEventName(java.lang.String):281:291 -> b
-    12:12:boolean isValidEventName(java.lang.String):290:290 -> b
-    13:13:boolean isValidEventName(java.lang.String):282:282 -> b
+    70:70:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):62:62 -> a
+    71:78:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):60:67 -> a
+    79:88:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):65:74 -> a
+    89:89:java.util.Map getLatestUserProperties(android.content.Context,java.util.List):72:72 -> a
+    90:265:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):85:260 -> a
+    266:266:java.lang.String ai.datatower.analytics.utils.NetworkUtil.getNetworkTypeString(android.app.Application):90:90 -> a
+    266:266:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):260 -> a
+    267:297:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):261:291 -> a
+    298:298:void getCommonProperties(android.content.Context,java.util.Map,java.util.Map,java.util.List):260:260 -> a
+    299:313:boolean isValidProperty(org.json.JSONObject):317:331 -> a
+    314:327:boolean isValidProperty(org.json.JSONObject):329:342 -> a
+    328:329:boolean isValidProperty(org.json.JSONObject):341:342 -> a
+    330:331:boolean isValidProperty(org.json.JSONObject):341:342 -> a
+    332:332:boolean isValidProperty(org.json.JSONObject):341:341 -> a
+    333:348:boolean isValidProperty(org.json.JSONObject):339:354 -> a
+    349:349:boolean isValidProperty(org.json.JSONObject):319:319 -> a
+    350:350:boolean hasPresetTag(java.lang.String):362:362 -> a
+    1:11:boolean isValidEventName(java.lang.String):297:307 -> b
+    12:12:boolean isValidEventName(java.lang.String):306:306 -> b
+    13:13:boolean isValidEventName(java.lang.String):298:298 -> b
 ai.datatower.analytics.utils.EventUtils$getEventInfo$1 -> ai.datatower.analytics.utils.i$a:
 # {"id":"sourceFile","fileName":"EventUtils.kt"}
     java.lang.Object L$3 -> d
@@ -5139,16 +5144,16 @@ ai.datatower.quality.DTQualityHelper -> ai.datatower.quality.a:
     13:13:void reportQualityMessage(int,java.lang.String,java.lang.String,int):41 -> b
     14:14:void reportQualityMessage(int,java.lang.String,java.lang.String,int):53:53 -> b
     15:17:java.util.Map generateJsonParams():79:81 -> b
-    18:18:java.util.Map ai.datatower.analytics.core.PropertyManager.getEventInfo():237:237 -> b
+    18:18:java.util.Map ai.datatower.analytics.core.PropertyManager.getEventInfo():238:238 -> b
     18:18:java.util.Map generateJsonParams():81 -> b
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    19:19:java.util.Map ai.datatower.analytics.core.PropertyManager.getEventInfo():237:237 -> b
+    19:19:java.util.Map ai.datatower.analytics.core.PropertyManager.getEventInfo():238:238 -> b
     19:19:java.util.Map generateJsonParams():81 -> b
     20:23:java.util.Map generateJsonParams():82:85 -> b
-    24:24:java.util.Map ai.datatower.analytics.core.PropertyManager.getCommonProperties():259:259 -> b
+    24:24:java.util.Map ai.datatower.analytics.core.PropertyManager.getCommonProperties():260:260 -> b
     24:24:java.util.Map generateJsonParams():85 -> b
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-    25:25:java.util.Map ai.datatower.analytics.core.PropertyManager.getCommonProperties():259:259 -> b
+    25:25:java.util.Map ai.datatower.analytics.core.PropertyManager.getCommonProperties():260:260 -> b
     25:25:java.util.Map generateJsonParams():85 -> b
     26:30:java.util.Map generateJsonParams():86:90 -> b
     31:45:java.util.Map generateJsonParams():80:94 -> b
