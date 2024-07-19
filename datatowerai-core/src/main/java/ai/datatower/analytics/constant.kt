@@ -109,6 +109,7 @@ internal object Constant {
     const val USER_PROPERTY_ACTIVE_SIMULATOR           = "#active_simulator"
     const val USER_PROPERTY_ACTIVE_USER_AGENT          = "#active_user_agent"
     const val USER_PROPERTY_ACTIVE_BUILD_DEVICE        = "#active_build_device"
+    const val USER_PROPERTY_ACTIVE_BUNDLE_ID           = "#active_bundle_id"
 
     //app_install
     const val ATTRIBUTE_PROPERTY_REFERRER_URL                = "#referrer_url"
@@ -119,6 +120,7 @@ internal object Constant {
     const val ATTRIBUTE_PROPERTY_CNL                         = "#cnl"
     const val ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME_SERVER  = "#referrer_click_time_server"
     const val ATTRIBUTE_PROPERTY_APP_INSTALL_TIME_SERVER     = "#app_install_time_server"
+    const val ATTRIBUTE_PROPERTY_USER_AGENT                  =  "#user_agent"
 
     //session_start
     const val SESSION_START_PROPERTY_IS_FIRST_TIME           = "#is_first_time"

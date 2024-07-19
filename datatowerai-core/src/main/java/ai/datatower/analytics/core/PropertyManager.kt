@@ -71,6 +71,7 @@ class PropertyManager private constructor() {
         try {
             dataAdapter = EventDataAdapter.getInstance(context)
             initDisableList(context)
+            EventUtils.initUa(context)
             CommonPropsUtil.init()
             initEventInfo(context)
             initCommonProperties(context, initConfig)

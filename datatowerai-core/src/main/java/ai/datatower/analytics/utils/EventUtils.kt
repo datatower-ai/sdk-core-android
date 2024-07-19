@@ -19,6 +19,12 @@ object EventUtils {
     private val KEY_PATTERN =
         Pattern.compile("^[a-zA-Z][a-zA-Z\\d_#]{0,49}", Pattern.CASE_INSENSITIVE)
 
+    var ua: String = ""
+        private set
+    fun initUa(context: Context) {
+        ua = DeviceUtils.getUserAgent(context)
+    }
+
     suspend fun getEventInfo(context: Context,
                      dataAdapter: EventDataAdapter?,
                      eventInfo: MutableMap<String, Any?>,
@@ -76,6 +82,11 @@ object EventUtils {
         activeProperties: MutableMap<String, Any?>,
         disableList: List<String>
     ) {
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_BUNDLE_ID)) {
+            //进程名
+            activeProperties[Constant.USER_PROPERTY_ACTIVE_BUNDLE_ID] = ProcessUtil.getCurrentProcessName(context)
+        }
+
         //移动信号国家码
         DeviceUtils.getMcc(context).let {
             if (it.isNotEmpty()) {
@@ -117,6 +128,11 @@ object EventUtils {
             if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_OS_LANG)) {
                 activeProperties[Constant.USER_PROPERTY_ACTIVE_OS_LANG] = it
             }
+        }
+
+        // User-Agent
+        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_USER_AGENT)) {
+            activeProperties[Constant.USER_PROPERTY_ACTIVE_USER_AGENT] = ua
         }
 
         //应用版本号
