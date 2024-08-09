@@ -574,5 +574,23 @@ class PropertyManager private constructor() {
         )
     }
 
+    fun updateTenjinId(tenjinId: String?) {
+        if (tenjinId?.isEmpty() == true) return
+
+        val happenTime = SystemClock.elapsedRealtime()
+
+        MainQueue.get().postTask {
+            CommonPropsUtil.updateInternalCommonProperties(Constant.COMMON_PROPERTY_TENJIN_ID, tenjinId)
+        }
+
+        EventTrackManager.instance.trackUser(
+            Constant.PRESET_EVENT_USER_SET,
+            happenTime,
+            JSONObject().apply {
+                put(Constant.USER_PROPERTY_LATEST_TENJIN_ID, tenjinId ?: "")
+            }
+        )
+    }
+
 
 }

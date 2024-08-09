@@ -68,6 +68,13 @@ class AnalyticsImp internal constructor() : AbstractAnalytics() {
         PropertyManager.instance.updateAdjustId(id)
     }
 
+    override fun setTenjinId(id: String?) {
+        if (configOptions?.isSdkDisable() == true) {
+            return
+        }
+        PropertyManager.instance.updateTenjinId(id)
+    }
+
     override var enableUpload: Boolean?
         get() = runBlocking { EventDataAdapter.getInstance()?.isUploadEnabled()?.await() }
         set(value) {

@@ -25,6 +25,9 @@ class AnalyticsEmptyImp internal constructor() : AbstractAnalytics() {
     override fun setAdjustId(id: String?) {
     }
 
+    override fun setTenjinId(id: String?) {
+    }
+
     override var enableUpload: Boolean?
         get() = true
         set(value) {

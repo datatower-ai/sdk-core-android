@@ -66,6 +66,13 @@ interface IAnalytics {
      */
     fun setAdjustId(id:String?)
 
+
+    /**
+     * 设置TenjinId
+     */
+    fun setTenjinId(id: String?)
+
+
     /**
      * 是否上报数据，默认是 true
      *

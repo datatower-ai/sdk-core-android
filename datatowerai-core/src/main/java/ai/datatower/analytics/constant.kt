@@ -74,6 +74,7 @@ internal object Constant {
     const val COMMON_PROPERTY_APPSFLYER_ID = "#appsflyer_id"
     const val COMMON_PROPERTY_ADJUST_ID = "#adjust_id"
     const val COMMON_PROPERTY_KOCHAVA_ID = "#kochava_id"
+    const val COMMON_PROPERTY_TENJIN_ID = "#tenjin_id"
 
     //latest
     const val USER_PROPERTY_LATEST_DEBUG                = "#latest_debug"
@@ -83,6 +84,7 @@ internal object Constant {
     const val USER_PROPERTY_LATEST_APP_VERSION_CODE     = "#latest_app_version_code"
     const val USER_PROPERTY_LATEST_APP_VERSION_NAME     = "#latest_app_version_name"
     const val USER_PROPERTY_LATEST_ADJUST_ID            = "#latest_adjust_id"
+    const val USER_PROPERTY_LATEST_TENJIN_ID            = "#latest_tenjin_id"
 
     //active
     const val USER_PROPERTY_ACTIVE_GAID                = "#active_gaid"

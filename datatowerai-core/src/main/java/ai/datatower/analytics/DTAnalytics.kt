@@ -165,8 +165,17 @@ open class DTAnalytics {
          * @param id adjust id
          */
         @JvmStatic
-        fun  setAdjustId(id:String?){
+        fun setAdjustId(id: String?){
             AnalyticsImp.getInstance().setAdjustId(id)
+        }
+
+        /**
+         * 设置 tenjin id
+         * @param id tenjin id
+         */
+        @JvmStatic
+        fun setTenjinId(id: String?){
+            AnalyticsImp.getInstance().setTenjinId(id)
         }
 
         /**
