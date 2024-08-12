@@ -34,3 +34,4 @@ google-services.json
 
 # DataTower.ai
 config_dt.gradle.kts
+demo_analytics/public/release/*.aab

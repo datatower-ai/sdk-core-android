@@ -62,6 +62,16 @@
             android:key="dt_anal_user_builtin_prop_clear_adjust_id"
             android:summary="just click 'ok' where input will take no effect!"
             android:title="Clear adjust_id" />
+
+        <EditTextPreference
+            android:key="dt_anal_user_builtin_prop_tenjin_id"
+            android:summary="dtAnal.appsFlyerId"
+            android:title="Set #latest_tenjin_id" />
+
+        <EditTextPreference
+            android:key="dt_anal_user_builtin_prop_clear_tenjin_id"
+            android:summary="just click 'ok' where input will take no effect!"
+            android:title="Clear tenjin_id" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Event Tracking">

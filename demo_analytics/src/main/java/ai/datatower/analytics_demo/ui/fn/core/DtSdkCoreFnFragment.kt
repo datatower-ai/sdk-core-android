@@ -133,11 +133,13 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             "appsflyer_id" -> DTAnalytics.setAppsFlyerId(id)
             "kochava_id" -> DTAnalytics.setKochavaId(id)
             "adjust_id" -> DTAnalytics.setAdjustId(id)
+            "tenjin_id" -> DTAnalytics.setTenjinId(id)
             "clear_acid" -> DTAnalytics.setAccountId(null)
             "clear_firebase_id" -> DTAnalytics.setFirebaseAppInstanceId(null)
             "clear_appsflyer_id" -> DTAnalytics.setAppsFlyerId(null)
             "clear_kochava_id" -> DTAnalytics.setKochavaId(null)
             "clear_adjust_id" -> DTAnalytics.setAdjustId(null)
+            "clear_tenjin_id" -> DTAnalytics.setTenjinId(null)
         }
         return true
     }
