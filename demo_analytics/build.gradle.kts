@@ -104,7 +104,7 @@ dependencies {
 
     implementation("org.greenrobot:eventbus:3.3.1")
     implementation(project(":datatowerai-core"))
-//    implementation("ai.datatower:core:3.0.5")
+//    implementation("ai.datatower:core:3.0.+")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.activity:activity-compose:1.6.0")
