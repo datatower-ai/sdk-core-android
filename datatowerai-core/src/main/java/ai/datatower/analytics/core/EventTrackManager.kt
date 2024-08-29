@@ -10,6 +10,7 @@ import ai.datatower.analytics.utils.EventUtils
 import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.MemoryUtils
 import ai.datatower.analytics.utils.CommonPropsUtil
+import ai.datatower.analytics.utils.PresetPropManager
 import ai.datatower.analytics.utils.TimeCalibration
 import ai.datatower.quality.DTErrorParams
 import ai.datatower.quality.DTQualityHelper
@@ -268,28 +269,26 @@ class EventTrackManager {
     private fun appendDynamicProperties(eventName: String, properties: JSONObject) {
         properties.apply {
             //fps
-            if (!PropertyManager.instance.getDisableList().contains(Constant.COMMON_PROPERTY_FPS)) {
-                put(
-                    Constant.COMMON_PROPERTY_FPS,
-                    MemoryUtils.getFPS()
-                )
-            }
+            PresetPropManager.get()?.checkNSet(
+                properties,
+                Constant.COMMON_PROPERTY_FPS,
+                MemoryUtils.getFPS()
+            )
 
             //硬盘使用率
-            if (!PropertyManager.instance.getDisableList().contains(Constant.COMMON_PROPERTY_STORAGE_USED)) {
-                put(
-                    Constant.COMMON_PROPERTY_STORAGE_USED,
-                    MemoryUtils.getDisk(AnalyticsConfig.instance.mContext, false)
-                )
-            }
+            PresetPropManager.get()?.checkNSet(
+                properties,
+                Constant.COMMON_PROPERTY_STORAGE_USED,
+                MemoryUtils.getDisk(AnalyticsConfig.instance.mContext, false)
+            )
 
             //内存使用率
-            if (!PropertyManager.instance.getDisableList().contains(Constant.COMMON_PROPERTY_MEMORY_USED)) {
-                put(
-                    Constant.COMMON_PROPERTY_MEMORY_USED,
-                    MemoryUtils.getRAM(AnalyticsConfig.instance.mContext)
-                )
-            }
+            PresetPropManager.get()?.checkNSet(
+                properties,
+                Constant.COMMON_PROPERTY_MEMORY_USED,
+                MemoryUtils.getRAM(AnalyticsConfig.instance.mContext)
+            )
+
             //事件时长
             EventTimerManager.instance.getEventTimer(eventName)?.duration()?.let {
                 if (it > 0) {

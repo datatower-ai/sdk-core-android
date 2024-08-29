@@ -62,11 +62,31 @@ class PresetEventManager {
         }
         val happenTime = SystemClock.elapsedRealtime()
 
-        EventTrackManager.instance.trackUser(
-            Constant.PRESET_EVENT_USER_SET,
-            happenTime,
-            JSONObject(EventUtils.getLatestUserProperties(context, PropertyManager.instance.getDisableList()))
-        )
+        val latestUserProps = JSONObject(EventUtils.getLatestUserProperties(context))
+
+        val eda = EventDataAdapter.getInstance()
+        eda?.getLastUserSetProps()?.onSameQueueThen { lastUserSetPropsStr ->
+            val savedUserSetProps = JSONObject(lastUserSetPropsStr)
+            latestUserProps.keys().forEach {
+                val current = latestUserProps.get(it)
+                if (savedUserSetProps.has(it) && current == savedUserSetProps.get(it)) {
+                    // 与之前相同
+                    latestUserProps.remove(it)
+                } else {
+                    // 与之前不同，或之前没有
+                    savedUserSetProps.put(it, current)
+                }
+            }
+            eda.setLastUserSetProps(savedUserSetProps.toString())
+        }
+
+        if (latestUserProps.length() > 0) {
+            EventTrackManager.instance.trackUser(
+                Constant.PRESET_EVENT_USER_SET,
+                happenTime,
+                latestUserProps
+            )
+        }
     }
 
     private fun setActiveUserProperties(context: Context) {

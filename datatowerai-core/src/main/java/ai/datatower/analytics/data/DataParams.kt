@@ -37,6 +37,7 @@ class DataParams private constructor(packageName: String) {
         const val CONFIG_STATIC_SUPER_PROPERTY = "static_super_property"
         const val CONFIG_INTERNAL_SUPER_PROPERTY = "internal_super_property"
         const val CONFIG_USER_SET_ONCE_PROPS = "user_set_once_props"
+        const val CONFIG_LAST_USER_SET_PROPS = "last_user_set_props"
 
 
 

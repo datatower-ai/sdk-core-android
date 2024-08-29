@@ -130,6 +130,14 @@ class EventDataAdapter private constructor(
         getStringConfig(DataParams.CONFIG_USER_SET_ONCE_PROPS)
     }
 
+    fun setLastUserSetProps(properties: String) = DBQueue.get().launchSequential {
+        setStringConfig(DataParams.CONFIG_LAST_USER_SET_PROPS, properties)
+    }
+
+    fun getLastUserSetProps() = DBQueue.get().asyncSequentialChained {
+        getStringConfig(DataParams.CONFIG_LAST_USER_SET_PROPS)
+    }
+
     // endregion
 
     /**
