@@ -188,7 +188,7 @@ class EventUploadManager private constructor(
     /**
      * 数据上报到服务器
      */
-    private suspend fun uploadData() {
+    private suspend fun uploadData(eventData: String? = null) {
 
         do {
             //不上报数据
@@ -200,22 +200,63 @@ class EventUploadManager private constructor(
 
             PerfLogger.doPerfLog(PerfAction.TRACKBEGIN, System.currentTimeMillis())
 
-            //读取数据库数据
-            PerfLogger.doPerfLog(PerfAction.READEVENTDATAFROMDBBEGIN, System.currentTimeMillis())
-
-            var eventsData = ""
+            var eventsData = eventData ?: ""
             try {
-                 eventsData = runBlocking {
-                    withTimeoutOrNull(5000) {
-                        mDateAdapter.readEventsDataFromDb(Constant.EVENT_REPORT_SIZE).await()
-                    }
-                }?.getOrThrow() ?: return
-                PerfLogger.doPerfLog(PerfAction.READEVENTDATAFROMDBEND, System.currentTimeMillis())
+                if (eventsData.isEmpty()) {
+                    //读取数据库数据
+                    PerfLogger.doPerfLog(PerfAction.READEVENTDATAFROMDBBEGIN, System.currentTimeMillis())
+                    eventsData = runBlocking {
+                        withTimeoutOrNull(5000) {
+                            mDateAdapter.readEventsDataFromDb(Constant.EVENT_REPORT_SIZE).await()
+                        }
+                    }?.getOrThrow() ?: return
+                    PerfLogger.doPerfLog(PerfAction.READEVENTDATAFROMDBEND, System.currentTimeMillis())
+                }
 
-                if (JSONArray(eventsData).length() == 0) {
+                val jsonArray = JSONArray(eventsData)
+                if (jsonArray.length() == 0) {
                     LogUtils.d(TAG, "db count = 0，disable upload")
                     PerfLogger.doPerfLog(PerfAction.TRACKEND, System.currentTimeMillis())
                     break
+                }
+
+                if (eventData.isNullOrEmpty()) {
+                    // Splitting by app_id
+                    val appId = jsonArray.getJSONObject(0)
+                        .getJSONObject(Constant.EVENT_BODY)
+                        .optString(EVENT_INFO_APP_ID)
+                    val diffMap = mutableMapOf<String, JSONArray>()
+                    val removed = mutableListOf<Int>();
+                    for (i in 1 until jsonArray.length()) {
+                        val crt = jsonArray.getJSONObject(i);
+                        val crtAppId = crt.getJSONObject(Constant.EVENT_BODY).optString(EVENT_INFO_APP_ID)
+                        if (crtAppId != appId) {
+                            diffMap[crtAppId]?.put(crt) ?: run {
+                                diffMap[crtAppId] = JSONArray().apply {
+                                    put(crt)
+                                }
+                            }
+                            removed.add(i)
+                        }
+                    }
+
+                    // To ensure final eventsData only contains identical app_id.
+                    for (idx in removed.reversed()) {
+                        jsonArray.remove(idx);
+                    }
+                    eventsData = jsonArray.toString()
+
+                    // Upload other app_id events
+                    if (diffMap.isNotEmpty()) {
+                        diffMap.forEach { (k, v) ->
+                            LogUtils.d("Events with app_id '$k' are split (count: ${v.length()})")
+                            Message.obtain().apply {
+                                what = FLUSH_QUEUE_SPECIFY
+                                obj = v.toString()
+                                mWorker.runMessage(this)
+                            }
+                        }
+                    }
                 }
 
                 //如果未进行时间同步，发空参数进行时间同步
@@ -484,6 +525,11 @@ class EventUploadManager private constructor(
                             }
                         }
 
+                        FLUSH_QUEUE_SPECIFY -> {
+                            val eventData = msg.obj?.toString()
+                            DataUploadQueue.get().launchSequential { uploadData(eventData) }
+                        }
+
                         else -> {
                             LogUtils.i(
                                 TAG,
@@ -520,6 +566,7 @@ class EventUploadManager private constructor(
         private const val FLUSH_QUEUE = 3
         private const val FLUSH_DELAY = 1000L
         private const val DELETE_ALL = 4
+        private const val FLUSH_QUEUE_SPECIFY = 5
 
         private var instancessss: EventUploadManager? = null
 
