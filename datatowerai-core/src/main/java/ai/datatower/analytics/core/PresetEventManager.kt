@@ -6,6 +6,7 @@ import ai.datatower.analytics.data.EventDataAdapter
 import ai.datatower.analytics.taskqueue.MainQueue
 import ai.datatower.analytics.utils.EventUtils
 import ai.datatower.analytics.utils.LogUtils
+import ai.datatower.analytics.utils.PresetEvent
 import ai.datatower.analytics.utils.ProcessUtil
 import android.content.Context
 import android.os.SystemClock
@@ -206,6 +207,9 @@ class PresetEventManager {
      * 采集 app_install 事件
      */
     private fun trackAppInstallEvent(response: ReferrerDetails, failedReason: String) {
+        // preset event disabled
+        if (!PresetEvent.Install.isOn()) return
+
         //如果 app_install 事件已插入或者正在插入，则不处理
         if (isAppInstallTrackRunning.get()) {
             return

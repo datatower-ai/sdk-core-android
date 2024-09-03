@@ -2,6 +2,7 @@ package ai.datatower.analytics
 
 import ai.datatower.analytics.api.AnalyticsImp
 import ai.datatower.analytics.config.AnalyticsConfig
+import ai.datatower.analytics.utils.PresetEvent
 import android.content.Context
 import android.util.Log
 import org.json.JSONObject
@@ -51,5 +52,14 @@ class DT {
             AnalyticsConfig.instance.enableUpload()
         }
 
+        @JvmStatic
+        fun enableAutoTrack(event: PresetEvent) {
+            AnalyticsConfig.instance.enableAutoTrack(event)
+        }
+
+        @JvmStatic
+        fun disableAutoTrack(event: PresetEvent) {
+            AnalyticsConfig.instance.disableAutoTrack(event)
+        }
     }
 }

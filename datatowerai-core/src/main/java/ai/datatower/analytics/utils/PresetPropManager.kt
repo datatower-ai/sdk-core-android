@@ -37,12 +37,9 @@ internal class PresetPropManager {
                     Constant.EVENT_INFO_BUNDLE_ID,
                     Constant.EVENT_INFO_APP_ID,
                     Constant.EVENT_INFO_DEBUG,
-                    Constant.EVENT_INFO_SYN,
-                    Constant.EVENT_INFO_TIME,
                     Constant.EVENT_INFO_DT_ID,
                     Constant.EVENT_INFO_ACID,
                     Constant.COMMON_PROPERTY_EVENT_SESSION,
-                    Constant.COMMON_PROPERTY_EVENT_DURATION,
                 )
                 ensureNotInside.forEach {
                     disableList.remove(it)
@@ -84,6 +81,8 @@ internal class PresetPropManager {
 
     class PPMap internal constructor() {
         private val _map =  mutableMapOf<String, Any>()
+        val map: Map<String, Any>
+            get() = _map
 
         operator fun set(key: String, value: Any?) {
             if (disableList.contains(key)) return
@@ -103,7 +102,27 @@ internal class PresetPropManager {
         }
 
         override fun toString(): String = "$_map"
+    }
+}
 
-        fun into(): Map<String, Any> = _map
+enum class PresetEvent {
+    Install,
+    SessionStart,
+    SessionEnd;
+
+    companion object {
+        private val status: MutableMap<PresetEvent, Boolean> by lazy {
+            values().associateWith { true }.toMutableMap()
+        }
+    }
+
+    internal fun isOn(): Boolean = synchronized(this) { status[this] == true }
+
+    internal fun enable() = synchronized(this) {
+        status[this] = true
+    }
+
+    internal fun disable() = synchronized(this) {
+        status[this] = false
     }
 }

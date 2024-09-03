@@ -14,6 +14,7 @@ import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.MemoryUtils
 import ai.datatower.analytics.utils.NetworkUtil
 import ai.datatower.analytics.utils.CommonPropsUtil
+import ai.datatower.analytics.utils.PresetEvent
 import ai.datatower.analytics.utils.PresetPropManager
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
@@ -207,7 +208,7 @@ class PropertyManager private constructor() {
         }
     }
 
-    fun getEventInfo() = PresetPropManager.get()?.meta?.into() ?: mutableMapOf()
+    fun getEventInfo() = PresetPropManager.get()?.meta?.map ?: mapOf()
 
     /**
      * 获取并配置 事件通用属性
@@ -227,9 +228,9 @@ class PropertyManager private constructor() {
         PresetPropManager.get()?.common?.set(key, null)
     }
 
-    fun getCommonProperties() = PresetPropManager.get()?.common?.into() ?: mutableMapOf()
+    fun getCommonProperties() = PresetPropManager.get()?.common?.map ?: mapOf()
 
-    fun getActiveProperties() = PresetPropManager.get()?.userActive?.into() ?: mutableMapOf()
+    fun getActiveProperties() = PresetPropManager.get()?.userActive?.map ?: mapOf()
 
     /**
      * FPS状态监控
@@ -302,6 +303,8 @@ class PropertyManager private constructor() {
                 dataAdapter?.isFirstSessionStartInserted()?.onSameQueueThen {
 
                     MainQueue.get().postTask {
+                        // preset event disabled
+                        if (!PresetEvent.SessionStart.isOn()) return@postTask
 
                         val isFirstOpen = it.not()
 
@@ -334,6 +337,9 @@ class PropertyManager private constructor() {
                     }
                 }
             } else {
+                // preset event disabled
+                if (!PresetEvent.SessionEnd.isOn()) return@postTask
+
                 EventTrackManager.instance.trackNormalPreset(
                     Constant.PRESET_EVENT_SESSION_END,
                     happenTime,
