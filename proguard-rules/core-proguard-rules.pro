@@ -30,5 +30,4 @@
 -keep class ai.datatower.ias.DTIASReport{*;}
 -keep class ai.datatower.ias.DTIASReport$Companion{*;}
 
-
 -keeppackagenames ai.datatower.**

@@ -14,8 +14,8 @@ import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import org.json.JSONObject
-import java.lang.StringBuilder
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.text.StringBuilder
 
 class PresetEventManager {
     companion object {
@@ -37,7 +37,7 @@ class PresetEventManager {
         if (!ProcessUtil.isMainProcess(context)) {
             return
         }
-        mDataAdapter = EventDataAdapter.getInstance()
+        mDataAdapter = EventDataAdapter.getInstance(context)
         MainQueue.get().postTask {
             checkAppInstall(context)
             setLatestUserProperties(context)
@@ -65,28 +65,50 @@ class PresetEventManager {
 
         val latestUserProps = JSONObject(EventUtils.getLatestUserProperties(context))
 
-        val eda = EventDataAdapter.getInstance()
+        val eda = EventDataAdapter.getInstance(context)
         eda?.getLastUserSetProps()?.onSameQueueThen { lastUserSetPropsStr ->
-            val savedUserSetProps = JSONObject(lastUserSetPropsStr)
-            latestUserProps.keys().forEach {
-                val current = latestUserProps.get(it)
-                if (savedUserSetProps.has(it) && current == savedUserSetProps.get(it)) {
-                    // 与之前相同
-                    latestUserProps.remove(it)
-                } else {
-                    // 与之前不同，或之前没有
-                    savedUserSetProps.put(it, current)
+            if (lastUserSetPropsStr.isEmpty()) {
+                eda.setLastUserSetProps(latestUserProps.toString())
+
+                if (latestUserProps.length() > 0) {
+                    EventTrackManager.instance.trackUser(
+                        Constant.PRESET_EVENT_USER_SET,
+                        happenTime,
+                        latestUserProps
+                    )
+                }
+            } else {
+                val savedUserSetProps = JSONObject(lastUserSetPropsStr)
+                latestUserProps.keys().forEach {
+                    val current = latestUserProps.get(it)
+                    if (savedUserSetProps.has(it) && current == savedUserSetProps.get(it)) {
+                        // 与之前相同
+                        latestUserProps.remove(it)
+                    } else {
+                        // 与之前不同，或之前没有
+                        savedUserSetProps.put(it, current)
+                    }
+                }
+                eda.setLastUserSetProps(savedUserSetProps.toString())
+
+                if (latestUserProps.length() > 0) {
+                    EventTrackManager.instance.trackUser(
+                        Constant.PRESET_EVENT_USER_SET,
+                        happenTime,
+                        latestUserProps
+                    )
                 }
             }
-            eda.setLastUserSetProps(savedUserSetProps.toString())
-        }
+        } ?: run {
+            eda?.setLastUserSetProps(latestUserProps.toString())
 
-        if (latestUserProps.length() > 0) {
-            EventTrackManager.instance.trackUser(
-                Constant.PRESET_EVENT_USER_SET,
-                happenTime,
-                latestUserProps
-            )
+            if (latestUserProps.length() > 0) {
+                EventTrackManager.instance.trackUser(
+                    Constant.PRESET_EVENT_USER_SET,
+                    happenTime,
+                    latestUserProps
+                )
+            }
         }
     }
 
@@ -105,21 +127,22 @@ class PresetEventManager {
                 )
             }
 
-        val eda = EventDataAdapter.getInstance()
+        val eda = EventDataAdapter.getInstance(context)
         eda?.getUserSetOnceProps()?.onSameQueueThen { userSetOnceProps ->
             userSetOnceProps.split(",").forEach {
                 activeUserProperties.remove(it)
             }
 
             if (activeUserProperties.length() > 0) {
-                val sb = StringBuilder(userSetOnceProps)
-                activeUserProperties.keys().forEach {
-                    if (sb.isNotEmpty()) {
-                        sb.append(",")
+                val sb = StringBuilder(userSetOnceProps).apply {
+                    activeUserProperties.keys().forEach {
+                        if (isNotEmpty()) {
+                            append(",")
+                        }
+                        append(it)
                     }
-                    sb.append(it)
-                }
-                eda.setUserSetOnceProps(sb.toString())
+                }.toString()
+                eda.setUserSetOnceProps(sb)
 
                 EventTrackManager.instance.trackUser(
                     Constant.PRESET_EVENT_USER_SET_ONCE,
@@ -128,12 +151,22 @@ class PresetEventManager {
                 )
             }
         } ?: run {
-            // Failed to get previous set once of 'active_xxx', work as normal.
-            EventTrackManager.instance.trackUser(
-                Constant.PRESET_EVENT_USER_SET_ONCE,
-                happenTime,
-                activeUserProperties
-            )
+            eda?.setUserSetOnceProps(StringBuilder().apply {
+                activeUserProperties.keys().forEach {
+                    if (isNotEmpty()) {
+                        append(",")
+                    }
+                    append(it)
+                }
+            }.toString())
+
+            if (activeUserProperties.length() > 0) {
+                EventTrackManager.instance.trackUser(
+                    Constant.PRESET_EVENT_USER_SET_ONCE,
+                    happenTime,
+                    activeUserProperties
+                )
+            }
         }
     }
 

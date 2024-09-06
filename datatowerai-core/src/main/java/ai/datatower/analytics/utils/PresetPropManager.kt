@@ -3,6 +3,7 @@ package ai.datatower.analytics.utils
 import ai.datatower.analytics.Constant
 import android.content.Context
 import android.content.res.Resources.NotFoundException
+import androidx.annotation.Keep
 import org.json.JSONObject
 
 internal class PresetPropManager {
@@ -105,6 +106,7 @@ internal class PresetPropManager {
     }
 }
 
+@Keep
 enum class PresetEvent {
     Install,
     SessionStart,

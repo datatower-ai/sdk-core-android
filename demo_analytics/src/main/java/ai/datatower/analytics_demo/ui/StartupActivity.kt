@@ -6,6 +6,7 @@ import ai.datatower.analytics.DTAnalytics
 import ai.datatower.analytics.DTAnalyticsUtils
 import ai.datatower.analytics.DTChannel
 import ai.datatower.analytics.OnDataTowerIdListener
+import ai.datatower.analytics.utils.PresetEvent
 import ai.datatower.analytics_demo.SharedPreferencesUtils
 import ai.datatower.analytics_demo.ui.theme.DataTowerSDKCoreTheme
 import android.content.Context
@@ -40,6 +41,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -84,6 +86,10 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
     var isAppIdError by remember { mutableStateOf(false) }
 
     val context = LocalContext.current;
+
+    val presetEventEnabled = remember {
+        mutableStateListOf(*(PresetEvent.values().map { true }.toTypedArray()))
+    }
 
     Scaffold(
         floatingActionButton = {
@@ -188,6 +194,27 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
             ) {
                 Text("Manually enable upload", modifier = Modifier.weight(1f))
                 Switch(checked = manualEnableUpload, onCheckedChange = { manualEnableUpload = it })
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            Text("Preset Events", style = MaterialTheme.typography.titleLarge)
+            PresetEvent.values().forEachIndexed { idx, pe ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(pe.name, modifier = Modifier.weight(1f))
+                    Switch(
+                        checked = presetEventEnabled[idx],
+                        onCheckedChange = {
+                            if (presetEventEnabled[idx]) {
+                                presetEventEnabled[idx] = false
+                                DT.disableAutoTrack(pe)
+                            } else {
+                                presetEventEnabled[idx] = true
+                                DT.enableAutoTrack(pe)
+                            }
+                        }
+                    )
+                }
             }
         }
     }
