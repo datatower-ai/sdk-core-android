@@ -58,6 +58,7 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
             "dt_anal_invoke_dev_test" -> invokeDevTestPageShow()
             "dt_anal_set_common_properties" -> invokeSetCommonPropertiesDialogShow()
             "dt_anal_manual_enable_upload" -> DT.enableUpload()
+            "dt_anal_preset_event" -> invokePresetEventPageShow()
         }
         return super.onPreferenceTreeClick(preference)
     }
@@ -115,6 +116,10 @@ class DtSdkCoreFnFragment : PreferenceFragmentCompat(), CoroutineScope {
 
     private fun invokeDevTestPageShow() {
         DevTestActivity.startActivity(requireActivity())
+    }
+
+    private fun invokePresetEventPageShow() {
+        PresetEventActivity.startActivity(requireActivity())
     }
 
     private fun onBuiltinPropPrefChanged(preference: Preference, newValue: Any?): Boolean {

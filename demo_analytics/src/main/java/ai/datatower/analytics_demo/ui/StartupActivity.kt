@@ -8,11 +8,11 @@ import ai.datatower.analytics.DTChannel
 import ai.datatower.analytics.OnDataTowerIdListener
 import ai.datatower.analytics.utils.PresetEvent
 import ai.datatower.analytics_demo.SharedPreferencesUtils
+import ai.datatower.analytics_demo.ui.fn.core.presetEventEnabled
 import ai.datatower.analytics_demo.ui.theme.DataTowerSDKCoreTheme
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.os.SystemClock
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -40,6 +40,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -87,8 +88,8 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
 
     val context = LocalContext.current;
 
-    val presetEventEnabled = remember {
-        mutableStateListOf(*(PresetEvent.values().map { true }.toTypedArray()))
+    val peEnabled = remember {
+        mutableStateListOf(*presetEventEnabled)
     }
 
     Scaffold(
@@ -106,6 +107,7 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
 
                     if (!isServerUrlError && !isAppIdError) {
                         initDT(context, serverUrl, appId, isDebug, manualEnableUpload)
+                        presetEventEnabled = peEnabled.toTypedArray();
                         context.startActivity(Intent(context, MainActivity::class.java))
                         finishFunc()
                     }
@@ -203,13 +205,13 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
                 ) {
                     Text(pe.name, modifier = Modifier.weight(1f))
                     Switch(
-                        checked = presetEventEnabled[idx],
+                        checked = peEnabled[idx],
                         onCheckedChange = {
-                            if (presetEventEnabled[idx]) {
-                                presetEventEnabled[idx] = false
+                            if (peEnabled[idx]) {
+                                peEnabled[idx] = false
                                 DT.disableAutoTrack(pe)
                             } else {
-                                presetEventEnabled[idx] = true
+                                peEnabled[idx] = true
                                 DT.enableAutoTrack(pe)
                             }
                         }
