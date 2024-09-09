@@ -41,6 +41,8 @@ internal class PresetPropManager {
                     Constant.EVENT_INFO_DT_ID,
                     Constant.EVENT_INFO_ACID,
                     Constant.COMMON_PROPERTY_EVENT_SESSION,
+                    Constant.COMMON_PROPERTY_SDK_TYPE,
+                    Constant.COMMON_PROPERTY_SDK_VERSION,
                 )
                 ensureNotInside.forEach {
                     disableList.remove(it)
