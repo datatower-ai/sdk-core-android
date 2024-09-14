@@ -305,20 +305,37 @@ class PropertyManager private constructor() {
                         EventTrackManager.instance.trackNormalPreset(
                             Constant.PRESET_EVENT_SESSION_START,
                             happenTime,
-                            JSONObject().apply {
-                                put(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME, isFirstOpen)
-                                put(
-                                    Constant.SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND,
-                                    resumeFromBackground
-                                )
-                                if (startReason != "" && startReason != "{}") {
-                                    put(Constant.SESSION_START_PROPERTY_START_REASON, startReason)
-                                }
-                                if (resumeFromBackground && sessionEndTime != 0L) {
-                                    put(
-                                        Constant.SESSION_START_PROPERTY_BACKGROUND_DURATION,
-                                        sessionStartTime - sessionEndTime
+                            JSONObject().also {
+                                PresetPropManager.get()?.run {
+                                    checkNSet(it, Constant.SESSION_START_PROPERTY_IS_FIRST_TIME, isFirstOpen)
+                                    checkNSet(it,
+                                        Constant.SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND,
+                                        resumeFromBackground
                                     )
+                                    if (startReason != "" && startReason != "{}") {
+                                        checkNSet(it, Constant.SESSION_START_PROPERTY_START_REASON, startReason)
+                                    }
+                                    if (resumeFromBackground && sessionEndTime != 0L) {
+                                        checkNSet(it,
+                                            Constant.SESSION_START_PROPERTY_BACKGROUND_DURATION,
+                                            sessionStartTime - sessionEndTime
+                                        )
+                                    }
+                                } ?: run {
+                                    it.put(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME, isFirstOpen)
+                                    it.put(
+                                        Constant.SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND,
+                                        resumeFromBackground
+                                    )
+                                    if (startReason != "" && startReason != "{}") {
+                                        it.put(Constant.SESSION_START_PROPERTY_START_REASON, startReason)
+                                    }
+                                    if (resumeFromBackground && sessionEndTime != 0L) {
+                                        it.put(
+                                            Constant.SESSION_START_PROPERTY_BACKGROUND_DURATION,
+                                            sessionStartTime - sessionEndTime
+                                        )
+                                    }
                                 }
                             },
                             insertHandler = { code: Int, _: String ->
