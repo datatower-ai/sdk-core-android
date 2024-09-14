@@ -17,7 +17,7 @@ buildscript {
         set("gradleKspVersion", "${properties["kotlinVersion"]}-1.0.11")
         set("androidxAnnotationVersion", "1.6.0")
     }
-    apply("kt-1_6-compat.gradle.kts")
+//    apply("kt-1_6-compat.gradle.kts")
 
     repositories {
         mavenCentral()
