@@ -262,23 +262,17 @@ class PropertyManager private constructor() {
     }
 
 
-    fun updateSdkVersionProperty(jsonObject: JSONObject, typeKye: String, versionKey: String) {
+    internal fun updateSdkVersionProperty(map: PresetPropManager.PPMap,) {
         //接入 SDK 的类型可能是 Android 或 Unity ，因此这里需动态获取
         getCommonProperties()[Constant.COMMON_PROPERTY_SDK_TYPE]?.toString()?.let {
             if (it.isNotEmpty()) {
-                jsonObject.put(
-                    Constant.USER_PROPERTY_ACTIVE_SDK_TYPE,
-                    it
-                )
+                map[Constant.USER_PROPERTY_ACTIVE_SDK_TYPE] = it
             }
         }
         //SDK 版本
         getCommonProperties()[Constant.COMMON_PROPERTY_SDK_VERSION]?.toString()?.let {
             if (it.isNotEmpty()) {
-                jsonObject.put(
-                    Constant.USER_PROPERTY_ACTIVE_SDK_VERSION,
-                    it
-                )
+                map[Constant.USER_PROPERTY_ACTIVE_SDK_VERSION] = it
             }
         }
     }
@@ -343,11 +337,13 @@ class PropertyManager private constructor() {
                 EventTrackManager.instance.trackNormalPreset(
                     Constant.PRESET_EVENT_SESSION_END,
                     happenTime,
-                    JSONObject().apply {
+                    JSONObject().also {
                         if (sessionStartTime != 0L) {
                             sessionEndTime = SystemClock.elapsedRealtime()
                             val sessionDuration = sessionEndTime - sessionStartTime
-                            put(Constant.SESSION_END_PROPERTY_SESSION_DURATION, sessionDuration)
+                            PresetPropManager.get()?.run {
+                                checkNSet(it, Constant.SESSION_END_PROPERTY_SESSION_DURATION, sessionDuration)
+                            } ?: it.put(Constant.SESSION_END_PROPERTY_SESSION_DURATION, sessionDuration)
                             sessionStartTime = 0L
                         }
                     },

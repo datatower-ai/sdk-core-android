@@ -51,7 +51,6 @@ object EventUtils {
     fun getLatestUserProperties(context: Context) =
         mutableMapOf<String, Any?>().also {
             val ppm = PresetPropManager.get(context)
-            // #debug: cannot be disable
             ppm.checkNSet(
                 it,
                 Constant.USER_PROPERTY_LATEST_DEBUG,

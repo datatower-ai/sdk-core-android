@@ -3,6 +3,5 @@
     <string-array name="DTDisPresetProperties">
         <item>#os_lang_code</item>
         <item>#os_version_name</item>
-        <item>#latest_debug</item>
     </string-array>
 </resources>

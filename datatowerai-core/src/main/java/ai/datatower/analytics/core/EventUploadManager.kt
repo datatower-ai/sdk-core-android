@@ -27,6 +27,7 @@ import android.os.HandlerThread
 import android.os.Looper
 import android.os.Message
 import android.text.TextUtils
+import android.util.Log
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 import org.json.JSONArray
@@ -351,6 +352,7 @@ class EventUploadManager private constructor(
                     result.deleteSelector?.let { deleteSeletor = it }
                 }
             }
+            Log.w("xxx", event)
             LogUtils.json("$TAG upload event data ", event)
             LogUtils.json("$TAG upload event result ", responseJson)
         } catch (e: RemoteVerificationException) {
