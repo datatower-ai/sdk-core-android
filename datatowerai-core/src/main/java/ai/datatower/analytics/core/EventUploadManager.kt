@@ -169,7 +169,7 @@ class EventUploadManager private constructor(
 
             //无网络
             if (!isNetworkAvailable(AnalyticsConfig.instance.mContext)) {
-                LogUtils.d(TAG, "NetworkAvailable，disable upload")
+                LogUtils.d(TAG, "Network is not available，cannot upload")
                 return false
             }
         } catch (e: Exception) {
