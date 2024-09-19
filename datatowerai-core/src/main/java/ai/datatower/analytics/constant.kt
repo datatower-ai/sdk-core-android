@@ -78,11 +78,12 @@ internal object Constant {
 
     //latest
     const val USER_PROPERTY_LATEST_DEBUG                = "#latest_debug"
+    const val USER_PROPERTY_LATEST_APP_VERSION_CODE     = "#latest_app_version_code"
+    const val USER_PROPERTY_LATEST_APP_VERSION_NAME     = "#latest_app_version_name"
+    //latest by caller
     const val USER_PROPERTY_LATEST_FIREBASE_IID         = "#latest_firebase_iid"
     const val USER_PROPERTY_LATEST_APPSFLYER_ID         = "#latest_appsflyer_id"
     const val USER_PROPERTY_LATEST_KOCHAVA_ID           = "#latest_kochava_id"
-    const val USER_PROPERTY_LATEST_APP_VERSION_CODE     = "#latest_app_version_code"
-    const val USER_PROPERTY_LATEST_APP_VERSION_NAME     = "#latest_app_version_name"
     const val USER_PROPERTY_LATEST_ADJUST_ID            = "#latest_adjust_id"
     const val USER_PROPERTY_LATEST_TENJIN_ID            = "#latest_tenjin_id"
 

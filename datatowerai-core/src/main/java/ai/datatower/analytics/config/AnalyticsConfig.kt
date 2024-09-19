@@ -7,6 +7,7 @@ import ai.datatower.analytics.data.persistence.SharedPreferencesLoader
 import ai.datatower.analytics.data.persistence.StorageDisableFlag
 import ai.datatower.analytics.data.persistence.StorageReportUrl
 import ai.datatower.analytics.utils.LogUtils
+import ai.datatower.analytics.utils.PresetEvent
 import android.content.Context
 import android.content.SharedPreferences
 import org.json.JSONObject
@@ -242,6 +243,14 @@ private constructor() : AbstractAnalyticsConfig() {
         LogUtils.d("Manually enabled upload!")
         mManualUploadSwitch.set(true)
         AnalyticsImp.getInstance().flush()
+    }
+
+    fun enableAutoTrack(event: PresetEvent) {
+        event.enable()
+    }
+
+    fun disableAutoTrack(event: PresetEvent) {
+        event.disable()
     }
 
     /**

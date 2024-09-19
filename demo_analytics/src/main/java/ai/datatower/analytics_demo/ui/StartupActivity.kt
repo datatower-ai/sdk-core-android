@@ -6,12 +6,13 @@ import ai.datatower.analytics.DTAnalytics
 import ai.datatower.analytics.DTAnalyticsUtils
 import ai.datatower.analytics.DTChannel
 import ai.datatower.analytics.OnDataTowerIdListener
+import ai.datatower.analytics.utils.PresetEvent
 import ai.datatower.analytics_demo.SharedPreferencesUtils
+import ai.datatower.analytics_demo.ui.fn.core.presetEventEnabled
 import ai.datatower.analytics_demo.ui.theme.DataTowerSDKCoreTheme
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.os.SystemClock
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -39,7 +40,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -85,6 +88,10 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
 
     val context = LocalContext.current;
 
+    val peEnabled = remember {
+        mutableStateListOf(*presetEventEnabled)
+    }
+
     Scaffold(
         floatingActionButton = {
             ExtendedFloatingActionButton(
@@ -100,6 +107,7 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
 
                     if (!isServerUrlError && !isAppIdError) {
                         initDT(context, serverUrl, appId, isDebug, manualEnableUpload)
+                        presetEventEnabled = peEnabled.toTypedArray();
                         context.startActivity(Intent(context, MainActivity::class.java))
                         finishFunc()
                     }
@@ -188,6 +196,27 @@ private fun SetupScreenContent(finishFunc: () -> Unit) {
             ) {
                 Text("Manually enable upload", modifier = Modifier.weight(1f))
                 Switch(checked = manualEnableUpload, onCheckedChange = { manualEnableUpload = it })
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            Text("Preset Events", style = MaterialTheme.typography.titleLarge)
+            PresetEvent.values().forEachIndexed { idx, pe ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(pe.name, modifier = Modifier.weight(1f))
+                    Switch(
+                        checked = peEnabled[idx],
+                        onCheckedChange = {
+                            if (peEnabled[idx]) {
+                                peEnabled[idx] = false
+                                DT.disableAutoTrack(pe)
+                            } else {
+                                peEnabled[idx] = true
+                                DT.enableAutoTrack(pe)
+                            }
+                        }
+                    )
+                }
             }
         }
     }

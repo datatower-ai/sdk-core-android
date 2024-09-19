@@ -6,15 +6,18 @@ import ai.datatower.analytics.data.EventDataAdapter
 import ai.datatower.analytics.taskqueue.MainQueue
 import ai.datatower.analytics.utils.EventUtils
 import ai.datatower.analytics.utils.LogUtils
+import ai.datatower.analytics.utils.PresetEvent
+import ai.datatower.analytics.utils.PresetPropManager
 import ai.datatower.analytics.utils.ProcessUtil
 import android.content.Context
 import android.os.SystemClock
+import android.util.Log
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import org.json.JSONObject
-import java.lang.StringBuilder
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.text.StringBuilder
 
 class PresetEventManager {
     companion object {
@@ -36,7 +39,7 @@ class PresetEventManager {
         if (!ProcessUtil.isMainProcess(context)) {
             return
         }
-        mDataAdapter = EventDataAdapter.getInstance()
+        mDataAdapter = EventDataAdapter.getInstance(context)
         MainQueue.get().postTask {
             checkAppInstall(context)
             setLatestUserProperties(context)
@@ -62,11 +65,52 @@ class PresetEventManager {
         }
         val happenTime = SystemClock.elapsedRealtime()
 
-        EventTrackManager.instance.trackUser(
-            Constant.PRESET_EVENT_USER_SET,
-            happenTime,
-            JSONObject(EventUtils.getLatestUserProperties(context, PropertyManager.instance.getDisableList()))
-        )
+        val latestUserProps = JSONObject(EventUtils.getLatestUserProperties(context))
+
+        val eda = EventDataAdapter.getInstance(context)
+        eda?.getLastUserSetProps()?.onSameQueueThen { lastUserSetPropsStr ->
+            if (lastUserSetPropsStr.isEmpty()) {
+                eda.setLastUserSetProps(latestUserProps.toString())
+
+                if (latestUserProps.length() > 0) {
+                    EventTrackManager.instance.trackUser(
+                        Constant.PRESET_EVENT_USER_SET,
+                        happenTime,
+                        latestUserProps
+                    )
+                }
+            } else {
+                val savedUserSetProps = JSONObject(lastUserSetPropsStr)
+                val propsToTrack = JSONObject()
+                latestUserProps.keys().forEach {
+                    val current = latestUserProps.get(it)
+                    if (!savedUserSetProps.has(it) || current != savedUserSetProps.get(it)) {
+                        // 与之前不同，或之前没有
+                        savedUserSetProps.put(it, current)
+                        propsToTrack.put(it, current)
+                    }
+                }
+                eda.setLastUserSetProps(savedUserSetProps.toString())
+
+                if (propsToTrack.length() > 0) {
+                    EventTrackManager.instance.trackUser(
+                        Constant.PRESET_EVENT_USER_SET,
+                        happenTime,
+                        propsToTrack
+                    )
+                }
+            }
+        } ?: run {
+            eda?.setLastUserSetProps(latestUserProps.toString())
+
+            if (latestUserProps.length() > 0) {
+                EventTrackManager.instance.trackUser(
+                    Constant.PRESET_EVENT_USER_SET,
+                    happenTime,
+                    latestUserProps
+                )
+            }
+        }
     }
 
     private fun setActiveUserProperties(context: Context) {
@@ -75,30 +119,27 @@ class PresetEventManager {
         }
         val happenTime = SystemClock.elapsedRealtime()
 
-        val activeUserProperties =
-            JSONObject(PropertyManager.instance.getActiveProperties()).apply {
-                PropertyManager.instance.updateSdkVersionProperty(
-                    this,
-                    Constant.USER_PROPERTY_ACTIVE_SDK_TYPE,
-                    Constant.USER_PROPERTY_ACTIVE_SDK_VERSION
-                )
-            }
+        PropertyManager.instance.updateSdkVersionProperty(
+            PresetPropManager.get(context).userActive
+        )
+        val activeUserProperties = JSONObject(PropertyManager.instance.getActiveProperties())
 
-        val eda = EventDataAdapter.getInstance()
+        val eda = EventDataAdapter.getInstance(context)
         eda?.getUserSetOnceProps()?.onSameQueueThen { userSetOnceProps ->
             userSetOnceProps.split(",").forEach {
                 activeUserProperties.remove(it)
             }
 
             if (activeUserProperties.length() > 0) {
-                val sb = StringBuilder(userSetOnceProps)
-                activeUserProperties.keys().forEach {
-                    if (sb.isNotEmpty()) {
-                        sb.append(",")
+                val sb = StringBuilder(userSetOnceProps).apply {
+                    activeUserProperties.keys().forEach {
+                        if (isNotEmpty()) {
+                            append(",")
+                        }
+                        append(it)
                     }
-                    sb.append(it)
-                }
-                eda.setUserSetOnceProps(sb.toString())
+                }.toString()
+                eda.setUserSetOnceProps(sb)
 
                 EventTrackManager.instance.trackUser(
                     Constant.PRESET_EVENT_USER_SET_ONCE,
@@ -107,12 +148,22 @@ class PresetEventManager {
                 )
             }
         } ?: run {
-            // Failed to get previous set once of 'active_xxx', work as normal.
-            EventTrackManager.instance.trackUser(
-                Constant.PRESET_EVENT_USER_SET_ONCE,
-                happenTime,
-                activeUserProperties
-            )
+            eda?.setUserSetOnceProps(StringBuilder().apply {
+                activeUserProperties.keys().forEach {
+                    if (isNotEmpty()) {
+                        append(",")
+                    }
+                    append(it)
+                }
+            }.toString())
+
+            if (activeUserProperties.length() > 0) {
+                EventTrackManager.instance.trackUser(
+                    Constant.PRESET_EVENT_USER_SET_ONCE,
+                    happenTime,
+                    activeUserProperties
+                )
+            }
         }
     }
 
@@ -186,6 +237,9 @@ class PresetEventManager {
      * 采集 app_install 事件
      */
     private fun trackAppInstallEvent(response: ReferrerDetails, failedReason: String) {
+        // preset event disabled
+        if (!PresetEvent.Install.isOn()) return
+
         //如果 app_install 事件已插入或者正在插入，则不处理
         if (isAppInstallTrackRunning.get()) {
             return
@@ -198,43 +252,45 @@ class PresetEventManager {
         EventTrackManager.instance.trackNormalPreset(
             Constant.PRESET_EVENT_APP_INSTALL,
             happenTime,
-            JSONObject().apply {
+            JSONObject().also {
                 val cnl = AnalyticsConfig.instance.mChannel
-                put(
-                    Constant.ATTRIBUTE_PROPERTY_REFERRER_URL,
-                    if (isOK) response.installReferrer + "&cnl=$cnl" else "cnl=$cnl"
-                )
-                put(
-                    Constant.ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME,
-                    if (isOK) response.referrerClickTimestampSeconds else 0
-                )
-                put(
-                    Constant.ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME_SERVER,
-                    if (isOK) response.referrerClickTimestampServerSeconds else 0
-                )
-                put(
-                    Constant.ATTRIBUTE_PROPERTY_APP_INSTALL_TIME,
-                    if (isOK) response.installBeginTimestampSeconds else 0
-                )
-                put(
-                    Constant.ATTRIBUTE_PROPERTY_APP_INSTALL_TIME_SERVER,
-                    if (isOK) response.installBeginTimestampServerSeconds else 0
-                )
-                put(
-                    Constant.ATTRIBUTE_PROPERTY_INSTANT_EXPERIENCE_LAUNCHED,
-                    if (isOK) response.googlePlayInstantParam else false
-                )
-                put(
-                    Constant.ATTRIBUTE_PROPERTY_CNL,
-                    cnl
-                )
-                if (!isOK) {
-                    put(
-                        Constant.ATTRIBUTE_PROPERTY_FAILED_REASON,
-                        failedReason
+                PresetPropManager.get()?.run {
+                    checkNSet(it,
+                        Constant.ATTRIBUTE_PROPERTY_REFERRER_URL,
+                        if (isOK) response.installReferrer + "&cnl=$cnl" else "cnl=$cnl"
                     )
+                    checkNSet(it,
+                        Constant.ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME,
+                        if (isOK) response.referrerClickTimestampSeconds else 0
+                    )
+                    checkNSet(it,
+                        Constant.ATTRIBUTE_PROPERTY_REFERRER_CLICK_TIME_SERVER,
+                        if (isOK) response.referrerClickTimestampServerSeconds else 0
+                    )
+                    checkNSet(it,
+                        Constant.ATTRIBUTE_PROPERTY_APP_INSTALL_TIME,
+                        if (isOK) response.installBeginTimestampSeconds else 0
+                    )
+                    checkNSet(it,
+                        Constant.ATTRIBUTE_PROPERTY_APP_INSTALL_TIME_SERVER,
+                        if (isOK) response.installBeginTimestampServerSeconds else 0
+                    )
+                    checkNSet(it,
+                        Constant.ATTRIBUTE_PROPERTY_INSTANT_EXPERIENCE_LAUNCHED,
+                        if (isOK) response.googlePlayInstantParam else false
+                    )
+                    checkNSet(it,
+                        Constant.ATTRIBUTE_PROPERTY_CNL,
+                        cnl
+                    )
+                    if (!isOK) {
+                        checkNSet(it,
+                            Constant.ATTRIBUTE_PROPERTY_FAILED_REASON,
+                            failedReason
+                        )
+                    }
+//                    checkNSet(it, Constant.ATTRIBUTE_PROPERTY_USER_AGENT, EventUtils.ua)
                 }
-//                put(Constant.ATTRIBUTE_PROPERTY_USER_AGENT, EventUtils.ua)
             },
             insertHandler = { code: Int, _: String ->
                 if (code == 0) {

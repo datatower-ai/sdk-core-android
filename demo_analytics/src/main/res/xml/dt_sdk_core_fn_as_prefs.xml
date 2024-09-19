@@ -121,6 +121,10 @@
             android:key="dt_anal_manual_enable_upload"
             android:summary="Manually enable upload, only take effect once"
             android:title="Enable Upload" />
+        <Preference
+            android:key="dt_anal_preset_event"
+            android:summary="Enable/Disable preset event(s)"
+            android:title="Preset Event" />
     </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

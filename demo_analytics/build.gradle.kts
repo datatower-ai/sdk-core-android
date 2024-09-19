@@ -117,4 +117,5 @@ dependencies {
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
 
     implementation("androidx.multidex:multidex:2.0.1")
+    implementation(kotlin("reflect"))
 }

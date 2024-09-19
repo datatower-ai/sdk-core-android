@@ -14,6 +14,8 @@ import ai.datatower.analytics.utils.LogUtils
 import ai.datatower.analytics.utils.MemoryUtils
 import ai.datatower.analytics.utils.NetworkUtil
 import ai.datatower.analytics.utils.CommonPropsUtil
+import ai.datatower.analytics.utils.PresetEvent
+import ai.datatower.analytics.utils.PresetPropManager
 import ai.datatower.quality.PerfAction
 import ai.datatower.quality.PerfLogger
 import ai.datatower.quality.DTErrorParams
@@ -37,17 +39,6 @@ class PropertyManager private constructor() {
             PropertyManager()
         }
     }
-
-    // 事件信息，包含事件的基本数据
-    private var eventInfo: MutableMap<String, Any?> = mutableMapOf()
-
-    // 事件通用属性
-    private var commonProperties: MutableMap<String, Any?> = mutableMapOf()
-    //激活时用户属性
-    private var activeProperties: MutableMap<String, Any?> = mutableMapOf()
-
-    //预置属性过滤列表.
-    private val disableList: ArrayList<String> = ArrayList()
 
     //本地数据适配器，包括sp、db的操作
     private var dataAdapter: EventDataAdapter? = null
@@ -198,28 +189,8 @@ class PropertyManager private constructor() {
     /**
      * 初始预置属性过滤列表.
      */
-    @SuppressLint("DiscouragedApi")
     private fun initDisableList(context: Context) {
-        synchronized(disableList) {
-            if (disableList.isEmpty()) {
-                try {
-                    val resources = context.resources
-                    val array = resources.getStringArray(
-                        // Query from application's resources, so we cannot simply use R.array.xxx
-                        resources.getIdentifier(
-                            "DTDisPresetProperties",
-                            "array",
-                            context.packageName
-                        )
-                    )
-                    disableList.addAll(listOf(*array))
-                } catch (e: NoClassDefFoundError) {
-                    LogUtils.e(Constant.LOG_TAG, e.toString())
-                } catch (e: Exception) {
-                    LogUtils.e(Constant.LOG_TAG, e.toString())
-                }
-            }
-        }
+        PresetPropManager.get(context)
     }
 
     /**
@@ -228,14 +199,16 @@ class PropertyManager private constructor() {
      * @return
      */
     private suspend fun initEventInfo(context: Context) {
-        EventUtils.getEventInfo(context, dataAdapter, eventInfo, disableList)
+        EventUtils.getEventInfo(context, dataAdapter)
     }
 
     private fun updateEventInfo(key: String, value: String) {
-        eventInfo[key] = value
+        PresetPropManager.get()?.let {
+            it.meta[key] = value
+        }
     }
 
-    fun getEventInfo() = eventInfo.toMutableMap()
+    fun getEventInfo() = PresetPropManager.get()?.meta?.map ?: mapOf()
 
     /**
      * 获取并配置 事件通用属性
@@ -243,25 +216,21 @@ class PropertyManager private constructor() {
      * @return
      */
     private fun initCommonProperties(context: Context, initConfig: AnalyticsConfig?) {
-        EventUtils.getCommonProperties(context, commonProperties, activeProperties, disableList)
+        EventUtils.getCommonProperties(context)
     }
 
 
     private fun updateCommonProperties(key: String, value: Any?) {
-        commonProperties[key] = value
+        PresetPropManager.get()?.common?.set(key, value)
     }
 
     private fun removeCommonProperty(key: String) {
-        if (commonProperties.containsKey(key)) {
-            commonProperties.remove(key)
-        }
+        PresetPropManager.get()?.common?.set(key, null)
     }
 
-    fun getCommonProperties() = commonProperties.toMutableMap()
+    fun getCommonProperties() = PresetPropManager.get()?.common?.map ?: mapOf()
 
-    fun getActiveProperties() = activeProperties.toMutableMap()
-
-    fun getDisableList() = disableList.toMutableList()
+    fun getActiveProperties() = PresetPropManager.get()?.userActive?.map ?: mapOf()
 
     /**
      * FPS状态监控
@@ -293,23 +262,17 @@ class PropertyManager private constructor() {
     }
 
 
-    fun updateSdkVersionProperty(jsonObject: JSONObject, typeKye: String, versionKey: String) {
+    internal fun updateSdkVersionProperty(map: PresetPropManager.PPMap,) {
         //接入 SDK 的类型可能是 Android 或 Unity ，因此这里需动态获取
         getCommonProperties()[Constant.COMMON_PROPERTY_SDK_TYPE]?.toString()?.let {
             if (it.isNotEmpty()) {
-                jsonObject.put(
-                    Constant.USER_PROPERTY_ACTIVE_SDK_TYPE,
-                    it
-                )
+                map[Constant.USER_PROPERTY_ACTIVE_SDK_TYPE] = it
             }
         }
         //SDK 版本
         getCommonProperties()[Constant.COMMON_PROPERTY_SDK_VERSION]?.toString()?.let {
             if (it.isNotEmpty()) {
-                jsonObject.put(
-                    Constant.USER_PROPERTY_ACTIVE_SDK_VERSION,
-                    it
-                )
+                map[Constant.USER_PROPERTY_ACTIVE_SDK_VERSION] = it
             }
         }
     }
@@ -318,12 +281,10 @@ class PropertyManager private constructor() {
     fun updateIsForeground(isForeground: Boolean, resumeFromBackground: Boolean, startReason: String? = "") {
         val happenTime = SystemClock.elapsedRealtime()
         MainQueue.get().postTask {
-            if (!disableList.contains(Constant.COMMON_PROPERTY_IS_FOREGROUND)) {
-                updateCommonProperties(
-                    Constant.COMMON_PROPERTY_IS_FOREGROUND,
-                    isForeground
-                )
-            }
+            updateCommonProperties(
+                Constant.COMMON_PROPERTY_IS_FOREGROUND,
+                isForeground
+            )
 
             if (isForeground) {
                 sessionStartTime = happenTime
@@ -336,26 +297,45 @@ class PropertyManager private constructor() {
                 dataAdapter?.isFirstSessionStartInserted()?.onSameQueueThen {
 
                     MainQueue.get().postTask {
+                        // preset event disabled
+                        if (!PresetEvent.SessionStart.isOn()) return@postTask
 
                         val isFirstOpen = it.not()
 
                         EventTrackManager.instance.trackNormalPreset(
                             Constant.PRESET_EVENT_SESSION_START,
                             happenTime,
-                            JSONObject().apply {
-                                put(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME, isFirstOpen)
-                                put(
-                                    Constant.SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND,
-                                    resumeFromBackground
-                                )
-                                if (startReason != "" && startReason != "{}") {
-                                    put(Constant.SESSION_START_PROPERTY_START_REASON, startReason)
-                                }
-                                if (resumeFromBackground && sessionEndTime != 0L) {
-                                    put(
-                                        Constant.SESSION_START_PROPERTY_BACKGROUND_DURATION,
-                                        sessionStartTime - sessionEndTime
+                            JSONObject().also {
+                                PresetPropManager.get()?.run {
+                                    checkNSet(it, Constant.SESSION_START_PROPERTY_IS_FIRST_TIME, isFirstOpen)
+                                    checkNSet(it,
+                                        Constant.SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND,
+                                        resumeFromBackground
                                     )
+                                    if (startReason != "" && startReason != "{}") {
+                                        checkNSet(it, Constant.SESSION_START_PROPERTY_START_REASON, startReason)
+                                    }
+                                    if (resumeFromBackground && sessionEndTime != 0L) {
+                                        checkNSet(it,
+                                            Constant.SESSION_START_PROPERTY_BACKGROUND_DURATION,
+                                            sessionStartTime - sessionEndTime
+                                        )
+                                    }
+                                } ?: run {
+                                    it.put(Constant.SESSION_START_PROPERTY_IS_FIRST_TIME, isFirstOpen)
+                                    it.put(
+                                        Constant.SESSION_START_PROPERTY_RESUME_FROM_BACKGROUND,
+                                        resumeFromBackground
+                                    )
+                                    if (startReason != "" && startReason != "{}") {
+                                        it.put(Constant.SESSION_START_PROPERTY_START_REASON, startReason)
+                                    }
+                                    if (resumeFromBackground && sessionEndTime != 0L) {
+                                        it.put(
+                                            Constant.SESSION_START_PROPERTY_BACKGROUND_DURATION,
+                                            sessionStartTime - sessionEndTime
+                                        )
+                                    }
                                 }
                             },
                             insertHandler = { code: Int, _: String ->
@@ -368,14 +348,19 @@ class PropertyManager private constructor() {
                     }
                 }
             } else {
+                // preset event disabled
+                if (!PresetEvent.SessionEnd.isOn()) return@postTask
+
                 EventTrackManager.instance.trackNormalPreset(
                     Constant.PRESET_EVENT_SESSION_END,
                     happenTime,
-                    JSONObject().apply {
+                    JSONObject().also {
                         if (sessionStartTime != 0L) {
                             sessionEndTime = SystemClock.elapsedRealtime()
                             val sessionDuration = sessionEndTime - sessionStartTime
-                            put(Constant.SESSION_END_PROPERTY_SESSION_DURATION, sessionDuration)
+                            PresetPropManager.get()?.run {
+                                checkNSet(it, Constant.SESSION_END_PROPERTY_SESSION_DURATION, sessionDuration)
+                            } ?: it.put(Constant.SESSION_END_PROPERTY_SESSION_DURATION, sessionDuration)
                             sessionStartTime = 0L
                         }
                     },
@@ -442,18 +427,9 @@ class PropertyManager private constructor() {
             return
         }
 
-        val happenTime = SystemClock.elapsedRealtime()
+        updateEventInfo(Constant.EVENT_INFO_GAID, id)
 
-        if (!disableList.contains(Constant.EVENT_INFO_GAID)) {
-            updateEventInfo(Constant.EVENT_INFO_GAID, id)
-        }
-
-        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_GAID)) {
-            EventTrackManager.instance.trackUser(
-                Constant.PRESET_EVENT_USER_SET_ONCE, happenTime, JSONObject().apply {
-                    put(Constant.USER_PROPERTY_ACTIVE_GAID, id)
-                })
-        }
+        PresetPropManager.get()?.userActive?.set(Constant.USER_PROPERTY_ACTIVE_GAID, id)
     }
 
     fun getAndroidId(): String {
@@ -468,17 +444,9 @@ class PropertyManager private constructor() {
     private fun updateAndroidId(id: String) {
         if (id.isEmpty()) return
 
-        val happenTime = SystemClock.elapsedRealtime()
+        updateEventInfo(Constant.EVENT_INFO_ANDROID_ID, id)
 
-        if (!disableList.contains(Constant.EVENT_INFO_ANDROID_ID)) {
-            updateEventInfo(Constant.EVENT_INFO_ANDROID_ID, id)
-        }
-        if (!disableList.contains(Constant.USER_PROPERTY_ACTIVE_ANDROID_ID)) {
-            EventTrackManager.instance.trackUser(
-                Constant.PRESET_EVENT_USER_SET_ONCE, happenTime, JSONObject().apply {
-                    put(Constant.USER_PROPERTY_ACTIVE_ANDROID_ID, id)
-                })
-        }
+        PresetPropManager.get()?.userActive?.set(Constant.USER_PROPERTY_ACTIVE_ANDROID_ID, id)
     }
 
     fun updateNetworkType(networkType: NetworkUtil.NetworkType?) {
