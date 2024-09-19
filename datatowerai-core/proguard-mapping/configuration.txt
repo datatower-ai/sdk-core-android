@@ -261,7 +261,6 @@
 -keep class ai.datatower.ias.DTIASReport{*;}
 -keep class ai.datatower.ias.DTIASReport$Companion{*;}
 
-
 -keeppackagenames ai.datatower.**
 # End of content from /Users/linkailong/Projects/android_core/proguard-rules/core-proguard-rules.pro
 # The proguard configuration file for the following section is /Users/linkailong/Projects/android_core/datatowerai-core/build/intermediates/aapt_proguard_file/publicRelease/aapt_rules.txt
