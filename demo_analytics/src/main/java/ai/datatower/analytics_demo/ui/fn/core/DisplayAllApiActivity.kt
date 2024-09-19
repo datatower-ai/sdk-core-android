@@ -444,6 +444,7 @@ fun ParamComposable(param: KParameter, arguments: SnapshotStateMap<KParameter, A
                     OutlinedTextField(
                         value = strJsonValue,
                         onValueChange = { strJsonValue = it },
+                        supportingText = { Text("Input single value and click ✔ to confirm", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outlineVariant) },
                         trailingIcon = {
                             IconButton(onClick = {
                                 if (arguments[param] == null) {
