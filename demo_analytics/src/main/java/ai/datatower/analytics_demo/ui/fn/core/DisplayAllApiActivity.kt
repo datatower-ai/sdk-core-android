@@ -264,6 +264,7 @@ fun ApiDialog(dialogState: MutableState<Pair<KFunction<Any?>, KClass<*>>?>) {
                         ElevatedButton(
                             enabled = !hasPreError,
                             onClick = {
+                                Log.w("DisplayAllApi", "callBy: ${arguments.toMap()}")
                                 it.callBy(arguments.apply {
                                     put(it.parameters[0], dialogState.value!!.second.companionObjectInstance)
                                 })
@@ -501,8 +502,8 @@ fun setDefaultValue(param: KParameter): Optional {
         Long::class -> Optional.Some(0L)
         Double::class -> Optional.Some(0.0)
         Boolean::class -> Optional.Some(true)
-        Map::class -> Optional.Some("{}")
-        JSONObject::class -> Optional.Some("{}")
+        Map::class -> Optional.Some(mutableMapOf<String, Any?>())
+        JSONObject::class -> Optional.Some(JSONObject())
         Array<String>::class -> Optional.Some(arrayOf<String>())
         else -> {
             if (param.type.isMarkedNullable) {
