@@ -78,6 +78,7 @@ enum class AdMediation(val value: Int) {
     TRADPLUS(5),
     TOBID(6),
     ADMOB(7),
+    IRONSOURCE(8),
 }
 
 enum class AdPlatform(val value: Int) {
